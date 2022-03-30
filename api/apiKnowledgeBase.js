@@ -446,10 +446,15 @@ router.get("/getKnowledgeBaseCategoriesByLevel/knowledge_base_id/:knowledge_base
     if(level > 5 || level < 1) return res.status(401).json({ status: "error", message: "The level must be between 1 and 5"});
 
     getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, -1, tree => {
-        //filter the result bashed on the level
-        let index = 1;
-        getCategoriesAtLevel(tree, level, index, level_categories => {
-            res.json(level_categories);
+        getMaxLevels(tree, 0, 1, max_level => {
+            //filter the result bashed on the level
+            let index = 1;
+            getCategoriesAtLevel(tree, level, index, level_categories => {
+                res.json({
+                    max_level,
+                    level_categories
+                });
+            });
         });
     });
 });
@@ -480,6 +485,36 @@ function getCategoriesAtLevel(tree, level, index, cb){
             }
         });
     });
+}
+
+function getMaxLevels(tree, level, index, cb){
+    let num_subcategories = tree.length;
+    let count = -1;
+    let all_levels = [];
+
+    if(num_subcategories == 0) return cb(index);
+
+    let next_level = level + 1;
+
+    if(next_level > index){
+        index = next_level;
+    }
+
+    tree.forEach(translation => {
+        getMaxLevels(translation.subcategories, next_level, index, max_level => {
+            checkComplete(max_level);
+        });
+    });
+
+    checkComplete(0);
+
+    function checkComplete(a){
+        all_levels.push(a);
+        count++;
+        if(count == num_subcategories){
+            cb(Math.max.apply(Math, all_levels));
+        }
+    }
 }
 
 function getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, parent_id, cb){
@@ -591,35 +626,41 @@ router.get("/getKnowledgeBaseArticlesByLevel/knowledge_base_id/:knowledge_base_i
     if(level > 5 || level < 1) return res.status(401).json({ status: "error", message: "The level must be between 1 and 5"});
 
     getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, -1, tree => {
-        //filter the result bashed on the level
-        let index = 1;
-        getCategoriesAtLevel(tree, level, index, level_categories => {
-            // get the articles from this list
-            let num_level_categories = level_categories.length;
-            let count = -1;
-
-            let articles = [];
-
-            level_categories.forEach(category => {
-                pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.category_id, kb_locale_id], result => {
-
-                    if(result.res == null || result.res.length == 0){
-                        checkComplete();
-                    }else{
-                        articles = articles.concat(result.res);
-                        checkComplete();
-                    }
+        //get the max number of levels
+        getMaxLevels(tree, 0, 1, max_level => {
+            //filter the result bashed on the level
+            let index = 1;
+            getCategoriesAtLevel(tree, level, index, level_categories => {
+                // get the articles from this list
+                let num_level_categories = level_categories.length;
+                let count = -1;
+    
+                let articles = [];
+    
+                level_categories.forEach(category => {
+                    pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.category_id, kb_locale_id], result => {
+    
+                        if(result.res == null || result.res.length == 0){
+                            checkComplete();
+                        }else{
+                            articles = articles.concat(result.res);
+                            checkComplete();
+                        }
+                    });
                 });
-            });
-
-            checkComplete();
-
-            function checkComplete(){
-                count++;
-                if(count == num_level_categories){
-                    res.json(articles);
+    
+                checkComplete();
+    
+                function checkComplete(){
+                    count++;
+                    if(count == num_level_categories){
+                        res.json({
+                            max_level,
+                            articles
+                        });
+                    }
                 }
-            }
+            });
         });
     });
 });
@@ -1884,6 +1925,7 @@ router.get("/listKnowledgeBases/:id", (req, res) => {
                     getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(kb_id, -1, result => {
                         knowledge_base.stat = {
                             num_categories: result.num_categories,
+                            num_articles: result.num_articles,
                             status: result.status
                         };
 
@@ -1992,6 +2034,7 @@ router.get("/listKnowledgeBases", (req, res) => {
                     getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base.id, -1, result => {
                         knowledge_base.stat = {
                             num_categories: result.num_categories,
+                            num_articles: result.num_articles,
                             status: result.status
                         };
 
