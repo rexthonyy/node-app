@@ -5,8 +5,6 @@ const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
 
 const app = express();
 
-console.log(process.env.DATABASE_URL);
-
 app.use(
     postgraphile(process.env.DATABASE_URL, {
         watchPg: true,
