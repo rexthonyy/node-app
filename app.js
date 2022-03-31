@@ -1,6 +1,8 @@
 require("dotenv").config();
 const { makeQueryRunner } = require("./QueryRunner.js");
 
+console.log(process.env.DATABASE_URL);
+
 async function main() {
   const runner = await makeQueryRunner(
     //"postgres:///graphile_cookbook",
