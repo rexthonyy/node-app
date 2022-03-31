@@ -42,9 +42,12 @@ require("dotenv").config();
 
 
 const pg = require("pg");
+const express = require('express');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
- 
+const { graphqlHTTP } = require('express-graphql');
+const app = express();
+
 const pgPool = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
@@ -66,25 +69,19 @@ async function main() {
  
   const { url } = await server.listen();
   console.log(`🚀 Server ready at ${url}`);
+
+
+  app.use('/graphql', graphqlHTTP({
+      schema: schema,
+  }));
+  
+  let port = process.env.PORT || 1000;
+  var lesServer = app.listen(port, function() {
+      console.log("Listening on port %s...", lesServer.address().port);
+  });
 }
 
 
-
-
-
-const express = require('express');
-const { graphqlHTTP } = require('express-graphql');
-const app = express();
-
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    graphiql: true,
-}));
-
-let port = process.env.PORT || 1000;
-var server = app.listen(port, function() {
-    console.log("Listening on port %s...", server.address().port);
-});
 
 
 
