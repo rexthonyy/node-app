@@ -11,15 +11,17 @@ async function makeQueryRunner(
   options = {} // See https://www.graphile.org/postgraphile/usage-schema/ for options
 ) {
 
-    console.log(connectionString);
-    console.log(schemaName);
-    console.log(options);
+    // console.log(connectionString);
+    // console.log(schemaName);
+    // console.log(options);
   // Create the PostGraphile schema
   const schema = await createPostGraphileSchema(
     connectionString,
     schemaName,
     options
   );
+
+  console.log(schema);
 
   // Our database pool
   const pgPool = new Pool({
