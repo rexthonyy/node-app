@@ -73,6 +73,7 @@ async function main() {
 
   app.use('/graphql', graphqlHTTP({
       schema: schema,
+      graphiql: true,
   }));
   
   let port = process.env.PORT || 1000;
