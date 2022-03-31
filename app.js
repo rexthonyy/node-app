@@ -64,6 +64,8 @@ require("dotenv").config();
 //     });
 // });
 
+
+
 const pg = require("pg");
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
@@ -79,6 +81,9 @@ async function main() {
     {
       // PostGraphile options, see:
       // https://www.graphile.org/postgraphile/usage-library/
+        watchPg: true,
+        graphiql: true,
+        enhanceGraphiql: true
     }
   );
  
