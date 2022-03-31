@@ -1,16 +1,4 @@
 require("dotenv").config();
-const express = require('express');
-const expressGraphQL = require("express-graphql");
-const app = express();
-
-app.use("/graphql", expressGraphQL({
-    graphiql: true
-}));
-
-let port = process.env.PORT || 1000;
-var server = app.listen(port, function() {
-    console.log("Listening on port %s...", server.address().port);
-});
 
 
 
@@ -79,6 +67,33 @@ async function main() {
   const { url } = await server.listen();
   console.log(`🚀 Server ready at ${url}`);
 }
+
+
+
+
+
+const express = require('express');
+const { graphqlHTTP } = require('express-graphql');
+const app = express();
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    graphiql: true,
+}));
+
+let port = process.env.PORT || 1000;
+var server = app.listen(port, function() {
+    console.log("Listening on port %s...", server.address().port);
+});
+
+
+
+
+
+
+
+
+
  
 main().catch(e => {
   console.error(e);
