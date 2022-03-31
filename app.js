@@ -46,13 +46,32 @@ const express = require('express');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
+const {
+    GraphQLSchema,
+    GraphQLObjectType,
+    GraphQLString
+} = require("graphql");
+
 const app = express();
 
 const pgPool = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
  
+
 async function main() {
+
+    const schema1 = new GraphQLSchema({
+        query: new GraphQLObjectType({
+            name: "helloworld",
+            fields: () => ({
+                message: {
+                    type: GraphQLString,
+                    resolve: () => "hello world"
+                }
+            })
+        })
+    });
   const { schema, plugin } = await makeSchemaAndPlugin(
     pgPool,
     'public', // PostgreSQL schema to use
@@ -72,7 +91,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema,
+      schema: schema1,
       graphiql: true,
   }));
   
@@ -86,13 +105,6 @@ async function main() {
 
 
 
-
-
-
-
-
-
- 
 main().catch(e => {
   console.error(e);
   process.exit(1);
