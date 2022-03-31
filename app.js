@@ -43,6 +43,8 @@ require("dotenv").config();
 
 const pg = require("pg");
 const express = require('express');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+const { stitchSchemas } = require('@graphql-tools/stitch');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
@@ -82,11 +84,20 @@ async function main() {
       // https://www.graphile.org/postgraphile/usage-library/
     }
   );
-
-  console.log(schema);
  
+  	const postsSubschema = { schema: schema };
+	const usersSubschema = { schema: schema1 };
+
+	// build the combined schema
+	const gatewaySchema = stitchSchemas({
+		subschemas: [
+			postsSubschema,
+			usersSubschema,
+		]
+	});
+
   const server = new ApolloServer({
-    schema,
+    gatewaySchema,
     plugins: [plugin]
   });
  
@@ -95,7 +106,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema1,
+      schema: gatewaySchema,
       graphiql: true,
   }));
   
