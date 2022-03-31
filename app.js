@@ -87,17 +87,21 @@ async function main() {
  
   const barsResolver = {
 	Query: {
-	  bars(parent, args, context, info) {
+	  message(parent, args, context, info) {
 		return "hello world";
 	  }
 	}
   }
 
   let schema2 = makeExecutableSchema({
-	typeDefs: /* GraphQL */ `  
-	  type Query {
-		message: String
-	  }
+	typeDefs: /* GraphQL */ ` 
+		schema {
+			query: Query
+	  	} 
+	  
+		type Query {
+			message: String
+	  	}
 	`,
 	resolvers: [barsResolver]
   });
