@@ -1,0 +1,1 @@
+GET http://88.208.199.175:1000/knowledgebase/getListStatus/knowledge_base_id/78/parent_id/878/kb_locale_id/1/list_name/dan

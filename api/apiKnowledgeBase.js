@@ -450,10 +450,9 @@ router.get("/getKnowledgeBaseCategoriesByLevel/knowledge_base_id/:knowledge_base
             //filter the result bashed on the level
             let index = 1;
             getCategoriesAtLevel(tree, level, index, level_categories => {
-                res.json({
-                    max_level,
-                    level_categories
-                });
+                let result = util.paginate(req, level_categories);
+                result.max_level = max_level;
+                res.json(result);
             });
         });
     });
@@ -654,10 +653,9 @@ router.get("/getKnowledgeBaseArticlesByLevel/knowledge_base_id/:knowledge_base_i
                 function checkComplete(){
                     count++;
                     if(count == num_level_categories){
-                        res.json({
-                            max_level,
-                            articles
-                        });
+                        let result = util.paginate(req, articles);
+                        result.max_level = max_level;
+                        res.json(result);
                     }
                 }
             });
@@ -2471,7 +2469,7 @@ router.get("/getAllKnowledgeBaseCategories/knowledge_base_id/:knowledge_base_id/
     let kb_locale_id = req.params.kb_locale_id;
     let parent_id = -1;
 
-    getCategoriesAndSubCategories(req, res, knowledge_base_id, kb_locale_id, parent_id, categories => {
+    getCategoriesAndSubCategories(req, res, knowledge_base_id, kb_locale_id, parent_id, -1, categories => {
         res.json(categories);
     });
 });
