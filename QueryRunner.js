@@ -10,6 +10,10 @@ async function makeQueryRunner(
   schemaName = "public",
   options = {} // See https://www.graphile.org/postgraphile/usage-schema/ for options
 ) {
+
+    console.log(connectionString);
+    console.log(schemaName);
+    console.log(options);
   // Create the PostGraphile schema
   const schema = await createPostGraphileSchema(
     connectionString,
