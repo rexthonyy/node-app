@@ -7,7 +7,7 @@ const {
 
 async function makeQueryRunner(
   connectionString = process.env.DATABASE_URL || "postgres:///",
-  schemaName = "public",
+  schemaName = "test",
   options = {} // See https://www.graphile.org/postgraphile/usage-schema/ for options
 ) {
   // Create the PostGraphile schema
