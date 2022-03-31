@@ -83,45 +83,9 @@ async function main() {
       // https://www.graphile.org/postgraphile/usage-library/
     }
   );
- 
-  const barsResolver = {
-	Query: {
-	  bars(parent, args, context, info) {
-		return "hello world";
-	  }
-	}
-  }
-
-  let schema2 = makeExecutableSchema({
-	typeDefs: /* GraphQL */ ` 
-	schema {
-		query: Query
-	  }
-	
-	  type Query {
-		bars: [Bar]!
-	  }
-	
-	  type Bar {
-		id: ID
-	  }
-	`,
-	resolvers: [barsResolver]
-  });
-
-  	const postsSubschema = { schema: schema1 };
-	const usersSubschema = { schema: schema2 };
-
-	// build the combined schema
-	const gatewaySchema = stitchSchemas({
-		subschemas: [
-			postsSubschema,
-			usersSubschema,
-		]
-	});
 
   const server = new ApolloServer({
-    gatewaySchema,
+    schema,
     plugins: [plugin]
   });
  
@@ -130,7 +94,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema2,
+      schema: schema1,
       graphiql: true,
   }));
   
