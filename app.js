@@ -1,29 +1,16 @@
 require("dotenv").config();
-// const { makeQueryRunner } = require("./QueryRunner.js");
+const express = require('express');
+const expressGraphQL = require("express-graphql");
+const app = express();
 
-// console.log(process.env.DATABASE_URL);
+app.use("/graphql", expressGraphQL({
+    graphiql: true
+}));
 
-// async function main() {
-//   const runner = await makeQueryRunner(
-//     //"postgres:///graphile_cookbook",
-//     process.env.DATABASE_URL,
-//     "public"
-//   );
-
-//   const result = await runner.query(
-//     //"query PostsByAuthor($username: String!) { userByUsername(username: $username) { postsByAuthorId { nodes { id body topicByTopicId { id title } } } } }",
-//     "query MyQuery {allUsers {nodes {name}}}"
-//   );
-
-//   console.log(JSON.stringify(result, null, 2));
-
-//   await runner.release();
-// }
-
-// main().catch((e) => {
-//   console.error(e);
-//   process.exit(1);
-// });
+let port = process.env.PORT || 1000;
+var server = app.listen(port, function() {
+    console.log("Listening on port %s...", server.address().port);
+});
 
 
 
@@ -34,7 +21,7 @@ require("dotenv").config();
 
 
 
-// const express = require('express');
+//const express = require('express');
 // const { postgraphile } = require("postgraphile");
 // const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
 
