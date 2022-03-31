@@ -77,10 +77,13 @@ async function main() {
     pgPool,
     'public', // PostgreSQL schema to use
     {
+		dynamicJSON: true
       // PostGraphile options, see:
       // https://www.graphile.org/postgraphile/usage-library/
     }
   );
+
+  console.log(schema);
  
   const server = new ApolloServer({
     schema,
@@ -92,7 +95,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema,
+      schema: schema1,
       graphiql: true,
   }));
   
