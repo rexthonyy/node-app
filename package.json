@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@sentry/node": "^6.17.9",
+    "apollo-server": "^3.6.7",
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -20,6 +21,7 @@
     "node-fetch": "^2.6.7",
     "graphql": "^15.0.0",
     "pg": "^8.7.3",
-    "postgraphile": "^4.12.5"
+    "postgraphile": "^4.12.5",
+    "postgraphile-apollo-server": "^0.1.1"
   }
 }
