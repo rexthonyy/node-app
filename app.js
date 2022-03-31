@@ -103,7 +103,7 @@ async function main() {
 	  }
 	
 	  type Bar {
-		id: int
+		id: ID
 	  }
 	`,
 	resolvers: [barsResolver]
