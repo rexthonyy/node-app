@@ -34,35 +34,35 @@ require("dotenv").config();
 
 
 
-// const express = require('express');
-// const { postgraphile } = require("postgraphile");
-// const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
+const express = require('express');
+const { postgraphile } = require("postgraphile");
+const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
 
-// const app = express();
+const app = express();
 
-// app.use(
-//     postgraphile(process.env.DATABASE_URL, {
-//         watchPg: true,
-//         graphiql: true,
-//         enhanceGraphiql: true
-//     })
-// );
+app.use(
+    postgraphile(process.env.DATABASE_URL, {
+        watchPg: true,
+        graphiql: true,
+        enhanceGraphiql: true
+    })
+);
 
-// app.use(express.json());
+app.use(express.json());
     
-// app.use('/knowledgebase', knowledgeBaseRouter);
+app.use('/knowledgebase', knowledgeBaseRouter);
 
-// let port = process.env.PORT || 1000;
-// var server = app.listen(port, function() {
-//     console.log("Listening on port %s...", server.address().port);
-// });
+let port = process.env.PORT || 1000;
+var server = app.listen(port, function() {
+    console.log("Listening on port %s...", server.address().port);
+});
 
-// app.get("/", (req, res) => {
-//     res.json({ 
-//         status: "success", 
-//         message: "Welcome to the Knowledgebase app"
-//     });
-// });
+app.get("/", (req, res) => {
+    res.json({ 
+        status: "success", 
+        message: "Welcome to the Knowledgebase app"
+    });
+});
 
 
 
@@ -81,9 +81,6 @@ async function main() {
     {
       // PostGraphile options, see:
       // https://www.graphile.org/postgraphile/usage-library/
-        watchPg: true,
-        graphiql: true,
-        enhanceGraphiql: true
     }
   );
  
