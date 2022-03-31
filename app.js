@@ -10,7 +10,7 @@ async function main() {
 
   const result = await runner.query(
     //"query PostsByAuthor($username: String!) { userByUsername(username: $username) { postsByAuthorId { nodes { id body topicByTopicId { id title } } } } }",
-    "query MyQuery {allLocales {nodes {name}}}"
+    "query MyQuery {allUsers {nodes {name}}}"
   );
 
   console.log(JSON.stringify(result, null, 2));
