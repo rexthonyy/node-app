@@ -86,7 +86,7 @@ async function main() {
  
   const barsResolver = {
 	Query: {
-	  bar(parent, args, context, info) {
+	  bars(parent, args, context, info) {
 		return "hello world";
 	  }
 	}
