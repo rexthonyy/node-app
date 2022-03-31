@@ -61,17 +61,18 @@ const pgPool = new pg.Pool({
 
 async function main() {
 
-    const schema1 = new GraphQLSchema({
-        query: new GraphQLObjectType({
-            name: "helloworld",
-            fields: () => ({
-                message: {
-                    type: GraphQLString,
-                    resolve: () => "hello world"
-                }
-            })
-        })
-    });
+  const schema1 = new GraphQLSchema({
+    query: new GraphQLObjectType({
+		name: "helloworld",
+		fields: () => ({
+			message: {
+				type: GraphQLString,
+				resolve: () => "hello world"
+			}
+		})
+    })
+  });
+
   const { schema, plugin } = await makeSchemaAndPlugin(
     pgPool,
     'public', // PostgreSQL schema to use
@@ -91,7 +92,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema1,
+      schema: schema,
       graphiql: true,
   }));
   
