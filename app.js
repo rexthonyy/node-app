@@ -85,8 +85,25 @@ async function main() {
     }
   );
  
+  const barsResolver = {
+	Query: {
+	  bars(parent, args, context, info) {
+		return "hello world";
+	  }
+	}
+  }
+
+  let schema2 = makeExecutableSchema({
+	typeDefs: /* GraphQL */ `  
+	  type Query {
+		message: String
+	  }
+	`,
+	resolvers: [barsResolver]
+  });
+
   	const postsSubschema = { schema: schema };
-	const usersSubschema = { schema: schema1 };
+	const usersSubschema = { schema: schema2 };
 
 	// build the combined schema
 	const gatewaySchema = stitchSchemas({
