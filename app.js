@@ -79,7 +79,6 @@ async function main() {
     pgPool,
     'public', // PostgreSQL schema to use
     {
-		dynamicJSON: true
       // PostGraphile options, see:
       // https://www.graphile.org/postgraphile/usage-library/
     }
