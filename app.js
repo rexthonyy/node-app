@@ -3,7 +3,8 @@ const { makeQueryRunner } = require("./QueryRunner.js");
 
 async function main() {
   const runner = await makeQueryRunner(
-    "postgres:///graphile_cookbook",
+    //"postgres:///graphile_cookbook",
+    process.env.DATABASE_URL,
     "app_public"
   );
 
