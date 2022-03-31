@@ -130,7 +130,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: gatewaySchema,
+      schema: schema2,
       graphiql: true,
   }));
   
