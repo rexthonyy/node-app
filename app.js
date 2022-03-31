@@ -86,7 +86,7 @@ async function main() {
  
   const barsResolver = {
 	Query: {
-	  message(parent, args, context, info) {
+	  bar(parent, args, context, info) {
 		return "hello world";
 	  }
 	}
@@ -94,18 +94,22 @@ async function main() {
 
   let schema2 = makeExecutableSchema({
 	typeDefs: /* GraphQL */ ` 
-		schema {
-			query: Query
-	  	} 
-	  
-		type Query {
-			message: String
-	  	}
+	schema {
+		query: Query
+	  }
+	
+	  type Query {
+		bars: [Bar]!
+	  }
+	
+	  type Bar {
+		id
+	  }
 	`,
 	resolvers: [barsResolver]
   });
 
-  	const postsSubschema = { schema: schema };
+  	const postsSubschema = { schema: schema1 };
 	const usersSubschema = { schema: schema2 };
 
 	// build the combined schema
