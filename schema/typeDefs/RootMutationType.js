@@ -3,7 +3,8 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLBoolean
 } = require("graphql");
 
 // typedefs
