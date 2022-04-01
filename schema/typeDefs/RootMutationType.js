@@ -13,6 +13,7 @@ const KnowledgeBaseType = require("./KnowledgeBaseType");
 const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType");
 
 // resolvers
+const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
 
 module.exports = new GraphQLObjectType({
