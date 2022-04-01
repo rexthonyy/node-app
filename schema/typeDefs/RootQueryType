@@ -1,6 +1,6 @@
-const pgQueries = require('../../postgres/kb-queries');
 const {
-    GraphQLObjectType
+    GraphQLObjectType,
+    GraphQLList
 } = require("graphql");
 
 const KnowledgeBaseType = require("./KnowledgeBaseType");
@@ -11,7 +11,7 @@ module.exports = new GraphQLObjectType({
     description: 'Root Query',
     fields: () => ({
         knowledgebases: {
-            type: KnowledgeBaseType,
+            type: GraphQLList(KnowledgeBaseType),
             description: "Get all knowledge bases",
             resolve: getAllKnowledgeBaseResolver
         }
