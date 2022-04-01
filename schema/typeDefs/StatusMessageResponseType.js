@@ -5,7 +5,7 @@ const {
 
 module.exports = new GraphQLObjectType({
     name: "Response",
-    description: "Used to return status messages for static responses",
+    description: "An object which is used to return status messages for static responses",
     fields: () => ({
             status: { type: GraphQLString },
             message: { type: GraphQLString }
