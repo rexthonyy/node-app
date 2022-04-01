@@ -21,6 +21,7 @@
     "multer": "^1.4.4",
     "node-fetch": "^2.6.7",
     "graphql": "^15.0.0",
+    "graphql-tools": "^8.2.4",
     "@graphql-tools/schema": "^8.3.6",
     "@graphql-tools/stitch": "^8.6.3",
     "pg": "^8.7.3",
