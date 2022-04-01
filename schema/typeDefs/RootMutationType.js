@@ -6,6 +6,7 @@ const {
     GraphQLInt
 } = require("graphql");
 
+const StatusMessageResponseType = require("./StatusMessageResponseType");
 const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 
 module.exports = new GraphQLObjectType({
@@ -13,7 +14,7 @@ module.exports = new GraphQLObjectType({
     description: 'Root Mutation',
     fields: () => ({
         rearrangeKnowledgebasePositions: {
-            type: GraphQLString,
+            type: StatusMessageResponseType,
             description: "Reorder the knowledgebase positions",
             args: {
                 knowledgebaseIds: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
