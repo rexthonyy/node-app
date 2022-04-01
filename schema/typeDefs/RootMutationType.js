@@ -15,6 +15,7 @@ const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType")
 // resolvers
 const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
+const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -30,7 +31,8 @@ module.exports = new GraphQLObjectType({
                 category_layout: { type: GraphQLString },
                 active: { type: GraphQLBoolean },
                 front_page: { type: GraphQLString },
-                kb_locale_ids: { type: GraphQLList(KnowledgebaseCreateLocaleType)}
+                input: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
+                //kb_locale_ids: { type: GraphQLList(KnowledgebaseCreateLocaleType)}
             },
             resolve: createKnowledgebaseResolver
         },
