@@ -97,7 +97,7 @@ async function main() {
 	});
 
 	const server = new ApolloServer({
-		schema,
+		schema: schema,
 		plugins: [plugin]
 	});
 	
