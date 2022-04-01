@@ -43,17 +43,11 @@ require("dotenv").config();
 
 const pg = require("pg");
 const express = require('express');
-const { makeExecutableSchema } = require('@graphql-tools/schema');
 const { stitchSchemas } = require('@graphql-tools/stitch');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
-
-const {
-    GraphQLSchema,
-    GraphQLObjectType,
-    GraphQLString
-} = require("graphql");
+const schema1 = require('./schema');
 
 const app = express();
 
@@ -63,19 +57,6 @@ const pgPool = new pg.Pool({
  
 
 async function main() {
-
-  const schema1 = new GraphQLSchema({
-    query: new GraphQLObjectType({
-		name: "helloworld",
-		fields: () => ({
-			message: {
-				type: GraphQLString,
-				resolve: () => "hello world"
-			}
-		})
-    })
-  });
-
   const { schema, plugin } = await makeSchemaAndPlugin(
     pgPool,
     'public', // PostgreSQL schema to use
