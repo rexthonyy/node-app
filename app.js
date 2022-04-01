@@ -127,12 +127,8 @@ async function main() {
 	resolvers: [barsResolver]
   });
 
-	  const schema2 = mergeSchemas({
-		  schemas: [jsSchema],
-		  resolvers: [barsResolver]
-	  });
   const server = new ApolloServer({
-    schema2,
+    jsSchema,
     plugins: [plugin]
   });
  
