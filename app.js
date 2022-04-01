@@ -97,7 +97,7 @@ async function main() {
 	});
 
 	const server = new ApolloServer({
-		schema: stitchSchemas,
+		schema: stitchedSchemas,
 		plugins: [plugin]
 	});
 	
