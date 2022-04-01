@@ -1,6 +1,6 @@
 const pgQueries = require('../../postgres/kb-queries');
 
-const init = () => {
+const getData = () => {
     return new Promise((resolve, reject) => {
         
         pgQueries.listKnowledgeBases(result => {
@@ -13,21 +13,6 @@ const init = () => {
 }
 
 module.exports = async () => {
-    let result = await init()
+    let result = await getData()
     return result;
-    // return {
-    //     id: 1,
-    //     name: "knowledgebase x",
-    //     icon: "icon",
-    //     footer: "some",
-    //     created_at: "382",
-    //     homepage_layout: "best",
-    //     category_layout: "chat",
-    //     active: true,
-    //     updated_at: "382",
-    //     front_page: "lss",
-    //     position: 21,
-    //     ui_color: "blue",
-    //     is_archived: false
-    // };
 }
