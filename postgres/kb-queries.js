@@ -59,16 +59,16 @@ const listKnowledgeBasesById = (kb_id, response) => {
     });
 };
 
-const listKnowledgeBases = (res_, response) => {
+const listKnowledgeBases = (response) => {
     pool.query("SELECT * from knowledge_bases", (err, res) => {
         if(err){
-            response(res_, {
+            response({
                 err: err,
                 res: null,
                 tes: 232421
             });
         }else{
-            response(res_, {
+            response({
                 err: null,
                 res: res.rows
             });
