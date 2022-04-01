@@ -84,9 +84,47 @@ async function main() {
     }
   );
 
+  const typeDefs = [
+	`
+	type Query {
+		book(id: String!): Book
+		bookList: [Book]
+	}
+	
+	type Book {
+		id: String
+		name: String
+		genre: String
+	}
+	`
+  ];
+
+  const barsResolver = {
+	Query: {
+        book: (parent, args, context, info) => {
+            console.log(parent, args, context, info)
+            return {
+                id: `1`,
+                name: `name`,
+                genre: `scary`
+            }
+        },
+        bookList: (parent, args, context, info) => {
+            console.log(parent, args, context, info)
+            return [
+                { id: `1`, name: `name`, genre: `scary` },
+                { id: `2`, name: `name`, genre: `scary` }
+            ]
+        }
+    }
+  }
+
   const server = new ApolloServer({
-    schema1,
-    plugins: [plugin]
+    typeDefs,
+	resolvers: [barsResolver]
+
+	//schema1,
+    //plugins: [plugin]
   });
  
   const { url } = await server.listen();
