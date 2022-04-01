@@ -1,5 +1,4 @@
 const {
-    GraphQLObjectType,
     GraphQLNonNull,
     GraphQLBoolean,
     GraphQLID,
