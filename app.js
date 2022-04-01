@@ -127,7 +127,16 @@ async function main() {
 */
 
   const server = new ApolloServer({
-    schema: [schema, schema1],
+    schema: stitchSchemas({
+		subschemas: [
+		  {
+			  schema: schema
+		  },
+		  {
+			  schema: schema1
+		  }
+		]
+	  }),
     plugins: [plugin]
   });
  
