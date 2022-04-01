@@ -6,13 +6,32 @@ const {
     GraphQLInt
 } = require("graphql");
 
+// typedefs
 const StatusMessageResponseType = require("./StatusMessageResponseType");
-const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
+const KnowledgeBaseType = require("./KnowledgeBaseType");
+const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType");
+
+// resolvers
+const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
     description: 'Root Mutation',
     fields: () => ({
+        createKnowledgebase: {
+            type: KnowledgeBaseType,
+            description: "Creates a new knowledgebase",
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString)},
+                icon: { type: GraphQLString },
+                homepage_layout: { type: GraphQLString },
+                category_layout: { type: GraphQLString },
+                active: { type: GraphQLBoolean },
+                front_page: { type: GraphQLString },
+                kb_locale_ids: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
+            },
+            resolve: createKnowledgebaseResolver
+        },
         rearrangeKnowledgebasePositions: {
             type: StatusMessageResponseType,
             description: "Reorder the knowledgebase positions",
