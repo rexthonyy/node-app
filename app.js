@@ -85,6 +85,7 @@ async function main() {
     }
   );
 
+/*
   const typeDefs = [
 	`
 	type Query {
@@ -120,13 +121,13 @@ async function main() {
     }
   }
 
-  
   const jsSchema = makeExecutableSchema({
 	typeDefs
   });
+*/
 
   const server = new ApolloServer({
-    jsSchema,
+    schema: [schema, schema1],
     plugins: [plugin]
   });
  
@@ -135,7 +136,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema,
+      schema: schema1,
       graphiql: true,
   }));
   
