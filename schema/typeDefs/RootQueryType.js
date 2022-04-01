@@ -13,6 +13,7 @@ const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
 const getKnowledgeBaseByIdResolver = require("../resolvers/getKnowledgeBaseByIdResolver");
 const getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver");
+const getAllKnowledgeBaseTranslationStatusColorResolver = require("../resolvers/getAllKnowledgeBaseTranslationStatusColorResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -38,6 +39,16 @@ module.exports = new GraphQLObjectType({
                 knowledge_base_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver
+        },
+        knowledgebaseTranslationStatusColor: {
+            type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
+            description: "Get the status color for the knowledgebase translations at the category specified",
+            args: {
+                filter_by: { type: GraphQLNonNull(GraphQLString) },
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) },
+                category_id: { type: GraphQLNonNull(GraphQLID) },
+            },
+            resolve: getAllKnowledgeBaseTranslationStatusColorResolver
         }
     })
 });
