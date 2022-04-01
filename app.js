@@ -64,7 +64,7 @@ const pgPool = new pg.Pool({
 
 async function main() {
 
-  const schema1 = new GraphQLSchema({
+  const appSchema = new GraphQLSchema({
     query: new GraphQLObjectType({
 		name: "helloworld",
 		fields: () => ({
@@ -76,7 +76,7 @@ async function main() {
     })
   });
 
-  const { schema, plugin } = await makeSchemaAndPlugin(
+  const { postgraphileSchema, plugin } = await makeSchemaAndPlugin(
     pgPool,
     'public', // PostgreSQL schema to use
     {
@@ -85,74 +85,35 @@ async function main() {
     }
   );
 
-/*
-  const typeDefs = [
-	`
-	type Query {
-		book(id: String!): Book
-		bookList: [Book]
-	}
-	
-	type Book {
-		id: String
-		name: String
-		genre: String
-	}
-	`
-  ];
-
-  const barsResolver = {
-	Query: {
-        book: (parent, args, context, info) => {
-            console.log(parent, args, context, info)
-            return {
-                id: `1`,
-                name: `name`,
-                genre: `scary`
-            }
-        },
-        bookList: (parent, args, context, info) => {
-            console.log(parent, args, context, info)
-            return [
-                { id: `1`, name: `name`, genre: `scary` },
-                { id: `2`, name: `name`, genre: `scary` }
-            ]
-        }
-    }
-  }
-
-  const jsSchema = makeExecutableSchema({
-	typeDefs
-  });
-*/
-
-  const server = new ApolloServer({
-    schema: stitchSchemas({
+	let schema = stitchSchemas({
 		subschemas: [
-		  {
-			  schema: schema
-		  },
-		  {
-			  schema: schema1
-		  }
+			{
+				schema: postgraphileSchema
+			},
+			{
+				schema: appSchema
+			}
 		]
-	  }),
-    plugins: [plugin]
-  });
- 
-  const { url } = await server.listen();
-  console.log(`🚀 Server ready at ${url}`);
+	});
+
+	const server = new ApolloServer({
+		schema,
+		plugins: [plugin]
+	});
+	
+	const { url } = await server.listen();
+	console.log(`🚀 Server ready at ${url}`);
 
 
-  app.use('/graphql', graphqlHTTP({
-      schema: schema1,
-      graphiql: true,
-  }));
-  
-  let port = process.env.PORT || 1000;
-  var lesServer = app.listen(port, function() {
-      console.log("Listening on port %s...", lesServer.address().port);
-  });
+	app.use('/graphql', graphqlHTTP({
+		schema: schema,
+		graphiql: true,
+	}));
+	
+	let port = process.env.PORT || 1000;
+	var lesServer = app.listen(port, function() {
+		console.log("Listening on port %s...", lesServer.address().port);
+	});
 }
 
 
