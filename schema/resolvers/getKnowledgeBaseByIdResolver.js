@@ -7,7 +7,7 @@ const getData = ({id}) => {
             if(result.err){
                 return resolve(result.err);
             }
-            resolve(result.res);
+            resolve(result.res[0]);
         });
     });
 }
