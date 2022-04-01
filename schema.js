@@ -9,7 +9,7 @@ const {
     GraphQLBoolean
 } = require("graphql");
 
-const KnowledgeBaseType = GraphQLList({
+const KnowledgeBaseType = new GraphQLObjectType({
     name: "Knowledgebase",
     description: "App databases",
     fields: () => ({
