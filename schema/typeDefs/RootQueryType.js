@@ -1,10 +1,12 @@
 const {
     GraphQLObjectType,
-    GraphQLList
+    GraphQLList,
+    GraphQLID
 } = require("graphql");
 
 const KnowledgeBaseType = require("./KnowledgeBaseType");
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
+const getKnowledgeBaseByIdResolver = require("../resolvers/getKnowledgeBaseByIdResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -12,8 +14,16 @@ module.exports = new GraphQLObjectType({
     fields: () => ({
         knowledgebases: {
             type: GraphQLList(KnowledgeBaseType),
-            description: "Get all knowledge bases",
+            description: "Get all knowledgebases",
             resolve: getAllKnowledgeBaseResolver
+        },
+        knowledgebase: {
+            type: KnowledgeBaseType,
+            description: "Get a single knowledgebase by id",
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: getKnowledgeBaseByIdResolver
         }
     })
 });

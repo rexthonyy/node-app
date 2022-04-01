@@ -42,8 +42,8 @@ const updatePositionForKnowledgeBase = (values, response) => {
     });
 };
 
-const listKnowledgeBasesById = (kb_id, response) => {
-    pool.query(`SELECT * from knowledge_bases WHERE id=${kb_id}`, (err, res) => {
+const listKnowledgeBasesById = (values, response) => {
+    pool.query("SELECT * from knowledge_bases WHERE id=$1", values, (err, res) => {
         if(err){
             response({
                 err: err,
