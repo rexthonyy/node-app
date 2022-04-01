@@ -1,12 +1,12 @@
 const pgQueries = require('../../postgres/kb-queries');
 
-const getData = ({knowledgebaseIds}) => {
+const getData = ({knowledge_base_ids}) => {
     return new Promise((resolve, reject) => {
         let positionOrder = [];
 
-        for(let i = 0; i < knowledgebaseIds.length; i++){
+        for(let i = 0; i < knowledge_base_ids.length; i++){
             positionOrder.push({
-                kb_id: knowledgebaseIds[i],
+                kb_id: knowledge_base_ids[i],
                 position: (i+1)
             });
         }

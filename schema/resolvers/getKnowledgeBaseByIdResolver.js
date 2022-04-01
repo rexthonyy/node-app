@@ -1,9 +1,9 @@
 const pgQueries = require('../../postgres/kb-queries');
 
-const getData = ({id}) => {
+const getData = ({knowledge_base_id}) => {
     return new Promise((resolve, reject) => {
         
-        pgQueries.listKnowledgeBasesById([id], result => {
+        pgQueries.listKnowledgeBasesById([knowledge_base_id], result => {
             if(result.err){
                 return resolve(result.err);
             }
