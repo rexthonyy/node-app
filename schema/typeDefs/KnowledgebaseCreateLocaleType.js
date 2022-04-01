@@ -2,10 +2,11 @@ const {
     GraphQLObjectType,
     GraphQLNonNull,
     GraphQLBoolean,
-    GraphQLID
+    GraphQLID,
+    GraphQLInputObjectType
 } = require("graphql");
 
-module.exports = new GraphQLObjectType({
+module.exports = new GraphQLInputObjectType({
     name: "KnowledgebaseCreateLocale",
     description: "An object which is used when creating a knowledge base",
     fields: () => ({
