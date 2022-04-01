@@ -45,7 +45,7 @@ module.exports = new GraphQLObjectType({
             type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
             description: "Get the status color for the knowledgebase translations at the category specified",
             args: {
-                filter_by: { type: GraphQLNonNull(GraphQLString) },
+                filter_by: { type: GraphQLString },
                 knowledge_base_id: { type: GraphQLNonNull(GraphQLID) },
                 category_id: { type: GraphQLNonNull(GraphQLID) },
             },
