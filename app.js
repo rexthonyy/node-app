@@ -48,7 +48,6 @@ const { stitchSchemas } = require('@graphql-tools/stitch');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
-const { mergeSchemas } = require('graphql-tools');
 
 const {
     GraphQLSchema,
@@ -123,8 +122,7 @@ async function main() {
 
   
   const jsSchema = makeExecutableSchema({
-	typeDefs,
-	resolvers: [barsResolver]
+	typeDefs
   });
 
   const server = new ApolloServer({
