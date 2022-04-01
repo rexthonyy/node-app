@@ -30,6 +30,7 @@ const RootQueryType = new GraphQLObjectType({
             description: "Get all knowledge bases",
             resolve: () => {
                 pgQueries.listKnowledgeBases(result => {
+                    console.log(result);
                     if(result.err){
                         return result.err;
                     }
