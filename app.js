@@ -119,12 +119,14 @@ async function main() {
     }
   }
 
-  const server = new ApolloServer({
-    typeDefs,
+  const jsSchema = makeExecutableSchema({
+	typeDefs,
 	resolvers: [barsResolver]
+  });
 
-	//schema1,
-    //plugins: [plugin]
+  const server = new ApolloServer({
+    jsSchema,
+    plugins: [plugin]
   });
  
   const { url } = await server.listen();
