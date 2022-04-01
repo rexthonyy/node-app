@@ -17,7 +17,7 @@ module.exports = new GraphQLObjectType({
             type: StatusMessageResponseType,
             description: "Reorder the knowledgebase positions",
             args: {
-                knowledgebaseIds: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
+                knowledge_base_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
             },
             resolve: rearrangeKnowledgeBasePositionsResolver
         }

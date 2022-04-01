@@ -14,6 +14,5 @@ const getData = ({id}) => {
 
 module.exports = async (parents, args) => {
     let result = await getData(args);
-    console.log(result);
     return result;
 }

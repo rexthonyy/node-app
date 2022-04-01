@@ -1,7 +1,6 @@
 const {
     GraphQLObjectType,
     GraphQLString,
-    GraphQLList,
     GraphQLNonNull,
     GraphQLInt,
     GraphQLBoolean
@@ -9,7 +8,7 @@ const {
 
 module.exports = new GraphQLObjectType({
     name: "Knowledgebase",
-    description: "App databases",
+    description: "Knowledgebases are used to store categories, subcategories and articles, seperated by levels with the max level at 5",
     fields: () => ({
             id: { type: GraphQLNonNull(GraphQLInt)},
             name: { type: GraphQLString },
