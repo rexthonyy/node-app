@@ -85,7 +85,7 @@ async function main() {
     }
   );
 
-	let schema = stitchSchemas({
+	let stitchedSchemas = stitchSchemas({
 		subschemas: [
 			{
 				schema: postgraphileSchema
@@ -97,7 +97,7 @@ async function main() {
 	});
 
 	const server = new ApolloServer({
-		schema: schema,
+		schema: stitchSchemas,
 		plugins: [plugin]
 	});
 	
@@ -106,7 +106,7 @@ async function main() {
 
 
 	app.use('/graphql', graphqlHTTP({
-		schema: appSchema,
+		schema: schema1,
 		graphiql: true,
 	}));
 	
