@@ -94,7 +94,7 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema1,
+      schema: schema,
       graphiql: true,
   }));
   
