@@ -132,7 +132,7 @@ async function main() {
 		  resolvers: [barsResolver]
 	  });
   const server = new ApolloServer({
-    schema2
+    schema2,
     plugins: [plugin]
   });
  
