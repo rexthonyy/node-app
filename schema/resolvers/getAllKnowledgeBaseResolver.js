@@ -12,11 +12,9 @@ const init = () => {
     });
 }
 
-module.exports = () => {
-    init()
-    .then(result => {
-        return result;
-    });
+module.exports = async () => {
+    let result = await init()
+    return result;
     // return {
     //     id: 1,
     //     name: "knowledgebase x",
