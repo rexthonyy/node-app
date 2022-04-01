@@ -47,7 +47,7 @@ const { stitchSchemas } = require('@graphql-tools/stitch');
 const { ApolloServer } = require("apollo-server");
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
-const schema1 = require('./schema');
+const schema1 = require('./schema/index');
 
 const app = express();
 
