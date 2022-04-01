@@ -18,6 +18,13 @@ const KnowledgeBaseType = new GraphQLObjectType({
             icon: { type: GraphQLString },
             footer: { type: GraphQLString },
             created_at: { type: GraphQLString },
+            homepage_layout: { type: GraphQLString },
+            category_layout: { type: GraphQLString },
+            active: { type: GraphQLBoolean },
+            updated_at: { type: GraphQLString },
+            front_page: { type: GraphQLString },
+            position: { type: GraphQLInt },
+            ui_color: { type: GraphQLString },
             is_archived: { type: GraphQLBoolean }
     })
 })
@@ -30,12 +37,12 @@ const RootQueryType = new GraphQLObjectType({
             description: "Get all knowledge bases",
             resolve: () => {
                 pgQueries.listKnowledgeBases(result => {
-                    console.log(result);
                     if(result.err){
                         return result.err;
                     }
                     return result.res;
                 });
+
             }
         }
     })

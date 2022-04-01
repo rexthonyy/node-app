@@ -1,1 +1,27 @@
 GET http://88.208.199.175:1000/knowledgebase/getListStatus/knowledge_base_id/78/parent_id/878/kb_locale_id/1/list_name/dan
+
+###
+
+POST http://88.208.199.175:4000
+Content-Type: application/json
+
+{
+    "query":"query { allLocales{nodes{id\nname}} }"
+}
+
+
+###
+POST http://88.208.199.175:4000
+Content-Type: application/json
+
+{
+    "query":"query { message }"
+}
+
+###
+POST http://88.208.199.175:4000
+Content-Type: application/json
+
+{
+    "query":"{knowledgebases{id\nname\nicon}}"
+}
