@@ -30,7 +30,7 @@ module.exports = new GraphQLObjectType({
                 category_layout: { type: GraphQLString },
                 active: { type: GraphQLBoolean },
                 front_page: { type: GraphQLString },
-                kb_locale_ids: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
+                kb_locale_ids: { type: GraphQLList(KnowledgebaseCreateLocaleType)}
             },
             resolve: createKnowledgebaseResolver
         },
