@@ -120,7 +120,8 @@ async function main() {
   }
 
   const jsSchema = makeExecutableSchema({
-	typeDefs
+	typeDefs,
+	resolvers: [barsResolver]
   });
 
   const server = new ApolloServer({
