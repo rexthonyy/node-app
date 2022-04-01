@@ -8,6 +8,7 @@ const {
 // data types
 const KnowledgeBaseType = require("./KnowledgeBaseType");
 const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
+const KnowledgeBaseTranslationStatusColorType = require("./KnowledgeBaseTranslationStatusColorType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
