@@ -85,47 +85,6 @@ async function main() {
     }
   );
 
-/*
-  const typeDefs = [
-	`
-	type Query {
-		book(id: String!): Book
-		bookList: [Book]
-	}
-	
-	type Book {
-		id: String
-		name: String
-		genre: String
-	}
-	`
-  ];
-
-  const barsResolver = {
-	Query: {
-        book: (parent, args, context, info) => {
-            console.log(parent, args, context, info)
-            return {
-                id: `1`,
-                name: `name`,
-                genre: `scary`
-            }
-        },
-        bookList: (parent, args, context, info) => {
-            console.log(parent, args, context, info)
-            return [
-                { id: `1`, name: `name`, genre: `scary` },
-                { id: `2`, name: `name`, genre: `scary` }
-            ]
-        }
-    }
-  }
-
-  const jsSchema = makeExecutableSchema({
-	typeDefs
-  });
-*/
-
   const server = new ApolloServer({
     schema: stitchSchemas({
 		subschemas: [
@@ -145,7 +104,16 @@ async function main() {
 
 
   app.use('/graphql', graphqlHTTP({
-      schema: schema1,
+      schema: stitchSchemas({
+		subschemas: [
+		  {
+			  schema: schema
+		  },
+		  {
+			  schema: schema1
+		  }
+		]
+	  }),
       graphiql: true,
   }));
   
