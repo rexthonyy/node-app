@@ -125,8 +125,8 @@ async function main() {
   });
 
   const server = new ApolloServer({
-    jsSchema,
-    plugins: [plugin]
+    jsSchema
+    //plugins: [plugin]
   });
  
   const { url } = await server.listen();
