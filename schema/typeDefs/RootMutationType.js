@@ -21,11 +21,12 @@ module.exports = new GraphQLObjectType({
     description: 'Root Mutation',
     fields: () => ({
         createKnowledgebase: {
-            type: KnowledgeBaseType,
+            type: StatusMessageResponseType,
             description: "Creates a new knowledgebase",
             args: {
                 name: { type: GraphQLNonNull(GraphQLString)},
                 icon: { type: GraphQLString },
+                footer: { type: GraphQLString },
                 homepage_layout: { type: GraphQLString },
                 category_layout: { type: GraphQLString },
                 active: { type: GraphQLBoolean },
