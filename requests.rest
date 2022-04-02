@@ -25,3 +25,5 @@ Content-Type: application/json
 {
     "query":"{knowledgebases{id\nname\nicon}}"
 }
+
+### 
