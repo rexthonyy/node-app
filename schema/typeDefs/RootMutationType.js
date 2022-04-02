@@ -4,7 +4,8 @@ const {
     GraphQLNonNull,
     GraphQLList,
     GraphQLInt,
-    GraphQLBoolean
+    GraphQLBoolean,
+    GraphQLID
 } = require("graphql");
 
 // typedefs
@@ -15,6 +16,7 @@ const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType")
 // resolvers
 const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
+const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -25,12 +27,12 @@ module.exports = new GraphQLObjectType({
             description: "Creates a new knowledgebase",
             args: {
                 name: { type: GraphQLNonNull(GraphQLString)},
-                icon: { type: GraphQLString },
-                footer: { type: GraphQLString },
-                homepage_layout: { type: GraphQLString },
-                category_layout: { type: GraphQLString },
-                active: { type: GraphQLBoolean },
-                front_page: { type: GraphQLString },
+                icon: { type: GraphQLNonNull(GraphQLString) },
+                footer: { type: GraphQLNonNull(GraphQLString) },
+                homepage_layout: { type: GraphQLNonNull(GraphQLString) },
+                category_layout: { type: GraphQLNonNull(GraphQLString) },
+                active: { type: GraphQLNonNull(GraphQLBoolean) },
+                front_page: { type: GraphQLNonNull(GraphQLString) },
                 kb_locale_ids: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
             },
             resolve: createKnowledgebaseResolver
@@ -42,6 +44,22 @@ module.exports = new GraphQLObjectType({
                 knowledge_base_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
             },
             resolve: rearrangeKnowledgeBasePositionsResolver
+        },
+        updateKnowledgebase: {
+            type: StatusMessageResponseType,
+            description: "Updates a knowledgebase",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                name: { type: GraphQLNonNull(GraphQLString)},
+                icon: { type: GraphQLNonNull(GraphQLString) },
+                footer: { type: GraphQLNonNull(GraphQLString) },
+                homepage_layout: { type: GraphQLNonNull(GraphQLString) },
+                category_layout: { type: GraphQLNonNull(GraphQLString) },
+                active: { type: GraphQLNonNull(GraphQLBoolean) },
+                front_page: { type: GraphQLNonNull(GraphQLString) },
+                kb_locale_ids: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
+            },
+            resolve: updateKnowledgebaseResolver
         }
     })
 });
