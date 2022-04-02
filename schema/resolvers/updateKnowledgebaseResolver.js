@@ -1,7 +1,6 @@
 const pgQueries = require('../../postgres/kb-queries');
 const updateUIColorForKnowledgeBase = require('../resolverUtils/updateKnowledgebaseUIColor');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
-const util = require('../../util');
 
 function getLanguageTitleFromLocaleId(locale_id, cb){
     pgQueries.getLocaleById(locale_id, result => {
@@ -27,6 +26,8 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
             front_page,
             updated_at: new Date().toUTCString()
         };
+
+        console.log(data);
     
         pgQueries.updateKnowledgeBase(data, result => {
             if(result.err){
