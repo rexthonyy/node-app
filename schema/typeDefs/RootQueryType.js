@@ -10,12 +10,14 @@ const {
 const KnowledgeBaseType = require("./KnowledgeBaseType");
 const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
 const KnowledgeBaseTranslationStatusColorType = require("./KnowledgeBaseTranslationStatusColorType");
+const StatusMessageForKnowledgeBaseCategoryScheduleType = require("./StatusMessageForKnowledgeBaseCategoryScheduleType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
 const getKnowledgeBaseByIdResolver = require("../resolvers/getKnowledgeBaseByIdResolver");
 const getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver");
 const getAllKnowledgeBaseTranslationStatusColorResolver = require("../resolvers/getAllKnowledgeBaseTranslationStatusColorResolver");
+const getScheduleForKnowledgebaseCategoryTranslationResolver = require("../resolvers/getScheduleForKnowledgebaseCategoryTranslationResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -51,6 +53,15 @@ module.exports = new GraphQLObjectType({
                 category_id: { type: GraphQLNonNull(GraphQLID) },
             },
             resolve: getAllKnowledgeBaseTranslationStatusColorResolver
-        }
+        },
+        getScheduleForKnowledgebaseCategoryTranslation: {
+            type: StatusMessageForKnowledgeBaseCategoryScheduleType,
+            description: "Get a knowledgebase translation that is scheduled for publication, deletion or update",
+            args: {
+                knowledge_base_category_translation_id: { type: GraphQLNonNull(GraphQLID) },
+                operation: { type: GraphQLNonNull(GraphQLString) },
+            },
+            resolve: getScheduleForKnowledgebaseCategoryTranslationResolver
+        },
     })
 });
