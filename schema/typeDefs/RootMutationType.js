@@ -17,6 +17,7 @@ const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType")
 const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
 const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseResolver");
+const rearrangeKnowledgeBaseCategoryPositionsResolver = require("../resolvers/rearrangeKnowledgeBaseCategoryPositionsResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -37,14 +38,6 @@ module.exports = new GraphQLObjectType({
             },
             resolve: createKnowledgebaseResolver
         },
-        rearrangeKnowledgebasePositions: {
-            type: StatusMessageResponseType,
-            description: "Reorder the knowledgebase positions",
-            args: {
-                knowledge_base_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
-            },
-            resolve: rearrangeKnowledgeBasePositionsResolver
-        },
         updateKnowledgebase: {
             type: StatusMessageResponseType,
             description: "Updates a knowledgebase",
@@ -60,6 +53,22 @@ module.exports = new GraphQLObjectType({
                 kb_locale_ids: { type: GraphQLNonNull(GraphQLList(KnowledgebaseCreateLocaleType))}
             },
             resolve: updateKnowledgebaseResolver
-        }
+        },
+        rearrangeKnowledgebasePositions: {
+            type: StatusMessageResponseType,
+            description: "Reorder the knowledgebase positions",
+            args: {
+                knowledge_base_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
+            },
+            resolve: rearrangeKnowledgeBasePositionsResolver
+        },
+        rearrangeKnowledgebaseCategoryPositions: {
+            type: StatusMessageResponseType,
+            description: "Reorder the knowledgebase category positions",
+            args: {
+                category_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
+            },
+            resolve: rearrangeKnowledgeBaseCategoryPositionsResolver
+        },
     })
 });
