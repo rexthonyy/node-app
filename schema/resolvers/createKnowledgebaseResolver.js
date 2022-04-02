@@ -1,5 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
-const recordHistory = require('../resolver-utils/recordHistoryResolver');
+const recordHistory = require('../resolverUtils/recordHistoryResolver');
 const util = require('../../util');
 
 function getLanguageTitleFromLocaleId(locale_id, cb){

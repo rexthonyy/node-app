@@ -1,6 +1,6 @@
 const pgQueries = require('../../postgres/kb-queries');
-const updateUIColorForKnowledgeBase = require('../resolver-utils/updateUIColorForKnowledgeBase');
-const recordHistory = require('../resolver-utils/recordHistoryResolver');
+const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgeBase');
+const recordHistory = require('../resolverUtils/recordHistoryResolver');
 const util = require('../../util');
 
 function getLanguageTitleFromLocaleId(locale_id, cb){
