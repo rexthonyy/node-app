@@ -16,7 +16,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
     return new Promise((resolve, reject) => {
         
         let data = {
-            knowledge_base_id,
+            id: knowledge_base_id,
             name,
             icon,
             footer,
@@ -26,8 +26,6 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
             front_page,
             updated_at: new Date().toUTCString()
         };
-
-        console.log(data);
     
         pgQueries.updateKnowledgeBase(data, result => {
             if(result.err){
