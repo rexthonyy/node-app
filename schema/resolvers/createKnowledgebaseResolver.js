@@ -15,8 +15,6 @@ function getLanguageTitleFromLocaleId(locale_id, cb){
 const getData = ({name, icon, footer, homepage_layout, category_layout, active, front_page, kb_locale_ids}) => {
     return new Promise((resolve, reject) => {
         
-        let kb_locale_ids = req.body.kb_locale_ids ? req.body.kb_locale_ids : [];
-
         let data = {
             name,
             icon,
