@@ -77,7 +77,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
                                 "update-knowledgebase", 
                                 {
                                     knowledge_base_id,
-                                    name: req.body.name,
+                                    name: name,
                                     //user_id,
             
                                 }, 
