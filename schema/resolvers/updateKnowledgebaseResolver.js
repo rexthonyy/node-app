@@ -1,5 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
-const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgeBase');
+const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgbase');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
 const util = require('../../util');
 
