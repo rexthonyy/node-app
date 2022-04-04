@@ -1,4 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
+const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('./getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId');
 
 let getCategoriesAndSubCategories = (knowledge_base_id, kb_locale_id, parent_id, cb) => {
     pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base_id, parent_id, result => {
