@@ -1,5 +1,5 @@
 image:
-  repository: vfarcic/devops-toolkit-series
+  repository: rexthonyy/node-app
   tag: latest
 ingress:
   enabled: true
