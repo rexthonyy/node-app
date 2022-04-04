@@ -13,6 +13,7 @@ module.exports = new GraphQLObjectType({
             kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
             knowledge_base_translation_id: { type: GraphQLNonNull(GraphQLID) },
             ui_color: { type: GraphQLString },
+            tooltip: { type: GraphQLString },
             title: { type: GraphQLString },
             default: { type: GraphQLBoolean }
     })

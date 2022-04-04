@@ -1,4 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
+const consts = require('../../consts');
 
 const getData = ({filter_by, knowledge_base_id, category_id}) => {
     return new Promise((resolve, reject) => {
@@ -58,7 +59,7 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
                         count1++;
                         if(count1 == num_categories){
                             //apply logic to get the main color for this translation
-                            let primary_color = "red";
+                            let primary_color = consts.STATUS_COLOR.pending_action;
 
                             let numRed = 0;
                             let numOrange = 0;
@@ -71,88 +72,89 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
                             active_colors.forEach(ui_color => {
                                 // logic goes here
                                 switch(ui_color){
-                                    case "red":
+                                    case consts.STATUS_COLOR.pending_action:
                                         numRed++;
                                     break;
-
-                                    case "orange":
+            
+                                    case consts.STATUS_COLOR.draft:
                                         numOrange++;
                                     break;
-
-                                    case "green":
+            
+                                    case consts.STATUS_COLOR.published:
                                         numGreen++;
                                     break;
-
-                                    case "blue":
+            
+                                    case consts.STATUS_COLOR.publish_scheduled:
                                         numBlue++;
                                     break;
-
-                                    case "gray":
+            
+                                    case consts.STATUS_COLOR.archived:
                                         numGray++;
                                     break;
-
-                                    case "yellow":
+            
+                                    case consts.STATUS_COLOR.archive_scheduled:
                                         numYellow++;
                                     break;
-
-                                    case "white":
+            
+                                    case consts.STATUS_COLOR.update_scheduled:
                                         numWhite++;
                                     break;
                                 }
                             });
 
                             if(numOrange == num_categories){
-                                primary_color = "orange";
+                                primary_color = consts.STATUS_COLOR.draft;
                             }
 
                             if(numGreen == num_categories){
-                                primary_color = "green";
+                                primary_color = consts.STATUS_COLOR.published;
                             }
 
                             if(numBlue == num_categories){
-                                primary_color = "blue";
+                                primary_color = consts.STATUS_COLOR.publish_scheduled;
                             }
 
                             if(numGray == num_categories){
-                                primary_color = "gray";
+                                primary_color = consts.STATUS_COLOR.archived;
                             }
 
                             if(numRed == num_categories){
-                                primary_color = "red";
+                                primary_color = consts.STATUS_COLOR.pending_action;
                             }
 
                             if(numGreen > 0){
-                                primary_color = "green";
+                                primary_color = consts.STATUS_COLOR.published;
                             }
 
                             if(numGray > 0){
-                                primary_color = "gray";
+                                primary_color = consts.STATUS_COLOR.archived;
                             }
 
                             if(numBlue > 0){
-                                primary_color = "blue";
+                                primary_color = consts.STATUS_COLOR.publish_scheduled;
                             }
 
                             if(numYellow > 0){
-                                primary_color = "yellow";
+                                primary_color = consts.STATUS_COLOR.archive_scheduled;
                             }
 
                             if(numWhite > 0){
-                                primary_color = "white";
+                                primary_color = consts.STATUS_COLOR.update_scheduled;
                             }
 
                             if(numOrange > 0){
-                                primary_color = "orange";
+                                primary_color = consts.STATUS_COLOR.draft;
                             }
 
                             if(numRed > 0){
-                                primary_color = "red";
+                                primary_color = consts.STATUS_COLOR.pending_action;
                             }
 
                             kb_status_color_translations.push({
                                 kb_locale_id: translation.kb_locale_id,
                                 knowledge_base_translation_id: translation.id,
                                 ui_color: primary_color,
+                                tooltip: consts.STATUS_COLOR_TEXT[primary_color],
                                 title: translation.title,
                                 default: translation.active
                             });
