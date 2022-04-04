@@ -1,4 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
+const consts = require('../../consts');
 
 let getStatusOfSubCategories = (category_id, cb) => {
     let numCatRed = numCatOrange = numCatBlue = numCatGreen = numCatYellow = numCatGray = numCatWhite = 0;
