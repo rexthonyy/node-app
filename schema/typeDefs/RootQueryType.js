@@ -3,7 +3,8 @@ const {
     GraphQLList,
     GraphQLID,
     GraphQLNonNull,
-    GraphQLString
+    GraphQLString,
+    GraphQLInt
 } = require("graphql");
 
 // data types
@@ -11,6 +12,7 @@ const KnowledgeBaseType = require("./KnowledgeBaseType");
 const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
 const KnowledgeBaseTranslationStatusColorType = require("./KnowledgeBaseTranslationStatusColorType");
 const StatusMessageForKnowledgeBaseCategoryScheduleType = require("./StatusMessageForKnowledgeBaseCategoryScheduleType");
+const KnowledgeBaseCategoryHybridStatType = require("./KnowledgeBaseCategoryHybridStatType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -18,6 +20,7 @@ const getKnowledgeBaseByIdResolver = require("../resolvers/getKnowledgeBaseByIdR
 const getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver");
 const getAllKnowledgeBaseTranslationStatusColorResolver = require("../resolvers/getAllKnowledgeBaseTranslationStatusColorResolver");
 const getScheduleForKnowledgebaseCategoryTranslationResolver = require("../resolvers/getScheduleForKnowledgebaseCategoryTranslationResolver");
+const getKnowledgeBaseCategoriesResolver = require("../resolvers/getKnowledgeBaseCategoriesResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -62,6 +65,17 @@ module.exports = new GraphQLObjectType({
                 operation: { type: GraphQLNonNull(GraphQLString) },
             },
             resolve: getScheduleForKnowledgebaseCategoryTranslationResolver
+        },
+        getKnowledgebaseCategories: {
+            type: GraphQLList(KnowledgeBaseCategoryHybridStatType),
+            description: "Get all knowledgebase category translations in a knowledge base for a specified locale and level",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) },
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID) },
+                level: { type: GraphQLInt },
+                parent_id: { type: GraphQLID }
+            },
+            resolve: getKnowledgeBaseCategoriesResolver
         },
     })
 });
