@@ -1,0 +1,6 @@
+image:
+  repository: vfarcic/devops-toolkit-series
+  tag: latest
+ingress:
+  enabled: true
+  host: devopstoolkitseries.com
