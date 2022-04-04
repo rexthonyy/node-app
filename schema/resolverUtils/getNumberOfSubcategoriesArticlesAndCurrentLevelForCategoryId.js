@@ -1,4 +1,6 @@
 const pgQueries = require('../../postgres/kb-queries');
+const getCategoryLevel = require('./getCategoryLevel');
+const getStatusOfSubCategories = require('./getStatusOfSubCategories');
 
 let getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = (knowledge_base_id, category_id, cb) => {
     let current_level = 0;
