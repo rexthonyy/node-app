@@ -10,7 +10,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
         console.log("locale id: " + kb_locale_id);
         console.log("level: " + level);
         console.log("parent id: " + parent_id);
-        
+
         if(level != null){
             if(level > 5 || level < 1) return reject(JSON.stringify({ status: "error", message: "The level must be between 1 and 5"}));
     
@@ -22,9 +22,6 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                     level_categories.sort(util.sortByPosition);
                     level_categories = filterOutArchive(level_categories);
                     let result = [];
-                    if(level_categories.length > 0){
-                        result = util.paginate(req, level_categories);
-                    }
                     console.log(result);
                     return resolve(result);
                 });
@@ -99,7 +96,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                         console.log(kb_category_translations);
                         kb_category_translations.sort(util.sortByPosition);
                         kb_category_translations = filterOutArchive(kb_category_translations);
-                        resolve(util.paginate(req, kb_category_translations));
+                        resolve(kb_category_translations);
                     }
                 }
             });
