@@ -1,4 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
+const consts = require('../../consts');
 
 const getData = ({knowledge_base_id}) => {
     return new Promise((resolve, reject) => {
@@ -7,7 +8,9 @@ const getData = ({knowledge_base_id}) => {
             if(result.err){
                 return resolve(result.err);
             }
-            resolve(result.res[0]);
+            let knowledgebase = result.res[0];
+            knowledgebase.tooltip = consts.STATUS_COLOR_TEXT[knowledgebase.ui_color];
+            resolve(knowledgebase);
         });
     });
 }
