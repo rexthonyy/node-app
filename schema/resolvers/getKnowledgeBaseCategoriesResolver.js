@@ -6,10 +6,6 @@ const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('..
 
 const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
     return new Promise((resolve, reject) => {
-        console.log("knowledge base id: " + knowledge_base_id);
-        console.log("locale id: " + kb_locale_id);
-        console.log("level: " + level);
-        console.log("parent id: " + parent_id);
 
         if(level != null){
             if(level > 5 || level < 1) return reject(JSON.stringify({ status: "error", message: "The level must be between 1 and 5"}));
@@ -21,9 +17,8 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                 getCategoriesAtLevel(tree, level, index, level_categories => {
                     level_categories.sort(util.sortByPosition);
                     level_categories = filterOutArchive(level_categories);
-                    let result = [];
-                    console.log(result);
-                    return resolve(result);
+                    console.log(level_categories);
+                    return resolve(level_categories);
                 });
             });
         }else{

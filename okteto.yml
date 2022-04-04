@@ -1,0 +1,6 @@
+name: devops-toolkit
+command: ["sh"]
+sync:
+  - .:/src
+persistentVolume:
+  enabled: false
