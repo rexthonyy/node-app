@@ -8,7 +8,7 @@ const {
 } = require("graphql");
 
 module.exports = new GraphQLObjectType({
-    name: "KnowledgebaseTranslations",
+    name: "KnowledgebaseTranslationType",
     description: "This holds the translations for a knowledge base",
     fields: () => ({
             id: { type: GraphQLNonNull(GraphQLID)},
