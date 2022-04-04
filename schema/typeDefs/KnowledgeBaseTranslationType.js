@@ -21,6 +21,7 @@ module.exports = new GraphQLObjectType({
             active: { type: GraphQLBoolean },
             position: { type: GraphQLInt },
             ui_color: { type: GraphQLString },
+            tooltip: { type: GraphQLString },
             is_archived: { type: GraphQLBoolean }
     })
 });
