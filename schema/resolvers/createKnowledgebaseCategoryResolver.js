@@ -184,8 +184,8 @@ function createKnowledgeBaseCategoryTranslation(
                 active  ? active : true,
                 permission ? permission : "",
                 list_id ? list_id : null,
-                is_delete_scheduled ? is_delete_scheduled : null,
-                is_update_scheduled ? is_update_scheduled : null,
+                false,
+                false,
                 knowledge_base_id
             ];
 
