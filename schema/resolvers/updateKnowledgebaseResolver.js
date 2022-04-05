@@ -1,7 +1,7 @@
 const pgQueries = require('../../postgres/kb-queries');
 const updateUIColorForKnowledgeBase = require('../resolverUtils/updateKnowledgebaseUIColor');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
-const getLanguageTitleFromLocaleId = require('../resolerUtils/getLanguageTitleFromLocaleId');
+const getLanguageTitleFromLocaleId = require('../resolverUtils/getLanguageTitleFromLocaleId');
 const consts = require('../../consts');
 
 const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, category_layout, active, front_page, kb_locale_ids}) => {

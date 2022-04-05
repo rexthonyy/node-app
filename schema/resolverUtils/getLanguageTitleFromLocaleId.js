@@ -9,4 +9,5 @@ let getLanguageTitleFromLocaleId = (locale_id, cb) => {
         cb(result.res[0].name);
     });
 }
+
 module.exports = getLanguageTitleFromLocaleId;
