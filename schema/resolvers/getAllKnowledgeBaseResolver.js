@@ -1,6 +1,7 @@
 const pgQueries = require('../../postgres/kb-queries');
 const consts = require('../../consts');
 const setOrderForKnowledgebases = require('../resolverUtils/setOrderForKnowledgebases');
+const util = require('../../util');
 
 const getData = () => {
     return new Promise((resolve, reject) => {
