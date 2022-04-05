@@ -174,7 +174,7 @@ function createKnowledgeBaseCategoryTranslation(
                 category_id ? category_id : 1,
                 created_at ? created_at : new Date().toUTCString(),
                 updated_at ? updated_at : new Date().toUTCString(),
-                ui_color ? ui_color : consts.STATUS_COLOR.pending_action,
+                consts.STATUS_COLOR.pending_action,
                 category_icon ? category_icon : "",
                 title_tag ? title_tag : "",
                 footer ? footer : "",
