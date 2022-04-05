@@ -256,7 +256,7 @@ function createKnowledgeBaseCategoryTranslation(
                         () => {
                             resolve({
                                 status: "success",
-                                message: "Knowledgebase category created successfully";
+                                message: "Knowledgebase category created successfully"
                             });
                         }
                     );
