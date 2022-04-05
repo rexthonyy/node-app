@@ -11,7 +11,7 @@ require("dotenv").config();
 
 //const express = require('express');
 // const { postgraphile } = require("postgraphile");
-// const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
+ const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
 
 // const app = express();
 
@@ -22,15 +22,6 @@ require("dotenv").config();
 //         enhanceGraphiql: true
 //     })
 // );
-
-// app.use(express.json());
-    
-// app.use('/knowledgebase', knowledgeBaseRouter);
-
-// let port = process.env.PORT || 1000;
-// var server = app.listen(port, function() {
-//     console.log("Listening on port %s...", server.address().port);
-// });
 
 // app.get("/", (req, res) => {
 //     res.json({ 
@@ -104,6 +95,15 @@ async function main() {
   });
 }
 
+
+app.use(express.json());
+    
+app.use('/knowledgebase', knowledgeBaseRouter);
+
+let port = process.env.PORT || 1000;
+var server = app.listen(port, function() {
+    console.log("Listening on port %s...", server.address().port);
+});
 
 
 
