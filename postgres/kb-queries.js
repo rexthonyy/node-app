@@ -562,7 +562,7 @@ const getKnowledgeBaseCategoryTranslations = (res_, response) => {
 };
 
 const createKnowledgeBaseCategoryTranslation = (values, response) => {
-    client.query('INSERT INTO knowledge_base_category_translations (name, kb_locale_id, category_id, created_at, updated_at, ui_color, category_icon, title_tag, footer, keywords, meta_description, publish_now, active, permission, group_name, is_delete_scheduled, is_update_scheduled, knowledge_base_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *', values, (err, res) => {
+    client.query('INSERT INTO knowledge_base_category_translations (name, kb_locale_id, category_id, created_at, updated_at, ui_color, category_icon, title_tag, footer, keywords, meta_description, publish_now, active, permission, list_id, is_delete_scheduled, is_update_scheduled, knowledge_base_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *', values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
