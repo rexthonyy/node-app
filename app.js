@@ -47,6 +47,10 @@ const pgPool = new pg.Pool({
 });
  
 
+app.use(express.json());
+    
+app.use('/knowledgebase', knowledgeBaseRouter);
+
 async function main() {
   const { schema, plugin } = await makeSchemaAndPlugin(
     pgPool,
@@ -94,19 +98,6 @@ async function main() {
       console.log("Listening on port %s...", lesServer.address().port);
   });
 }
-
-
-app.use(express.json());
-    
-app.use('/knowledgebase', knowledgeBaseRouter);
-
-let port = process.env.PORT || 1000;
-var server = app.listen(port, function() {
-    console.log("Listening on port %s...", server.address().port);
-});
-
-
-
 
 main().catch(e => {
   console.error(e);
