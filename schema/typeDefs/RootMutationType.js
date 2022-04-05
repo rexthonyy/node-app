@@ -18,6 +18,7 @@ const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeK
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
 const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseResolver");
 const rearrangeKnowledgeBaseCategoryPositionsResolver = require("../resolvers/rearrangeKnowledgeBaseCategoryPositionsResolver");
+const createKnowledgebaseCategoryResolver = require("../resolvers/createKnowledgebaseCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -69,6 +70,31 @@ module.exports = new GraphQLObjectType({
                 category_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
             },
             resolve: rearrangeKnowledgeBaseCategoryPositionsResolver
-        }
+        },
+        createKnowledgeBaseCategory: {
+            type: StatusMessageResponseType,
+            description: "Creates a knowledgebase category",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
+                parent_id: { type: GraphQLNonNull(GraphQLID)},
+                category_id: { type: GraphQLNonNull(GraphQLID)},
+                category_icon: { type: GraphQLString},
+                position: { type: GraphQLInt},
+                created_at: { type: GraphQLString},
+                updated_at: { type: GraphQLString},
+                schedule_at: { type: GraphQLString},
+                publish_now: { type: GraphQLNonNull(GraphQLBoolean)},
+                name: { type: GraphQLNonNull(GraphQLString)},
+                title_tag: { type: GraphQLString},
+                footer: { type: GraphQLString},
+                keywords: { type: GraphQLString},
+                meta_description: { type: GraphQLString},
+                permission: { type: GraphQLString},
+                active: { type: GraphQLNonNull(GraphQLBoolean)},
+                list_id: { type: GraphQLInt}
+            },
+            resolve: createKnowledgebaseCategoryResolver
+        },
     })
 });
