@@ -4,6 +4,8 @@ const getLanguageTitleFromLocaleId = require('../resolverUtils/getLanguageTitleF
 const consts = require('../../consts');
 const KnowledgeBaseTranslationType = require('../typeDefs/KnowledgeBaseTranslationType');
 const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('../resolverUtils/getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId');
+const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgeBase');
+const recordHistory = require('../resolverUtils/recordHistoryResolver');
 
 const getData = ({
     knowledge_base_id, 
@@ -244,6 +246,7 @@ function createKnowledgeBaseCategoryTranslation(
         function checkComplete(){
             count++;
             if(numTranslations == count){
+
                 updateUIColorForKnowledgeBase(knowledge_base_id, () => {
                     recordHistory(
                         "knowledgebase", 
