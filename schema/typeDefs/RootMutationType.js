@@ -69,6 +69,6 @@ module.exports = new GraphQLObjectType({
                 category_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
             },
             resolve: rearrangeKnowledgeBaseCategoryPositionsResolver
-        },
+        }
     })
 });

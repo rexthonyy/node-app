@@ -65,7 +65,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                                     pgQueries.getKnowledgeBaseCategoryDelayedJobByKnowledgeBaseCategoryTranslationId(kbCategoryTranslation.id, result1 => {
                                         if(result1.err){
                                             result1.err.errorIndex = 3220;
-                                            return res.json(result1.err);
+                                            return reject(JSON.stringify(result1.err));
                                         }
                         
                                         kbCategoryTranslation.schedule_at = null;
