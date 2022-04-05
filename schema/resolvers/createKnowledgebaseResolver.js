@@ -1,20 +1,13 @@
 const pgQueries = require('../../postgres/kb-queries');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
-const util = require('../../util');
-
-function getLanguageTitleFromLocaleId(locale_id, cb){
-    pgQueries.getLocaleById(locale_id, result => {
-        if(result.err){
-            return cb("");
-        }
-
-        cb(result.res[0].name);
-    });
-}
+const getLanguageTitleFromLocaleId = require('../resolerUtils/getLanguageTitleFromLocaleId');
+const consts = require('../../consts');
 
 const getData = ({name, icon, footer, homepage_layout, category_layout, active, front_page, kb_locale_ids}) => {
     return new Promise((resolve, reject) => {
         
+        if(kb_locale_ids.length == 0) return reject(JSON.stringify({ status: "error", message: "Not allowed, please provide a language selection for this knowledgebase"}));
+
         let data = {
             name,
             icon,
@@ -47,7 +40,7 @@ const getData = ({name, icon, footer, homepage_layout, category_layout, active, 
                         knowledge_base_id: knowledge_base_id,
                         active: kb_locale_id.default,
                         position: position,
-                        ui_color: "red"
+                        ui_color: consts.STATUS_COLOR.pending_action
                     }, result1 => {
                         if(result1.err){
                             result1.err.errorIndex = -1;

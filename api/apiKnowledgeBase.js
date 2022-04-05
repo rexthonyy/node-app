@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const pgQueries = require('../postgres/kb-queries');
 const util = require('../util');
+const consts = require('../consts');
 const fs = require('fs');
 var Multer = require("multer");
 
@@ -32,7 +33,7 @@ function updateUIColorForKnowledgeBase(knowledge_base_id, cb){
             
             pgQueries.getKnowledgeBaseCategoryTranslationByLocaleId(kb_locale_id, result => {
 
-                let primary_color = "red";
+                let primary_color = consts.STATUS_COLOR.pending_action;
 
                 let numRed = 0;
                 let numOrange = 0;
@@ -48,82 +49,82 @@ function updateUIColorForKnowledgeBase(knowledge_base_id, cb){
                     let ui_color = category_translation.ui_color;
                     // logic goes here
                     switch(ui_color){
-                        case "red":
+                        case consts.STATUS_COLOR.pending_action:
                             numRed++;
                         break;
 
-                        case "orange":
+                        case consts.STATUS_COLOR.draft:
                             numOrange++;
                         break;
 
-                        case "green":
+                        case consts.STATUS_COLOR.published:
                             numGreen++;
                         break;
 
-                        case "blue":
+                        case consts.STATUS_COLOR.publish_scheduled:
                             numBlue++;
                         break;
 
-                        case "gray":
+                        case consts.STATUS_COLOR.archived:
                             numGray++;
                         break;
 
-                        case "yellow":
+                        case consts.STATUS_COLOR.archive_scheduled:
                             numYellow++;
                         break;
 
-                        case "white":
+                        case consts.STATUS_COLOR.update_scheduled:
                             numWhite++;
                         break;
                     }
                 });
 
                 if(numRed == numTranslations){
-                    primary_color = "red";
+                    primary_color = consts.STATUS_COLOR.pending_action;
                 }
 
                 if(numOrange == numTranslations){
-                    primary_color = "orange";
+                    primary_color = consts.STATUS_COLOR.draft;
                 }
 
                 if(numGreen == numTranslations){
-                    primary_color = "green";
+                    primary_color = consts.STATUS_COLOR.published;
                 }
 
                 if(numBlue == numTranslations){
-                    primary_color = "blue";
+                    primary_color = consts.STATUS_COLOR.publish_scheduled;
                 }
 
                 if(numGray == numTranslations){
-                    primary_color = "gray";
+                    primary_color = consts.STATUS_COLOR.archived;
                 }
 
                 if(numGreen > 0){
-                    primary_color = "green";
+                    primary_color = consts.STATUS_COLOR.published;
                 }
 
                 if(numGray > 0){
-                    primary_color = "gray";
+                    primary_color = consts.STATUS_COLOR.archived;
                 }
 
                 if(numBlue > 0){
-                    primary_color = "blue";
+                    primary_color = consts.STATUS_COLOR.publish_scheduled;
                 }
 
                 if(numYellow > 0){
-                    primary_color = "yellow";
+                    primary_color = consts.STATUS_COLOR.archive_scheduled;
                 }
 
                 if(numWhite > 0){
-                    primary_color = "white";
+                    primary_color = consts.STATUS_COLOR.update_scheduled;
                 }
 
                 if(numOrange > 0){
-                    primary_color = "orange";
+                    primary_color = consts.STATUS_COLOR.draft;
                 }
 
                 if(numRed > 0){
-                    primary_color = "red";
+                    primary_color = consts.STATUS_COLOR.pending_action;
                 }
 
                 let values = [
@@ -148,6 +149,15 @@ function updateUIColorForKnowledgeBase(knowledge_base_id, cb){
     });
 }
 
+router.get("/updateUIColorForKnowledgeBaseCategoriesAndArticles", (req, res) => {
+    let knowledge_base_id = req.body.knowledge_base_id;
+    let category_id = req.body.category_id;
+
+    updateUIColorForKnowledgeBaseCategoriesAndArticles(knowledge_base_id, category_id, () => {
+        res.json({ status: "success" });
+    });
+});
+
 function updateUIColorForKnowledgeBaseCategoriesAndArticles(knowledge_base_id, category_id, cb){
     // get knowledge base category details
     pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndCategoryId([knowledge_base_id, category_id], result => {
@@ -162,24 +172,29 @@ function updateUIColorForKnowledgeBaseCategoriesAndArticles(knowledge_base_id, c
             is_delete_scheduled = translation.is_delete_scheduled;
             is_update_scheduled = translation.is_update_scheduled;
 
-            let ui_color = "red";
+            let ui_color = consts.STATUS_COLOR.pending_action;
 
             if(active){
-                ui_color = "green";
+                if(publish_now){
+                    ui_color = consts.STATUS_COLOR.published;
+                }else{
+                    ui_color = consts.STATUS_COLOR.publish_scheduled;
+                }
             }else{
-                ui_color = "orange";
                 if(!publish_now){
-                    ui_color = "blue";
+                    ui_color = consts.STATUS_COLOR.publish_scheduled;
+                }else{
+                    ui_color = consts.STATUS_COLOR.draft;
                 }
             }
             
             if(archived){
-                ui_color = "gray";
+                ui_color = consts.STATUS_COLOR.archived;
             }else{
                 if(is_delete_scheduled){
-                    ui_color = "yellow";
+                    ui_color = consts.STATUS_COLOR.archive_scheduled;
                 }else if(is_update_scheduled){
-                    ui_color = "white";
+                    ui_color = consts.STATUS_COLOR.update_scheduled;
                 }
             }
 
@@ -205,24 +220,29 @@ function updateUIColorForKnowledgeBaseCategoriesAndArticles(knowledge_base_id, c
                         is_delete_scheduled = translation.is_delete_scheduled;
                         is_update_scheduled = translation.is_update_scheduled;
             
-                        let ui_color = "red";
+                        let ui_color = consts.STATUS_COLOR.pending_action;
             
                         if(active){
-                            ui_color = "green";
+                            if(publish_now){
+                                ui_color = consts.STATUS_COLOR.published;
+                            }else{
+                                ui_color = consts.STATUS_COLOR.publish_scheduled;
+                            }
                         }else{
-                            ui_color = "orange";
                             if(!publish_now){
-                                ui_color = "blue";
+                                ui_color = consts.STATUS_COLOR.publish_scheduled;
+                            }else{
+                                ui_color = consts.STATUS_COLOR.draft;
                             }
                         }
                         
                         if(archived){
-                            ui_color = "gray";
+                            ui_color = consts.STATUS_COLOR.archived;
                         }else{
                             if(is_delete_scheduled){
-                                ui_color = "yellow";
+                                ui_color = consts.STATUS_COLOR.archive_scheduled;
                             }else if(is_update_scheduled){
-                                ui_color = "white";
+                                ui_color = consts.STATUS_COLOR.update_scheduled;
                             }
                         }
             
@@ -277,8 +297,9 @@ router.get("/getStatusColorForKnowledgeBaseTranslation/filter_by/:filter_by/know
             return res.json(result.err);
         }
 
+
         if(result.res.length == 0) {
-            return res.status(404).json({ status: "error", message: "Category not found" });
+            result.res = [];
         }
 
         let categories = result.res;
@@ -322,7 +343,7 @@ router.get("/getStatusColorForKnowledgeBaseTranslation/filter_by/:filter_by/know
                     count1++;
                     if(count1 == num_categories){
                         //apply logic to get the main color for this translation
-                        let primary_color = "red";
+                        let primary_color = consts.STATUS_COLOR.pending_action;
 
                         let numRed = 0;
                         let numOrange = 0;
@@ -335,88 +356,89 @@ router.get("/getStatusColorForKnowledgeBaseTranslation/filter_by/:filter_by/know
                         active_colors.forEach(ui_color => {
                             // logic goes here
                             switch(ui_color){
-                                case "red":
+                                case consts.STATUS_COLOR.pending_action:
                                     numRed++;
                                 break;
 
-                                case "orange":
+                                case consts.STATUS_COLOR.draft:
                                     numOrange++;
                                 break;
 
-                                case "green":
+                                case consts.STATUS_COLOR.published:
                                     numGreen++;
                                 break;
 
-                                case "blue":
+                                case consts.STATUS_COLOR.publish_scheduled:
                                     numBlue++;
                                 break;
 
-                                case "gray":
+                                case consts.STATUS_COLOR.archived:
                                     numGray++;
                                 break;
 
-                                case "yellow":
+                                case consts.STATUS_COLOR.archive_scheduled:
                                     numYellow++;
                                 break;
 
-                                case "white":
+                                case consts.STATUS_COLOR.update_scheduled:
                                     numWhite++;
                                 break;
                             }
                         });
 
-                        if(numRed == num_categories){
-                            primary_color = "red";
-                        }
-
                         if(numOrange == num_categories){
-                            primary_color = "orange";
+                            primary_color = consts.STATUS_COLOR.draft;
                         }
 
                         if(numGreen == num_categories){
-                            primary_color = "green";
+                            primary_color = consts.STATUS_COLOR.published;
                         }
 
                         if(numBlue == num_categories){
-                            primary_color = "blue";
+                            primary_color = consts.STATUS_COLOR.publish_scheduled;
                         }
 
                         if(numGray == num_categories){
-                            primary_color = "gray";
+                            primary_color = consts.STATUS_COLOR.archived;
+                        }
+
+                        if(numRed == num_categories){
+                            primary_color = consts.STATUS_COLOR.pending_action;
                         }
 
                         if(numGreen > 0){
-                            primary_color = "green";
+                            primary_color = consts.STATUS_COLOR.published;
                         }
 
                         if(numGray > 0){
-                            primary_color = "gray";
+                            primary_color = consts.STATUS_COLOR.archived;
                         }
 
                         if(numBlue > 0){
-                            primary_color = "blue";
+                            primary_color = consts.STATUS_COLOR.publish_scheduled;
                         }
 
                         if(numYellow > 0){
-                            primary_color = "yellow";
+                            primary_color = consts.STATUS_COLOR.archive_scheduled;
                         }
 
                         if(numWhite > 0){
-                            primary_color = "white";
+                            primary_color = consts.STATUS_COLOR.update_scheduled;
                         }
 
                         if(numOrange > 0){
-                            primary_color = "orange";
+                            primary_color = consts.STATUS_COLOR.draft;
                         }
 
                         if(numRed > 0){
-                            primary_color = "red";
+                            primary_color = consts.STATUS_COLOR.pending_action;
                         }
 
                         kb_status_color_translations.push({
                             kb_locale_id: translation.kb_locale_id,
                             knowledge_base_translation_id: translation.id,
                             ui_color: primary_color,
+                            tooltip: consts.STATUS_COLOR_TEXT[primary_color],
                             title: translation.title,
                             default: translation.active
                         });
@@ -458,6 +480,7 @@ router.get("/getKnowledgeBaseCategoriesByLevel/knowledge_base_id/:knowledge_base
     });
 });
 
+// level 2, index = 1
 function getCategoriesAtLevel(tree, level, index, cb){
     if(level == index){
         tree.forEach(translation => {
@@ -466,24 +489,30 @@ function getCategoriesAtLevel(tree, level, index, cb){
         return cb(tree);
     }
 
-    if(tree.length == 0) return cb(null);
+    if(tree.length == 0) return cb(tree);
 
     let next_index = index + 1;
 
-    let level_cat = [];
+    let next_level_categories = [];
+
+    let level_1_count = -1;
+    let num_level_1_items = tree.length;
 
     tree.forEach(translation => {
         getCategoriesAtLevel(translation.subcategories, level, next_index, level_categories => {
-            if(index == 1){
-                if(level_categories != null){
-                    level_cat = level_cat.concat(level_categories);
-                }
-                cb(level_cat);
-            }else{
-                cb(level_categories);
-            }
+            next_level_categories = next_level_categories.concat(level_categories);
+            checkComplete();
         });
     });
+
+    checkComplete();
+
+    function checkComplete(){
+        level_1_count++;
+        if(level_1_count == num_level_1_items){
+            return cb(next_level_categories);
+        }
+    }
 }
 
 function getMaxLevels(tree, level, index, cb){
@@ -653,6 +682,9 @@ router.get("/getKnowledgeBaseArticlesByLevel/knowledge_base_id/:knowledge_base_i
                 function checkComplete(){
                     count++;
                     if(count == num_level_categories){
+                        articles.forEach(article => {
+                            article.ui_color_text = consts.STATUS_COLOR_TEXT[article.ui_color];
+                        });
                         let result = util.paginate(req, articles);
                         result.max_level = max_level;
                         res.json(result);
@@ -690,27 +722,27 @@ router.get("/getListStatus/knowledge_base_id/:knowledge_base_id/parent_id/:paren
 
         translations.forEach(trans => {
             switch(trans.ui_color){
-                case "red":
+                case consts.STATUS_COLOR.pending_action:
                     numCatRed++;
                 break;
 
-                case "orange":
+                case consts.STATUS_COLOR.draft:
                     numCatOrange++;
                 break;
 
-                case "green":
+                case consts.STATUS_COLOR.published:
                     numCatGreen++;
                 break;
 
-                case "yellow":
+                case consts.STATUS_COLOR.archive_scheduled:
                     numCatYellow++;
                 break;
 
-                case "gray":
+                case consts.STATUS_COLOR.archived:
                     numCatGray++;
                 break;
 
-                case "white":
+                case consts.STATUS_COLOR.update_scheduled:
                     numCatWhite++;
                 break;
             }
@@ -722,27 +754,27 @@ router.get("/getListStatus/knowledge_base_id/:knowledge_base_id/parent_id/:paren
                 if(article_translations){
                     article_translations.forEach(art_trans => {
                         switch(art_trans.ui_color){
-                            case "red":
+                            case consts.STATUS_COLOR.pending_action:
                                 numArtRed++;
                             break;
             
-                            case "orange":
+                            case consts.STATUS_COLOR.draft:
                                 numArtOrange++;
                             break;
             
-                            case "green":
+                            case consts.STATUS_COLOR.published:
                                 numArtGreen++;
                             break;
             
-                            case "yellow":
+                            case consts.STATUS_COLOR.archive_scheduled:
                                 numArtYellow++;
                             break;
             
-                            case "gray":
+                            case consts.STATUS_COLOR.archived:
                                 numArtGray++;
                             break;
 
-                            case "white":
+                            case consts.STATUS_COLOR.update_scheduled:
                                 numArtWhite++;
                             break;
                         }
@@ -765,61 +797,253 @@ router.get("/getListStatus/knowledge_base_id/:knowledge_base_id/parent_id/:paren
         res.json({
             categories: {
                 no_action: {
-                    color: "red",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
                     count: numCatRed
                 },
                 draft: {
-                    color: "orange",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
                     count: numCatOrange
                 },
                 scheduled_to_publish: {
-                    color: "blue",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
                     count: numCatBlue
                 },
                 published: {
-                    color: "green",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
                     count: numCatGreen
                 },
                 scheduled_to_update: {
-                    color: "white",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
                     count: numCatWhite
                 },
                 scheduled_to_archive: {
-                    color: "yellow",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
                     count: numCatYellow
                 },
                 archived: {
-                    color: "gray",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
                     count: numCatGray
                 }
             },
             articles: {
                 no_action: {
-                    color: "red",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
                     count: numArtRed
                 },
                 draft: {
-                    color: "orange",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
                     count: numArtOrange
                 },
                 scheduled_to_publish: {
-                    color: "blue",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
                     count: numArtBlue
                 },
                 published: {
-                    color: "green",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
                     count: numArtGreen
                 },
                 scheduled_to_update: {
-                    color: "white",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
                     count: numArtWhite
                 },
                 scheduled_to_archive: {
-                    color: "yellow",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
                     count: numArtYellow
                 },
                 archived: {
-                    color: "gray",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
+                    count: numArtGray
+                }
+            }
+        });
+    }
+});
+
+router.get("/getLevelStatus/knowledge_base_id/:knowledge_base_id/kb_locale_id/:kb_locale_id/level/:level", (req, res) => {
+    let knowledge_base_id = req.params.knowledge_base_id;
+    let kb_locale_id = req.params.kb_locale_id;
+    let level = req.params.level;
+
+    let numCategories = numArticles = 0;
+    let numCatRed = numCatOrange = numCatBlue = numCatGreen = numCatYellow = numCatGray = numCatWhite = 0;
+    let numArtRed = numArtOrange = numArtBlue = numArtGreen = numArtYellow = numArtGray = numArtWhite = 0;
+
+    getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, -1, tree => {
+        //filter the result bashed on the level
+        let index = 1;
+        getCategoriesAtLevel(tree, level, index, translations => {
+            if(translations.length == 0) return finished();
+        
+            numCategories = translations.length;
+            count = -1;
+        
+            checkComplete1();
+        
+            translations.forEach(trans => {
+                switch(trans.ui_color){
+                    case consts.STATUS_COLOR.pending_action:
+                        numCatRed++;
+                    break;
+        
+                    case consts.STATUS_COLOR.draft:
+                        numCatOrange++;
+                    break;
+        
+                    case consts.STATUS_COLOR.published:
+                        numCatGreen++;
+                    break;
+        
+                    case consts.STATUS_COLOR.archive_scheduled:
+                        numCatYellow++;
+                    break;
+        
+                    case consts.STATUS_COLOR.archived:
+                        numCatGray++;
+                    break;
+        
+                    case consts.STATUS_COLOR.update_scheduled:
+                        numCatWhite++;
+                    break;
+                }
+        
+                let category_id = trans.category_id;
+        
+                pgQueries.getKnowledgeBaseArticleTranslationsByCategoryId(category_id, result => {
+                    let article_translations = result.res;
+                    if(article_translations){
+                        numArticles += article_translations.length;
+                        article_translations.forEach(art_trans => {
+                            switch(art_trans.ui_color){
+                                case consts.STATUS_COLOR.pending_action:
+                                    numArtRed++;
+                                break;
+                
+                                case consts.STATUS_COLOR.draft:
+                                    numArtOrange++;
+                                break;
+                
+                                case consts.STATUS_COLOR.published:
+                                    numArtGreen++;
+                                break;
+                
+                                case consts.STATUS_COLOR.archive_scheduled:
+                                    numArtYellow++;
+                                break;
+                
+                                case consts.STATUS_COLOR.archived:
+                                    numArtGray++;
+                                break;
+        
+                                case consts.STATUS_COLOR.update_scheduled:
+                                    numArtWhite++;
+                                break;
+                            }
+                        });
+                    }
+        
+                    checkComplete1();
+                });
+            });
+        
+            function checkComplete1(){
+                count++;
+                if(count == numCategories){
+                    finished();
+                }
+            }
+        });
+    });
+
+    function finished(){
+        
+        res.json({
+            categories: {
+                num_categories: numCategories,
+                no_action: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
+                    count: numCatRed
+                },
+                draft: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
+                    count: numCatOrange
+                },
+                scheduled_to_publish: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
+                    count: numCatBlue
+                },
+                published: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
+                    count: numCatGreen
+                },
+                scheduled_to_update: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
+                    count: numCatWhite
+                },
+                scheduled_to_archive: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
+                    count: numCatYellow
+                },
+                archived: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
+                    count: numCatGray
+                }
+            },
+            articles: {
+                num_articles: numArticles,
+                no_action: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
+                    count: numArtRed
+                },
+                draft: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
+                    count: numArtOrange
+                },
+                scheduled_to_publish: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
+                    count: numArtBlue
+                },
+                published: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
+                    count: numArtGreen
+                },
+                scheduled_to_update: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
+                    count: numArtWhite
+                },
+                scheduled_to_archive: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
+                    count: numArtYellow
+                },
+                archived: {
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
                     count: numArtGray
                 }
             }
@@ -882,27 +1106,27 @@ function getStatusOfSubCategories(category_id, cb){
 
                 translations.forEach(trans => {
                     switch(trans.ui_color){
-                        case "red":
+                        case consts.STATUS_COLOR.pending_action:
                             numCatRed++;
                         break;
 
-                        case "orange":
+                        case consts.STATUS_COLOR.draft:
                             numCatOrange++;
                         break;
 
-                        case "green":
+                        case consts.STATUS_COLOR.green:
                             numCatGreen++;
                         break;
 
-                        case "yellow":
+                        case consts.STATUS_COLOR.archive_scheduled:
                             numCatYellow++;
                         break;
 
-                        case "gray":
+                        case consts.STATUS_COLOR.archived:
                             numCatGray++;
                         break;
 
-                        case "white":
+                        case consts.STATUS_COLOR.update_scheduled:
                             numCatWhite++;
                         break;
                     }
@@ -914,27 +1138,27 @@ function getStatusOfSubCategories(category_id, cb){
                         if(article_translations){
                             article_translations.forEach(art_trans => {
                                 switch(art_trans.ui_color){
-                                    case "red":
+                                    case consts.STATUS_COLOR.pending_action:
                                         numArtRed++;
                                     break;
                     
-                                    case "orange":
+                                    case consts.STATUS_COLOR.draft:
                                         numArtOrange++;
                                     break;
                     
-                                    case "green":
+                                    case consts.STATUS_COLOR.green:
                                         numArtGreen++;
                                     break;
                     
-                                    case "yellow":
+                                    case consts.STATUS_COLOR.archive_scheduled:
                                         numArtYellow++;
                                     break;
                     
-                                    case "gray":
+                                    case consts.STATUS_COLOR.archived:
                                         numArtGray++;
                                     break;
 
-                                    case "white":
+                                    case consts.STATUS_COLOR.update_scheduled:
                                         numArtWhite++;
                                     break;
                                 }
@@ -959,61 +1183,75 @@ function getStatusOfSubCategories(category_id, cb){
         cb({
             categories: {
                 no_action: {
-                    color: "red",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
                     count: numCatRed
                 },
                 draft: {
-                    color: "orange",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
                     count: numCatOrange
                 },
                 scheduled_to_publish: {
-                    color: "blue",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
                     count: numCatBlue
                 },
                 published: {
-                    color: "green",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
                     count: numCatGreen
                 },
                 scheduled_to_update: {
-                    color: "white",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
                     count: numCatWhite
                 },
                 scheduled_to_archive: {
-                    color: "yellow",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
                     count: numCatYellow
                 },
                 archived: {
-                    color: "gray",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
                     count: numCatGray
                 }
             },
             articles: {
                 no_action: {
-                    color: "red",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.pending_action],
+                    color: consts.STATUS_COLOR.pending_action,
                     count: numArtRed
                 },
                 draft: {
-                    color: "orange",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.draft],
+                    color: consts.STATUS_COLOR.draft,
                     count: numArtOrange
                 },
                 scheduled_to_publish: {
-                    color: "blue",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.publish_scheduled],
+                    color: consts.STATUS_COLOR.publish_scheduled,
                     count: numArtBlue
                 },
                 published: {
-                    color: "green",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.published],
+                    color: consts.STATUS_COLOR.published,
                     count: numArtGreen
                 },
                 scheduled_to_update: {
-                    color: "white",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.update_scheduled],
+                    color: consts.STATUS_COLOR.update_scheduled,
                     count: numArtWhite
                 },
                 scheduled_to_archive: {
-                    color: "yellow",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archive_scheduled],
+                    color: consts.STATUS_COLOR.archive_scheduled,
                     count: numArtYellow
                 },
                 archived: {
-                    color: "gray",
+                    tooltip: consts.STATUS_COLOR_TEXT[consts.STATUS_COLOR.archived],
+                    color: consts.STATUS_COLOR.archived,
                     count: numArtGray
                 }
             }
@@ -1835,11 +2073,17 @@ router.get("/clean", (req, res) => {
 router.patch("/setOrderForKnowledgeBases", (req, res) => {
     let order_by_knowledge_base_ids = req.body.order_by_knowledge_base_ids;
 
+    setOrderForKnowledgebases(order_by_knowledge_base_ids, () => {
+        res.json({ status: "success" });
+    });
+});
+
+function setOrderForKnowledgebases(kb_ids, cb){
     let positionOrder = [];
 
-    for(let i = 0; i < order_by_knowledge_base_ids.length; i++){
+    for(let i = 0; i < kb_ids.length; i++){
         positionOrder.push({
-            kb_id: order_by_knowledge_base_ids[i],
+            kb_id: kb_ids[i],
             position: (i+1)
         });
     }
@@ -1863,10 +2107,10 @@ router.patch("/setOrderForKnowledgeBases", (req, res) => {
     function checkComplete(){
         count++;
         if(numPositions == count){
-            res.json({ status: "success" });
+            cb();
         }
     }
-});
+}
 
 router.get("/listKnowledgeBases/:id", (req, res) => {
     let id = req.params.id;
@@ -1928,6 +2172,8 @@ router.get("/listKnowledgeBases/:id", (req, res) => {
                         };
 
 
+                        knowledge_base.tooltip = consts.STATUS_COLOR_TEXT[knowledge_base.ui_color];
+
                         res.json(knowledge_base);
                     });
                 }
@@ -1935,14 +2181,12 @@ router.get("/listKnowledgeBases/:id", (req, res) => {
         });
     });
 });
-
+/*
 router.get("/listKnowledgeBases", (req, res) => {
     pgQueries.listKnowledgeBases(res, (res_, result) => {
         if(result.err){
             return res.json(result.err);
         }
-
-        //if(result.res.length == 0) return res.status(404).json({ status: 404, message: "Not found" });
 
         let knowledgebases = result.res;
         let numKnowledgebases = knowledgebases.length;
@@ -2052,9 +2296,87 @@ router.get("/listKnowledgeBases", (req, res) => {
         }
     });
 });
+*/
+
+router.get("/listKnowledgeBases", (req, res) => {
+    pgQueries.listKnowledgeBases(res, (res_, result) => {
+        if(result.err){
+            return res.json(result.err);
+        }
+
+        let knowledgebases = result.res;
+
+        // get latest 
+        let numKbs = knowledgebases.length;
+        let latestKnowledgebase = knowledgebases[0] ? knowledgebases[0] : null;
+        for(let i = 0; i < numKbs; i++){
+            if(new Date(knowledgebases[i].created_at) > new Date(latestKnowledgebase.created_at)){
+                latestKnowledgebase = knowledgebases[i];
+            }
+        }
+
+        knowledgebases = knowledgebases.filter(kb => kb.id != latestKnowledgebase.id);
+        knowledgebases.sort(util.sortByPosition);
+        knowledgebases.unshift(latestKnowledgebase);
+        let kb_ids = [];
+        knowledgebases.forEach(kb => {
+            kb_ids.push(kb.id);
+        });
+
+        setOrderForKnowledgebases(kb_ids, () => {
+            let front_pagefilteredKnowledgeBases = [];
+            knowledgebases.forEach(kb => {
+                if(req.query.front_page == null){
+                    front_pagefilteredKnowledgeBases.push(kb);
+                }else{
+                    if(kb.front_page+"" == req.query.front_page){
+                        front_pagefilteredKnowledgeBases.push(kb);
+                    }
+                }
+            });
+            let namefilteredKnowledgeBases = [];
+            if(req.query.name == null){
+                namefilteredKnowledgeBases = front_pagefilteredKnowledgeBases;
+            }else{
+                front_pagefilteredKnowledgeBases.forEach(kb => {
+                    if((kb.name).toLowerCase().includes((req.query.name).toLowerCase())){
+                        namefilteredKnowledgeBases.push(kb);
+                    }
+                });
+            }
+    
+            let numFilters = namefilteredKnowledgeBases.length;
+            let count1 = -1;
+    
+            namefilteredKnowledgeBases.forEach(knowledge_base => {
+                knowledge_base.tooltip = consts.STATUS_COLOR_TEXT[knowledge_base.ui_color];
+                pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base.id, -1, result => {
+                    let numSubcategories = result.res.length;
+    
+                    knowledge_base.stat = {
+                        num_categories: numSubcategories
+                    };
+    
+                    checkItIsComplete();
+                });
+            });
+    
+            checkItIsComplete();
+    
+            function checkItIsComplete(){
+                count1++;
+                if(count1 == numFilters){
+    
+                    res.json(util.paginate(req, namefilteredKnowledgeBases));
+                }
+            }
+        });
+    });
+});
 
 router.post("/createKnowledgeBase", (req, res) => {
     let kb_locale_ids = req.body.kb_locale_ids ? req.body.kb_locale_ids : [];
+    if(kb_locale_ids.length == 0) return res.status(401).json({ status: "error", message: "Not allowed, please provide a language selection for this knowledgebase"});
 
     let data = {
         name: req.body.name ? req.body.name : "",
@@ -2088,7 +2410,7 @@ router.post("/createKnowledgeBase", (req, res) => {
                     knowledge_base_id: knowledge_base_id,
                     active: kb_locale_id.default,
                     position: position,
-                    ui_color: "red"
+                    ui_color: consts.STATUS_COLOR.pending_action
                 }, result1 => {
                     if(result1.err){
                         result1.err.errorIndex = -1;
@@ -2126,6 +2448,7 @@ router.post("/createKnowledgeBase", (req, res) => {
 
 router.put("/updateKnowledgeBase/:id", (req, res) => {
     let kb_locale_ids = req.body.kb_locale_ids ? req.body.kb_locale_ids : [];
+    if(kb_locale_ids.length == 0) return res.status(401).json({ status: "error", message: "Not allowed, please provide a language selection for this knowledgebase"});
     let id = req.params.id;
 
     let data = {
@@ -2168,7 +2491,7 @@ router.put("/updateKnowledgeBase/:id", (req, res) => {
                         knowledge_base_id: knowledge_base_id,
                         active: kb_locale_id.default,
                         position: position,
-                        ui_color: "red"
+                        ui_color: consts.STATUS_COLOR.pending_action
                     }, result2 => {
                         if(result2.err){
                             result1.err.errorIndex = -2;
@@ -2185,26 +2508,172 @@ router.put("/updateKnowledgeBase/:id", (req, res) => {
             function checkComplete(){
                 count++;
                 if(count == numIds){
-                    updateUIColorForKnowledgeBase(knowledge_base_id, () => {
-                        recordHistory(
-                            "knowledgebase", 
-                            "update-knowledgebase", 
-                            {
-                                knowledge_base_id,
-                                name: req.body.name,
-                                //user_id,
-        
-                            }, 
-                            () => {
-                                res.json({ status: "success", message: "Knowledge base updated" });
-                            }
-                        );
+
+                    count = -1;
+                    let numKb_locale_ids = kb_locale_ids.length;
+
+                    let new_locale_ids = [];
+                    let reference_category_translations = [];
+                    let reference_article_translations = [];
+
+                    kb_locale_ids.forEach(locale => {
+                        // get all categories
+                        pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result => {
+                            let category_translations = result.res;
+                            pgQueries.getKnowledgeBaseArticleTranslationByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result => {
+                                let article_translations = result.res;
+
+                                if(category_translations.length == 0 && article_translations.length == 0){
+                                    new_locale_ids.push(locale.id);
+                                }else{
+                                    reference_locale_id = locale.id;
+                                    reference_category_translations = category_translations;
+                                    reference_article_translations = article_translations;
+                                }
+                                checkComplete2();
+                            });
+                        });
                     });
+
+                    checkComplete2();
+
+                    function checkComplete2(){
+                        count++;
+                        if(count == numKb_locale_ids){
+                            count = -1;
+                            let num_new_kb_locale_ids = new_locale_ids.length;
+
+                            new_locale_ids.forEach(locale_id => {
+                                // add categories
+                                let cat_count = -1;
+                                let num_cat_translations = reference_category_translations.length;
+
+                                reference_category_translations.forEach(cat => {
+                                    let values = [
+                                        cat.name,
+                                        locale_id,
+                                        cat.category_id,
+                                        new Date().toUTCString(),
+                                        new Date().toUTCString(),
+                                        consts.STATUS_COLOR.pending_action,
+                                        cat.category_icon,
+                                        cat.title_tag,
+                                        cat.footer,
+                                        cat.keywords,
+                                        cat.meta_description,
+                                        true,
+                                        false,
+                                        cat.permission,
+                                        cat.list_id,
+                                        false,
+                                        false,
+                                        cat.knowledge_base_id
+                                    ];
+    
+                                    pgQueries.createKnowledgeBaseCategoryTranslation(values, result => {
+                                        checkCatComplete();
+                                    });
+                                });
+
+                                checkCatComplete();
+
+                                function checkCatComplete(){
+                                    cat_count++;
+                                    if(cat_count == num_cat_translations){
+                                        // add articles
+                                        let art_count = -1;
+                                        let num_art_translations = reference_article_translations.length;
+
+                                        reference_article_translations.forEach(art => {
+                                            let data = {
+                                                title: art.title,
+                                                kb_locale_id: locale_id,
+                                                created_at: new Date().toUTCString(),
+                                                updated_at: new Date().toUTCString(),
+                                                body: art.body,
+                                                keywords: art.keywords,
+                                                title_tag: art.title_tag,
+                                                meta_description: art.meta_description,
+                                                article_id: art.article_id,
+                                                active: false,
+                                                publish_now: true,
+                                                is_delete_scheduled: false,
+                                                is_update_scheduled: false,
+                                                category_id: art.category_id,
+                                                ui_color: consts.STATUS_COLOR.pending_action,
+                                                list_id: art.list_id,
+                                                knowledge_base_id: art.knowledge_base_id
+                                            };
+            
+                                            pgQueries.createKnowledgeBaseArticleTranslation(data, result => {
+                                                checkComplete3();
+                                            });
+                                        });
+
+                                        checkArtComplete();
+
+                                        function checkArtComplete(){
+                                            art_count++;
+                                            if(art_count == num_art_translations){
+                                                checkComplete3();
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                            checkComplete3();
+
+                            function checkComplete3(){
+                                count++;
+                                if(count == num_new_kb_locale_ids){
+                                    updateUIColorForKnowledgeBase(knowledge_base_id, () => {
+                                        recordHistory(
+                                            "knowledgebase", 
+                                            "update-knowledgebase", 
+                                            {
+                                                knowledge_base_id,
+                                                name: req.body.name,
+                                                //user_id,
+                        
+                                            }, 
+                                            () => {
+                                                res.json({ status: "success", message: "Knowledge base updated" });
+                                            }
+                                        );
+                                    });
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.delete("/deleteKnowledgeBase/:id", (req, res) => {
     let id = req.params.id;
@@ -2485,6 +2954,8 @@ router.get("/getAllKnowledgeBaseSubCategories/category_id/:category_id/kb_locale
             return res.json(result1.err);
         }
 
+        if(result1.res.length == 0) return res.json([]);
+
         let category = result1.res[0];
         let knowledge_base_id = category.knowledge_base_id;
         getCategoriesAndSubCategories(req, res, knowledge_base_id, kb_locale_id, category_id, null, categories => {
@@ -2598,6 +3069,70 @@ router.get("/getKnowledgeBaseCategoryList/knowledge_base_id/:knowledge_base_id/k
 
     getCategoriesAndSubCategoriesForGroup(req, res, knowledge_base_id, kb_locale_id, parent_id, null, group, categories => {
         res.json(categories);
+    });
+});
+
+router.get("/getKnowledgeBaseCategory/knowledge_base_id/:knowledge_base_id/category_id/:category_id/kb_locale_id/:kb_locale_id/filter_by/:filter_by", (req, res) => {
+    let knowledge_base_id = req.params.knowledge_base_id;
+    let category_id = req.params.category_id;
+    let kb_locale_id = req.params.kb_locale_id;
+    let filter_by = req.params.filter_by;
+
+    if(!(filter_by == "article" || filter_by == "category")) return res.status(401).json({ status: "error", message: "Not allowed. filter_by must be 'article' or 'category'"});
+
+    if(filter_by == "article"){
+        pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category_id, kb_locale_id], result => {
+            res.json(result.res);
+        });
+    }else{
+        pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category_id, kb_locale_id], result => {
+            res.json(result.res);
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get("/getKnowledgeBaseCategoryLevel/knowledge_base_id/:knowledge_base_id/category_id/:category_id/kb_locale_id/:kb_locale_id", (req, res) => {
+    let knowledge_base_id = req.params.knowledge_base_id;
+    let category_id = req.params.category_id;
+    let kb_locale_id = req.params.kb_locale_id;
+
+    getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base_id, category_id, result => {
+        if (result.level == 0) {
+            result.level++;
+        }
+
+        getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, -1, tree => {
+            getMaxLevels(tree, 0, 1, max_level => {
+                //filter the result bashed on the level
+
+                getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, category_id, tree => {
+                    getMaxLevels(tree, 0, 1, depth => {
+                        //filter the result bashed on the level
+                        res.json({
+                            level: result.level,
+                            depth: depth,
+                            max_level: max_level
+                        });
+                    });
+                });
+            });
+        });
     });
 });
 
@@ -2837,82 +3372,195 @@ function getCategoriesAndSubCategoriesForGroup(req, res, knowledge_base_id, kb_l
     });
 }
 
+
+
+
+
+
+router.post("/createKnowledgeBaseList", (req, res) => {
+    let knowledge_base_id = req.body.knowledge_base_id;
+    let list_type = req.body.list_type;
+    let title = req.body.title;
+    let position = req.body.position ?? 1;
+
+    if(!["article","category"].find(art => art == list_type)) return res.status(401).json({ status: "error", message: "List type must be 'article' or 'category'"});
+
+    let values = [
+        knowledge_base_id,
+        list_type,
+        title,
+        position
+    ];
+
+    pgQueries.createKnowledgeBaseList(values, result => {
+        if(result.err){
+            result.err.errorIndex = 100;
+            return res.status(501).json(result.err);
+        }
+
+        res.json(result.res);
+    });
+});
+
+router.get("/getKnowledgeBaseList/knowledge_base_id/:knowledge_base_id/list_type/:list_type", (req, res) => {
+    let knowledge_base_id = req.params.knowledge_base_id;
+    let list_type = req.params.list_type;
+
+    let values = [
+        knowledge_base_id,
+        list_type
+    ];
+
+    pgQueries.getKnowledgeBaseLists(values, result => {
+        if(result.err){
+            result.err.errorIndex = 100;
+            return res.status(501).json(result.err);
+        }
+
+        res.json(result.res);
+    });
+});
+
+router.get("/getKnowledgeBaseList/knowledge_base_id/:knowledge_base_id/kb_locale_id/:kb_locale_id/filter_by/:filter_by/level/:level", (req, res) => {
+    let knowledge_base_id = req.params.knowledge_base_id;
+    let kb_locale_id = req.body.kb_locale_id;
+    let level = req.body.level;
+    
+    if(!["article","category"].find(art => art == list_type)) return res.status(401).json({ status: "error", message: "filter_by must be 'article' or 'category'"});
+
+    let values = [
+        knowledge_base_id,
+        list_type,
+        title,
+        position
+    ];
+
+    pgQueries.createKnowledgeBaseList(values, result => {
+        if(result.err){
+            result.err.errorIndex = 100;
+            return res.status(501).json(result.err);
+        }
+
+        res.json(result.res);
+    });
+});
+
+
+
+
+
+function filterOutArchive(obj){
+    let new_obj = [];
+    obj.forEach(cat => {
+        if(!cat.is_archived){
+            new_obj.push(cat);
+        }
+    });
+    return new_obj;
+}
+
 // knowledgebase category
 router.get("/getKnowledgeBaseCategories/knowledge_base_id/:knowledge_base_id/kb_locale_id/:kb_locale_id", (req, res) => {
     let knowledge_base_id = req.params.knowledge_base_id;
     let kb_locale_id = req.params.kb_locale_id;
     let parent_id = req.query.parent_id ? Number(req.query.parent_id) : -1;
+    let level = req.query.level ? Number(req.query.level) : null;
 
-    pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base_id, parent_id, result => {
-        if(result.err){
-            result.err.errorIndex = "abx";
-            return res.json(result.err);
-        }
+    if(level != null){
+        if(level > 5 || level < 1) return res.status(401).json({ status: "error", message: "The level must be between 1 and 5"});
 
-        let kb_category_translations = [];
-
-        let kbCategories = result.res;
-        let numCategories = kbCategories.length;
-        let count = -1;
-
-        kbCategories.forEach(kbCategory => {
-            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryIdAndLocaleId(kbCategory.id, kb_locale_id, result2 => {
-                if(result2.err){
-                    result2.err.errorIndex = 322;
-                    return res.json(result2.err);
+        getCategoriesAndSubCategories1(knowledge_base_id, kb_locale_id, -1, tree => {
+            //filter the result bashed on the level
+            let index = 1;
+            // level = 2, index = 1
+            getCategoriesAtLevel(tree, level, index, level_categories => {
+                level_categories.sort(util.sortByPosition);
+                level_categories = filterOutArchive(level_categories);
+                let result = [];
+                if(level_categories.length > 0){
+                    result = util.paginate(req, level_categories);
                 }
+                level_categories.forEach(category => {
+                    category.tooltip = consts.STATUS_COLOR_TEXT[category.ui_color];
+                });
 
-                if(result2.res.length == 0){
-                    checkComplete();
-                }else{
-                    let kbCategoryTranslation = result2.res[0];
-
-                    kbCategoryTranslation.position = kbCategory.position;
-
-                    kbCategoryTranslation.schedule_at = null;
-
-                    getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base_id, kbCategory.id, result => {
-                        kbCategoryTranslation.stat = {
-                            level: result.level,
-                            num_categories: result.num_categories,
-                            num_articles: result.num_articles
-                        };
-        
-                        if(kbCategoryTranslation.publish_now){
-                            kb_category_translations.push(kbCategoryTranslation);
-                            checkComplete();
-                        }else{
-                            pgQueries.getKnowledgeBaseCategoryDelayedJobByKnowledgeBaseCategoryTranslationId(kbCategoryTranslation.id, result1 => {
-                                if(result1.err){
-                                    result1.err.errorIndex = 3220;
-                                    return res.json(result1.err);
-                                }
-                
-                                kbCategoryTranslation.schedule_at = null;
-                                if(result1.res.length > 0){
-                                    kbCategoryTranslation.schedule_at = result1.res[0].run_at;
-                                }
-                                kb_category_translations.push(kbCategoryTranslation);
-
-
-                                checkComplete();
-                            });
-                        }
-                    });
-                }
+                return res.json(result);
             });
         });
-
-        checkComplete();
-
-        function checkComplete(){
-            count++;
-            if(count == numCategories){
-                kb_category_translations.sort(util.sortByPosition);
-                res.json(util.paginate(req, kb_category_translations));
+    }else{
+        pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base_id, parent_id, result => {
+            if(result.err){
+                result.err.errorIndex = "abx";
+                return res.json(result.err);
             }
-        }
-    });
+    
+            let kb_category_translations = [];
+    
+            let kbCategories = result.res;
+            let numCategories = kbCategories.length;
+            let count = -1;
+    
+            kbCategories.forEach(kbCategory => {
+                pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryIdAndLocaleId(kbCategory.id, kb_locale_id, result2 => {
+                    if(result2.err){
+                        result2.err.errorIndex = 322;
+                        return res.json(result2.err);
+                    }
+    
+                    if(result2.res.length == 0){
+                        checkComplete();
+                    }else{
+                        let kbCategoryTranslation = result2.res[0];
+                        kbCategoryTranslation.tooltip = consts.STATUS_COLOR_TEXT[kbCategoryTranslation.ui_color];
+    
+                        kbCategoryTranslation.position = kbCategory.position;
+    
+                        kbCategoryTranslation.schedule_at = null;
+    
+                        getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base_id, kbCategory.id, result => {
+                            kbCategoryTranslation.stat = {
+                                level: result.level,
+                                num_categories: result.num_categories,
+                                num_articles: result.num_articles
+                            };
+            
+                            if(kbCategoryTranslation.publish_now){
+                                kb_category_translations.push(kbCategoryTranslation);
+                                checkComplete();
+                            }else{
+                                pgQueries.getKnowledgeBaseCategoryDelayedJobByKnowledgeBaseCategoryTranslationId(kbCategoryTranslation.id, result1 => {
+                                    if(result1.err){
+                                        result1.err.errorIndex = 3220;
+                                        return res.json(result1.err);
+                                    }
+                    
+                                    kbCategoryTranslation.schedule_at = null;
+                                    if(result1.res.length > 0){
+                                        kbCategoryTranslation.schedule_at = result1.res[0].run_at;
+                                    }
+                                    kb_category_translations.push(kbCategoryTranslation);
+    
+    
+                                    checkComplete();
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+    
+            checkComplete();
+    
+            function checkComplete(){
+                count++;
+                if(count == numCategories){
+                    kb_category_translations.sort(util.sortByPosition);
+                    kb_category_translations = filterOutArchive(kb_category_translations);
+                    res.json(util.paginate(req, kb_category_translations));
+                }
+            }
+        });
+    }
 });
 
 router.get("/getKnowledgeBaseSubCategories/knowledge_base_id/:knowledge_base_id/parent_id/:parent_id", (req, res) => {
@@ -2962,6 +3610,7 @@ router.get("/getKnowledgeBaseCategoryTranslation/category_id/:category_id/kb_loc
             if(result.res.length == 0) return res.status(404).json({ status: 404, message: "Not found" });
     
             let translation = result.res[0];
+            translation.tooltip = consts.STATUS_COLOR_TEXT[translation.ui_color];
             translation.parent_id = category.parent_id;
             translation.knowledge_base_id = category.knowledge_base_id;
             translation.position = category.position;
@@ -3160,7 +3809,7 @@ router.post("/scheduleKnowledgeBaseCategoryUpdate", (req, res) => {
         knowledge_base_category_translation_id,
         true,
         update_metadata,
-        "white"
+        consts.STATUS_COLOR.update_scheduled
     ];
 
     pgQueries.updateKnowledgeBaseCategoryTranslationUpdateSchedule(values, result => {
@@ -3212,7 +3861,7 @@ router.post("/scheduleKnowledgeBaseCategoryDelete", (req, res) => {
         values = [
             knowledge_base_category_translation_id,
             true,
-            "yellow"
+            consts.STATUS_COLOR.archive_scheduled
         ];
 
         pgQueries.updateKnowledgeBaseCategoryTranslationDeleteSchedule(values, result => {
@@ -3248,15 +3897,19 @@ function createKnowledgeBaseCategoryTranslation(req, res, kb){
             if(kb_locale_id == req.body.kb_locale_id){
                 if(!req.body.active){
                     if(!req.body.publish_now){
-                        values[5] = "blue";
+                        values[5] = consts.STATUS_COLOR.publish_scheduled;
                     }else{
-                        values[5] = "orange";
+                        values[5] = consts.STATUS_COLOR.draft;
                     }
                 }else{
-                    values[5] = "green";
+                    if(!req.body.publish_now){
+                        values[5] = consts.STATUS_COLOR.publish_scheduled;
+                    }else{
+                        values[5] = consts.STATUS_COLOR.published;
+                    }
                 }
             }else{
-                values[5] = "red";
+                values[5] = consts.STATUS_COLOR.pending_action;
             }
             values.push(req.body.is_delete_scheduled != undefined ? req.body.is_delete_scheduled : false);
             values.push(req.body.is_update_scheduled != undefined ? req.body.is_update_scheduled : false);
@@ -3363,7 +4016,7 @@ function getKnowledgeBaseCategoryTranslationData(req){
         req.body.publish_now != undefined ? req.body.publish_now : true,
         req.body.active != undefined ? req.body.active : true,
         req.body.permission ? req.body.permission : "",
-        req.body.group_name ? req.body.group_name : ""
+        req.body.list_id ? req.body.list_id : null
     ];
 }
 
@@ -3396,12 +4049,16 @@ router.put("/updateKnowledgeBaseCategory/category_id/:category_id/kb_locale_id/:
         let values1 = getKnowledgeBaseCategoryTranslationData(req);
         if(!req.body.active){
             if(!req.body.publish_now){
-                values1[5] = "blue";
+                values1[5] = consts.STATUS_COLOR.publish_scheduled;
             }else{
-                values1[5] = "orange";
+                values1[5] = consts.STATUS_COLOR.draft;
             }
         }else{
-            values1[5] = "green";
+            if(!req.body.publish_now){
+                values1[5] = consts.STATUS_COLOR.publish_scheduled;
+            }else{
+                values1[5] = consts.STATUS_COLOR.publish_scheduled;
+            }
         }
         values1.push(req.body.knowledge_base_id);
 
@@ -3474,7 +4131,7 @@ function archiveSubCategory(category_id, cb){
     let values2 = [
         category_id,
         true,
-        "gray"
+        consts.STATUS_COLOR.archived
     ];
     
     pgQueries.updateKnowledgeBaseCategoriesArchivedStatusByCategoryId(values1, result => {
@@ -3553,7 +4210,7 @@ function unarchiveSubCategory(knowledge_base_id, category_id, cb){
     let values2 = [
         category_id,
         false,
-        "red"
+        consts.STATUS_COLOR.pending_action
     ];
     
     pgQueries.updateKnowledgeBaseCategoriesArchivedStatusByCategoryId(values1, result => {
@@ -3597,7 +4254,7 @@ router.delete("/deleteKnowledgeBaseCategory/:category_id", (req, res) => {
     let values = [
         category_id,
         true,
-        "gray"
+        consts.STATUS_COLOR.archived
     ];
 
     pgQueries.updateKnowledgeBaseCategoriesArchivedStatusByCategoryId(values, result => {
@@ -3650,6 +4307,7 @@ router.get('/getKnowledgeBaseCategoryTranslationsByCategoryId/:category_id', (re
             let count = -1;
     
             translations.forEach(translation => {
+                translation.tooltip = consts.STATUS_COLOR_TEXT[translation.ui_color];
                 translation.parent_id = category.parent_id;
                 translation.knowledge_base_id = category.knowledge_base_id;
                 translation.position = category.position;
@@ -3725,6 +4383,7 @@ router.get("/getKnowledgeBaseArticles/category_id/:category_id/kb_locale_id/:kb_
                         let article_translation = result.res[0];
             
                         if(!article_translation.is_archived){
+                            article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
                             article_translation.knowledge_base_id = article.knowledge_base_id;
                             article_translation.category_id = article.category_id;
             
@@ -3783,6 +4442,7 @@ router.get("/getKnowledgeBaseArticles/knowledge_base_id/:knowledge_base_id/categ
                         let article_translation = result.res[0];
             
                         if(!article_translation.is_archived){
+                            article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
                             article_translation.knowledge_base_id = article.knowledge_base_id;
                             article_translation.category_id = article.category_id;
             
@@ -3825,6 +4485,10 @@ router.get("/getAllKnowledgeBaseArticleTranslations/knowledge_base_id/:knowledge
 
         let article_translations = result.res;
 
+        article_translations.forEach(article_translation => {
+            article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
+        });
+
         res.json(article_translations);
     });
 });
@@ -3863,6 +4527,7 @@ router.get("/getAllKnowledgeBaseArticleList/category_id/:category_id/kb_locale_i
             
                         if(!article_translation.is_archived){
                             if(article_translation.list_name.toLowerCase().includes(list_name.toLowerCase())){
+                                article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
                                 article_translation.knowledge_base_id = article.knowledge_base_id;
                                 article_translation.category_id = article.category_id;
                 
@@ -3953,6 +4618,7 @@ router.get("/getKnowledgeBaseArticleTranslation/article_id/:article_id/kb_locale
 
             if(article_translation.is_archived) return res.status(401).json({ status: 401, message: "Article deleted" });
 
+            article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
             article_translation.knowledge_base_id = article.knowledge_base_id;
             article_translation.category_id = article.category_id;
 
@@ -4209,7 +4875,7 @@ router.delete("/removeScheduleForKnowledgebaseCategory/:knowledge_base_category_
                 values = [
                     knowledge_base_category_translation_id,
                     false,
-                    "green"
+                    consts.STATUS_COLOR.published
                 ];
                 pgQueries.updateKnowledgeBaseCategoryTranslationDeleteSchedule(values, result => {
                     if(result.err){
@@ -4266,7 +4932,7 @@ router.delete("/removeScheduleForKnowledgebaseCategory/:knowledge_base_category_
                     knowledge_base_category_translation_id,
                     false,
                     "",
-                    "green"
+                    consts.STATUS_COLOR.published
                 ];
                 pgQueries.updateKnowledgeBaseCategoryTranslationUpdateSchedule(values, result => {
                     if(result.err){
@@ -4364,15 +5030,15 @@ function createKnowledgeBaseArticleTranslation(req, res, article){
             if(kb_locale_id == req.body.kb_locale_id){
                 if(!req.body.active){
                     if(!req.body.publish_now){
-                        data.ui_color = "blue";
+                        data.ui_color = consts.STATUS_COLOR.update_scheduled;
                     }else{
-                        data.ui_color = "orange";
+                        data.ui_color = consts.STATUS_COLOR.draft;
                     }
                 }else{
-                    data.ui_color = "green";
+                    data.ui_color = consts.STATUS_COLOR.published;
                 }
             }else{
-                data.ui_color = "red";
+                data.ui_color = consts.STATUS_COLOR.pending_action;
             }
             pgQueries.createKnowledgeBaseArticleTranslation(data, result => {
                 if(result.err){
@@ -4393,7 +5059,7 @@ function createKnowledgeBaseArticleTranslation(req, res, article){
                     }, 
                     () => {
                         if(publish_now){
-                            res.json(articleTranslation);
+                            checkComplete();
                         }else{
                             let knowledge_base_id = req.body.knowledge_base_id;
                             let article_id = req.body.article_id;
@@ -4414,7 +5080,7 @@ function createKnowledgeBaseArticleTranslation(req, res, article){
                 
                                 articleTranslation.schedule_at = result1.res.run_at; 
                 
-                                res.json(articleTranslation);
+                                checkComplete();
                             });
                         }
                     }
@@ -4460,7 +5126,7 @@ function getKnowledgeBaseArticleTranslationData(req){
         publish_now: req.body.publish_now != undefined ? req.body.publish_now : true,
         is_delete_scheduled: req.body.is_delete_scheduled != undefined ? req.body.is_delete_scheduled : false,
         is_update_scheduled: req.body.is_update_scheduled != undefined ? req.body.is_update_scheduled : false,
-        list_name: req.body.list_name ? req.body.list_name : ""
+        list_id: req.body.list_id ? req.body.list_id : 1
     };
 }
 
@@ -4494,12 +5160,12 @@ router.put("/updateKnowledgeBaseArticleTranslation/article_id/:article_id/kb_loc
         data1.knowledge_base_id = req.body.knowledge_base_id;
         if(!req.body.active){
             if(!req.body.publish_now){
-                data1.ui_color = "blue";
+                data1.ui_color = consts.STATUS_COLOR.update_scheduled;
             }else{
-                data1.ui_color = "orange";
+                data1.ui_color = consts.STATUS_COLOR.draft;
             }
         }else{
-            data1.ui_color = "green";
+            data1.ui_color = consts.STATUS_COLOR.published;
         }
 
         pgQueries.updateKnowledgeBaseArticleTranslation(article_id, kb_locale_id, data1, result => {
