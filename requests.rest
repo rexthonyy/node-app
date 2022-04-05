@@ -27,3 +27,4 @@ Content-Type: application/json
 }
 
 ### 
+GET http://88.208.199.175:1000/knowledgebase/getKnowledgeBaseCategories/knowledge_base_id/78/kb_locale_id/1?page=1&limit=10&level=1

@@ -17,8 +17,49 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                 getCategoriesAtLevel(tree, level, index, level_categories => {
                     level_categories.sort(util.sortByPosition);
                     level_categories = filterOutArchive(level_categories);
-                    console.log(level_categories);
-                    return resolve(level_categories);
+                    let response_data = [];
+
+                    level_categories.forEach(cat => {
+                        response_data.push({
+                            knowledge_base_category: {
+                                knowledge_base_category: {
+                                    id: cat.category_id,
+                                    knowledge_base_id: cat.knowledge_base_id,
+                                    parent_id: cat.parent_id,
+                                    position: cat.position,
+                                    created_at: cat.created_at,
+                                    updated_at: cat.updated_at,
+                                    is_archived: cat.is_archived,
+                                },
+                                knowledge_base_category_translation: {
+                                    id: cat.id,
+                                    name: cat.name,
+                                    kb_locale_id: cat.kb_locale_id,
+                                    category_id: cat.category_id,
+                                    created_at: cat.created_at,
+                                    updated_at: cat.updated_at,
+                                    ui_color: cat.ui_color,
+                                    category_icon: cat.category_icon,
+                                    title_tag: cat.title_tag,
+                                    footer: cat.footer,
+                                    keywords: cat.keywords,
+                                    meta_description: cat.meta_description,
+                                    publish_now: cat.publish_now,
+                                    active: cat.active,
+                                    permission: cat.permission,
+                                    update_metadata: cat.update_metadata,
+                                    is_delete_scheduled: cat.is_delete_scheduled,
+                                    is_update_scheduled: cat.is_update_scheduled,
+                                    knowledge_base_id: cat.knowledge_base_id,
+                                    is_archived: cat.is_archived,
+                                    list_id: cat.list_id
+                                }
+                            },
+                            stat: level_categories.stat
+                        });
+                    });
+
+                    resolve(response_data);
                 });
             });
         }else{
