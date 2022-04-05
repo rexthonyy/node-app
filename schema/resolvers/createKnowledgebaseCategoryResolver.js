@@ -1,11 +1,8 @@
 const pgQueries = require('../../postgres/kb-queries');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
-const getLanguageTitleFromLocaleId = require('../resolverUtils/getLanguageTitleFromLocaleId');
 const consts = require('../../consts');
-const KnowledgeBaseTranslationType = require('../typeDefs/KnowledgeBaseTranslationType');
 const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('../resolverUtils/getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId');
 const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgeBase');
-const recordHistory = require('../resolverUtils/recordHistoryResolver');
 
 const getData = ({
     knowledge_base_id, 
