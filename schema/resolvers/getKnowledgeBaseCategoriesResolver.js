@@ -55,7 +55,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
                                     list_id: cat.list_id
                                 }
                             },
-                            stat: level_categories.stat
+                            stat: cat.stat
                         });
                     });
 
