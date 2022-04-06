@@ -23,6 +23,7 @@ const updateKnowledgebaseCategoryResolver = require("../resolvers/updateKnowledg
 const scheduleKnowledgeBaseCategoryUpdateResolver = require("../resolvers/scheduleKnowledgeBaseCategoryUpdateResolver");
 const archiveKnowledgeBaseCategoryResolver = require("../resolvers/archiveKnowledgeBaseCategoryResolver");
 const unarchiveKnowledgeBaseCategoryResolver = require("../resolvers/unarchiveKnowledgeBaseCategoryResolver");
+const removeScheduleForKnowledgebaseCategoryResolver = require("../resolvers/removeScheduleForKnowledgebaseCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -152,6 +153,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: unarchiveKnowledgeBaseCategoryResolver
         },
-
+        removeScheduleForKnowledgebaseCategory_: {
+            type: StatusMessageResponseType,
+            description: "Removes a category from being scheduled for deletion, update or publication",
+            args: {
+                knowledge_base_category_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                schedule_type: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: removeScheduleForKnowledgebaseCategoryResolver
+        }
     })
 });
