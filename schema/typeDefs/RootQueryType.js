@@ -120,6 +120,6 @@ module.exports = new GraphQLObjectType({
                 kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getKnowledgeBaseArticleTranslationResolver
-        },
+        }
     })
 });
