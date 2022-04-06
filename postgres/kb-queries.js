@@ -579,7 +579,7 @@ const createKnowledgeBaseCategoryTranslation = (values, response) => {
 };
 
 const updateKnowledgeBaseCategoryTranslation = (category_id, kb_locale_id, values, response) => {
-    client.query(`UPDATE knowledge_base_category_translations SET name=$1, kb_locale_id=$2, category_id=$3, created_at=$4, updated_at=$5, ui_color=$6, category_icon=$7, title_tag=$8, footer=$9, keywords=$10, meta_description=$11, publish_now=$12, active=$13, permission=$14, group_name=$15, knowledge_base_id=$16 WHERE category_id=${category_id} AND kb_locale_id=${kb_locale_id} RETURNING *`, values, (err, res) => {
+    client.query(`UPDATE knowledge_base_category_translations SET name=$1, kb_locale_id=$2, category_id=$3, created_at=$4, updated_at=$5, ui_color=$6, category_icon=$7, title_tag=$8, footer=$9, keywords=$10, meta_description=$11, publish_now=$12, active=$13, permission=$14, list_id=$15, knowledge_base_id=$16 WHERE category_id=${category_id} AND kb_locale_id=${kb_locale_id} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
