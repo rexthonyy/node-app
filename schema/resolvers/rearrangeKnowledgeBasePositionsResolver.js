@@ -1,4 +1,3 @@
-const pgQueries = require('../../postgres/kb-queries');
 const setOrderForKnowledgebases = require('../resolverUtils/setOrderForKnowledgebases');
 
 const getData = ({knowledge_base_ids}) => {

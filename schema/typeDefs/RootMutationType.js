@@ -10,7 +10,7 @@ const {
 
 // typedefs
 const StatusMessageResponseType = require("./StatusMessageResponseType");
-const KnowledgeBaseType = require("./KnowledgeBaseType");
+const KnowledgeBaseCategoryTranslationType = require("./KnowledgeBaseCategoryTranslationType");
 const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType");
 
 // resolvers
@@ -121,6 +121,16 @@ module.exports = new GraphQLObjectType({
                 list_id: { type: GraphQLInt}
             },
             resolve: updateKnowledgebaseCategoryResolver
+        },
+        scheduleKnowledgeBaseCategoryUpdate_: {
+            type: StatusMessageResponseType,
+            description: "Updates a knowledgebase category",
+            args: {
+                knowledge_base_category_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                run_at: { type: GraphQLString},
+                update_metadata: { type: GraphQLNonNull(KnowledgeBaseCategoryTranslationType)}
+            },
+            resolve: scheduleKnowledgeBaseCategoryUpdateResolver
         },
     })
 });
