@@ -20,6 +20,7 @@ const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseRes
 const rearrangeKnowledgeBaseCategoryPositionsResolver = require("../resolvers/rearrangeKnowledgeBaseCategoryPositionsResolver");
 const createKnowledgebaseCategoryResolver = require("../resolvers/createKnowledgebaseCategoryResolver");
 const updateKnowledgebaseCategoryResolver = require("../resolvers/updateKnowledgebaseCategoryResolver");
+const scheduleKnowledgeBaseCategoryUpdateResolver = require("../resolvers/scheduleKnowledgeBaseCategoryUpdateResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
