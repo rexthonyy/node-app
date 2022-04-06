@@ -25,6 +25,7 @@ const archiveKnowledgeBaseCategoryResolver = require("../resolvers/archiveKnowle
 const unarchiveKnowledgeBaseCategoryResolver = require("../resolvers/unarchiveKnowledgeBaseCategoryResolver");
 const removeScheduleForKnowledgebaseCategoryResolver = require("../resolvers/removeScheduleForKnowledgebaseCategoryResolver");
 const scheduleKnowledgeBaseCategoryDeleteResolver = require("../resolvers/scheduleKnowledgeBaseCategoryDeleteResolver");
+const rearrangeKnowledgeBaseArticlePositionsResolver = require("../resolvers/rearrangeKnowledgeBaseArticlePositionsResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -76,6 +77,14 @@ module.exports = new GraphQLObjectType({
                 category_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
             },
             resolve: rearrangeKnowledgeBaseCategoryPositionsResolver
+        },
+        rearrangeKnowledgebaseArticlePositions_: {
+            type: StatusMessageResponseType,
+            description: "Reorder the knowledgebase article positions",
+            args: {
+                article_ids: { type: GraphQLNonNull(GraphQLList(GraphQLInt))}
+            },
+            resolve: rearrangeKnowledgeBaseArticlePositionsResolver
         },
         createKnowledgeBaseCategory_: {
             type: StatusMessageResponseType,
