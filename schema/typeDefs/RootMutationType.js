@@ -19,12 +19,13 @@ const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseRes
 const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseResolver");
 const rearrangeKnowledgeBaseCategoryPositionsResolver = require("../resolvers/rearrangeKnowledgeBaseCategoryPositionsResolver");
 const createKnowledgebaseCategoryResolver = require("../resolvers/createKnowledgebaseCategoryResolver");
+const updateKnowledgebaseCategoryResolver = require("../resolvers/updateKnowledgebaseCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
     description: 'Root Mutation',
     fields: () => ({
-        createKnowledgebase: {
+        createKnowledgebase_: {
             type: StatusMessageResponseType,
             description: "Creates a new knowledgebase",
             args: {
@@ -39,7 +40,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: createKnowledgebaseResolver
         },
-        updateKnowledgebase: {
+        updateKnowledgebase_: {
             type: StatusMessageResponseType,
             description: "Updates a knowledgebase",
             args: {
@@ -55,7 +56,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: updateKnowledgebaseResolver
         },
-        rearrangeKnowledgebasePositions: {
+        rearrangeKnowledgebasePositions_: {
             type: StatusMessageResponseType,
             description: "Reorder the knowledgebase positions",
             args: {
@@ -63,7 +64,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: rearrangeKnowledgeBasePositionsResolver
         },
-        rearrangeKnowledgebaseCategoryPositions: {
+        rearrangeKnowledgebaseCategoryPositions_: {
             type: StatusMessageResponseType,
             description: "Reorder the knowledgebase category positions",
             args: {
@@ -71,7 +72,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: rearrangeKnowledgeBaseCategoryPositionsResolver
         },
-        createKnowledgeBaseCategory: {
+        createKnowledgeBaseCategory_: {
             type: StatusMessageResponseType,
             description: "Creates a knowledgebase category",
             args: {
@@ -95,6 +96,31 @@ module.exports = new GraphQLObjectType({
                 list_id: { type: GraphQLInt}
             },
             resolve: createKnowledgebaseCategoryResolver
+        },
+        updateKnowledgeBaseCategory_: {
+            type: StatusMessageResponseType,
+            description: "Updates a knowledgebase category",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
+                parent_id: { type: GraphQLNonNull(GraphQLID)},
+                category_id: { type: GraphQLNonNull(GraphQLID)},
+                category_icon: { type: GraphQLString},
+                position: { type: GraphQLInt},
+                created_at: { type: GraphQLString},
+                updated_at: { type: GraphQLString},
+                schedule_at: { type: GraphQLString},
+                publish_now: { type: GraphQLNonNull(GraphQLBoolean)},
+                name: { type: GraphQLNonNull(GraphQLString)},
+                title_tag: { type: GraphQLString},
+                footer: { type: GraphQLString},
+                keywords: { type: GraphQLString},
+                meta_description: { type: GraphQLString},
+                permission: { type: GraphQLString},
+                active: { type: GraphQLNonNull(GraphQLBoolean)},
+                list_id: { type: GraphQLInt}
+            },
+            resolve: updateKnowledgebaseCategoryResolver
         },
     })
 });

@@ -26,12 +26,12 @@ module.exports = new GraphQLObjectType({
     name: "Query",
     description: 'Root Query',
     fields: () => ({
-        knowledgebases: {
+        knowledgebases_: {
             type: GraphQLList(KnowledgeBaseType),
             description: "Get all knowledgebases",
             resolve: getAllKnowledgeBaseResolver
         },
-        knowledgebase: {
+        knowledgebase_: {
             type: KnowledgeBaseType,
             description: "Get a single knowledgebase by id",
             args: {
@@ -39,7 +39,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getKnowledgeBaseByIdResolver
         },
-        knowledgebaseTranslations: {
+        knowledgebaseTranslations_: {
             type: GraphQLList(KnowledgeBaseTranslationType),
             description: "Get all knowledgebase translations for a given knowledge base",
             args: {
@@ -47,7 +47,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver
         },
-        knowledgebaseTranslationStatusColor: {
+        knowledgebaseTranslationStatusColor_: {
             type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
             description: "Get the status color for the knowledgebase translations at the category specified",
             args: {
@@ -57,7 +57,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getAllKnowledgeBaseTranslationStatusColorResolver
         },
-        getScheduleForKnowledgebaseCategoryTranslation: {
+        getScheduleForKnowledgebaseCategoryTranslation_: {
             type: StatusMessageForKnowledgeBaseCategoryScheduleType,
             description: "Get a knowledgebase translation that is scheduled for publication, deletion or update",
             args: {
@@ -66,7 +66,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getScheduleForKnowledgebaseCategoryTranslationResolver
         },
-        getKnowledgebaseCategories: {
+        getKnowledgebaseCategories_: {
             type: GraphQLList(KnowledgeBaseCategoryHybridStatType),
             description: "Get all knowledgebase category translations in a knowledge base for a specified locale and level",
             args: {
