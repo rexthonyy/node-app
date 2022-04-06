@@ -29,6 +29,7 @@ const rearrangeKnowledgeBaseArticlePositionsResolver = require("../resolvers/rea
 const createKnowledgebaseArticleResolver = require("../resolvers/createKnowledgebaseArticleResolver");
 const updateKnowledgebaseArticleResolver = require("../resolvers/updateKnowledgebaseArticleResolver");
 const archiveKnowledgeBaseArticleResolver = require("../resolvers/archiveKnowledgeBaseArticleResolver");
+const unarchiveKnowledgeBaseArticleResolver = require("../resolvers/unarchiveKnowledgeBaseArticleResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -238,6 +239,14 @@ module.exports = new GraphQLObjectType({
                 category_id: { type: GraphQLNonNull(GraphQLID)}
             },
             resolve: archiveKnowledgeBaseArticleResolver
-        }
+        },
+        unarchiveKnowledgeBaseArticle_: {
+            type: StatusMessageResponseType,
+            description: "Reinstates an article with its translations",
+            args: {
+                category_id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve: unarchiveKnowledgeBaseArticleResolver
+        },
     })
 });
