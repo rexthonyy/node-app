@@ -15,6 +15,8 @@ const getData = ({ category_id, kb_locale_id }) => {
             }
     
             let category = result1.res[0];
+
+            if(category == null) return reject({status: "error", message: "Category not found"});
     
             pgQueries.getKnowledgeBaseCategoryTranslationByCategoryIdAndLocaleId(category_id, kb_locale_id, result => {
                 if(result.err){
