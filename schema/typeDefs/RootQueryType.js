@@ -13,6 +13,7 @@ const KnowledgeBaseTranslationType = require("./KnowledgeBaseTranslationType");
 const KnowledgeBaseTranslationStatusColorType = require("./KnowledgeBaseTranslationStatusColorType");
 const StatusMessageForKnowledgeBaseCategoryScheduleType = require("./StatusMessageForKnowledgeBaseCategoryScheduleType");
 const KnowledgeBaseCategoryHybridStatType = require("./KnowledgeBaseCategoryHybridStatType");
+const KnowledgeBaseCategoryType = require("./KnowledgeBaseCategoryType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -22,6 +23,7 @@ const getAllKnowledgeBaseTranslationStatusColorResolver = require("../resolvers/
 const getScheduleForKnowledgebaseCategoryTranslationResolver = require("../resolvers/getScheduleForKnowledgebaseCategoryTranslationResolver");
 const getKnowledgeBaseCategoriesResolver = require("../resolvers/getKnowledgeBaseCategoriesResolver");
 const getKnowledgeBaseCategoryTranslationResolver = require("../resolvers/getKnowledgeBaseCategoryTranslationResolver");
+const getKnowledgeBaseCategoryResolver = require("../resolvers/getKnowledgeBaseCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -86,6 +88,14 @@ module.exports = new GraphQLObjectType({
                 kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getKnowledgeBaseCategoryTranslationResolver
-        }
+        },
+        getKnowledgeBaseCategory_: {
+            type: KnowledgeBaseCategoryType,
+            description: "Get a knowledgebase category by id",
+            args: {
+                category_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getKnowledgeBaseCategoryResolver
+        },
     })
 });
