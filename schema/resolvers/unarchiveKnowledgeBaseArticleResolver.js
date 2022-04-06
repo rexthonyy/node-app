@@ -11,6 +11,9 @@ const getData = ({category_id}) => {
             let knowledge_base_id = category.knowledge_base_id;
             if(category.parent_id == -1){
                 pgQueries.listKnowledgeBasesById(knowledge_base_id, result => {
+                    if(result.err){
+                        return reject(result.err);
+                    }
                     if(result.res.length == 0) return reject(JSON.stringify({status: "error", message: "Knowledge base not found"}));
 
                     let kb = result.res[0];
