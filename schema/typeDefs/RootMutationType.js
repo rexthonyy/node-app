@@ -21,6 +21,7 @@ const rearrangeKnowledgeBaseCategoryPositionsResolver = require("../resolvers/re
 const createKnowledgebaseCategoryResolver = require("../resolvers/createKnowledgebaseCategoryResolver");
 const updateKnowledgebaseCategoryResolver = require("../resolvers/updateKnowledgebaseCategoryResolver");
 const scheduleKnowledgeBaseCategoryUpdateResolver = require("../resolvers/scheduleKnowledgeBaseCategoryUpdateResolver");
+const archiveKnowledgeBaseCategoryResolver = require("../resolvers/archiveKnowledgeBaseCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -134,5 +135,13 @@ module.exports = new GraphQLObjectType({
             },
             resolve: scheduleKnowledgeBaseCategoryUpdateResolver
         },
+        archiveKnowledgeBaseCategory_: {
+            type: StatusMessageResponseType,
+            description: "Archives a category with its subcategories and translations",
+            args: {
+                category_id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve: archiveKnowledgeBaseCategoryResolver
+        }
     })
 });
