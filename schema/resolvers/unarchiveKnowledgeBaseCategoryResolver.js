@@ -11,13 +11,13 @@ const getData = ({category_id}) => {
             let knowledge_base_id = category.knowledge_base_id;
             if(category.parent_id == -1){
                 pgQueries.listKnowledgeBasesById(knowledge_base_id, result => {
-                    if(result.res.length == 0) return reject({status: "error", message: "Knowledge base not found"});
+                    if(result.res.length == 0) return reject(JSON.stringify({status: "error", message: "Knowledge base not found"}));
 
                     let kb = result.res[0];
     
                     if(kb == null || kb.is_archived){
                         // check if the knowledge base is archived
-                        reject({ status: "error", message: "The knowledge base is already archived or is unavailable"});
+                        reject(JSON.stringify({ status: "error", message: "The knowledge base is already archived or is unavailable"}));
                     }else{
                         unarchiveSubCategory(knowledge_base_id, category_id, () => {
                             resolve({ status: "success", message: "Successfully unarchived"});
