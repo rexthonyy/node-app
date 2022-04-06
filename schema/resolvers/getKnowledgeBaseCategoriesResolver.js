@@ -102,7 +102,7 @@ function resolveResponse(resolve, level_categories){
 
     level_categories.forEach(cat => {
         response_data.push({
-            knowledge_base_category: {
+            data: {
                 knowledge_base_category: {
                     id: cat.category_id,
                     knowledge_base_id: cat.knowledge_base_id,
