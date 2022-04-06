@@ -10,7 +10,7 @@ const getData = ({category_id}) => {
             let category = result.res[0];
             let knowledge_base_id = category.knowledge_base_id;
             if(category.parent_id == -1){
-                pgQueries.listKnowledgeBasesById(knowledge_base_id, result => {
+                pgQueries.listKnowledgeBasesById([knowledge_base_id], result => {
                     if(result.err){
                         return reject(result.err);
                     }
