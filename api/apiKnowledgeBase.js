@@ -4057,7 +4057,7 @@ router.put("/updateKnowledgeBaseCategory/category_id/:category_id/kb_locale_id/:
             if(!req.body.publish_now){
                 values1[5] = consts.STATUS_COLOR.publish_scheduled;
             }else{
-                values1[5] = consts.STATUS_COLOR.publish_scheduled;
+                values1[5] = consts.STATUS_COLOR.published;
             }
         }
         values1.push(req.body.knowledge_base_id);
