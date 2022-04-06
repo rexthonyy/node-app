@@ -100,7 +100,7 @@ module.exports = new GraphQLObjectType({
             resolve: getKnowledgeBaseCategoryResolver
         },
         getKnowledgeBaseArticles_: {
-            type: KnowledgeBaseArticleType,
+            type: GraphQLList(KnowledgeBaseArticleType),
             description: "Get all knowledgebase category articles in for a locale",
             args: {
                 category_id: { type: GraphQLNonNull(GraphQLID) },
