@@ -43,7 +43,7 @@ const getData = ({ knowledge_base_id, category_id, kb_locale_id, parent_id, leve
                                 article.tooltip = consts.STATUS_COLOR_TEXT[article.ui_color];
                             });
                             
-                            resolve(result);
+                            resolve(articles);
                         }
                     }
                 });
