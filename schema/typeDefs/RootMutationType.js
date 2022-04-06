@@ -190,7 +190,7 @@ module.exports = new GraphQLObjectType({
                 knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
                 kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
                 category_id: { type: GraphQLNonNull(GraphQLID)},
-                article_id: { type: GraphQLNonNull(GraphQLID)},
+                article_id: { type: GraphQLID},
                 position: { type: GraphQLInt},
                 created_at: { type: GraphQLString},
                 updated_at: { type: GraphQLString},
