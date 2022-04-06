@@ -177,8 +177,8 @@ function createKnowledgeBaseArticleTranslation(
                 article_id: article_id ? article_id : -1,
                 active: active ? active : true,
                 publish_now: publish_now ? publish_now : true,
-                is_delete_scheduled: is_delete_scheduled ? is_delete_scheduled : false,
-                is_update_scheduled: is_update_scheduled ? is_update_scheduled : false,
+                is_delete_scheduled: false,
+                is_update_scheduled: false,
                 list_id: list_id ? list_id : 1
             };
 
