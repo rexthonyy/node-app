@@ -26,6 +26,7 @@ const unarchiveKnowledgeBaseCategoryResolver = require("../resolvers/unarchiveKn
 const removeScheduleForKnowledgebaseCategoryResolver = require("../resolvers/removeScheduleForKnowledgebaseCategoryResolver");
 const scheduleKnowledgeBaseCategoryDeleteResolver = require("../resolvers/scheduleKnowledgeBaseCategoryDeleteResolver");
 const rearrangeKnowledgeBaseArticlePositionsResolver = require("../resolvers/rearrangeKnowledgeBaseArticlePositionsResolver");
+const createKnowledgebaseArticleResolver = require("../resolvers/createKnowledgebaseArticleResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -181,6 +182,29 @@ module.exports = new GraphQLObjectType({
                 schedule_type: { type: GraphQLNonNull(GraphQLString)}
             },
             resolve: removeScheduleForKnowledgebaseCategoryResolver
+        },
+        createKnowledgeBaseArticle_: {
+            type: StatusMessageResponseType,
+            description: "Creates a knowledgebase article",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
+                category_id: { type: GraphQLNonNull(GraphQLID)},
+                article_id: { type: GraphQLNonNull(GraphQLID)},
+                position: { type: GraphQLInt},
+                created_at: { type: GraphQLString},
+                updated_at: { type: GraphQLString},
+                title: { type: GraphQLNonNull(GraphQLString)},
+                body: { type: GraphQLString},
+                keywords: { type: GraphQLString},
+                title_tag: { type: GraphQLString},
+                meta_description: { type: GraphQLString},
+                active: { type: GraphQLNonNull(GraphQLBoolean)},
+                publish_now: { type: GraphQLNonNull(GraphQLBoolean)},
+                schedule_at: { type: GraphQLString},
+                list_id: { type: GraphQLInt}
+            },
+            resolve: createKnowledgebaseArticleResolver
         },
     })
 });
