@@ -21,6 +21,7 @@ const getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver = require("../reso
 const getAllKnowledgeBaseTranslationStatusColorResolver = require("../resolvers/getAllKnowledgeBaseTranslationStatusColorResolver");
 const getScheduleForKnowledgebaseCategoryTranslationResolver = require("../resolvers/getScheduleForKnowledgebaseCategoryTranslationResolver");
 const getKnowledgeBaseCategoriesResolver = require("../resolvers/getKnowledgeBaseCategoriesResolver");
+const getKnowledgeBaseCategoryTranslationResolver = require("../resolvers/getKnowledgeBaseCategoryTranslationResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -77,5 +78,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getKnowledgeBaseCategoriesResolver
         },
+        getKnowledgeBaseCategoryTranslation_: {
+            type: KnowledgeBaseCategoryHybridStatType,
+            description: "Get a knowledgebase category translations in a knowledge base for a specified locale",
+            args: {
+                category_id: { type: GraphQLNonNull(GraphQLID) },
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getKnowledgeBaseCategoryTranslationResolver
+        }
     })
 });

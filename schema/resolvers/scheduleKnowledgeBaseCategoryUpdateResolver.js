@@ -5,10 +5,6 @@ const getData = ({knowledge_base_category_translation_id, run_at, knowledge_base
     return new Promise((resolve, reject) => {
         update_metadata = JSON.stringify(update_metadata);
 
-        console.log("translation_id: " + knowledge_base_category_translation_id);
-        console.log("run_at: " + run_at);
-        console.log("knowledge_base_id: " + knowledge_base_id);
-        console.log("update_metadata: " + update_metadata);
         if(run_at != null){
             let run_at_date = new Date(run_at);
             if(run_at_date.getTime() < Date.now()){
