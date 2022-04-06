@@ -11,7 +11,7 @@ const getData = ({ category_id, kb_locale_id }) => {
                 return reject(result.err);
             }
     
-            if(result.res.length == 0) return res.json([]);
+            if(result.res.length == 0) return resolve([]);
     
             let articles_return = [];
             let articles = result.res;
