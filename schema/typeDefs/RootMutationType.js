@@ -129,6 +129,7 @@ module.exports = new GraphQLObjectType({
             args: {
                 knowledge_base_category_translation_id: { type: GraphQLNonNull(GraphQLID)},
                 run_at: { type: GraphQLString},
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
                 update_metadata: { type: GraphQLNonNull(KnowledgeBaseCategoryTranslationTypeInput)}
             },
             resolve: scheduleKnowledgeBaseCategoryUpdateResolver
