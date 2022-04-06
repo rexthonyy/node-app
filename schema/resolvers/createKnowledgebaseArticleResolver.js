@@ -22,23 +22,7 @@ const getData = ({
     list_id
 }) => {
     return new Promise((resolve, reject) => {
-        
-        console.log("knowledge_base_id:" + knowledge_base_id);
-        console.log("kb_locale_id:" + kb_locale_id);
-        console.log("category_id:" + category_id);
-        console.log("article_id:" + article_id);
-        console.log("position:" + position);
-        console.log("created_at:" + created_at);
-        console.log("updated_at:" + updated_at);
-        console.log("title:" + title);
-        console.log("body:" + body);
-        console.log("keywords:" + keywords);
-        console.log("title_tag:" + title_tag);
-        console.log("meta_description:" + meta_description);
-        console.log("active:" + active);
-        console.log("publish_now:" + publish_now);
-        console.log("schedule_at:" + schedule_at);
-        console.log("list_id:" + list_id);
+    
         if(!publish_now){
             if(schedule_at != null){
                 let scheduled_date = new Date(schedule_at);
