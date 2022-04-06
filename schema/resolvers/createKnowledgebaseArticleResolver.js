@@ -25,7 +25,8 @@ const getData = ({
         
         console.log("knowledge_base_id:" + knowledge_base_id);
         console.log("kb_locale_id:" + kb_locale_id);
-        console.log("category_id:" + kb_category_id);
+        console.log("category_id:" + category_id);
+        console.log("article_id:" + article_id);
         console.log("position:" + position);
         console.log("created_at:" + created_at);
         console.log("updated_at:" + updated_at);
