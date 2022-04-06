@@ -1,7 +1,6 @@
 const pgQueries = require('../../postgres/kb-queries');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
 const consts = require('../../consts');
-const updateUIColorForKnowledgeBase = require('../resolverUtils/updateUIColorForKnowledgeBase');
 
 const getData = ({
     knowledge_base_id, 
