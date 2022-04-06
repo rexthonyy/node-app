@@ -101,12 +101,15 @@ module.exports = new GraphQLObjectType({
         },
         getKnowledgeBaseArticles_: {
             type: GraphQLList(KnowledgeBaseArticleType),
-            description: "Get all knowledgebase category articles in for a locale",
+            description: "Get all knowledgebase category articles in for a locale at a given level",
             args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) },
                 category_id: { type: GraphQLNonNull(GraphQLID) },
-                kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID) },
+                parent_id: { type: GraphQLID },
+                level: { type: GraphQLInt }
             },
             resolve: getKnowledgeBaseArticlesResolver
-        },
+        }
     })
 });
