@@ -1,6 +1,5 @@
 const pgQueries = require('../../postgres/kb-queries');
 const recordHistory = require('../resolverUtils/recordHistoryResolver');
-const consts = require('../../consts');
 
 const getData = ({knowledge_base_article_translation_id, run_at, knowledge_base_id, article_id, update_metadata}) => {
     return new Promise((resolve, reject) => {
