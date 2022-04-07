@@ -33,6 +33,7 @@ const getKnowledgeBaseArticleTranslationResolver = require("../resolvers/getKnow
 const getScheduleForKnowledgeBaseArticleResolver = require("../resolvers/getScheduleForKnowledgeBaseArticleResolver");
 const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListResolver");
 const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
+const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -163,6 +164,16 @@ module.exports = new GraphQLObjectType({
                 level: { type: GraphQLNonNull(GraphQLInt)}
             },
             resolve: getLevelStatusResolver
+        },
+        getKnowledgeBaseCategoryLevel_: {
+            type: KnowledgeBaseCategoryLevelType,
+            description: "Returns the level and depth of a knowledge base category",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                category_id: { type: GraphQLNonNull(GraphQLID)},
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve: getKnowledgeBaseCategoryLevelResolver
         },
     })
 });
