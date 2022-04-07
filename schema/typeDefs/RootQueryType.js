@@ -15,6 +15,7 @@ const StatusMessageForKnowledgeBaseCategoryScheduleType = require("./StatusMessa
 const KnowledgeBaseCategoryHybridStatType = require("./KnowledgeBaseCategoryHybridStatType");
 const KnowledgeBaseCategoryType = require("./KnowledgeBaseCategoryType");
 const KnowledgeBaseArticleType = require("./KnowledgeBaseArticleType");
+const KnowledgeBaseArticleDelayedJobType = require("./KnowledgeBaseArticleDelayedJobType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -27,6 +28,7 @@ const getKnowledgeBaseCategoryTranslationResolver = require("../resolvers/getKno
 const getKnowledgeBaseCategoryResolver = require("../resolvers/getKnowledgeBaseCategoryResolver");
 const getKnowledgeBaseArticlesResolver = require("../resolvers/getKnowledgeBaseArticlesResolver");
 const getKnowledgeBaseArticleTranslationResolver = require("../resolvers/getKnowledgeBaseArticleTranslationResolver");
+const getScheduleForKnowledgeBaseArticleResolver = require("../resolvers/getScheduleForKnowledgeBaseArticleResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -120,6 +122,15 @@ module.exports = new GraphQLObjectType({
                 kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getKnowledgeBaseArticleTranslationResolver
+        },
+        getScheduleForKnowledgeBaseArticle_: {
+            type: KnowledgeBaseArticleDelayedJobType,
+            description: "Returns details about a scheduled knowledgebase article for deletion or update",
+            args: {
+                knowledge_base_article_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                schedule_type: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: getScheduleForKnowledgeBaseArticleResolver
         }
     })
 });
