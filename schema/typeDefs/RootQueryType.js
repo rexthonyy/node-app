@@ -18,6 +18,7 @@ const KnowledgeBaseArticleType = require("./KnowledgeBaseArticleType");
 const KnowledgeBaseArticleDelayedJobType = require("./KnowledgeBaseArticleDelayedJobType");
 const KnowledgeBaseListType = require("./KnowledgeBaseListType");
 const KnowledgeBaseLevelStatusHybridType = require("./KnowledgeBaseLevelStatusHybridType");
+const KnowledgeBaseCategoryLevelType = require("./KnowledgeBaseCategoryLevelType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
