@@ -98,7 +98,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
 
         function finished(){
             
-            res.json({
+            resolve({
                 categories: {
                     count: numCategories,
                     no_action: {
