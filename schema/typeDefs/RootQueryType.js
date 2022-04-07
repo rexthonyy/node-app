@@ -17,6 +17,7 @@ const KnowledgeBaseCategoryType = require("./KnowledgeBaseCategoryType");
 const KnowledgeBaseArticleType = require("./KnowledgeBaseArticleType");
 const KnowledgeBaseArticleDelayedJobType = require("./KnowledgeBaseArticleDelayedJobType");
 const KnowledgeBaseListType = require("./KnowledgeBaseListType");
+const KnowledgeBaseLevelStatusHybridType = require("./KnowledgeBaseLevelStatusHybridType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -31,6 +32,7 @@ const getKnowledgeBaseArticlesResolver = require("../resolvers/getKnowledgeBaseA
 const getKnowledgeBaseArticleTranslationResolver = require("../resolvers/getKnowledgeBaseArticleTranslationResolver");
 const getScheduleForKnowledgeBaseArticleResolver = require("../resolvers/getScheduleForKnowledgeBaseArticleResolver");
 const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListResolver");
+const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -151,6 +153,16 @@ module.exports = new GraphQLObjectType({
                 list_type: { type: GraphQLNonNull(GraphQLString)}
             },
             resolve: getKnowledgeBaseListResolver
+        },
+        getLevelStatus_: {
+            type: KnowledgeBaseLevelStatusHybridType,
+            description: "Returns the status of a level",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                kb_locale_id: { type: GraphQLNonNull(GraphQLID)},
+                level: { type: GraphQLNonNull(GraphQLInt)}
+            },
+            resolve: getLevelStatusResolver
         },
     })
 });
