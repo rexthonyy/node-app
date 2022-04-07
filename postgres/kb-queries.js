@@ -2230,6 +2230,40 @@ const createActivityStream = (values, response) => {
     });
 };
 
+
+const createKnowledgeBaseList = (values, response) => {
+    client.query('INSERT INTO knowledge_base_lists (knowledge_base_id, list_type, title, position) VALUES($1, $2, $3, $4) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 3282
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const getKnowledgeBaseLists = (values, response) => {
+    pool.query("SELECT * from knowledge_base_lists WHERE knowledge_base_id=$1 AND list_type=$2", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null
+            });
+            console.log("");
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 module.exports = {
     updatePositionForKnowledgeBase,
     listKnowledgeBasesById,
@@ -2380,5 +2414,8 @@ module.exports = {
 
     updateKnowledgeBaseTranslationUiColor,
 
-    createActivityStream
+    createActivityStream,
+
+    createKnowledgeBaseList,
+    getKnowledgeBaseLists
 }

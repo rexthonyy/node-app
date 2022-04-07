@@ -16,6 +16,7 @@ const KnowledgeBaseCategoryHybridStatType = require("./KnowledgeBaseCategoryHybr
 const KnowledgeBaseCategoryType = require("./KnowledgeBaseCategoryType");
 const KnowledgeBaseArticleType = require("./KnowledgeBaseArticleType");
 const KnowledgeBaseArticleDelayedJobType = require("./KnowledgeBaseArticleDelayedJobType");
+const KnowledgeBaseListType = require("./KnowledgeBaseListType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -29,6 +30,7 @@ const getKnowledgeBaseCategoryResolver = require("../resolvers/getKnowledgeBaseC
 const getKnowledgeBaseArticlesResolver = require("../resolvers/getKnowledgeBaseArticlesResolver");
 const getKnowledgeBaseArticleTranslationResolver = require("../resolvers/getKnowledgeBaseArticleTranslationResolver");
 const getScheduleForKnowledgeBaseArticleResolver = require("../resolvers/getScheduleForKnowledgeBaseArticleResolver");
+const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -131,6 +133,24 @@ module.exports = new GraphQLObjectType({
                 schedule_type: { type: GraphQLNonNull(GraphQLString)}
             },
             resolve: getScheduleForKnowledgeBaseArticleResolver
-        }
+        },
+        getScheduleForKnowledgeBaseArticle_: {
+            type: KnowledgeBaseArticleDelayedJobType,
+            description: "Returns details about a scheduled knowledgebase article for deletion or update",
+            args: {
+                knowledge_base_article_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                schedule_type: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: getScheduleForKnowledgeBaseArticleResolver
+        },
+        getKnowledgeBaseList_: {
+            type: GraphQLList(KnowledgeBaseListType),
+            description: "Returns the list for the knowledgebase specified",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                list_type: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: getKnowledgeBaseListResolver
+        },
     })
 });
