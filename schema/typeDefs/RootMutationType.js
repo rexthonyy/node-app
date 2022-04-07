@@ -274,5 +274,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: scheduleKnowledgeBaseArticleDeleteResolver
         },
+        removeScheduleForKnowledgeBaseArticle_: {
+            type: StatusMessageResponseType,
+            description: "Removes the schedule for an article either update or delete",
+            args: {
+                knowledge_base_article_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                schedule_type: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: removeScheduleForKnowledgeBaseArticleResolver
+        },
     })
 });
