@@ -283,6 +283,6 @@ module.exports = new GraphQLObjectType({
                 schedule_type: { type: GraphQLNonNull(GraphQLString)}
             },
             resolve: removeScheduleForKnowledgeBaseArticleResolver
-        },
+        }
     })
 });
