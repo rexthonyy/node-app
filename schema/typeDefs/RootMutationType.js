@@ -11,6 +11,7 @@ const {
 // typedefs
 const StatusMessageResponseType = require("./StatusMessageResponseType");
 const KnowledgeBaseCategoryTranslationTypeInput = require("./KnowledgeBaseCategoryTranslationTypeInput");
+const KnowledgeBaseArticleTranslationTypeInput = require("./KnowledgeBaseArticleTranslationTypeInput");
 const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType");
 
 // resolvers
@@ -30,6 +31,7 @@ const createKnowledgebaseArticleResolver = require("../resolvers/createKnowledge
 const updateKnowledgebaseArticleResolver = require("../resolvers/updateKnowledgebaseArticleResolver");
 const archiveKnowledgeBaseArticleResolver = require("../resolvers/archiveKnowledgeBaseArticleResolver");
 const unarchiveKnowledgeBaseArticleResolver = require("../resolvers/unarchiveKnowledgeBaseArticleResolver");
+const scheduleKnowledgeBaseArticleUpdateResolver = require("../resolvers/scheduleKnowledgeBaseArticleUpdateResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -247,6 +249,18 @@ module.exports = new GraphQLObjectType({
                 category_id: { type: GraphQLNonNull(GraphQLID)}
             },
             resolve: unarchiveKnowledgeBaseArticleResolver
+        },
+        scheduleKnowledgeBaseArticleUpdate_: {
+            type: StatusMessageResponseType,
+            description: "Schedules an article for update",
+            args: {
+                knowledge_base_article_translation_id: { type: GraphQLNonNull(GraphQLID)},
+                run_at: { type: GraphQLString},
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)},
+                article_id: { type: GraphQLNonNull(GraphQLID)},
+                update_metadata: { type: GraphQLNonNull(KnowledgeBaseArticleTranslationTypeInput)}
+            },
+            resolve: scheduleKnowledgeBaseArticleUpdateResolver
         },
     })
 });
