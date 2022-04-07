@@ -33,6 +33,7 @@ const archiveKnowledgeBaseArticleResolver = require("../resolvers/archiveKnowled
 const unarchiveKnowledgeBaseArticleResolver = require("../resolvers/unarchiveKnowledgeBaseArticleResolver");
 const scheduleKnowledgeBaseArticleUpdateResolver = require("../resolvers/scheduleKnowledgeBaseArticleUpdateResolver");
 const scheduleKnowledgeBaseArticleDeleteResolver = require("../resolvers/scheduleKnowledgeBaseArticleDeleteResolver");
+const removeScheduleForKnowledgeBaseArticleResolver = require("../resolvers/removeScheduleForKnowledgeBaseArticleResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
