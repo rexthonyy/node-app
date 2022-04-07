@@ -2255,7 +2255,6 @@ const getKnowledgeBaseLists = (values, response) => {
                 err: err,
                 res: null
             });
-            console.log("");
         }else{
             response({
                 err: null,
