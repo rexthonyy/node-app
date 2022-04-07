@@ -2,12 +2,12 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLBoolean,
-    GraphQLInputObjectType,
+    GraphQLObjectType,
     GraphQLInt,
     GraphQLNonNull
 } = require("graphql");
 
-module.exports = new GraphQLInputObjectType({
+module.exports = new GraphQLObjectType({
     name: "KnowledgeBaseArticleDelayedJobType",
     description: "This is used to return a schedule for an article",
     fields: () => ({
