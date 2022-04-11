@@ -55,7 +55,7 @@ app.use(express.json());
 //app.use(BodyParser.json({limit: "4mb"}));
 //app.use(cookieParser());
 
-app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
+//app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
     
 app.use('/knowledgebase', knowledgeBaseRouter);
 
