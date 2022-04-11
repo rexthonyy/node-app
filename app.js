@@ -116,4 +116,4 @@ require('./postgres/initialize_dbs').init()
     process.exit(1);
   });
 
-};
+});
