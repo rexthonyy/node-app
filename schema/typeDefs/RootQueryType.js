@@ -19,6 +19,7 @@ const KnowledgeBaseArticleDelayedJobType = require("./KnowledgeBaseArticleDelaye
 const KnowledgeBaseListType = require("./KnowledgeBaseListType");
 const KnowledgeBaseLevelStatusHybridType = require("./KnowledgeBaseLevelStatusHybridType");
 const KnowledgeBaseCategoryLevelType = require("./KnowledgeBaseCategoryLevelType");
+const ExportKnowledgeBaseType = require("./ExportKnowledgeBaseType");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -35,6 +36,7 @@ const getScheduleForKnowledgeBaseArticleResolver = require("../resolvers/getSche
 const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListResolver");
 const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
+const exportKnowledgebaseResolver = require("../resolvers/exportKnowledgebaseResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -180,5 +182,13 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getKnowledgeBaseCategoryLevelResolver
         },
+        exportKnowledgebase_: {
+            type: ExportKnowledgeBaseType,
+            description: "Creates an export file for a knowledgebase",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID)}
+            },
+            resolve: exportKnowledgebaseResolver
+        }
     })
 });
