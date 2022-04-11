@@ -330,7 +330,64 @@ function createLocalesTB(cb){
         if(err){
             console.log(err);
         }
-        cb();
+
+        query = 
+        `INSERT INTO 
+            locales(locale,alias,name) 
+        values
+            ('en-us','en','English (United States)',
+            ('bg',null,'Bulgarian (Български)'),
+            ('cs',null,'Czech (Česky)'),
+            ('da',null,'Dansk'),
+            ('el',null,'Greek (Ελληνικά)'),
+            ('et',null,'Eesti'),
+            ('en-ca',null,'English (Canada)'),
+            ('en-gb',null,'English (Great Britain)'),
+            ('en-es','es','Español'),
+            ('en-co',null,'Español (Colombia)'),
+            ('es-mx',null,'Español (México)'),
+            ('fi',null,'Suomi'),
+            ('fr-fr',null,'Français'),
+            ('fr-ca',null,'Français (Canada)'),
+            ('hr',null,'Hrvatski'),
+            ('hu',null,'Magyar'),
+            ('it-it',null,'Italiano'),
+            ('ja',null,'Japanese (日本語)'),
+            ('lt',null,'Lietuvių kalba'),
+            ('lv',null,'Latvijas'),
+            ('no-no','nb','Norsk bokmål'),
+            ('nl-nl','nl','Nederlands'),
+            ('pl',null,'Polski'),
+            ('pt-pt','pt','Português'),
+            ('pt-bt','pt','Português Brasileiro'),
+            ('ru',null,'Russian (Русский)'),
+            ('sk',null,'Slovak (Slovenčina)'),
+            ('sl',null,'Slovenian (Slovenčina)'),
+            ('sv-se','sv','Svenska'),
+            ('tr',null,'Türkçe'),
+            ('uk',null,'Ukrainian (Українська)'),
+            ('vi',null,'Vietnam (ViɆt Nam)'),
+            ('zh-cn',null,'Chinese (Sim.) (简体中文)'),
+            ('hi-in','hi','Hindi (हिंदी)'),
+            ('de-de','de','Deutsch'),
+            ('he-il',null,'Hebrew (עִבְרִית)'),
+            ('fa-ir','fa','Persian (فارسى)'),
+            ('ms-my','ms','Malay (Bahasa Malaysia)'),
+            ('ro-ro','ro','Romanian (Românesc)'),
+            ('ar','ar','Arabic'),
+            ('sr-latn-rs','sr','Serbian (srpski)'),
+            ('is',null,'Icelandic (Íslenska)'),
+            ('rw',null,'Ikinyarwanda'),
+            ('ko-kr','ko','Korean (한국어)'),
+            ('es-ca','ko','Català'),
+            ('zh-tw',null,'Chinese (Trad.) (繁體中文)')
+        `;
+        client.query(query, (err, res) => {
+            if (err) {
+                console.error(err);
+            } 
+            cb();
+        });
     });
 }
 
