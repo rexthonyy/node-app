@@ -36,8 +36,11 @@ const pg = require("pg");
 const express = require('express');
 const { stitchSchemas } = require('@graphql-tools/stitch');
 const { ApolloServer } = require("apollo-server");
+const BodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
 const { graphqlHTTP } = require('express-graphql');
+const { graphqlUploadExpress } = require('graphql-upload');
 const schema1 = require('./schema/index');
 
 const app = express();
@@ -46,8 +49,11 @@ const pgPool = new pg.Pool({
   connectionString: process.env.DATABASE_URL
 });
  
-
+app.use(express.static('public'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(BodyParser.json({limit: "4mb"}));
+app.use(cookieParser());
     
 app.use('/knowledgebase', knowledgeBaseRouter);
 
@@ -79,7 +85,9 @@ async function main() {
   console.log(`🚀 Server ready at ${url}`);
 
 
-  app.use('/graphql', graphqlHTTP({
+  app.use('/graphql', 
+  graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
+  graphqlHTTP({
       schema: stitchSchemas({
 		subschemas: [
 		  {
