@@ -15,7 +15,7 @@ POST http://88.208.199.175:4000
 Content-Type: application/json
 
 {
-    "query":"query { message }"
+    "query":"query { ping }"
 }
 
 ###
