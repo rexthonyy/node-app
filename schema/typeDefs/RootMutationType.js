@@ -8,6 +8,8 @@ const {
     GraphQLID
 } = require("graphql");
 
+const { GraphQLUpload } = require("graphql-upload");
+
 // typedefs
 const StatusMessageResponseType = require("./StatusMessageResponseType");
 const KnowledgeBaseCategoryTranslationTypeInput = require("./KnowledgeBaseCategoryTranslationTypeInput");
@@ -15,6 +17,7 @@ const KnowledgeBaseArticleTranslationTypeInput = require("./KnowledgeBaseArticle
 const KnowledgebaseCreateLocaleType = require("./KnowledgebaseCreateLocaleType");
 
 // resolvers
+const importKnowledgebaseResolver = require("../resolvers/importKnowledgebaseResolver");
 const rearrangeKnowledgeBasePositionsResolver = require("../resolvers/rearrangeKnowledgeBasePositionsResolver");
 const createKnowledgebaseResolver = require("../resolvers/createKnowledgebaseResolver");
 const updateKnowledgebaseResolver = require("../resolvers/updateKnowledgebaseResolver");
@@ -39,6 +42,17 @@ module.exports = new GraphQLObjectType({
     name: "Mutation",
     description: 'Root Mutation',
     fields: () => ({
+        importKnowledgebase_: {
+            type: GraphQLBoolean,
+            description: "Imports a knowledgebase",
+            args: {
+                image: {
+                    description: "Image file.",
+                    type: GraphQLUpload,
+                }
+            },
+            resolve: importKnowledgebaseResolver
+        },
         createKnowledgebase_: {
             type: StatusMessageResponseType,
             description: "Creates a new knowledgebase",
