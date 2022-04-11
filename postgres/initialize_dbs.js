@@ -10,7 +10,7 @@ let pool = new Pool({
 
 let client = null;
 
-const databaseName = "new_knowledgebase";
+const databaseName = "knowledgebase";
 /*
     first create a postgres user called knowledgebase
     second setup the postgres consts variables
@@ -22,7 +22,7 @@ const init = () => {
         //resolve();
 
         createKnowledgeBaseDatabase(() => {
-            console.log("Knowledge base created successfully");
+            console.log("Knowledge base database created successfully");
             resolve();
         });
     });
