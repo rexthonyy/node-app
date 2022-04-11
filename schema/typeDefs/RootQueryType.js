@@ -40,6 +40,10 @@ module.exports = new GraphQLObjectType({
     name: "Query",
     description: 'Root Query',
     fields: () => ({
+        ping: {
+            type: GraphQLString,
+            resolve: () => "pong"
+        },
         knowledgebases_: {
             type: GraphQLList(KnowledgeBaseType),
             description: "Get all knowledgebases",
