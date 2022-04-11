@@ -330,12 +330,10 @@ function createLocalesTB(cb){
         if(err){
             console.log(err);
         }
-        return cb();
+    
         query = 
-        `INSERT INTO 
-            locales(locale,alias,name) 
-        VALUES
-            ('en-us','en','English (United States)',
+        `INSERT INTO locales(locale,alias,name) VALUES
+            ('en-us','en','English (United States)'),
             ('bg',null,'Bulgarian (Български)'),
             ('cs',null,'Czech (Česky)'),
             ('da',null,'Dansk'),
