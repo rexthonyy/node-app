@@ -10,6 +10,7 @@ let pool = new Pool({
 
 let client = null;
 
+const databaseName = "new_knowledgebase";
 /*
     first create a postgres user called knowledgebase
     second setup the postgres consts variables
@@ -28,7 +29,7 @@ const init = () => {
 }
 
 function createKnowledgeBaseDatabase(cb){
-    pool.query("CREATE DATABASE knowledgebase", (err, res) => {
+    pool.query(`CREATE DATABASE ${databaseName}`, (err, res) => {
         if(err){
             //console.log(err);
             return cb();
@@ -38,7 +39,7 @@ function createKnowledgeBaseDatabase(cb){
         pool = new Pool({
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
-            database: "new_knowledgebase",
+            database: databaseName,
             password: process.env.DB_PASS,
             port: process.env.DB_PORT
         });
@@ -46,7 +47,7 @@ function createKnowledgeBaseDatabase(cb){
         client = new Client({
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
-            database: "new_knowledgebase",
+            database: databaseName,
             password: process.env.DB_PASS,
             port: process.env.DB_PORT
         });
