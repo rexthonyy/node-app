@@ -304,7 +304,7 @@ function createActivityStreamsTB(cb){
         activity_name varchar,
         metadata jsonb,
         created_at timestamp without time zone not null default timezone('utc'::text, now()),
-        activity_type varchar,
+        activity_type varchar
     )`;
     client.query(query, (err, res) => {
         if(err){
@@ -334,7 +334,7 @@ function createLocalesTB(cb){
         query = 
         `INSERT INTO 
             locales(locale,alias,name) 
-        values
+        VALUES
             ('en-us','en','English (United States)',
             ('bg',null,'Bulgarian (Български)'),
             ('cs',null,'Czech (Česky)'),
@@ -380,8 +380,8 @@ function createLocalesTB(cb){
             ('rw',null,'Ikinyarwanda'),
             ('ko-kr','ko','Korean (한국어)'),
             ('es-ca','ko','Català'),
-            ('zh-tw',null,'Chinese (Trad.) (繁體中文)')
-        `;
+            ('zh-tw',null,'Chinese (Trad.) (繁體中文)')`;
+
         client.query(query, (err, res) => {
             if (err) {
                 console.error(err);
