@@ -174,7 +174,7 @@ function exportKnowledgeBaseArticles(data, kb_id, cb){
 function exportKnowledgeBaseArticleTranslations(data, kb_id, cb){
     pgQueries.getKnowledgeBaseArticlesByKnowledgeBaseId(kb_id, result => {
         if(result.err){
-            console.error(resule.err);
+            console.error(result.err);
             return cb(data);
         }
 
