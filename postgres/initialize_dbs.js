@@ -70,7 +70,13 @@ function createKnowledgeBaseDatabase(cb){
                                         console.log("Done creating knowledge base article delayed jobs table");
                                         createKnowledgeBaseListTB(() => {
                                             console.log("Done creating knowledge base list table");
-                                            cb();
+                                            createActivityStreamsTB(() => {
+                                                console.log("Done creating activity streams table");
+                                                createLocalesTB(() => {
+                                                    console.log("Done creating locales table");
+                                                    cb();
+                                                });
+                                            });
                                         });
                                     });
                                 });
@@ -281,6 +287,43 @@ function createKnowledgeBaseListTB(cb){
         title varchar not null,
         position integer not null,
         created_at timestamp without time zone not null default timezone('utc'::text, now())
+    )`;
+    client.query(query, (err, res) => {
+        if(err){
+            console.log(err);
+        }
+        cb();
+    });
+}
+
+function createActivityStreamsTB(cb){
+    let query = 
+    `CREATE TABLE IF NOT EXISTS activity_streams (
+        id serial primary key not null, 
+        activity_name varchar,
+        metadata jsonb,
+        created_at timestamp without time zone not null default timezone('utc'::text, now()),
+        activity_type varchar,
+    )`;
+    client.query(query, (err, res) => {
+        if(err){
+            console.log(err);
+        }
+        cb();
+    });
+}
+
+function createLocalesTB(cb){
+    let query = 
+    `CREATE TABLE IF NOT EXISTS locales (
+        id serial primary key not null, 
+        locale varchar not null,
+        alias varchar,
+        name varchar not null,
+        dir varchar default 'ltr',
+        active boolean not null default true,
+        created_at timestamp without time zone not null default timezone('utc'::text, now()),
+        updated_at timestamp without time zone not null default timezone('utc'::text, now())
     )`;
     client.query(query, (err, res) => {
         if(err){
