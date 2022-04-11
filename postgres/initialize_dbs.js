@@ -38,7 +38,7 @@ function createKnowledgeBaseDatabase(cb){
         pool = new Pool({
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
-            database: "knowledgebase",
+            database: "new_knowledgebase",
             password: process.env.DB_PASS,
             port: process.env.DB_PORT
         });
@@ -46,7 +46,7 @@ function createKnowledgeBaseDatabase(cb){
         client = new Client({
             user: process.env.DB_USER,
             host: process.env.DB_HOST,
-            database: "knowledgebase",
+            database: "new_knowledgebase",
             password: process.env.DB_PASS,
             port: process.env.DB_PORT
         });
