@@ -46,7 +46,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getTopicByIdResolver
         },
-        searchTopics: {
+        searchTopics_: {
             type: TopicType,
             description: "Search for a topic",
             args: {
