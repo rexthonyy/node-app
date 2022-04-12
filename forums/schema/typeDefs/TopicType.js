@@ -3,7 +3,8 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLInt,
-    GraphQLObjectType
+    GraphQLObjectType,
+    GraphQLList
 } = require("graphql");
 const PostType = require("./PostType");
 
