@@ -14,6 +14,7 @@ const TopicType = require("./TopicType");
 const getForumsResolver = require("../resolvers/getForumsResolver");
 const getForumByIdResolver = require("../resolvers/getForumByIdResolver");
 const getTopicByIdResolver = require("../resolvers/getTopicByIdResolver");
+const searchTopicResolver = require("../resolvers/searchTopicResolver");
 
 
 module.exports = new GraphQLObjectType({
@@ -45,6 +46,13 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getTopicByIdResolver
         },
-
+        searchTopics: {
+            type: TopicType,
+            description: "Search for a topic",
+            args: {
+                query: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: searchTopicResolver
+        }
     })
 });
