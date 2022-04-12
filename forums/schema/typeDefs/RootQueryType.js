@@ -1,4 +1,6 @@
 const {
+    GraphQLNonNull,
+    GraphQLID,
     GraphQLObjectType,
     GraphQLString,
     GraphQLList
@@ -9,6 +11,7 @@ const ForumType = require("./ForumType");
 
 // resolvers
 const getForumsResolver = require("../resolvers/getForumsResolver");
+const getForumByIdResolver = require("../resolvers/getForumByIdResolver");
 
 
 module.exports = new GraphQLObjectType({
@@ -23,6 +26,15 @@ module.exports = new GraphQLObjectType({
             type: GraphQLList(ForumType),
             description: "Returns the list of forums",
             resolve: getForumsResolver
-        }
+        },
+        getForumById_: {
+            type: ForumType,
+            description: "Returns a forum",
+            args: {
+                forum_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getForumByIdResolver
+        },
+
     })
 });
