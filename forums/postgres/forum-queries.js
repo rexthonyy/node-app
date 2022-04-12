@@ -25,6 +25,40 @@ const client = new Client({
 });
 client.connect();
 
+const updateForumTopicUpdateSchedule = (values, response) => {
+    client.query('UPDATE topics SET is_update_scheduled=$2 WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 239
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const updateForumTopicDeleteSchedule = (values, response) => {
+    client.query('UPDATE topics SET is_delete_scheduled=$2 WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 239
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const updateForumPostUpdateSchedule = (values, response) => {
     client.query('UPDATE posts SET is_update_scheduled=$2 WHERE id=$1', values, (err, res) => {
         if (err) {
@@ -654,6 +688,22 @@ const createForumPostDelayedJob = (values, response) => {
         }
     });
 };
+
+const createForumTopicDelayedJob = (values, response) => {
+    client.query('INSERT INTO topics_delayed_jobs (topic_id, publish_update_delete, metadata, run_at) VALUES($1, $2, $3, $4) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 module.exports = {
     getForums,
     createForum,
@@ -698,5 +748,9 @@ module.exports = {
     searchTopics,
     updateForumPostUpdateSchedule,
     updateForumPostDeleteSchedule,
-    createForumPostDelayedJob
+    createForumPostDelayedJob,
+
+    updateForumTopicDeleteSchedule,
+    updateForumTopicUpdateSchedule,
+    createForumTopicDelayedJob
 }
