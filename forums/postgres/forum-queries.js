@@ -623,7 +623,7 @@ const getTagById = (res_, tag_id, response) => {
 };
 
 const searchTopics = (query, response) => {
-    pool.query(`SELECT * from topics WHERE subject LIKE '%${query}%' OR message LIKE '%${query}%'`, (err, res) => {
+    pool.query(`SELECT * from topics WHERE subject ILIKE '%${query}%' OR message ILIKE '%${query}%'`, (err, res) => {
         if(err){
             response({
                 err: err,
