@@ -7,7 +7,7 @@ const {
 } = require("graphql");
 
 module.exports = new GraphQLInputObjectType({
-    name: "PostType",
+    name: "PostTypeInput",
     description: "An input post object",
     fields: () => ({
         topic_id: { type: GraphQLID },
