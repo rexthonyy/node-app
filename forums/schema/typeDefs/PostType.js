@@ -24,6 +24,8 @@ module.exports = new GraphQLObjectType({
         cc: { type: GraphQLString },
         bcc: { type: GraphQLString },
         raw_email: { type: GraphQLString },
-        email_to_address: { type: GraphQLString }
+        email_to_address: { type: GraphQLString },
+        is_delete_scheduled: { type: GraphQLBoolean },
+        is_update_scheduled: { type: GraphQLBoolean }
     })
 });

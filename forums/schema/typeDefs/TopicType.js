@@ -20,6 +20,8 @@ module.exports = new GraphQLObjectType({
         message: { type: GraphQLString },
         created_at: { type: GraphQLString },
         updated_at: { type: GraphQLString },
-        posts: { type: GraphQLList(PostType)}
+        posts: { type: GraphQLList(PostType)},
+        is_delete_scheduled: { type: GraphQLBoolean },
+        is_update_scheduled: { type: GraphQLBoolean }
     })
 });
