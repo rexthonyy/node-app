@@ -8,10 +8,12 @@ const {
 
 // data types
 const ForumType = require("./ForumType");
+const TopicType = require("./TopicType");
 
 // resolvers
 const getForumsResolver = require("../resolvers/getForumsResolver");
 const getForumByIdResolver = require("../resolvers/getForumByIdResolver");
+const getTopicByIdResolver = require("../resolvers/getTopicByIdResolver");
 
 
 module.exports = new GraphQLObjectType({
@@ -34,6 +36,14 @@ module.exports = new GraphQLObjectType({
                 forum_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getForumByIdResolver
+        },
+        getTopicById_: {
+            type: TopicType,
+            description: "Returns a topic",
+            args: {
+                topic_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getTopicByIdResolver
         },
 
     })
