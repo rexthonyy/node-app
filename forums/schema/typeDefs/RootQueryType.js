@@ -1,7 +1,15 @@
 const {
     GraphQLObjectType,
-    GraphQLString
+    GraphQLString,
+    GraphQLList
 } = require("graphql");
+
+// data types
+const ForumType = require("./ForumType");
+
+// resolvers
+const getForumsResolver = require("../resolvers/getForumsResolver");
+
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -10,6 +18,11 @@ module.exports = new GraphQLObjectType({
         ping: {
             type: GraphQLString,
             resolve: () => "pong"
+        },
+        getForums_: {
+            type: GraphQLList(ForumType),
+            description: "Returns the list of forums",
+            resolve: getForumsResolver
         }
     })
 });
