@@ -47,7 +47,7 @@ module.exports = new GraphQLObjectType({
             resolve: getTopicByIdResolver
         },
         searchTopics_: {
-            type: TopicType,
+            type: GraphQLList(TopicType),
             description: "Search for a topic",
             args: {
                 query: { type: GraphQLNonNull(GraphQLString) }
