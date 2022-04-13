@@ -2412,7 +2412,7 @@ module.exports = {
     updateKnowledgeBaseCategoryTranslationDeleteSchedule,
 
     getAllKnowledgeBaseArticlesByKnowledgeBaseIdAndLocaleId,
-    getKnowledgeBaseArticleDelayedJobByKnowledgeBaseId
+    getKnowledgeBaseArticleDelayedJobByKnowledgeBaseId,
 
     updateKnowledgeBaseArchivedStatus,
     updateKnowledgeBaseTranslationArchivedStatusByKBId,
