@@ -110,7 +110,9 @@ function createTopicsTB(cb){
         points integer,
         message text, 
         created_at timestamp without time zone not null default timezone('utc'::text, now()), 
-        updated_at timestamp without time zone not null default timezone('utc'::text, now())
+        updated_at timestamp without time zone not null default timezone('utc'::text, now()),
+        is_update_scheduled boolean default false,
+        is_delete_scheduled boolean default false
     )`;
     client.query(query, (err, res) => {
         if(err){
