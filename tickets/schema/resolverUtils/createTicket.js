@@ -34,8 +34,8 @@ module.exports = (title, group, customer, cb) => {
         null,
         null,
         null,
-        null,
-        null,
+        -1,
+        -1,
         new Date().toUTCString(),
         new Date().toUTCString()
     ];
