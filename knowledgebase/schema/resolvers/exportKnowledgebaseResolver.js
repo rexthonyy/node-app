@@ -8,14 +8,32 @@ const getData = async ({kb_id}) => {
 
         //get the knowledge_bases
         exportKnowledgeBaseData(data, kb_id, result => {
+            console.log("knowledge base");
+            console.log(result);
             exportKnowledgeBaseTranslations(result, kb_id, result => {
+                console.log("knowledge base translation");
+                console.log(result);
                 exportKnowledgeBaseCategories(result, kb_id, result => {
+                    console.log("knowledge base categories");
+                    console.log(result);
                     exportKnowledgeBaseCategoryTranslations(result, kb_id, result => {
+                        console.log("knowledge base category translation");
+                        console.log(result);
                         exportKnowledgeBaseCategoryDelayedJobs(result, kb_id, result => {
+                            console.log("knowledge base category delayed jobs");
+                            console.log(result);
                             exportKnowledgeBaseArticles(result, kb_id, result => {
+                                console.log("knowledge base articles");
+                                console.log(result);
                                 exportKnowledgeBaseArticleTranslations(result, kb_id, result => {
+                                    console.log("knowledge base article translation");
+                                    console.log(result);
                                     exportKnowledgeBaseArticleDelayedJobs(result, kb_id, result => {
+                                        console.log("knowledge base article delayed jobs");
+                                        console.log(result);
                                         exportKnowledgeBaseLists(result, kb_id, result => {
+                                            console.log("finish");
+                                            console.log(result);
                                             let filename = "export.csv";
                                             fs.writeFile(`${__dirname}/../../public/export/${filename}`, result, err => {
                                                 if (err) {
