@@ -1,9 +1,9 @@
 const pgQueries = require('../../postgres/kb-queries');
 const fs = require('fs');
 
-const getData = async ({kb_id}) => {
+const getData = async ({knowledge_base_id}) => {
     return new Promise((resolve, reject) => {
-
+        let kb_id = knowledge_base_id;
         let data = "";
 
         //get the knowledge_bases
