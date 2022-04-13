@@ -63,6 +63,7 @@ function exportKnowledgeBaseData(data, kb_id, cb){
         }
 
         let knowledgebases = result.res;
+        console.log(knowledgebases);
         data += "[knowledge_bases]\n";
         data += "id,name,icon,footer,created_at,homepage_layout,category_layout,active,updated_at,front_page,position,ui_color,is_archived\n";
         knowledgebases.forEach(kb => {
