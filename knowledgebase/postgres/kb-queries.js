@@ -2281,6 +2281,24 @@ const getKnowledgeBaseArticleDelayedJobByKnowledgeBaseId = (kb_id, response) => 
     });
 };
 
+
+const getKnowledgeBaseListsByKnowledgeBaseId = (kb_id, response) => {
+    pool.query(`SELECT * from knowledge_base_lists WHERE knowledge_base_id=${kb_id}`, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                tes: 383829
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     updatePositionForKnowledgeBase,
     listKnowledgeBasesById,
@@ -2435,5 +2453,7 @@ module.exports = {
     createActivityStream,
 
     createKnowledgeBaseList,
-    getKnowledgeBaseLists
+    getKnowledgeBaseLists,
+
+    getKnowledgeBaseListsByKnowledgeBaseId
 }
