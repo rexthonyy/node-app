@@ -12,8 +12,6 @@ const getData = ({topic_id, run_at, metadata}) => {
 
         let update_metadata = JSON.stringify(metadata);
 
-        console.log(update_metadata);
-
         let values = [
             topic_id,
             true
@@ -23,8 +21,6 @@ const getData = ({topic_id, run_at, metadata}) => {
             if(result.err){
                 return reject(result.err);
             }
-    
-            console.log(result);
 
             let values1 = [
                 topic_id,
@@ -37,10 +33,7 @@ const getData = ({topic_id, run_at, metadata}) => {
                 if(result.err){
                     return reject(result.err);
                 }
-    
 
-                console.log(result);
-                
                 return resolve({ status: "success", message: "Topic scheduled for update" });
             });
         });
