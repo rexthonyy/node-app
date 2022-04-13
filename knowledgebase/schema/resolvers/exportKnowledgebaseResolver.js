@@ -63,7 +63,6 @@ function exportKnowledgeBaseData(data, kb_id, cb){
         }
 
         let knowledgebases = result.res;
-        console.log(knowledgebases);
         data += "[knowledge_bases]\n";
         data += "id,name,icon,footer,created_at,homepage_layout,category_layout,active,updated_at,front_page,position,ui_color,is_archived\n";
         knowledgebases.forEach(kb => {
@@ -124,10 +123,10 @@ function exportKnowledgeBaseCategoryTranslations(data, kb_id, cb){
         let kb_cat_translations = [];
 
         kb_categories.forEach(cat => {
-            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(res, cat.id, (res_, result) => {
+            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, cat.id, (res_, result) => {
                 if(result.err){
                     result.err.errorIndex = 84239029229292;
-                    return res.status(500).json(result.err);
+                    return checkComplete();
                 }
 
                 result.res.forEach(translation => {
