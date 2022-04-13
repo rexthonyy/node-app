@@ -245,7 +245,7 @@ function exportKnowledgeBaseArticleDelayedJobs(data, kb_id, cb){
         data += "[knowledge_base_article_delayed_jobs]\n";
         data += "id,knowledge_base_id,knowledge_base_article_id,knowledge_base_article_translation_id,run_at,created_at,publish_update_delete\n";
         kb_delayed_jobs.forEach(kb => {
-            data += `${kb.id},${knowledge_base_id},${kb.knowledge_base_article_id},${kb.knowledge_base_article_translation_id},${kb.run_at},${kb.created_at},${kb.publish_update_delete}\n`;
+            data += `${kb.id},${kb.knowledge_base_id},${kb.knowledge_base_article_id},${kb.knowledge_base_article_translation_id},${kb.run_at},${kb.created_at},${kb.publish_update_delete}\n`;
         });
         data += "\n";
         cb(data);
