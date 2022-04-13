@@ -56,7 +56,7 @@ const getData = async ({kb_id}) => {
 
 
 function exportKnowledgeBaseData(data, kb_id, cb){
-    pgQueries.listKnowledgeBasesById(kb_id, result => {
+    pgQueries.listKnowledgeBasesById([kb_id], result => {
         if(result.err){
             console.error(result.err);
             return cb(data);
