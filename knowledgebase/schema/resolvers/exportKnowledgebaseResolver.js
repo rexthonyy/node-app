@@ -185,7 +185,7 @@ function exportKnowledgeBaseArticleTranslations(data, kb_id, cb){
         let kb_art_translations = [];
 
         kb_articles.forEach(art => {
-            pgQueries.getKnowledgeBaseArticleTranslationsByArticleId(art.id, result => {
+            pgQueries.getKnowledgeBaseArticleTranslationByArticleId(art.id, result => {
                 if(result.err){
                     console.error(result.err);
                     return cb(data);

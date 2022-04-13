@@ -2299,6 +2299,24 @@ const getKnowledgeBaseListsByKnowledgeBaseId = (kb_id, response) => {
     });
 };
 
+
+const getKnowledgeBaseListById = (id, response) => {
+    pool.query(`SELECT * from knowledge_base_lists WHERE id=${id}`, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                tes: 383829
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     updatePositionForKnowledgeBase,
     listKnowledgeBasesById,
@@ -2455,5 +2473,6 @@ module.exports = {
     createKnowledgeBaseList,
     getKnowledgeBaseLists,
 
-    getKnowledgeBaseListsByKnowledgeBaseId
+    getKnowledgeBaseListsByKnowledgeBaseId,
+    getKnowledgeBaseListById
 }
