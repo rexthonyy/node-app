@@ -103,8 +103,8 @@ function resolveResponse(resolve, level_categories){
     let num_categories = level_categories.length;
     let count = -1;
     
-    level_categories.forEach(category => {
-        getParentCategoryName(category.parent_id, category.kb_locale_id, name => {
+    level_categories.forEach(cat => {
+        getParentCategoryName(cat.parent_id, cat.kb_locale_id, name => {
             response_data.push({
                 data: {
                     info: {
