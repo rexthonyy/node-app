@@ -10,7 +10,7 @@ let pool = new Pool({
 
 let client = null;
 
-const databaseName = process.env.KB_DB;
+const databaseName = process.env.DB_NAME;
 /*
     first create a postgres user called knowledgebase
     second setup the postgres consts variables

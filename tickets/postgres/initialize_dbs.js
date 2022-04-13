@@ -14,7 +14,7 @@ const databaseName = process.env.DB_NAME;
 
 const init = () => {
     return new Promise((resolve, reject) => {
-        //return resolve();
+        return resolve();
 
         createForumsDatabase(() => {
             console.log("Forums database created successfully");
