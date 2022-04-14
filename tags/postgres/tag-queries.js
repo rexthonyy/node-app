@@ -162,7 +162,7 @@ const searchTagItems = (query, response) => {
 };
 
 const getTagsByO_id = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_item_id=$1, tag_object_id=$2, o_id=$3", values, (err, res) => {
+    pool.query("SELECT * from tags WHERE tag_item_id=$1 AND tag_object_id=$2 AND o_id=$3", values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -179,7 +179,7 @@ const getTagsByO_id = (values, response) => {
 };
 
 const getTagsByObjectIdAndItemId = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_item_id=$2, tag_object_id=$1", values, (err, res) => {
+    pool.query("SELECT * from tags WHERE tag_object_id=$1 AND tag_item_id=$2", values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -231,7 +231,7 @@ const getTagsByObjectId = (values, response) => {
 };
 
 const deleteTagsByO_id = (values, response) => {
-    client.query('DELETE FROM tags WHERE tag_item_id=$1, tag_object_id=$2, o_id=$3', values, (err, res) => {
+    client.query('DELETE FROM tags WHERE tag_item_id=$1 AND tag_object_id=$2 AND o_id=$3', values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,

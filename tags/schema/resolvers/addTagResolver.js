@@ -28,10 +28,10 @@ const getData = ({item, object}) => {
                                 return reject(result1.err);
                             }
     
-                            resolve({ status: "success", message: "Tag created successfully!"});
+                            return resolve({ status: "success", message: "Tag created successfully!"});
                         });
                     }else{
-                        resolve({ status: "success", message: "Tag created successfully!"});
+                        return resolve({ status: "success", message: "Tag created successfully!"});
                     }
                 });
             });
