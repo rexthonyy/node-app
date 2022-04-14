@@ -230,8 +230,8 @@ const getTagsByObjectId = (values, response) => {
     });
 };
 
-const deleteTagsByO_id = (values, response) => {
-    client.query('DELETE FROM tags WHERE tag_item_id=$1 AND tag_object_id=$2 AND o_id=$3', values, (err, res) => {
+const deleteTagsByObjectIdAndItemId = (values, response) => {
+    client.query('DELETE FROM tags WHERE tag_item_id=$1 AND tag_object_id=$2', values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -242,6 +242,40 @@ const deleteTagsByO_id = (values, response) => {
             response({
                 err: null,
                 res: res.rows[0]
+            });
+        }
+    });
+};
+
+const deleteTagItemById = (values, response) => {
+    client.query('DELETE FROM tag_items WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 471
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteTagObjectById = (values, response) => {
+    client.query('DELETE FROM tag_objects WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 471
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
             });
         }
     });
@@ -262,5 +296,7 @@ module.exports = {
 
     getTagsByO_id,
     getTagsByObjectId,
-    deleteTagsByO_id
+    deleteTagsByObjectIdAndItemId,
+    deleteTagItemById,
+    deleteTagObjectById
 }

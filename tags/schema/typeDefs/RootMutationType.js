@@ -10,6 +10,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 
 // resolvers
 const addTagResolver = require("../resolvers/addTagResolver");
+const removeTagResolver = require("../resolvers/removeTagResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -28,5 +29,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: addTagResolver
         },
+        removeTag_: {
+            type: StatusMessageResponseType,
+            description: "Deletes a tag",
+            args: {
+                item: { type: GraphQLNonNull(GraphQLString) },
+                object: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: removeTagResolver
+        }
     })
 });
