@@ -17,9 +17,7 @@ const getData = ({item, object}) => {
                     tag_object_id
                 ], result => {
                     pgQueries.deleteTagItemById([tag_item_id], result => {
-                        pgQueries.deleteTagObjectById([tag_object_id], result => {
-                            return resolve({ status: "success", message: "Tag removed successfully!" });
-                        });
+                        return resolve({ status: "success", message: "Tag removed successfully!" });
                     })
                 });
             });
