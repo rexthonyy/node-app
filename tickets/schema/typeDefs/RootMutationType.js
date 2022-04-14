@@ -15,6 +15,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 // resolvers
 const createTicketResolver = require("../resolvers/createTicketResolver");
 const updateTicketResolver = require("../resolvers/updateTicketResolver");
+const deleteTicketResolver = require("../resolvers/deleteTicketResolver");
 
 
 module.exports = new GraphQLObjectType({
@@ -49,5 +50,13 @@ module.exports = new GraphQLObjectType({
             },
             resolve: updateTicketResolver
         },
+        deleteTicket_: {
+            type: StatusMessageResponseType,
+            description: "Deletes a ticket with the corresponding article",
+            args: {
+                ticket_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: deleteTicketResolver
+        }
     })
 });
