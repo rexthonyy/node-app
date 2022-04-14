@@ -7,15 +7,13 @@ const getData = ({ticket_id, title, group, state, priority, article}) => {
             if(result.err){
                 return reject("Ticket not found : " + result.err);
             }
-    
-            let ticket = result.res;
 
             updateTicketArticle(ticket_id, article, result2 => {
                 if(result2.err){
                     return reject("Article not found : " + result2.err);
                 }
     
-                resolve(ticket);
+                resolve({ status: "success", message: "Ticket updated successfully!"});
             });
         });
     });

@@ -10,6 +10,7 @@ const {
 const TicketType = require("./TicketType");
 const TicketArticleInputType = require("./TicketArticleInputType");
 const TicketArticleUpdateInputType = require("./TicketArticleUpdateInputType");
+const StatusMessageResponseType = require("./StatusMessageResponseType");
 
 // resolvers
 const createTicketResolver = require("../resolvers/createTicketResolver");
@@ -36,7 +37,7 @@ module.exports = new GraphQLObjectType({
             resolve: createTicketResolver
         },
         updateTicket_: {
-            type: TicketType,
+            type: StatusMessageResponseType,
             description: "Updates a ticket with the corresponding article",
             args: {
                 ticket_id: { type: GraphQLNonNull(GraphQLID) },
