@@ -93,6 +93,23 @@ const getTagItemByName = (values, response) => {
     });
 };
 
+const createTag= (values, response) => {
+    client.query('INSERT INTO tags (tag_item_id, tag_object_id, o_id, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: "32f"
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const createTagItem = (values, response) => {
     client.query('INSERT INTO tag_items (name, name_downcase, created_at, updated_at) VALUES($1, $2, $3, $4) RETURNING *', values, (err, res) => {
         if (err) {
@@ -239,6 +256,7 @@ module.exports = {
     searchTagItems,
     getTagsByObjectIdAndItemId,
     getTagItemByName,
+    createTag,
     createTagItem,
     createTagObject,
 
