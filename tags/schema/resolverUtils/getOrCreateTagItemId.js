@@ -1,7 +1,7 @@
 const pgQueries = require('../../postgres/tag-queries');
 
 module.exports = (item, cb) => {
-    let item_lowercase = item.toLowercase().trim();
+    let item_lowercase = item.toLowerCase().trim();
     pgQueries.getTagItemByName([item_lowercase], result => {
         if(result.err){
             console.error(result.err);

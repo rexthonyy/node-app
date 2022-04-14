@@ -25,7 +25,6 @@ const getData = ({item, object}) => {
                             new Date().toUTCString()
                         ], result1 => {
                             if(result1.err){
-                                result1.err.errorIndex = 21;
                                 return reject(result1.err);
                             }
     
