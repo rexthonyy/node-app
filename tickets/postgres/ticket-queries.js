@@ -337,6 +337,23 @@ const getTicketPrioritiesById = (id, response) => {
     });
 };
 
+const getTicketPriorityByName = (name, response) => {
+    pool.query(`SELECT * from ticket_priorities WHERE name ILIKE '%${name}%'`, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                test: 40
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getTicketPriorities = (res_, response) => {
     pool.query("SELECT * from ticket_priorities", (err, res) => {
         if(err){
@@ -1134,6 +1151,7 @@ module.exports = {
     deleteTicketStateType,
 
     getTicketPrioritiesById,
+    getTicketPriorityByName,
     getTicketPriorities,
     createTicketPriorities,
     updateTicketPriorities,

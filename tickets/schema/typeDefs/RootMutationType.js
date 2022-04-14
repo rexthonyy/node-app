@@ -9,9 +9,11 @@ const {
 // data types
 const TicketType = require("./TicketType");
 const TicketArticleInputType = require("./TicketArticleInputType");
+const TicketArticleUpdateInputType = require("./TicketArticleUpdateInputType");
 
 // resolvers
 const createTicketResolver = require("../resolvers/createTicketResolver");
+const updateTicketResolver = require("../resolvers/updateTicketResolver");
 
 
 module.exports = new GraphQLObjectType({
@@ -32,6 +34,19 @@ module.exports = new GraphQLObjectType({
                 article: { type: GraphQLNonNull(TicketArticleInputType) }
             },
             resolve: createTicketResolver
-        }
+        },
+        updateTicket_: {
+            type: TicketType,
+            description: "Updates a ticket with the corresponding article",
+            args: {
+                ticket_id: { type: GraphQLNonNull(GraphQLID) },
+                title: { type: GraphQLNonNull(GraphQLString) },
+                group: { type: GraphQLString },
+                state: { type: GraphQLString },
+                priority: { type: GraphQLString },
+                article: { type: GraphQLNonNull(TicketArticleUpdateInputType) }
+            },
+            resolve: updateTicketResolver
+        },
     })
 });
