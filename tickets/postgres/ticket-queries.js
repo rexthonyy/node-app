@@ -180,6 +180,23 @@ const getTicketStateById = (id, response) => {
     });
 };
 
+const getTicketStateByName = (name, response) => {
+    pool.query(`SELECT * from ticket_states WHERE name ILIKE '%${name}%'`, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getTicketStates = (res_, response) => {
     pool.query("SELECT * from ticket_states", (err, res) => {
         if(err){
@@ -1140,6 +1157,7 @@ module.exports = {
     deleteTicketTimeAccounting,
 
     getTicketStateById,
+    getTicketStateByName,
     getTicketStates,
     createTicketState,
     updateTicketState,
