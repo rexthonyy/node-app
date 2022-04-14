@@ -1,6 +1,6 @@
 const pgQueries = require('../../postgres/tag-queries');
 
-module.exports = (item, cb) => {
+module.exports = (object, cb) => {
     pgQueries.getTagObjectsByName([object], result => {
         if(result.err){
             console.error(result.err);
