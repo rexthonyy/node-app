@@ -8,6 +8,8 @@ const getData = ({object, query}) => {
         let found_tags = [];
         let tag_object_ids = tag_items = [];
 
+        let is_object = object.length > 0;
+
         pgQueries.getTagObjectsByName([object], result => {
             if(!(result.err || result.res.length == 0)){
                 tag_object_ids.push(result.res[0].id);
@@ -31,7 +33,9 @@ const getData = ({object, query}) => {
                             checkComplete();
                         });
                     }else{
-                        found_tags.push(item);
+                        if(!is_object){
+                            found_tags.push(item);
+                        }
                         checkComplete();
                     }
                 });
