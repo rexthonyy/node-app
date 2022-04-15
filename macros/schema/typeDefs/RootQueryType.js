@@ -7,10 +7,10 @@ const {
 } = require("graphql");
 
 //typedefs
-//const SearchTagType = require("./SearchTagType");
+const MacroType = require("./MacroType");
 
 // resolvers
-//const getTagsResolver = require("../resolvers/getTagsResolver");
+const getMacrosResolver = require("../resolvers/getMacrosResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -19,6 +19,11 @@ module.exports = new GraphQLObjectType({
         ping: {
             type: GraphQLString,
             resolve: () => "pong"
+        },
+        getMacros_: {
+            type: GraphQLList(MacroType),
+            description: "Get all macros",
+            resolve: getMacrosResolver
         },
     })
 });

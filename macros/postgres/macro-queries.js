@@ -25,42 +25,8 @@ const client = new Client({
 });
 client.connect();
 
-const getTagObjectById = (values, response) => {
-    pool.query("SELECT * from tag_objects WHERE id=$1", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 201
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getTagObjectsByName = (values, response) => {
-    pool.query("SELECT * from tag_objects WHERE name=$1", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 201
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getTagItemById = (values, response) => {
-    pool.query("SELECT * from tag_items WHERE id=$1", values, (err, res) => {
+const getGroupMacrosByMacroId = (values, response) => {
+    pool.query("SELECT * from groups_macros WHERE macro_id=$1", values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -76,8 +42,8 @@ const getTagItemById = (values, response) => {
     });
 };
 
-const getTagItemByName = (values, response) => {
-    pool.query("SELECT * from tag_items WHERE name_downcase=$1", values, (err, res) => {
+const getMacros = response => {
+    pool.query("SELECT * from macros", (err, res) => {
         if(err){
             response({
                 err: err,
@@ -129,13 +95,8 @@ const createGroupMacros = (values, response) => {
 
 
 module.exports = {
-    getTagObjectById,
-    getTagObjectsByName,
-    getTagItemById,
-    getTagItemByName,
-
-
-
     createMacros,
-    createGroupMacros
+    createGroupMacros,
+    getMacros,
+    getGroupMacrosByMacroId
 };
