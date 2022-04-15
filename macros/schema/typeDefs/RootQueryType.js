@@ -8,6 +8,7 @@ const {
 
 //typedefs
 const MacroType = require("./MacroType");
+const MacroActionType = require("./MacroActionType");
 
 // resolvers
 const getMacrosResolver = require("../resolvers/getMacrosResolver");
