@@ -29,7 +29,7 @@ module.exports = new GraphQLObjectType({
                 group_ids: { type: GraphQLList(GraphQLID) },
                 perform: { type: GraphQLNonNull(GraphQLString) },
                 active: { type: GraphQLNonNull(GraphQLBoolean) },
-                ux_flow_next_up: { type: GraphQLBoolean },
+                ux_flow_next_up: { type: GraphQLString },
                 note: { type: GraphQLString },
                 updated_by_id: { type: GraphQLID },
                 created_by_id: { type: GraphQLID },
