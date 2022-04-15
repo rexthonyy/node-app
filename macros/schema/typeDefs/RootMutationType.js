@@ -13,6 +13,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 // resolvers
 const createMacrosResolver = require("../resolvers/createMacrosResolver");
 const updateMacrosResolver = require("../resolvers/updateMacrosResolver");
+const deleteMacrosResolver = require("../resolvers/deleteMacrosResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -55,5 +56,13 @@ module.exports = new GraphQLObjectType({
             },
             resolve: updateMacrosResolver
         },
+        deleteMacro_: {
+            type: StatusMessageResponseType,
+            description: "Deletes a macro",
+            args: {
+                macro_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: deleteMacrosResolver
+        }
     })
 });

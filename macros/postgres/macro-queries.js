@@ -144,6 +144,23 @@ const deleteGroupMacrosByMacroId = (values, response) => {
     });
 };
 
+const deleteMacrosById = (values, response) => {
+    client.query('DELETE FROM macros WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     createMacros,
     createGroupMacros,
@@ -151,5 +168,6 @@ module.exports = {
     getMacrosById,
     getGroupMacrosByMacroId,
     updateMacro,
-    deleteGroupMacrosByMacroId
+    deleteGroupMacrosByMacroId,
+    deleteMacrosById
 };
