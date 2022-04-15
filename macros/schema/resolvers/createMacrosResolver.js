@@ -1,4 +1,4 @@
-const pgQueries = require('../../postgres/macros-queries');
+const pgQueries = require('../../postgres/macro-queries');
 
 const getData = ({name, group_ids, perform, active, ux_flow_next_up, note, updated_by_id, created_by_id, created_at, updated_at}) => {
     return new Promise((resolve, reject) => {
