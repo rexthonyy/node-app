@@ -43,6 +43,5 @@ const getData = ({ article_id, kb_locale_id }) => {
 }
 
 module.exports = async (parents, args) => {
-    let result = await getData(args);
-    return result;
+    return await getData(args);
 }

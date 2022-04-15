@@ -31,7 +31,7 @@ const getGroupMacrosByMacroId = (values, response) => {
             response({
                 err: err,
                 res: null,
-                test: 202
+                code: 201
             });
         }else{
             response({
@@ -48,7 +48,7 @@ const getMacrosById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                test: 202
+                code: 202
             });
         }else{
             response({
@@ -65,7 +65,7 @@ const getMacroActions = response => {
             response({
                 err: err,
                 res: null,
-                test: 202
+                code: 203
             });
         }else{
             response({
@@ -82,7 +82,7 @@ const getMacros = response => {
             response({
                 err: err,
                 res: null,
-                test: 202
+                code: 204
             });
         }else{
             response({
@@ -99,7 +99,7 @@ const createMacros = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: "32f"
+                code: 205
             });
         } else {
             response({
@@ -116,7 +116,7 @@ const createGroupMacros = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: "32f"
+                code: 206
             });
         } else {
             response({
@@ -133,7 +133,7 @@ const updateMacro = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: 27
+                code: 207
             });
         } else {
             response({
@@ -150,7 +150,7 @@ const deleteGroupMacrosByMacroId = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: 8
+                code: 208
             });
         } else {
             response({
@@ -167,7 +167,7 @@ const deleteMacrosById = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: 8
+                code: 209
             });
         } else {
             response({

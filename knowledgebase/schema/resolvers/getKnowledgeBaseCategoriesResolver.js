@@ -170,6 +170,5 @@ function filterOutArchive(obj){
 }
 
 module.exports = async (parents, args) => {
-    let result = await getData(args);
-    return result;
+    return await getData(args);
 }

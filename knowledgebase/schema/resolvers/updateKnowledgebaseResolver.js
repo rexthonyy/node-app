@@ -210,6 +210,5 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
 }
 
 module.exports = async (parents, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

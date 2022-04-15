@@ -100,6 +100,5 @@ const getData = ({knowledge_base_article_translation_id, schedule_type}) => {
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

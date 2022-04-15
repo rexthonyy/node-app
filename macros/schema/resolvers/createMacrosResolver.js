@@ -29,7 +29,7 @@ const getData = ({name, group_ids, perform, active, ux_flow_next_up, note, updat
                     macro_id,
                     group_id
                 ];
-                pgQueries.createGroupMacros(values, result => {
+                pgQueries.createGroupMacros(values, res => {
                     checkComplete();
                 });
             });
@@ -50,6 +50,5 @@ const getData = ({name, group_ids, perform, active, ux_flow_next_up, note, updat
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

@@ -40,6 +40,5 @@ const getData = ({post_id, run_at}) => {
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

@@ -7,14 +7,11 @@ const getData = () => {
                 return reject(result.err);
             }
 
-            let macro_actions = result.res;
-
-            resolve(macro_actions);
+            resolve(result.res);
         });
     });
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData();
-    return result;
+    return await getData();
 }

@@ -12,6 +12,5 @@ const getData = ({ticket_id}) => {
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

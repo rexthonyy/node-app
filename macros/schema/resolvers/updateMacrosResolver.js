@@ -59,6 +59,5 @@ const getData = ({macro_id, name, group_ids, perform, active, ux_flow_next_up, n
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

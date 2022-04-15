@@ -3,7 +3,7 @@ const pgQueries = require('../../postgres/macro-queries');
 const getData = ({macro_id}) => {
     return new Promise((resolve, reject) => {
         pgQueries.deleteMacrosById([macro_id], result => {
-            pgQueries.deleteGroupMacrosByMacroId([macro_id], result => {
+            pgQueries.deleteGroupMacrosByMacroId([macro_id], res => {
                 resolve({
                     status: "success",
                     message: "Macro deleted successfully!"
@@ -14,6 +14,5 @@ const getData = ({macro_id}) => {
 }
 
 module.exports = async (parent, args) => {
-    let result = await getData(args)
-    return result;
+    return await getData(args);
 }

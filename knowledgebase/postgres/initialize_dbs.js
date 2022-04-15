@@ -29,9 +29,8 @@ const init = () => {
 }
 
 function createKnowledgeBaseDatabase(cb){
-    pool.query(`CREATE DATABASE ${databaseName}`, (err, res) => {
+    pool.query("CREATE DATABASE $1", [databaseName], (err, res) => {
         if(err){
-            //console.log(err);
             return cb();
         }
         pool.end();

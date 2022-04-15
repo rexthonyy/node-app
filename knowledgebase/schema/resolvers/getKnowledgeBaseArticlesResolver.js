@@ -106,6 +106,5 @@ const getData = ({ knowledge_base_id, category_id, kb_locale_id, parent_id, leve
 }
 
 module.exports = async (parents, args) => {
-    let result = await getData(args);
-    return result;
+    return await getData(args);
 }
