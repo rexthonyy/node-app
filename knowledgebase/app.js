@@ -12,7 +12,7 @@ require('./postgres/initialize_dbs').init()
 
   //const express = require('express');
   // const { postgraphile } = require("postgraphile");
-  const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
+  //const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
 
   // const app = express();
 
@@ -58,7 +58,7 @@ require('./postgres/initialize_dbs').init()
 
   //app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
       
-  app.use('/knowledgebase', knowledgeBaseRouter);
+  //app.use('/knowledgebase', knowledgeBaseRouter);
 
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(
