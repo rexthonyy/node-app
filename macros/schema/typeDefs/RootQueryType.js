@@ -37,7 +37,7 @@ module.exports = new GraphQLObjectType({
             resolve: getMacroResolver
         },
         getMacroActions_: {
-            type: MacroActionType,
+            type: GraphQLList(MacroActionType),
             description: "Gets all macro actions",
             resolve: getMacroActionsResolver
         },
