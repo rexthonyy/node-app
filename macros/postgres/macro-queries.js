@@ -42,6 +42,23 @@ const getGroupMacrosByMacroId = (values, response) => {
     });
 };
 
+const getMacrosById = (values, response) => {
+    pool.query("SELECT * from macros WHERE id=$1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                test: 202
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getMacros = response => {
     pool.query("SELECT * from macros", (err, res) => {
         if(err){
@@ -93,10 +110,46 @@ const createGroupMacros = (values, response) => {
     });
 };
 
+const updateMacro = (values, response) => {
+    client.query('UPDATE macros SET name=$2, perform=$3, active=$4, ux_flow_next_up=$5, note=$6, updated_by_id=$7, created_by_id=$8, created_at=$9, updated_at=$10 WHERE id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 27
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const deleteGroupMacrosByMacroId = (values, response) => {
+    client.query('DELETE FROM groups_macros WHERE macro_id=$1', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 
 module.exports = {
     createMacros,
     createGroupMacros,
     getMacros,
-    getGroupMacrosByMacroId
+    getMacrosById,
+    getGroupMacrosByMacroId,
+    updateMacro,
+    deleteGroupMacrosByMacroId
 };

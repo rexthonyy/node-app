@@ -12,6 +12,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 
 // resolvers
 const createMacrosResolver = require("../resolvers/createMacrosResolver");
+const updateMacrosResolver = require("../resolvers/updateMacrosResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -37,6 +38,22 @@ module.exports = new GraphQLObjectType({
                 updated_at: { type: GraphQLString }
             },
             resolve: createMacrosResolver
+        },
+        updateMacro_: {
+            type: StatusMessageResponseType,
+            description: "Updates a macro",
+            args: {
+                macro_id: { type: GraphQLNonNull(GraphQLID) },
+                name: { type: GraphQLNonNull(GraphQLString) },
+                group_ids: { type: GraphQLList(GraphQLID) },
+                perform: { type: GraphQLNonNull(GraphQLString) },
+                active: { type: GraphQLNonNull(GraphQLBoolean) },
+                ux_flow_next_up: { type: GraphQLString },
+                note: { type: GraphQLString },
+                updated_by_id: { type: GraphQLID },
+                created_by_id: { type: GraphQLID }
+            },
+            resolve: updateMacrosResolver
         },
     })
 });
