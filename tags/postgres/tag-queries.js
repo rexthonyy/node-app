@@ -93,7 +93,7 @@ const getTagItemByName = (values, response) => {
     });
 };
 
-const createTag= (values, response) => {
+const createTag = (values, response) => {
     client.query('INSERT INTO tags (tag_item_id, tag_object_id, o_id, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', values, (err, res) => {
         if (err) {
             response({

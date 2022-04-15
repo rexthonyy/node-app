@@ -10,9 +10,9 @@ const pool = new Pool({
 
 pool.query('SELECT NOW()', (err, res) => {
     if(err){
-        console.log("tags databse initialization failed!!!");
+        console.log("macros databse initialization failed!!!");
     }else{
-        console.log("tags databse initialized successfully!!!");
+        console.log("macros databse initialized successfully!!!");
     }
 });
 
@@ -93,8 +93,8 @@ const getTagItemByName = (values, response) => {
     });
 };
 
-const createTag= (values, response) => {
-    client.query('INSERT INTO tags (tag_item_id, tag_object_id, o_id, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', values, (err, res) => {
+const createMacros = (values, response) => {
+    client.query('INSERT INTO macros (name, perform, active, ux_flow_next_up, note, updated_by_id, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *', values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -110,8 +110,8 @@ const createTag= (values, response) => {
     });
 };
 
-const createTagItem = (values, response) => {
-    client.query('INSERT INTO tag_items (name, name_downcase, created_at, updated_at) VALUES($1, $2, $3, $4) RETURNING *', values, (err, res) => {
+const createGroupMacros = (values, response) => {
+    client.query('INSERT INTO groups_macros (macro_id, group_id) VALUES($1, $2) RETURNING *', values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -122,160 +122,6 @@ const createTagItem = (values, response) => {
             response({
                 err: null,
                 res: res.rows[0]
-            });
-        }
-    });
-};
-
-const createTagObject = (values, response) => {
-    client.query('INSERT INTO tag_objects (name, created_at, updated_at) VALUES($1, $2, $3) RETURNING *', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: "32ds"
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
-
-const searchTagItems = (query, response) => {
-    pool.query(`SELECT * from tag_items WHERE name ILIKE '%${query}%'`, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 121
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getTagsByO_id = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_item_id=$1 AND tag_object_id=$2 AND o_id=$3", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 75
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getTagsByObjectIdAndItemId = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_object_id=$1 AND tag_item_id=$2", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 75
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getTagsByItemId = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_item_id=$1", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 75
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-
-const getTagsByObjectId = (values, response) => {
-    pool.query("SELECT * from tags WHERE tag_object_id=$1", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                test: 75
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteTagsByObjectIdAndItemId = (values, response) => {
-    client.query('DELETE FROM tags WHERE tag_item_id=$1 AND tag_object_id=$2', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 471
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
-
-const deleteTagItemById = (values, response) => {
-    client.query('DELETE FROM tag_items WHERE id=$1', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 471
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteTagObjectById = (values, response) => {
-    client.query('DELETE FROM tag_objects WHERE id=$1', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 471
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
             });
         }
     });
@@ -286,17 +132,10 @@ module.exports = {
     getTagObjectById,
     getTagObjectsByName,
     getTagItemById,
-    getTagsByItemId,
-    searchTagItems,
-    getTagsByObjectIdAndItemId,
     getTagItemByName,
-    createTag,
-    createTagItem,
-    createTagObject,
 
-    getTagsByO_id,
-    getTagsByObjectId,
-    deleteTagsByObjectIdAndItemId,
-    deleteTagItemById,
-    deleteTagObjectById
-}
+
+
+    createMacros,
+    createGroupMacros
+};

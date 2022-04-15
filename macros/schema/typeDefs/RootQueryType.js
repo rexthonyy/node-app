@@ -19,6 +19,6 @@ module.exports = new GraphQLObjectType({
         ping: {
             type: GraphQLString,
             resolve: () => "pong"
-        }
+        },
     })
 });
