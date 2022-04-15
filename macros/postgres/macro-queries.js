@@ -59,6 +59,23 @@ const getMacrosById = (values, response) => {
     });
 };
 
+const getMacroActions = response => {
+    pool.query("SELECT * from macro_actions", (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                test: 202
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getMacros = response => {
     pool.query("SELECT * from macros", (err, res) => {
         if(err){
@@ -165,6 +182,7 @@ module.exports = {
     createMacros,
     createGroupMacros,
     getMacros,
+    getMacroActions,
     getMacrosById,
     getGroupMacrosByMacroId,
     updateMacro,
