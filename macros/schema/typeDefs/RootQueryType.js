@@ -11,6 +11,7 @@ const MacroType = require("./MacroType");
 
 // resolvers
 const getMacrosResolver = require("../resolvers/getMacrosResolver");
+const getMacroResolver = require("../resolvers/getMacroResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -25,5 +26,13 @@ module.exports = new GraphQLObjectType({
             description: "Get all macros",
             resolve: getMacrosResolver
         },
+        getMacro_: {
+            type: MacroType,
+            description: "Gets a macro",
+            args: {
+                macro_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getMacroResolver
+        }
     })
 });
