@@ -210,12 +210,12 @@ function createKnowledgeBaseArticleTranslation(
                                 run_at,
                                 "publish"
                             ];
-                            pgQueries.createKnowledgeBaseArticleDelayedJob(values3, result1 => {
-                                if(result1.err){
-                                    return reject(result1.err);
+                            pgQueries.createKnowledgeBaseArticleDelayedJob(values3, result3 => {
+                                if(result3.err){
+                                    return reject(result3.err);
                                 }
                 
-                                articleTranslation.schedule_at = result1.res.run_at; 
+                                articleTranslation.schedule_at = result3.res.run_at; 
                 
                                 checkComplete();
                             });
@@ -242,5 +242,5 @@ function createKnowledgeBaseArticleTranslation(
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

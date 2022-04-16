@@ -280,5 +280,5 @@ function exportKnowledgeBaseLists(data, kb_id, cb){
 
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

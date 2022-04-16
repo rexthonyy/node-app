@@ -29,10 +29,10 @@ const getData = ({knowledge_base_category_translation_id, run_at, knowledge_base
                 consts.STATUS_COLOR.archive_scheduled
             ];
     
-            pgQueries.updateKnowledgeBaseCategoryTranslationDeleteSchedule(values, result => {
-                if(result.err){
-                    result.err.errorIndex = 36221;
-                    return reject(result.err);
+            pgQueries.updateKnowledgeBaseCategoryTranslationDeleteSchedule(values, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 36221;
+                    return reject(result1.err);
                 }
     
                 resolve({ status: "success", message: "Knowledge base category translation scheduled for deletion" });
@@ -42,5 +42,5 @@ const getData = ({knowledge_base_category_translation_id, run_at, knowledge_base
 }
 
 module.exports = async (parent, args) => {
-    return await getData(args);
+    return getData(args);
 }

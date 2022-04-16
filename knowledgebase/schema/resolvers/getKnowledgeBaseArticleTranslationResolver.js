@@ -20,15 +20,15 @@ const getData = ({ article_id, kb_locale_id }) => {
     
             if(article.is_archived) return reject({ status: 401, message: "Article archived" });
     
-            pgQueries.getKnowledgeBaseArticleTranslationByArticleIdAndLocaleId(article_id, kb_locale_id, result => {
-                if(result.err){
-                    result.err.errorIndex = 88892;
-                    return reject(result.err);
+            pgQueries.getKnowledgeBaseArticleTranslationByArticleIdAndLocaleId(article_id, kb_locale_id, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 88892;
+                    return reject(result1.err);
                 }
     
-                if(result.res.length == 0) return reject({ status: 404, message: "Article translation not found" });
+                if(result1.res.length == 0) return reject({ status: 404, message: "Article translation not found" });
     
-                let article_translation = result.res[0];
+                let article_translation = result1.res[0];
     
                 if(article_translation.is_archived) return reject({ status: 401, message: "Article translation archived" });
     
@@ -43,5 +43,5 @@ const getData = ({ article_id, kb_locale_id }) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

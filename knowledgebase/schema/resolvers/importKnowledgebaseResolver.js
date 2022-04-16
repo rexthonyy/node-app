@@ -5,7 +5,7 @@ const consts = require('../../consts');
 const fs = require('fs');
 
 const getData = async ({image}) => {
-    const { filename, mimetype, createReadStream } = await image;
+    const { filename, createReadStream } = await image;
     const stream = createReadStream();
     const uploadDir = `${__dirname}/../../public/${filename}`;
     return new Promise((resolve, reject) => {
@@ -23,5 +23,5 @@ const getData = async ({image}) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

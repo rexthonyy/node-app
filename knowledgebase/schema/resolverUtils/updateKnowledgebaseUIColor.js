@@ -62,7 +62,7 @@ module.exports = (knowledge_base_id, cb) => {
                 });
 
                 if(numOrange == numTrans){
-                    primary_color = consts.STATUS_COLOR.draft;;
+                    primary_color = consts.STATUS_COLOR.draft;
                 }
 
                 if(numGreen == numTrans){

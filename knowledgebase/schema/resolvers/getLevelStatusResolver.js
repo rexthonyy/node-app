@@ -6,9 +6,24 @@ const getCategoriesAtLevel = require('../resolverUtils/getCategoriesAtLevel');
 const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
     return new Promise((resolve, reject) => {
 
-        let numCategories = numArticles = 0;
-        let numCatRed = numCatOrange = numCatBlue = numCatGreen = numCatYellow = numCatGray = numCatWhite = 0;
-        let numArtRed = numArtOrange = numArtBlue = numArtGreen = numArtYellow = numArtGray = numArtWhite = 0;
+        let numCategories = 0;
+        let numArticles = 0;
+
+        let numCatRed = 0;
+        let numCatOrange = 0;
+        let numCatBlue = 0;
+        let numCatGreen = 0;
+        let numCatYellow = 0;
+        let numCatGray = 0;
+        let numCatWhite = 0;
+
+        let numArtRed = 0;
+        let numArtOrange = 0;
+        let numArtBlue = 0;
+        let numArtGreen = 0;
+        let numArtYellow = 0;
+        let numArtGray = 0;
+        let numArtWhite = 0;
 
         getCategoriesAndSubCategories(knowledge_base_id, kb_locale_id, -1, tree => {
             //filter the result bashed on the level
@@ -181,5 +196,5 @@ const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

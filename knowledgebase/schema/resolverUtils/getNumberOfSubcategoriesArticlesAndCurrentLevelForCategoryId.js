@@ -8,8 +8,8 @@ let getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = (knowledge_ba
         getStatusOfSubCategories(category_id, status => {
             pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base_id, category_id, result => {
                 let numSubcategories = result.res.length;
-                pgQueries.getKnowledgeBaseArticlesByKnowledgeBaseCategoryId(category_id, result => {
-                    let numArticles = result.res.length;
+                pgQueries.getKnowledgeBaseArticlesByKnowledgeBaseCategoryId(category_id, result1 => {
+                    let numArticles = result1.res.length;
                     cb({
                         level: final_level,
                         num_categories: numSubcategories,

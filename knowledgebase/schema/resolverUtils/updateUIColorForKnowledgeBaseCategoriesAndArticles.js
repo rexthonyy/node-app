@@ -57,13 +57,13 @@ let updateUIColorForKnowledgeBaseCategoriesAndArticles = (knowledge_base_id, cat
                     count = -1;
 
                     article_translations.forEach(translation => {
-                        publish_now = translation.publish_now;
-                        active = translation.active;
-                        archived = translation.is_archived;
-                        is_delete_scheduled = translation.is_delete_scheduled;
-                        is_update_scheduled = translation.is_update_scheduled;
+                        let publish_now = translation.publish_now;
+                        let active = translation.active;
+                        let archived = translation.is_archived;
+                        let is_delete_scheduled = translation.is_delete_scheduled;
+                        let is_update_scheduled = translation.is_update_scheduled;
             
-                        ui_color = consts.STATUS_COLOR.pending_action;
+                       let ui_color;
             
                         if(active){
                             if(publish_now){

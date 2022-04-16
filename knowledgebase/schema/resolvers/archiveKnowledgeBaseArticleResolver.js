@@ -34,5 +34,5 @@ function archiveSubCategory(category_id, cb){
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

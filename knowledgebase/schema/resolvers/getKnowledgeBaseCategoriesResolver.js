@@ -51,11 +51,11 @@ const getData = ({ knowledge_base_id, kb_locale_id, level, parent_id }) => {
         
                             kbCategoryTranslation.schedule_at = null;
                             
-                            getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base_id, kbCategory.id, result => {
+                            getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(knowledge_base_id, kbCategory.id, result3 => {
                                 kbCategoryTranslation.stat = {
-                                    level: result.level,
-                                    num_categories: result.num_categories,
-                                    num_articles: result.num_articles
+                                    level: result3.level,
+                                    num_categories: result3.num_categories,
+                                    num_articles: result3.num_articles
                                 };
                 
                                 if(kbCategoryTranslation.publish_now){
@@ -170,5 +170,5 @@ function filterOutArchive(obj){
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

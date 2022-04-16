@@ -106,7 +106,7 @@ const getData = ({
                     }else{
                         let run_at = schedule_at;
             
-                        let values = [
+                        values = [
                             knowledge_base_category_translation_id,
                             run_at,
                             knowledge_base_id,
@@ -144,5 +144,5 @@ const getData = ({
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

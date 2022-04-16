@@ -73,8 +73,8 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
     
                         kb_locale_ids.forEach(locale => {
                             // get all categories
-                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result1 => {
-                                let category_translations = result1.res;
+                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result3 => {
+                                let category_translations = result3.res;
                                 pgQueries.getKnowledgeBaseArticleTranslationByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result2 => {
                                     let article_translations = result2.res;
     
@@ -139,7 +139,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
                                             let num_art_translations = reference_article_translations.length;
     
                                             reference_article_translations.forEach(art => {
-                                                let data = {
+                                                let data1 = {
                                                     title: art.title,
                                                     kb_locale_id: locale_id,
                                                     created_at: new Date().toUTCString(),
@@ -159,7 +159,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
                                                     knowledge_base_id: art.knowledge_base_id
                                                 };
                 
-                                                pgQueries.createKnowledgeBaseArticleTranslation(data, result4 => {
+                                                pgQueries.createKnowledgeBaseArticleTranslation(data1, () => {
                                                     checkComplete3();
                                                 });
                                             });
@@ -208,6 +208,6 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
     });
 }
 
-module.exports = async (parents, args) => {
-    return await getData(args);
+module.exports = async (args) => {
+    return getData(args);
 }

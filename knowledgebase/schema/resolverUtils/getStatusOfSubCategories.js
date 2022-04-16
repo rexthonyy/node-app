@@ -25,8 +25,8 @@ let getStatusOfSubCategories = (category_id, cb) => {
         let translations = [];
 
         categories.forEach(category => {
-            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, category.id, (_null, result) => {
-                let category_translations = result.res;
+            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, category.id, (_null, result1) => {
+                let category_translations = result1.res;
 
                 category_translations.forEach(translation => {
                     translations.push(translation);
@@ -74,10 +74,10 @@ let getStatusOfSubCategories = (category_id, cb) => {
                         break;
                     }
 
-                    let category_id = trans.category_id;
+                    let cat_id = tr;
 
-                    pgQueries.getKnowledgeBaseArticleTranslationsByCategoryId(category_id, result => {
-                        let article_translations = result.res;
+                    pgQueries.getKnowledgeBaseArticleTranslationsByCategoryId(cat_id, result2 => {
+                        let article_translations = result2.res;
                         if(article_translations){
                             article_translations.forEach(art_trans => {
                                 switch(art_trans.ui_color){

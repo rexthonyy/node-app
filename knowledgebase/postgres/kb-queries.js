@@ -584,7 +584,7 @@ const updateKnowledgeBaseCategoryTranslation = (category_id, kb_locale_id, value
             response({
                 err: err.stack,
                 res: null,
-                code: 231
+                code: 831
             });
         } else {
             response({
@@ -811,13 +811,12 @@ const updateKnowledgeBaseArticle = (article_id, data, response) => {
 };
 
 const deleteKnowledgeBaseArticle = (data, response) => {
-    const values = [data.id];
-    client.query('DELETE FROM knowledge_base_articles WHERE id=$1', values, (err, res) => {
+    client.query('DELETE FROM knowledge_base_articles WHERE id=$1', [data.id], (err, res) => {
         if (err) {
             response({
                 err: err.stack,
                 res: null,
-                code: 234
+                code: 2034
             });
         } else {
             response({
@@ -1351,7 +1350,7 @@ const updateDelayedJob = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 234
+                code: 1034
             });
         } else {
             response({
@@ -2201,7 +2200,7 @@ const updateKnowledgeBaseTranslationUiColor = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 900
+                code: 910
             });
         } else {
             response({
@@ -2219,7 +2218,7 @@ const createActivityStream = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 1190
+                code: 1110
             });
         } else {
             response({

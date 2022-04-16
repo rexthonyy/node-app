@@ -19,8 +19,6 @@ const databaseName = process.env.DB_NAME;
 
 const init = () => {
     return new Promise((resolve, reject) => {
-        //resolve();
-
         createKnowledgeBaseDatabase(() => {
             console.log("Knowledge base database created successfully");
             resolve();
@@ -108,6 +106,7 @@ function createKnowledgeBaseTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 2;
             console.log(err);
         }
         cb();
@@ -131,6 +130,7 @@ function createKnowledgeBaseTranslationsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 21;
             console.log(err);
         }
         cb();
@@ -150,6 +150,7 @@ function createKnowledgeBaseCategoriesTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 200;
             console.log(err);
         }
         cb();
@@ -183,6 +184,7 @@ function createKnowledgeBaseCategoryTranslationsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 321;
             console.log(err);
         }
         cb();
@@ -201,6 +203,7 @@ function createKnowledgeBaseCategoryDelayedJobsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 311;
             console.log(err);
         }
         cb();
@@ -220,6 +223,7 @@ function createKnowledgeBaseArticlesTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 301;
             console.log(err);
         }
         cb();
@@ -253,6 +257,7 @@ function createKnowledgeBaseArticleTranslationsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 391;
             console.log(err);
         }
         cb();
@@ -272,6 +277,7 @@ function createKnowledgeBaseArticleDelayedJobsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 322;
             console.log(err);
         }
         cb();
@@ -290,6 +296,7 @@ function createKnowledgeBaseListTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 324;
             console.log(err);
         }
         cb();
@@ -307,6 +314,7 @@ function createActivityStreamsTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 412;
             console.log(err);
         }
         cb();
@@ -327,6 +335,7 @@ function createLocalesTB(cb){
     )`;
     client.query(query, (err, res) => {
         if(err){
+            err.errorIndex = 122;
             console.log(err);
         }
     
@@ -381,7 +390,8 @@ function createLocalesTB(cb){
 
         client.query(query, (err, res) => {
             if (err) {
-                console.error(err);
+                err.errorIndex = 500;
+                console.log(err);
             } 
             cb();
         });

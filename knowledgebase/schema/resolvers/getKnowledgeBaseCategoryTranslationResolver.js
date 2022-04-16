@@ -32,11 +32,11 @@ const getData = ({ category_id, kb_locale_id }) => {
                 translation.knowledge_base_id = category.knowledge_base_id;
                 translation.position = category.position;
     
-                getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(category.knowledge_base_id, category.id, result1 => {
+                getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(category.knowledge_base_id, category.id, result2 => {
                     translation.stat = {
-                        level: result1.level,
-                        num_categories: result1.num_categories,
-                        num_articles: result1.num_articles
+                        level: result2.level,
+                        num_categories: result2.num_categories,
+                        num_articles: result2.num_articles
                     };
                     resolveResponse(resolve, translation);
                 });
@@ -92,5 +92,5 @@ function resolveResponse(resolve, cat){
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

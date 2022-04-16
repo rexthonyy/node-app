@@ -178,5 +178,5 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

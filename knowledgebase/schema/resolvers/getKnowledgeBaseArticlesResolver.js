@@ -67,14 +67,14 @@ const getData = ({ knowledge_base_id, category_id, kb_locale_id, parent_id, leve
                     if(article.is_archived){
                         checkComplete();
                     }else{
-                        pgQueries.getKnowledgeBaseArticleTranslationByArticleIdAndLocaleId(article.id, kb_locale_id, result => {
-                            if(result.err){
-                                result.err.errorIndex = 88892;
-                                return reject(result.err);
+                        pgQueries.getKnowledgeBaseArticleTranslationByArticleIdAndLocaleId(article.id, kb_locale_id, result1 => {
+                            if(result1.err){
+                                result1.err.errorIndex = 88892;
+                                return reject(result1.err);
                             }
                 
-                            if(result.res.length > 0){
-                                let article_translation = result.res[0];
+                            if(result1.res.length > 0){
+                                let article_translation = result1.res[0];
                     
                                 if(!article_translation.is_archived){
                                     article_translation.tooltip = consts.STATUS_COLOR_TEXT[article_translation.ui_color];
@@ -106,5 +106,5 @@ const getData = ({ knowledge_base_id, category_id, kb_locale_id, parent_id, leve
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

@@ -23,5 +23,5 @@ const getData = ({knowledge_base_id}) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

@@ -81,5 +81,5 @@ const getData = ({name, icon, footer, homepage_layout, category_layout, active, 
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }

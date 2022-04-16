@@ -20,5 +20,5 @@ const getData = ({ knowledge_base_id, list_type }) => {
 }
 
 module.exports = async (parents, args) => {
-    return await getData(args);
+    return getData(args);
 }
