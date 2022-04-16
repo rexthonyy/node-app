@@ -41,6 +41,6 @@ const getData = () => {
     });
 }
 
-module.exports = async () => {
-    return await getData(args);
+module.exports = async (parent, args) => {
+    return await getData();
 }

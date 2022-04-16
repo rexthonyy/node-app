@@ -75,13 +75,13 @@ const getData = ({
                 data1.ui_color = consts.STATUS_COLOR.published;
             }
     
-            pgQueries.updateKnowledgeBaseArticleTranslation(article_id, kb_locale_id, data1, result => {
-                if(result.err){
-                    result.err.errorIndex = 83782;
-                    return reject(result.err);
+            pgQueries.updateKnowledgeBaseArticleTranslation(article_id, kb_locale_id, data1, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 83782;
+                    return reject(result1.err);
                 }
     
-                let knowledge_base_article_translation = result.res;
+                let knowledge_base_article_translation = result1.res;
                 let knowledge_base_article_translation_id = knowledge_base_article_translation.id;
     
                 pgQueries.deleteKnowledgeBaseArticleDelayedJob([knowledge_base_article_translation_id], result2 => {
@@ -114,9 +114,9 @@ const getData = ({
                                     run_at,
                                     "publish"
                                 ];
-                                pgQueries.createKnowledgeBaseArticleDelayedJob(values3, result1 => {
-                                    if(result1.err){
-                                        return reject(result1.err);
+                                pgQueries.createKnowledgeBaseArticleDelayedJob(values3, result3 => {
+                                    if(result3.err){
+                                        return reject(result3.err);
                                     }
                         
                                     resolve({

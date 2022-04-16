@@ -14,7 +14,7 @@ let updateUIColorForKnowledgeBase = (knowledge_base_id, cb) => {
             let kb_translation_id = kb_translation.id;
             let kb_locale_id = kb_translation.kb_locale_id;
             
-            pgQueries.getKnowledgeBaseCategoryTranslationByLocaleId(kb_locale_id, result => {
+            pgQueries.getKnowledgeBaseCategoryTranslationByLocaleId(kb_locale_id, result1 => {
 
                 let primary_color = consts.STATUS_COLOR.pending_action;
 
@@ -26,8 +26,8 @@ let updateUIColorForKnowledgeBase = (knowledge_base_id, cb) => {
                 let numYellow = 0;
                 let numWhite = 0;
 
-                let translations = result.res;
-                let numTranslations = translations.length;
+                let translations = result1.res;
+                let numTrans = translations.length;
                 translations.forEach(category_translation => {
                     let ui_color = category_translation.ui_color;
                     // logic goes here
@@ -62,23 +62,19 @@ let updateUIColorForKnowledgeBase = (knowledge_base_id, cb) => {
                     }
                 });
 
-                if(numRed == numTranslations){
-                    primary_color = consts.STATUS_COLOR.pending_action;
-                }
-
-                if(numOrange == numTranslations){
+                if(numOrange == numTrans){
                     primary_color = consts.STATUS_COLOR.draft;
                 }
 
-                if(numGreen == numTranslations){
+                if(numGreen == numTrans){
                     primary_color = consts.STATUS_COLOR.published;
                 }
 
-                if(numBlue == numTranslations){
+                if(numBlue == numTrans){
                     primary_color = consts.STATUS_COLOR.publish_scheduled;
                 }
 
-                if(numGray == numTranslations){
+                if(numGray == numTrans){
                     primary_color = consts.STATUS_COLOR.archived;
                 }
 
@@ -115,7 +111,7 @@ let updateUIColorForKnowledgeBase = (knowledge_base_id, cb) => {
                     primary_color
                 ];
 
-                pgQueries.updateKnowledgeBaseTranslationUiColor(values, result => {
+                pgQueries.updateKnowledgeBaseTranslationUiColor(values, result2 => {
                     checkComplete();
                 });
             });

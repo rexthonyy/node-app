@@ -27,7 +27,7 @@ function archiveSubCategory(category_id, cb){
     
    
     pgQueries.updateKnowledgeBaseArticlesArchivedStatusByCategoryId(values1, result => {
-        pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result => {
+        pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result2 => {
             cb();
         });
     });

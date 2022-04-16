@@ -83,13 +83,13 @@ const getData = ({
                 }
             }
 
-            pgQueries.updateKnowledgeBaseCategoryTranslation(category_id, kb_locale_id, values1, result => {
-                if(result.err){
-                    result.err.errorIndex = 83782;
-                    return reject(result.err);
+            pgQueries.updateKnowledgeBaseCategoryTranslation(category_id, kb_locale_id, values1, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 83782;
+                    return reject(result1.err);
                 }
 
-                let knowledge_base_category_translation = result.res;
+                let knowledge_base_category_translation = result1.res;
                 let knowledge_base_category_translation_id = knowledge_base_category_translation.id;
 
                 pgQueries.deleteKnowledgeBaseCategoryDelayedJobByScheduleType([knowledge_base_category_translation_id, "publish"], result2 => {
@@ -112,9 +112,9 @@ const getData = ({
                             knowledge_base_id,
                             "publish"
                         ];
-                        pgQueries.createKnowledgeBaseCategoryDelayedJob(values, result1 => {
-                            if(result1.err){
-                                return res.json(result1.err);
+                        pgQueries.createKnowledgeBaseCategoryDelayedJob(values, result3 => {
+                            if(result3.err){
+                                return res.json(result3.err);
                             }
             
                             updateUIColorForKnowledgeBase(knowledge_base_id, () => {

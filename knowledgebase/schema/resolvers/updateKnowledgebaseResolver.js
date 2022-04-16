@@ -73,15 +73,14 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
     
                         kb_locale_ids.forEach(locale => {
                             // get all categories
-                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result => {
-                                let category_translations = result.res;
-                                pgQueries.getKnowledgeBaseArticleTranslationByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result => {
-                                    let article_translations = result.res;
+                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result1 => {
+                                let category_translations = result1.res;
+                                pgQueries.getKnowledgeBaseArticleTranslationByKnowledgeBaseIdAndLocaleId([knowledge_base_id, locale.id], result2 => {
+                                    let article_translations = result2.res;
     
                                     if(category_translations.length == 0 && article_translations.length == 0){
                                         new_locale_ids.push(locale.id);
                                     }else{
-                                        reference_locale_id = locale.id;
                                         reference_category_translations = category_translations;
                                         reference_article_translations = article_translations;
                                     }
@@ -125,7 +124,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
                                             cat.knowledge_base_id
                                         ];
         
-                                        pgQueries.createKnowledgeBaseCategoryTranslation(values, result => {
+                                        pgQueries.createKnowledgeBaseCategoryTranslation(values, result3 => {
                                             checkCatComplete();
                                         });
                                     });
@@ -160,7 +159,7 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
                                                     knowledge_base_id: art.knowledge_base_id
                                                 };
                 
-                                                pgQueries.createKnowledgeBaseArticleTranslation(data, result => {
+                                                pgQueries.createKnowledgeBaseArticleTranslation(data, result4 => {
                                                     checkComplete3();
                                                 });
                                             });

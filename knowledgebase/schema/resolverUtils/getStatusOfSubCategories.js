@@ -2,8 +2,21 @@ const pgQueries = require('../../postgres/kb-queries');
 const consts = require('../../consts');
 
 let getStatusOfSubCategories = (category_id, cb) => {
-    let numCatRed = numCatOrange = numCatBlue = numCatGreen = numCatYellow = numCatGray = numCatWhite = 0;
-    let numArtRed = numArtOrange = numArtBlue = numArtGreen = numArtYellow = numArtGray = numArtWhite = 0;
+    let numCatRed = 0;
+    let numCatOrange = 0;
+    let numCatBlue = 0;
+    let numCatGreen = 0;
+    let numCatYellow = 0;
+    let numCatGray = 0;
+    let numCatWhite = 0;
+
+    let numArtRed = 0;
+    let numArtOrange = 0;
+    let numArtBlue = 0;
+    let numArtGreen = 0;
+    let numArtYellow = 0;
+    let numArtGray = 0;
+    let numArtWhite = 0;
     
     pgQueries.getKnowledgeBaseCategoriesByParentId(category_id, result => {
         let categories = result.res;

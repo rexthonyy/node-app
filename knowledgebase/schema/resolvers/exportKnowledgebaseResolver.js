@@ -7,17 +7,17 @@ const getData = async ({knowledge_base_id}) => {
         let data = "";
 
         //get the knowledge_bases
-        exportKnowledgeBaseData(data, kb_id, result => {
-            exportKnowledgeBaseTranslations(result, kb_id, result => {
-                exportKnowledgeBaseCategories(result, kb_id, result => {
-                    exportKnowledgeBaseCategoryTranslations(result, kb_id, result => {
-                        exportKnowledgeBaseCategoryDelayedJobs(result, kb_id, result => {
-                            exportKnowledgeBaseArticles(result, kb_id, result => {
-                                exportKnowledgeBaseArticleTranslations(result, kb_id, result => {
-                                    exportKnowledgeBaseArticleDelayedJobs(result, kb_id, result => {
-                                        exportKnowledgeBaseLists(result, kb_id, result => {
+        exportKnowledgeBaseData(data, kb_id, kb_data => {
+            exportKnowledgeBaseTranslations(kb_data, kb_id, kbt_data => {
+                exportKnowledgeBaseCategories(kbt_data, kb_id, kbc_data => {
+                    exportKnowledgeBaseCategoryTranslations(kbc_data, kb_id, kbct_data => {
+                        exportKnowledgeBaseCategoryDelayedJobs(kbct_data, kb_id, kbcdj_data => {
+                            exportKnowledgeBaseArticles(kbcdj_data, kb_id, kba_data => {
+                                exportKnowledgeBaseArticleTranslations(kba_data, kb_id, kbat_data => {
+                                    exportKnowledgeBaseArticleDelayedJobs(kbat_data, kb_id, kbadj_data => {
+                                        exportKnowledgeBaseLists(kbadj_data, kb_id, all_data => {
                                             let filename = "export.csv";
-                                            fs.writeFile(`${__dirname}/../../public/export/${filename}`, result, err => {
+                                            fs.writeFile(`${__dirname}/../../public/export/${filename}`, all_data, err => {
                                                 if (err) {
                                                     return reject(err);
                                                 }
@@ -105,13 +105,13 @@ function exportKnowledgeBaseCategoryTranslations(data, kb_id, cb){
         let kb_cat_translations = [];
 
         kb_categories.forEach(cat => {
-            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, cat.id, (res_, result) => {
-                if(result.err){
-                    result.err.errorIndex = 84239029229292;
+            pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, cat.id, (res_, result1) => {
+                if(result1.err){
+                    result1.err.errorIndex = 84239029229292;
                     return checkComplete();
                 }
 
-                result.res.forEach(translation => {
+                result1.res.forEach(translation => {
                     kb_cat_translations.push(translation);
                 });
                 checkComplete();
@@ -185,13 +185,13 @@ function exportKnowledgeBaseArticleTranslations(data, kb_id, cb){
         let kb_art_translations = [];
 
         kb_articles.forEach(art => {
-            pgQueries.getKnowledgeBaseArticleTranslationByArticleId(art.id, result => {
-                if(result.err){
-                    console.error(result.err);
+            pgQueries.getKnowledgeBaseArticleTranslationByArticleId(art.id, result2 => {
+                if(result2.err){
+                    console.error(result2.err);
                     return cb(data);
                 }
 
-                result.res.forEach(translation => {
+                result2.res.forEach(translation => {
                     kb_art_translations.push(translation);
                 });
                 checkComplete();
@@ -248,13 +248,13 @@ function exportKnowledgeBaseLists(data, kb_id, cb){
         let kb_list_types = [];
 
         kb_lists.forEach(art => {
-            pgQueries.getKnowledgeBaseListById(art.id, result => {
-                if(result.err){
-                    console.error(result.err);
+            pgQueries.getKnowledgeBaseListById(art.id, result2 => {
+                if(result2.err){
+                    console.error(result2.err);
                     return cb(data);
                 }
 
-                result.res.forEach(translation => {
+                result2.res.forEach(translation => {
                     kb_list_types.push(translation);
                 });
                 checkComplete();

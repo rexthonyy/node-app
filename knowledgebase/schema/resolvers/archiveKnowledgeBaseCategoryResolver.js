@@ -25,10 +25,10 @@ function archiveSubCategory(category_id, cb){
         consts.STATUS_COLOR.archived
     ];
     
-    pgQueries.updateKnowledgeBaseCategoriesArchivedStatusByCategoryId(values1, result => {
-        pgQueries.updateKnowledgeBaseCategoryTranslationsArchivedStatusByCategoryId(values2, result => {
-            pgQueries.updateKnowledgeBaseArticlesArchivedStatusByCategoryId(values1, result => {
-                pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result => {
+    pgQueries.updateKnowledgeBaseCategoriesArchivedStatusByCategoryId(values1, result1 => {
+        pgQueries.updateKnowledgeBaseCategoryTranslationsArchivedStatusByCategoryId(values2, result2 => {
+            pgQueries.updateKnowledgeBaseArticlesArchivedStatusByCategoryId(values1, result3 => {
+                pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result4 => {
                     //determine if there are sub categories to this category
                     pgQueries.getKnowledgeBaseCategoriesByParentId(category_id, result => {
                         if(result.res.length == 0) return cb();

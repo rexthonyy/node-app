@@ -21,10 +21,10 @@ const getData = ({knowledge_base_article_translation_id, schedule_type}) => {
                         knowledge_base_article_translation_id,
                         false
                     ];
-                    pgQueries.updateKnowledgeBaseArticleTranslationDeleteSchedule(values, result => {
-                        if(result.err){
-                            result.err.errorIndex = 38621;
-                            return reject(result.err);
+                    pgQueries.updateKnowledgeBaseArticleTranslationDeleteSchedule(values, result1 => {
+                        if(result1.err){
+                            result1.err.errorIndex = 38621;
+                            return reject(result1.err);
                         }
     
                         recordHistory(
@@ -48,10 +48,10 @@ const getData = ({knowledge_base_article_translation_id, schedule_type}) => {
                         true,
                         true
                     ];
-                    pgQueries.updateKnowledgeBaseArticleTranslationPublishSchedule(values, result => {
-                        if(result.err){
-                            result.err.errorIndex = 31277;
-                            return reject(result.err);
+                    pgQueries.updateKnowledgeBaseArticleTranslationPublishSchedule(values, result1 => {
+                        if(result1.err){
+                            result1.err.errorIndex = 31277;
+                            return reject(result1.err);
                         }
     
                         recordHistory(
@@ -75,10 +75,10 @@ const getData = ({knowledge_base_article_translation_id, schedule_type}) => {
                         false,
                         ""
                     ];
-                    pgQueries.updateKnowledgeBaseArticleTranslationUpdateSchedule(values, result => {
-                        if(result.err){
-                            result.err.errorIndex = 31277;
-                            return reject(result.err);
+                    pgQueries.updateKnowledgeBaseArticleTranslationUpdateSchedule(values, result1 => {
+                        if(result1.err){
+                            result1.err.errorIndex = 31277;
+                            return reject(result1.err);
                         }
     
                         recordHistory(

@@ -206,13 +206,13 @@ function createKnowledgeBaseCategoryTranslation(
                 values[5] = consts.STATUS_COLOR.pending_action;
             }
 
-            pgQueries.createKnowledgeBaseCategoryTranslation(values, result => {
-                if(result.err){
-                    result.err.errorIndex = 302;
-                    return reject(result.err);
+            pgQueries.createKnowledgeBaseCategoryTranslation(values, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 302;
+                    return reject(result1.err);
                 }
         
-                let kb_category_translation_id = result.res.id;
+                let kb_category_translation_id = result1.res.id;
         
                 if(publish_now){
                     checkComplete();
@@ -225,12 +225,12 @@ function createKnowledgeBaseCategoryTranslation(
                         knowledge_base_id,
                         "publish"
                     ];
-                    pgQueries.createKnowledgeBaseCategoryDelayedJob(values3, result1 => {
-                        if(result1.err){
-                            return reject(result1.err);
+                    pgQueries.createKnowledgeBaseCategoryDelayedJob(values3, result2 => {
+                        if(result2.err){
+                            return reject(result2.err);
                         }
         
-                        kb.schedule_at = result1.res.run_at; 
+                        kb.schedule_at = result2.res.run_at; 
         
                         checkComplete();
                     });

@@ -25,15 +25,15 @@ const getData = ({knowledge_base_article_translation_id, run_at, knowledge_base_
                 return reject(result1.err);
             }
     
-            values = [
+            let values = [
                 knowledge_base_article_translation_id,
                 true
             ];
     
-            pgQueries.updateKnowledgeBaseArticleTranslationDeleteSchedule(values, result => {
-                if(result.err){
-                    result.err.errorIndex = 306221;
-                    return reject(result.err);
+            pgQueries.updateKnowledgeBaseArticleTranslationDeleteSchedule(values, result2 => {
+                if(result2.err){
+                    result2.err.errorIndex = 306221;
+                    return reject(result2.err);
                 }
     
                 recordHistory(

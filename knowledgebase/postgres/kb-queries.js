@@ -10,9 +10,9 @@ const pool = new Pool({
 
 pool.query('SELECT NOW()', (err, res) => {
     if(err){
-        console.log("knowledgebase databse initialization failed!!!");
+        console.log(`${process.env.DB_NAME} databse initialization failed!!!`);
     }else{
-        console.log("knowledgebase databse initialized successfully....!!!");
+        console.log(`${process.env.DB_NAME} databse initialized successfully....!!!`);
     }
 });
 
@@ -31,7 +31,7 @@ const updatePositionForKnowledgeBase = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 231311212
+                code: 200
             });
         } else {
             response({
@@ -48,7 +48,7 @@ const listKnowledgeBasesById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 3829821
+                code: 201
             });
         }else{
             response({
@@ -65,7 +65,7 @@ const listKnowledgeBases = (response) => {
             response({
                 err: err,
                 res: null,
-                code: 232421
+                code: 202
             });
         }else{
             response({
@@ -83,7 +83,7 @@ const createKnowledgeBase = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 3282
+                code: 203
             });
         } else {
             response({
@@ -101,7 +101,7 @@ const updateKnowledgeBase = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 7482
+                code: 204
             });
         } else {
             response({
@@ -119,7 +119,7 @@ const deleteKnowledgeBase = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 1111111
+                code: 205
             });
         } else {
             response({
@@ -137,7 +137,7 @@ const getKnowledgeBaseTranslationsById = (id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 32
+                code: 205
             });
         }else{
             response({
@@ -154,7 +154,7 @@ const getKnowledgeBaseTranslationsByKnowledgeBaseId = (knowledge_base_id, respon
             response({
                 err: err,
                 res: null,
-                code: 323
+                code: 206
             });
         }else{
             response({
@@ -170,7 +170,8 @@ const listKnowledgeBaseTranslations = (res_, response) => {
         if(err){
             response(res_, {
                 err: err,
-                res: null
+                res: null,
+                code: 207
             });
         }else{
             response(res_, {
@@ -178,7 +179,6 @@ const listKnowledgeBaseTranslations = (res_, response) => {
                 res: res.rows
             });
         }
-        console.log("");
     });
 };
 
@@ -189,7 +189,7 @@ const createKnowledgeBaseTranslation = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 230
+                code: 208
             });
         } else {
             response({
@@ -207,7 +207,7 @@ const updateKnowledgeBaseTranslation = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 221
+                code: 209
             });
         } else {
             response({
@@ -222,10 +222,10 @@ const deleteKnowledgeBaseTranslation = (data, response) => {
     const values = [data.id];
     client.query('DELETE FROM knowledge_base_translations WHERE id=$1', values, (err, res) => {
         if (err) {
-            console.log("");
             response({
                 err: err.stack,
-                res: null
+                res: null,
+                code: 210
             });
         } else {
             response({
@@ -243,7 +243,7 @@ const deleteKnowledgeBaseTranslationByKnowledgeBaseId = (kb_id, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: null
+                code: 211
             });
         } else {
             response({
@@ -260,7 +260,7 @@ const listKnowledgeBaseCategoriesById = (id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 22
+                code: 212
             });
         }else{
             response({
@@ -277,7 +277,7 @@ const getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndCategoryId = (valu
             response({
                 err: err,
                 res: null,
-                code: 22
+                code: 213
             });
         }else{
             response({
@@ -294,7 +294,7 @@ const getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdAndCategoryId = (value
             response({
                 err: err,
                 res: null,
-                code: 22
+                code: 214
             });
         }else{
             response({
@@ -311,7 +311,7 @@ const getKnowledgeBaseCategoriesByKnowledgeBaseIdAndCategoryId = (values, respon
             response({
                 err: err,
                 res: null,
-                code: 22
+                code: 215
             });
         }else{
             response({
@@ -328,7 +328,7 @@ const listKnowledgeBaseCategoriesByKnowledgeBaseId = (id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 223
+                code: 216
             });
         }else{
             response({
@@ -345,7 +345,7 @@ const getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId = (kb_id, parent_id
             response({
                 err: err,
                 res: null,
-                code: 25623
+                code: 217
             });
         }else{
             response({
@@ -362,7 +362,7 @@ const getKnowledgeBaseCategoriesByParentId = (parent_id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 25623
+                code: 218
             });
         }else{
             response({
@@ -379,7 +379,7 @@ const getKnowledgeBaseCategoryTranslationsByCategoryIdAndLocaleId = (category_id
             response({
                 err: err,
                 res: null,
-                code: 200
+                code: 219
             });
         }else{
             response({
@@ -395,9 +395,9 @@ const listKnowledgeBaseCategories = (res_, response) => {
         if(err){
             response(res_, {
                 err: err,
-                res: null
+                res: null,
+                code: 220
             });
-            console.log("");
         }else{
             response(res_, {
                 err: null,
@@ -413,7 +413,7 @@ const createKnowledgeBaseCategory = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 184
+                code: 221
             });
         } else {
             response({
@@ -430,7 +430,7 @@ const updateKnowledgeBaseCategory = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 23
+                code: 222
             });
         } else {
             response({
@@ -447,7 +447,7 @@ const updateKnowledgeBaseCategoryParentIdById = (category_id, parent_id, respons
             response({
                 err: err.stack,
                 res: null,
-                code: 231111
+                code: 223
             });
         } else {
             response({
@@ -464,7 +464,7 @@ const updatePositionForKnowledgeBaseCategory = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 2313111
+                code: 224
             });
         } else {
             response({
@@ -482,7 +482,7 @@ const deleteKnowledgeBaseCategory = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 2
+                code: 225
             });
         } else {
             response({
@@ -499,7 +499,7 @@ const getKnowledgeBaseCategoryTranslationsByCategoryId = (res_, category_id, res
             response(res_, {
                 err: err,
                 res: null,
-                code: 1
+                code: 226
             });
         }else{
             response(res_, {
@@ -516,7 +516,7 @@ const getKnowledgeBaseCategoryTranslationByLocaleId = (kb_locale_id, response) =
             response({
                 err: err,
                 res: null,
-                code: 38574330
+                code: 227
             });
         }else{
             response({
@@ -533,7 +533,7 @@ const getKnowledgeBaseCategoryTranslationByCategoryIdAndLocaleId = (category_id,
             response({
                 err: err,
                 res: null,
-                code: 1304
+                code: 228
             });
         }else{
             response({
@@ -550,7 +550,7 @@ const getKnowledgeBaseCategoryTranslations = (res_, response) => {
             response(res_, {
                 err: err,
                 res: null,
-                code: 32
+                code: 229
             });
         }else{
             response(res_, {
@@ -567,7 +567,7 @@ const createKnowledgeBaseCategoryTranslation = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 49
+                code: 230
             });
         } else {
             response({
@@ -584,7 +584,7 @@ const updateKnowledgeBaseCategoryTranslation = (category_id, kb_locale_id, value
             response({
                 err: err.stack,
                 res: null,
-                code: 23943
+                code: 231
             });
         } else {
             response({
@@ -601,7 +601,7 @@ const updateKnowledgeBaseCategoryTranslationsUIColor = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 23943
+                code: 232
             });
         } else {
             response({
@@ -618,7 +618,7 @@ const deleteKnowledgeBaseCategoryTranslationsByCategoryId = (category_id, respon
             response({
                 err: err.stack,
                 res: null,
-                code: 2323
+                code: 233
             });
         } else {
             response({
@@ -635,7 +635,7 @@ const deleteKnowledgeBaseCategoryTranslationById = (translation_id, response) =>
             response({
                 err: err.stack,
                 res: null,
-                code: 232332
+                code: 234
             });
         } else {
             response({
@@ -658,7 +658,7 @@ const getKnowledgeBaseArticlesById = (article_id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 12321
+                code: 235
             });
         }else{
             response({
@@ -675,7 +675,7 @@ const getKnowledgeBaseArticlesByKnowledgeBaseId = (knowledge_base_id, response) 
             response({
                 err: err,
                 res: null,
-                code: 12321
+                code: 236
             });
         }else{
             response({
@@ -692,7 +692,7 @@ const getKnowledgeBaseArticlesByKnowledgeBaseIdAndCategoryId = (values, response
             response({
                 err: err,
                 res: null,
-                code: 1
+                code: 237
             });
         }else{
             response({
@@ -709,7 +709,7 @@ const getKnowledgeBaseArticlesByKnowledgeBaseCategoryId = (knowledge_base_catego
             response({
                 err: err,
                 res: null,
-                code: 1
+                code: 238
             });
         }else{
             response({
@@ -726,7 +726,7 @@ const listKnowledgeBaseArticles = (res_, response) => {
             response(res_, {
                 err: err,
                 res: null,
-                code: 3844
+                code: 239
             });
         }else{
             response(res_, {
@@ -743,7 +743,7 @@ const updatePositionForKnowledgeBaseTranslation = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 231310121
+                code: 240
             });
         } else {
             response({
@@ -760,7 +760,7 @@ const updatePositionForKnowledgeBaseArticle = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 23131121
+                code: 241
             });
         } else {
             response({
@@ -780,7 +780,7 @@ const createKnowledgeBaseArticle = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 3282
+                code: 242
             });
         } else {
             response({
@@ -799,7 +799,7 @@ const updateKnowledgeBaseArticle = (article_id, data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 111
+                code: 243
             });
         } else {
             response({
@@ -817,7 +817,7 @@ const deleteKnowledgeBaseArticle = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 27118
+                code: 234
             });
         } else {
             response({
@@ -835,7 +835,7 @@ const deleteKnowledgeBaseArticleTranslationByArticleId = (article_id, response) 
             response({
                 err: err.stack,
                 res: null,
-                code: 2711821
+                code: 245
             });
         } else {
             response({
@@ -854,7 +854,7 @@ const getKnowledgeBaseArticleTranslationByArticleId = (article_id, response) => 
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 246
             });
         }else{
             response({
@@ -871,7 +871,7 @@ const getKnowledgeBaseArticleTranslationByArticleIdAndLocaleId = (article_id, kb
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 247
             });
         }else{
             response({
@@ -889,7 +889,7 @@ const getKnowledgeBaseArticleTranslationsByCategoryId = (category_id, response) 
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 248
             });
         }else{
             response({
@@ -906,7 +906,7 @@ const getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId 
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 249
             });
         }else{
             response({
@@ -923,7 +923,7 @@ const getKnowledgeBaseArticleTranslationsByCategoryIdAndLocaleId = (category_id,
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 250
             });
         }else{
             response({
@@ -940,7 +940,7 @@ const getKnowledgeBaseArticleTranslationByKnowledgeBaseIdAndLocaleId = (values, 
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 251
             });
         }else{
             response({
@@ -957,7 +957,7 @@ const getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 252
             });
         }else{
             response({
@@ -974,7 +974,7 @@ const getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdAndLocaleId = (values
             response({
                 err: err,
                 res: null,
-                code: 122
+                code: 253
             });
         }else{
             response({
@@ -991,7 +991,7 @@ const listKnowledgeBaseArticleTranslations = (res_, response) => {
             response(res_, {
                 err: err,
                 res: null,
-                code: 67
+                code: 254
             });
         }else{
             response(res_, {
@@ -1045,7 +1045,7 @@ const updateKnowledgeBaseArticleTranslationsUIColor = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 82911
+                code: 252
             });
         } else {
             console.log(res);
@@ -1064,7 +1064,7 @@ const deleteKnowledgeBaseArticleTranslation = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 372836
+                code: 253
             });
         } else {
             response({
@@ -1082,7 +1082,7 @@ const getLocaleById = (id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 22
+                code: 255
             });
         }else{
             response({
@@ -1099,7 +1099,7 @@ const listLocales = response => {
             response({
                 err: err,
                 res: null,
-                code: 23
+                code: 256
             });
         }else{
             response({
@@ -1117,7 +1117,7 @@ const createLocale = (res_, data, response) => {
             response(res_, {
                 err: err.stack,
                 res: null,
-                code: 32
+                code: 257
             });
         } else {
             response(res_, {
@@ -1150,10 +1150,10 @@ const deleteLocale = (data, response) => {
     const values = [data.id];
     client.query('DELETE FROM locales WHERE id=$1', values, (err, res) => {
         if (err) {
-            console.log("");console.log("");console.log("");console.log("");
             response({
                 err: err.stack,
-                res: null
+                res: null,
+                code: 270
             });
         } else {
             response({
@@ -1206,9 +1206,9 @@ const updateKnowledgeBaseLocales = (data, response) => {
         if (err) {
             response({
                 err: err.stack,
-                res: null
+                res: null,
+                code: 291
             });
-            console.log("");console.log("");console.log("");console.log("");console.log("");
         } else {
             response({
                 err: null,
@@ -1224,9 +1224,9 @@ const deleteKnowledgeBaseLocales = (data, response) => {
         if (err) {
             response({
                 err: err.stack,
-                res: null
+                res: null,
+                code: 292
             });
-            console.log("");console.log("");console.log("");console.log("");console.log("");console.log("");
         } else {
             response({
                 err: null,
@@ -1261,7 +1261,7 @@ const createCalendar = (res_, data, response) => {
             response(res_, {
                 err: err.stack,
                 res: null,
-                slug: null
+                code: 301
             });
         } else {
             response(res_, {
@@ -1297,7 +1297,7 @@ const deleteCalendar = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                slug: null
+                code: 302
             });
         } else {
             response({
@@ -1315,7 +1315,7 @@ const listDelayedJobs = (res_, response) => {
             response(res_, {
                 err: err,
                 res: null,
-                slug: 21
+                code: 303
             });
         }else{
             response(res_, {
@@ -1333,7 +1333,7 @@ const createDelayedJob = (res_, data, response) => {
             response(res_, {
                 err: err.stack,
                 res: null,
-                code: 234
+                code: 309
             });
         } else {
             response(res_, {
@@ -1387,7 +1387,7 @@ const listGroups = (res_, response) => {
             response(res_, {
                 err: err,
                 res: null,
-                code: 2
+                code: 312
             });
         }else{
             response(res_, {
@@ -1422,7 +1422,7 @@ const updateGroup = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 4
+                code: 445
             });
         } else {
             response({
@@ -1477,7 +1477,7 @@ const createPermissionsGroup = (res_, data, response) => {
             response(res_, {
                 err: err.stack,
                 res: null,
-                code: 7
+                code: 476
             });
         } else {
             response(res_, {
@@ -1636,7 +1636,7 @@ const updateKnowledgeBaseCategoryTranslationUpdateSchedule = (values, response) 
             response({
                 err: err.stack,
                 res: null,
-                code: 239
+                code: 539
             });
         } else {
             response({
@@ -1653,7 +1653,7 @@ const updateKnowledgeBaseCategoryTranslationUpdateScheduleIsUpdate = (values, re
             response({
                 err: err.stack,
                 res: null,
-                code: 239
+                code: 549
             });
         } else {
             response({
@@ -1723,7 +1723,7 @@ const deletePermission = (data, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 13
+                code: 712
             });
         } else {
             response({
@@ -1742,7 +1742,7 @@ const getKnowledgeBaseCategoryDelayedJobByKnowledgeBaseId = (kb_id, response) =>
             response({
                 err: err,
                 res: null,
-                code: 383829
+                code: 711
             });
         }else{
             response({
@@ -1759,7 +1759,7 @@ const getKnowledgeBaseCategoryDelayedJobByKnowledgeBaseCategoryTranslationId = (
             response({
                 err: err,
                 res: null,
-                code: 38392
+                code: 734
             });
         }else{
             response({
@@ -1776,7 +1776,7 @@ const getKnowledgeBaseArticleDelayedJob = (kb_article_translation_id, type, resp
             response({
                 err: err,
                 res: null,
-                code: 383922
+                code: 719
             });
         }else{
             response({
@@ -1793,7 +1793,7 @@ const getAllKnowledgeBaseArticleDelayedJob = (kb_article_translation_id, respons
             response({
                 err: err,
                 res: null,
-                code: 3839322
+                code: 736
             });
         }else{
             response({
@@ -1810,7 +1810,7 @@ const getKnowledgeBaseCategoryDelayedJob = (kb_category_translation_id, type, re
             response({
                 err: err,
                 res: null,
-                code: 3803922
+                code: 741
             });
         }else{
             response({
@@ -1861,7 +1861,7 @@ const createKnowledgeBaseCategoryDelayedJob = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 11
+                code: 721
             });
         } else {
             response({
@@ -1878,7 +1878,7 @@ const deleteKnowledgeBaseCategoryDelayedJob = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 13
+                code: 853
             });
         } else {
             response({
@@ -1895,7 +1895,7 @@ const deleteKnowledgeBaseCategoryDelayedJobByScheduleType = (values, response) =
             response({
                 err: err.stack,
                 res: null,
-                code: 131
+                code: 831
             });
         } else {
             response({
@@ -1912,7 +1912,7 @@ const deleteKnowledgeBaseArticleDelayedJob = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 15
+                code: 815
             });
         } else {
             response({
@@ -1929,7 +1929,7 @@ const deleteKnowledgeBaseArticleDelayedJobByScheduleType = (values, response) =>
             response({
                 err: err.stack,
                 res: null,
-                code: 15
+                code: 899
             });
         } else {
             response({
@@ -1963,7 +1963,7 @@ const updateKnowledgeBaseArticleTranslationUpdateMetaData = (values, response) =
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 321
             });
         } else {
             response({
@@ -1980,7 +1980,7 @@ const updateKnowledgeBaseArchivedStatus = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 481
             });
         } else {
             response({
@@ -1997,7 +1997,7 @@ const updateKnowledgeBaseTranslationArchivedStatusByKBId = (values, response) =>
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 641
             });
         } else {
             response({
@@ -2014,7 +2014,7 @@ const updateKnowledgeBaseCategoriesArchivedStatusByKBId = (values, response) => 
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 766
             });
         } else {
             response({
@@ -2031,7 +2031,7 @@ const updateKnowledgeBaseCategoryTranslationsArchivedStatusByKBId = (values, res
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 735
             });
         } else {
             response({
@@ -2048,7 +2048,7 @@ const updateKnowledgeBaseArticlesArchivedStatusByKBId = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 739
             });
         } else {
             response({
@@ -2065,7 +2065,7 @@ const updateKnowledgeBaseArticleTranslationsArchivedStatusByKBId = (values, resp
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 769
             });
         } else {
             response({
@@ -2082,7 +2082,7 @@ const updateKnowledgeBaseCategoriesArchivedStatusByCategoryId = (values, respons
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 717
             });
         } else {
             response({
@@ -2099,7 +2099,7 @@ const updateKnowledgeBaseCategoryTranslationsArchivedStatusByCategoryId = (value
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 501
             });
         } else {
             response({
@@ -2116,7 +2116,7 @@ const updateKnowledgeBaseCategoryTranslationsArchivedStatusById = (values, respo
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 901
             });
         } else {
             response({
@@ -2133,7 +2133,7 @@ const updateKnowledgeBaseArticlesArchivedStatusByCategoryId = (values, response)
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 981
             });
         } else {
             response({
@@ -2150,7 +2150,7 @@ const updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId = (values
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 858
             });
         } else {
             response({
@@ -2167,7 +2167,7 @@ const updateKnowledgeBaseArticlesArchivedStatusByArticleId = (values, response) 
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 811
             });
         } else {
             response({
@@ -2184,7 +2184,7 @@ const updateKnowledgeBaseArticleTranslationsArchivedStatusByArticleId = (values,
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 299
             });
         } else {
             response({
@@ -2201,7 +2201,7 @@ const updateKnowledgeBaseTranslationUiColor = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 234821
+                code: 900
             });
         } else {
             response({
@@ -2253,7 +2253,8 @@ const getKnowledgeBaseLists = (values, response) => {
         if(err){
             response({
                 err: err,
-                res: null
+                res: null,
+                code: 739
             });
         }else{
             response({
@@ -2270,7 +2271,7 @@ const getKnowledgeBaseArticleDelayedJobByKnowledgeBaseId = (kb_id, response) => 
             response({
                 err: err,
                 res: null,
-                code: 383829
+                code: 339
             });
         }else{
             response({
@@ -2288,7 +2289,7 @@ const getKnowledgeBaseListsByKnowledgeBaseId = (kb_id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 383829
+                code: 3809
             });
         }else{
             response({
@@ -2306,7 +2307,7 @@ const getKnowledgeBaseListById = (id, response) => {
             response({
                 err: err,
                 res: null,
-                code: 383829
+                code: 3119
             });
         }else{
             response({

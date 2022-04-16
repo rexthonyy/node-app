@@ -13,9 +13,9 @@ module.exports = (knowledge_base_id, cb) => {
             let kb_translation_id = kb_translation.id;
             let kb_locale_id = kb_translation.kb_locale_id;
             
-            pgQueries.getKnowledgeBaseCategoryTranslationByLocaleId(kb_locale_id, result => {
+            pgQueries.getKnowledgeBaseCategoryTranslationByLocaleId(kb_locale_id, result1 => {
 
-                let primary_color = "red";
+                let primary_color = consts.STATUS_COLOR.pending_action;
 
                 let numRed = 0;
                 let numOrange = 0;
@@ -25,88 +25,84 @@ module.exports = (knowledge_base_id, cb) => {
                 let numYellow = 0;
                 let numWhite = 0;
 
-                let translations = result.res;
-                let numTranslations = translations.length;
+                let translations = result1.res;
+                let numTrans = translations.length;
                 translations.forEach(category_translation => {
                     let ui_color = category_translation.ui_color;
                     // logic goes here
                     switch(ui_color){
-                        case "red":
+                        case consts.STATUS_COLOR.pending_action:
                             numRed++;
                         break;
 
-                        case "orange":
+                        case consts.STATUS_COLOR.draft:
                             numOrange++;
                         break;
 
-                        case "green":
+                        case consts.STATUS_COLOR.published:
                             numGreen++;
                         break;
 
-                        case "blue":
+                        case consts.STATUS_COLOR.publish_scheduled:
                             numBlue++;
                         break;
 
-                        case "gray":
+                        case consts.STATUS_COLOR.archived:
                             numGray++;
                         break;
 
-                        case "yellow":
+                        case consts.STATUS_COLOR.archive_scheduled:
                             numYellow++;
                         break;
 
-                        case "white":
+                        case consts.STATUS_COLOR.update_scheduled:
                             numWhite++;
                         break;
                     }
                 });
 
-                if(numRed == numTranslations){
-                    primary_color = "red";
+                if(numOrange == numTrans){
+                    primary_color = consts.STATUS_COLOR.draft;;
                 }
 
-                if(numOrange == numTranslations){
-                    primary_color = "orange";
+                if(numGreen == numTrans){
+                    primary_color = consts.STATUS_COLOR.published;
                 }
 
-                if(numGreen == numTranslations){
-                    primary_color = "green";
+                if(numBlue == numTrans){
+                    primary_color = consts.STATUS_COLOR.publish_scheduled;
                 }
 
-                if(numBlue == numTranslations){
-                    primary_color = "blue";
-                }
-
-                if(numGray == numTranslations){
-                    primary_color = "gray";
+                if(numGray == numTrans){
+                    primary_color = consts.STATUS_COLOR.archived;
                 }
 
                 if(numGreen > 0){
-                    primary_color = "green";
+                    primary_color = consts.STATUS_COLOR.published;
                 }
 
                 if(numGray > 0){
-                    primary_color = "gray";
+                    primary_color = consts.STATUS_COLOR.archived;
                 }
 
                 if(numBlue > 0){
-                    primary_color = "blue";
+                    primary_color = consts.STATUS_COLOR.publish_scheduled;
                 }
 
                 if(numYellow > 0){
-                    primary_color = "yellow";
+                    primary_color = consts.STATUS_COLOR.archive_scheduled;
                 }
 
                 if(numWhite > 0){
-                    primary_color = "white";
+                    primary_color = consts.STATUS_COLOR.update_scheduled;
                 }
 
                 if(numOrange > 0){
-                    primary_color = "orange";
+                    primary_color = consts.STATUS_COLOR.draft;
                 }
 
                 if(numRed > 0){
-                    primary_color = "red";
+                    primary_color = consts.STATUS_COLOR.pending_action;
                 }
 
                 let values = [
@@ -114,7 +110,7 @@ module.exports = (knowledge_base_id, cb) => {
                     primary_color
                 ];
 
-                pgQueries.updateKnowledgeBaseTranslationUiColor(values, result => {
+                pgQueries.updateKnowledgeBaseTranslationUiColor(values, result2 => {
                     checkComplete();
                 });
             });

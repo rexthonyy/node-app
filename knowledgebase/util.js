@@ -2,7 +2,6 @@ const fetch = require('node-fetch');
 
 async function sendRequest(url, options =  {method: "GET"}) {
 	let response = await fetch(url, options);
-	//console.log(response);
 	return response.json();
 }
 

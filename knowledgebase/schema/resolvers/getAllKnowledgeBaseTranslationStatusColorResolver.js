@@ -20,13 +20,13 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
 
             let categories = result.res;
             
-            pgQueries.getKnowledgeBaseTranslationsByKnowledgeBaseId(knowledge_base_id, result => {
-                if(result.err){
-                    result.err.errorIndex = 200;
-                    return reject(result.err);
+            pgQueries.getKnowledgeBaseTranslationsByKnowledgeBaseId(knowledge_base_id, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 200;
+                    return reject(result1.err);
                 }
 
-                let kb_translations = result.res;
+                let kb_translations = result1.res;
                 let num_translations = kb_translations.length;
                 let count = -1;
 
@@ -40,15 +40,15 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
 
                     categories.forEach(category => {
                         if(filter_by == "category"){
-                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result => {
-                                if(result.res == null || result.res.length==0) return checkComplete1();
-                                active_colors.push(result.res[0].ui_color);
+                            pgQueries.getKnowledgeBaseCategoryTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result2 => {
+                                if(result2.res == null || result2.res.length==0) return checkComplete1();
+                                active_colors.push(result2.res[0].ui_color);
                                 checkComplete1();
                             });
                         }else{
-                            pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result => {
-                                if(result.res == null || result.res.length==0) return checkComplete1();
-                                active_colors.push(result.res[0].ui_color);
+                            pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result2 => {
+                                if(result2.res == null || result2.res.length==0) return checkComplete1();
+                                active_colors.push(result2.res[0].ui_color);
                                 checkComplete1();
                             });
                         }

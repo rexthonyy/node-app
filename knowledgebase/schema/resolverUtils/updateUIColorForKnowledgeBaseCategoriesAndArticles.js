@@ -15,7 +15,7 @@ let updateUIColorForKnowledgeBaseCategoriesAndArticles = (knowledge_base_id, cat
             let is_delete_scheduled = translation.is_delete_scheduled;
             let is_update_scheduled = translation.is_update_scheduled;
 
-            let ui_color = consts.STATUS_COLOR.pending_action;
+            let ui_color;
 
             if(active){
                 if(publish_now){
@@ -41,7 +41,7 @@ let updateUIColorForKnowledgeBaseCategoriesAndArticles = (knowledge_base_id, cat
                 }
             }
 
-            pgQueries.updateKnowledgeBaseCategoryTranslationsUIColor([translation.id, ui_color], result => {
+            pgQueries.updateKnowledgeBaseCategoryTranslationsUIColor([translation.id, ui_color], result1 => {
                 checkComplete();
             });
         });
@@ -51,8 +51,8 @@ let updateUIColorForKnowledgeBaseCategoriesAndArticles = (knowledge_base_id, cat
         function checkComplete(){
             count++;
             if(count == num_category_translations){
-                pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdAndCategoryId([knowledge_base_id, category_id], result => {
-                    let article_translations = result.res;
+                pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdAndCategoryId([knowledge_base_id, category_id], result1 => {
+                    let article_translations = result1.res;
                     let num_article_translations = article_translations.length;
                     count = -1;
 
@@ -89,7 +89,7 @@ let updateUIColorForKnowledgeBaseCategoriesAndArticles = (knowledge_base_id, cat
                             }
                         }
             
-                        pgQueries.updateKnowledgeBaseArticleTranslationsUIColor([translation.id, ui_color], result => {
+                        pgQueries.updateKnowledgeBaseArticleTranslationsUIColor([translation.id, ui_color], result2 => {
                             checkComplete1();
                         });
                     });

@@ -10,13 +10,13 @@ const getData = ({category_id}) => {
             let category = result.res[0];
             let knowledge_base_id = category.knowledge_base_id;
             if(category.parent_id == -1){
-                pgQueries.listKnowledgeBasesById([knowledge_base_id], result => {
-                    if(result.err){
-                        return reject(result.err);
+                pgQueries.listKnowledgeBasesById([knowledge_base_id], result1 => {
+                    if(result1.err){
+                        return reject(result1.err);
                     }
-                    if(result.res.length == 0) return reject(JSON.stringify({status: "error", message: "Knowledge base not found"}));
+                    if(result1.res.length == 0) return reject(JSON.stringify({status: "error", message: "Knowledge base not found"}));
 
-                    let kb = result.res[0];
+                    let kb = result1.res[0];
     
                     if(kb == null || kb.is_archived){
                         // check if the knowledge base is archived
@@ -28,9 +28,9 @@ const getData = ({category_id}) => {
                     }
                 });
             }else{
-                pgQueries.listKnowledgeBaseCategoriesById(category.parent_id, result => {
-                    if(result.res.length == 0) return reject({status: "error", message: "Category not found"});
-                    let parent_category = result.res[0];
+                pgQueries.listKnowledgeBaseCategoriesById(category.parent_id, result1 => {
+                    if(result1.res.length == 0) return reject({status: "error", message: "Category not found"});
+                    let parent_category = result1.res[0];
                     if(parent_category == null || parent_category.is_archived){
                         return reject({ status: "error", message: "The parent is already archived or is unavailable"});
                     }else{
@@ -63,7 +63,7 @@ function unarchiveSubCategory(knowledge_base_id, category_id, cb){
     
     
     pgQueries.updateKnowledgeBaseArticlesArchivedStatusByCategoryId(values1, result => {
-        pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result => {
+        pgQueries.updateKnowledgeBaseArticleTranslationsArchivedStatusByCategoryId(values2, result1 => {
             updateUIColorForKnowledgeBaseCategoriesAndArticles(knowledge_base_id, category_id, () => {
                 cb();
             });

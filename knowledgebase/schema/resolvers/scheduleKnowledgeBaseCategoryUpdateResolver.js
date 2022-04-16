@@ -31,9 +31,9 @@ const getData = ({knowledge_base_category_translation_id, run_at, knowledge_base
                 "update"
             ];
     
-            pgQueries.createKnowledgeBaseCategoryDelayedJob(values1, result => {
-                if(result.err){
-                    return reject(result.err);
+            pgQueries.createKnowledgeBaseCategoryDelayedJob(values1, result1 => {
+                if(result1.err){
+                    return reject(result1.err);
                 }
     
                 resolve({ 

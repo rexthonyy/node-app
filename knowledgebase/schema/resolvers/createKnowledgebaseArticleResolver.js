@@ -73,15 +73,15 @@ const getData = ({
                 );
             });
         }else{
-            pgQueries.getKnowledgeBaseArticlesById(article_id, result => {
-                if(result.err){
-                    result.err.errorIndex = 3847322;
-                    return reject(result.err);
+            pgQueries.getKnowledgeBaseArticlesById(article_id, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 3847322;
+                    return reject(result1.err);
                 }
     
-                if(result.res.length == 0) return reject({ status: 404, message: "Article not found" });
+                if(result1.res.length == 0) return reject({ status: 404, message: "Article not found" });
     
-                let article = result.res[0];
+                let article = result1.res[0];
     
                 article_id = article.id;
     
@@ -179,13 +179,13 @@ function createKnowledgeBaseArticleTranslation(
             }else{
                 data.ui_color = consts.STATUS_COLOR.pending_action;
             }
-            pgQueries.createKnowledgeBaseArticleTranslation(data, result => {
-                if(result.err){
-                    result.err.errorIndex = 2847322;
-                    return reject(result.err.errorIndex);
+            pgQueries.createKnowledgeBaseArticleTranslation(data, result1 => {
+                if(result1.err){
+                    result1.err.errorIndex = 2847322;
+                    return reject(result1.err.errorIndex);
                 }
         
-                let articleTranslation = result.res;
+                let articleTranslation = result1.res;
         
                 recordHistory(
                     "knowledgebase", 
@@ -200,8 +200,6 @@ function createKnowledgeBaseArticleTranslation(
                         if(publish_now){
                             checkComplete();
                         }else{
-                            let knowledge_base_id = knowledge_base_id;
-                            let article_id = article_id;
                             let translation_id = articleTranslation.id;
                             let run_at = schedule_at ?? new Date().toUTCString();
                 

@@ -1,44 +1,10 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
 .then(() => {
-
-
-
-
-
-
-
-
-
-  //const express = require('express');
-  // const { postgraphile } = require("postgraphile");
-  //const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
-
-  // const app = express();
-
-  // app.use(
-  //     postgraphile(process.env.DATABASE_URL, {
-  //         watchPg: true,
-  //         graphiql: true,
-  //         enhanceGraphiql: true
-  //     })
-  // );
-
-  // app.get("/", (req, res) => {
-  //     res.json({ 
-  //         status: "success", 
-  //         message: "Welcome to the Knowledgebase app"
-  //     });
-  // });
-
-
-
   const pg = require("pg");
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
-  const BodyParser = require("body-parser");
-  const cookieParser = require('cookie-parser');
   const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
   const { graphqlUploadExpress } = require('graphql-upload');
@@ -52,21 +18,13 @@ require('./postgres/initialize_dbs').init()
   
   app.use(express.static('public'));
   app.use(express.json());
-  //app.use(express.urlencoded({ extended: false }));
-  //app.use(BodyParser.json({limit: "4mb"}));
-  //app.use(cookieParser());
-
-  //app.use(graphqlUploadExpress({ maxFileSize: 10000, maxFiles: 10 }));
-      
-  //app.use('/knowledgebase', knowledgeBaseRouter);
 
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(
       pgPool,
       'public', // PostgreSQL schema to use
       {
-        // PostGraphile options, see:
-        // https://www.graphile.org/postgraphile/usage-library/
+        
       }
     );
 
