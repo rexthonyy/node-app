@@ -99,6 +99,6 @@ const getData = ({knowledge_base_article_translation_id, schedule_type}) => {
     });
 }
 
-module.exports = async (parent, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

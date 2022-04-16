@@ -46,9 +46,9 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
                                 checkComplete1();
                             });
                         }else{
-                            pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result2 => {
-                                if(result2.res == null || result2.res.length==0) return checkComplete1();
-                                active_colors.push(result2.res[0].ui_color);
+                            pgQueries.getKnowledgeBaseArticleTranslationsByKnowledgeBaseIdCategoryIdAndLocaleId([knowledge_base_id, category.id, translation.kb_locale_id], result3 => {
+                                if(result3.res == null || result3.res.length==0) return checkComplete1();
+                                active_colors.push(result3.res[0].ui_color);
                                 checkComplete1();
                             });
                         }
@@ -177,6 +177,6 @@ const getData = ({filter_by, knowledge_base_id, category_id}) => {
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

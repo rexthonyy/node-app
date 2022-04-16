@@ -584,7 +584,7 @@ const updateKnowledgeBaseCategoryTranslation = (category_id, kb_locale_id, value
             response({
                 err: err.stack,
                 res: null,
-                code: 831
+                code: 8301
             });
         } else {
             response({

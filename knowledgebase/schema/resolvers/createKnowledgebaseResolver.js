@@ -80,6 +80,6 @@ const getData = ({name, icon, footer, homepage_layout, category_layout, active, 
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

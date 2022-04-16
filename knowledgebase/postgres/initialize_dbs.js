@@ -388,10 +388,10 @@ function createLocalesTB(cb){
             ('es-ca','ko','Català'),
             ('zh-tw',null,'Chinese (Trad.) (繁體中文)')`;
 
-        client.query(query, (err, res) => {
-            if (err) {
-                err.errorIndex = 500;
-                console.log(err);
+        client.query(query, (er) => {
+            if (er) {
+                er.erorIndex = 500;
+                console.log(er);
             } 
             cb();
         });

@@ -279,6 +279,6 @@ function exportKnowledgeBaseLists(data, kb_id, cb){
 }
 
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

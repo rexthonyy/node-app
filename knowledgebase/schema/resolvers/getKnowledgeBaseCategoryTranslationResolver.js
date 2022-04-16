@@ -91,6 +91,6 @@ function resolveResponse(resolve, cat){
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

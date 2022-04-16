@@ -41,6 +41,6 @@ const getData = () => {
     });
 }
 
-module.exports = async (parent, args) => {
-    return getData(args);
+module.exports = async () => {
+    return getData();
 }

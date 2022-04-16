@@ -94,6 +94,6 @@ function unarchiveSubCategory(knowledge_base_id, category_id, cb){
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

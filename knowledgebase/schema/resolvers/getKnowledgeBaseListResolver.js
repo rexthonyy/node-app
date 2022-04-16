@@ -19,6 +19,6 @@ const getData = ({ knowledge_base_id, list_type }) => {
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

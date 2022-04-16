@@ -32,7 +32,7 @@ const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
                 if(translations.length == 0) return finished();
             
                 numCategories = translations.length;
-                count = -1;
+                let count = -1;
             
                 checkComplete1();
             
@@ -195,6 +195,6 @@ const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }

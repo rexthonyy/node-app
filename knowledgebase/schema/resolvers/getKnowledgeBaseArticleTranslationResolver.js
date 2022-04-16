@@ -42,6 +42,6 @@ const getData = ({ article_id, kb_locale_id }) => {
     });
 }
 
-module.exports = async (parents, args) => {
+module.exports = async (args) => {
     return getData(args);
 }
