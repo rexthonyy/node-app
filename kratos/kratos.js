@@ -36,7 +36,6 @@ require('./postgres/initialize_dbs').init()
 
 
     app.use('/graphql', 
-    graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
     graphqlHTTP({
         schema: stitchSchemas({
       subschemas: [
