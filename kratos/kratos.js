@@ -1,6 +1,6 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
-.then(() => {
+.then(async () => {
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
