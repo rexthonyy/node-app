@@ -1,0 +1,31 @@
+{
+  "name": "kratos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "kratos.js",
+  "scripts": {
+    "test": "node kratos.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.6.7",
+    "body-parser": "^1.19.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "express-graphql": "^0.12.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "multer": "^1.4.4",
+    "node-fetch": "^2.6.7",
+    "graphql": "^15.0.0",
+    "graphql-tools": "^8.2.4",
+    "graphql-upload": "^13.0.0",
+    "@graphql-tools/schema": "^8.3.6",
+    "@graphql-tools/stitch": "^8.6.3",
+    "pg": "^8.7.3",
+    "postgraphile": "^4.12.5",
+    "postgraphile-apollo-server": "^0.1.1"
+  }
+}
