@@ -1,0 +1,21 @@
+{
+    "name": "mesh",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dev": "mesh dev"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@graphql-mesh/cli": "0.67.5",
+      "@graphql-mesh/graphql": "0.23.6",
+      "@graphql-mesh/runtime": "0.33.14",
+      "graphql": "15.8.0"
+    }
+  }
+  
+  
+  

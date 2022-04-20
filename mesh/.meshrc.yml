@@ -1,0 +1,5 @@
+sources:
+  - name: Kratos
+    handler:
+      graphql:
+        endpoint: http://localhost:1401

@@ -32,7 +32,8 @@ require('./postgres/initialize_dbs').init()
       uploads: false
     });
   
-    const { url } = await server.listen();
+    let apolloPort = process.env.PORT1 || 1100;
+    const { url } = await server.listen({port: apolloPort});
     console.log(`🚀 Server ready at ${url}`);
 
 
