@@ -65,7 +65,7 @@ require('./postgres/initialize_dbs').init().then(function _callee() {
           _require3 = require('express-graphql'), graphqlHTTP = _require3.graphqlHTTP;
           _require4 = require("openapi-to-graphql"), createGraphQLSchema = _require4.createGraphQLSchema;
           oas1 = require("./api.openapi.json");
-          oas2 = require("./openapi1.json");
+          oas2 = require("./openapi.json");
           _context2.next = 10;
           return regeneratorRuntime.awrap(createGraphQLSchema([oas1, oas2]));
 
