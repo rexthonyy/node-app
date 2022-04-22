@@ -3,7 +3,7 @@
 require("dotenv").config();
 
 require('./postgres/initialize_dbs').init().then(function _callee() {
-  var express, _require, stitchSchemas, _require2, ApolloServer, _require3, graphqlHTTP, _require4, createGraphQLSchema, oas1, oas2, _ref, schema, report1, schema1, app, main;
+  var express, _require, stitchSchemas, _require2, ApolloServer, _require3, graphqlHTTP, _require4, createGraphQLSchema, oas1, _ref, schema, report1, schema1, app, main;
 
   return regeneratorRuntime.async(function _callee$(_context2) {
     while (1) {
@@ -63,13 +63,15 @@ require('./postgres/initialize_dbs').init().then(function _callee() {
           _require = require('@graphql-tools/stitch'), stitchSchemas = _require.stitchSchemas;
           _require2 = require("apollo-server"), ApolloServer = _require2.ApolloServer;
           _require3 = require('express-graphql'), graphqlHTTP = _require3.graphqlHTTP;
-          _require4 = require("openapi-to-graphql"), createGraphQLSchema = _require4.createGraphQLSchema;
-          oas1 = require("./api.openapi.json");
-          oas2 = require("./openapi.json");
-          _context2.next = 10;
-          return regeneratorRuntime.awrap(createGraphQLSchema([oas1, oas2]));
+          _require4 = require("openapi-to-graphql"), createGraphQLSchema = _require4.createGraphQLSchema; // const oas1 = require("./api.openapi.json");
+          // const oas2 = require("./openapi.json");
+          // const { schema, report1 } = await createGraphQLSchema([oas1, oas2]);
 
-        case 10:
+          oas1 = require("./openapi1.json");
+          _context2.next = 9;
+          return regeneratorRuntime.awrap(createGraphQLSchema([oas1]));
+
+        case 9:
           _ref = _context2.sent;
           schema = _ref.schema;
           report1 = _ref.report1;
@@ -82,7 +84,7 @@ require('./postgres/initialize_dbs').init().then(function _callee() {
             process.exit(1);
           });
 
-        case 18:
+        case 17:
         case "end":
           return _context2.stop();
       }
