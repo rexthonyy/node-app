@@ -30,6 +30,7 @@ const getIdentityResolver = require("../resolvers/getIdentityResolver");
 const getJSONSchemaResolver = require("../resolvers/getJSONSchemaResolver");
 const getLoginFlowResolver = require("../resolvers/getLoginFlowResolver");
 const getRecoveryFlowResolver = require("../resolvers/getRecoveryFlowResolver");
+const getRegistrationFlowResolver = require("../resolvers/getRegistrationFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -124,6 +125,11 @@ module.exports = new GraphQLObjectType({
             type: RecoveryFlow,
             description: "This endpoint initiates a recovery flow for API clients such as mobile devices, smart TVs, and so on.\n\nIf a valid provided session cookie or session token is provided, a 400 Bad Request error.\n\nTo fetch an existing recovery flow call /self-service/recovery/flows?flow=<flow_id>.\n\n:::warning\n\nYou MUST NOT use this endpoint in client-side (Single Page Apps, ReactJS, AngularJS) nor server-side (Java Server Pages, NodeJS, PHP, Golang, ...) browser applications. Using this endpoint in these applications will make you vulnerable to a variety of CSRF attacks.\n\nThis endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).\n\n:::\n\nMore information can be found at Ory Kratos Account Recovery Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/recovery/api",
             resolve: getRecoveryFlowResolver
+        },
+        registrationFlow_: {
+            type: RecoveryFlow,
+            description: "This endpoint initiates a registration flow for API clients such as mobile devices, smart TVs, and so on.\n\nIf a valid provided session cookie or session token is provided, a 400 Bad Request error will be returned unless the URL query parameter ?refresh=true is set.To fetch an existing registration flow call /self-service/registration/flows?flow=<flow_id>.\n\n:::warning\n\nYou MUST NOT use this endpoint in client-side (Single Page Apps, ReactJS, AngularJS) nor server-side (Java Server Pages, NodeJS, PHP, Golang, ...) browser applications. Using this endpoint in these applications will make you vulnerable to a variety of CSRF attacks.\n\nThis endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).\n\n:::\n\nMore information can be found at Ory Kratos User Login and User Registration Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/registration/api",
+            resolve: getRegistrationFlowResolver
         },
     })
 });
