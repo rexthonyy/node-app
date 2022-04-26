@@ -13,7 +13,7 @@ module.exports = new GraphQLObjectType({
     name: "SettingsFlow_",
     description: "This flow is used when an identity wants to update settings (e.g. profile data, passwords, ...) in a selfservice manner.\n\nWe recommend reading the User Settings Documentation",
     fields: () => ({
-            active: { typ: GraphQLString, description: "Active, if set, contains the registration method that is being used. It is initially not set." },
+            active: { type: GraphQLString, description: "Active, if set, contains the registration method that is being used. It is initially not set." },
             expiresAt: { type: GraphQLNonNull(GraphQLString), description: "ExpiresAt is the time (UTC) when the flow expires. If the user still wishes to update the setting, a new flow has to be initiated." },
             id: { type: GraphQLNonNull(GraphQLString) },
             identity: { type: GraphQLNonNull(Identity) },
