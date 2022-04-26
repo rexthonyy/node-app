@@ -8,7 +8,7 @@ const {
 module.exports = new GraphQLObjectType({
     name: "ErrorContainer",
     fields: () => ({
-            errors: { type: GraphQLNonNull(GraphQLJSON), description: "Errors in the container" },
+            errors: { type: GraphQLNonNull(GraphQLString), description: "Errors in the container" },
             id: { type: GraphQLNonNull(GraphQLString) }
     })
 });
