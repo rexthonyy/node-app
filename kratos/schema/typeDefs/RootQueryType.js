@@ -16,6 +16,7 @@ const VerificationFlow = require("./VerificationFlow");
 const HealthAlive = require("./HealthAlive");
 const HealthReady = require("./HealthReady");
 const Identity = require("./Identity");
+const Version = require("./Version");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -32,6 +33,7 @@ const getLoginFlowResolver = require("../resolvers/getLoginFlowResolver");
 const getRecoveryFlowResolver = require("../resolvers/getRecoveryFlowResolver");
 const getRegistrationFlowResolver = require("../resolvers/getRegistrationFlowResolver");
 const getVerificationFlowResolver = require("../resolvers/getVerificationFlowResolver");
+const getVersionResolver = require("../resolvers/getVersionResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -136,6 +138,11 @@ module.exports = new GraphQLObjectType({
             type: VerificationFlow,
             description: "This endpoint initiates a verification flow for API clients such as mobile devices, smart TVs, and so on.\n\nTo fetch an existing verification flow call /self-service/verification/flows?flow=<flow_id>.\n\n:::warning\n\nYou MUST NOT use this endpoint in client-side (Single Page Apps, ReactJS, AngularJS) nor server-side (Java Server Pages, NodeJS, PHP, Golang, ...) browser applications. Using this endpoint in these applications will make you vulnerable to a variety of CSRF attacks.\n\nThis endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).\n\n:::\n\nMore information can be found at Ory Kratos Email and Phone Verification Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/verification/api",
             resolve: getVerificationFlowResolver
+        },
+        version_: {
+            type: Version,
+            description: "This endpoint returns the version of Ory Kratos.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the X-Forwarded-Proto header to be set.\n\nBe aware that if you are running multiple nodes of this service, the version will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /version",
+            resolve: getVersionResolver
         },
     })
 });
