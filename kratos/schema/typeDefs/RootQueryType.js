@@ -13,6 +13,7 @@ const RecoveryFlow = require("./RecoveryFlow");
 const RegistrationFlow = require("./RegistrationFlow");
 const VerificationFlow = require("./VerificationFlow");
 const HealthAlive = require("./HealthAlive");
+const HealthReady = require("./HealthReady");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -21,6 +22,7 @@ const getSelfServiceRecoveryFlowResolver = require("../resolvers/getSelfServiceR
 const getSelfServiceRegistrationFlowResolver = require("../resolvers/getSelfServiceRegistrationFlowResolver");
 const getSelfServiceVerificationFlowResolver = require("../resolvers/getSelfServiceVerificationFlowResolver");
 const getHealthAliveResolver = require("../resolvers/getHealthAliveResolver");
+const getHealthReadyResolver = require("../resolvers/getHealthReadyResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -74,6 +76,11 @@ module.exports = new GraphQLObjectType({
             type: HealthAlive,
             description: "This endpoint returns a HTTP 200 status code when Ory Kratos is accepting incoming HTTP requests. This status does currently not include checks whether the database connection is working.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the X-Forwarded-Proto header to be set.\n\nBe aware that if you are running multiple nodes of this service, the health status will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /health/alive",
             resolve: getHealthAliveResolver
+        },
+        healthReady_: {
+            type: HealthReady,
+            description: "This endpoint returns a HTTP 200 status code when Ory Kratos is up running and the environment dependencies (e.g. the database) are responsive as well.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the `X-Forwarded-Proto` header to be set.\n\nBe aware that if you are running multiple nodes of Ory Kratos, the health status will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /health/ready",
+            resolve: getHealthReadyResolver
         },
     })
 });
