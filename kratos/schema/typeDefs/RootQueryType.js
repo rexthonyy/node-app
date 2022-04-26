@@ -9,10 +9,12 @@ const {
 // data types
 const ErrorContainer = require("./ErrorContainer");
 const LoginFlow = require("./LoginFlow");
+const RecoveryFlow = require("./RecoveryFlow");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
 const getSelfServiceLoginFlowResolver = require("../resolvers/getSelfServiceLoginFlowResolver");
+const getSelfServiceRecoveryFlowResolver = require("../resolvers/getSelfServiceRecoveryFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -37,6 +39,14 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getSelfServiceLoginFlowResolver
+        },
+        getSelfServiceRecoveryFlow_: {
+            type: RecoveryFlow,
+            description: "This endpoint returns a recovery flow's context with, for example, error details and other information.",
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: getSelfServiceRecoveryFlowResolver
         },
     })
 });
