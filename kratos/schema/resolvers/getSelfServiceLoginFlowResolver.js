@@ -6,14 +6,14 @@ const getData = ({id}) => {
             active: "active",
             expiresAt: "2022-01",
             forced: true,
-            id: id,
+            id: 1,
             issuedAt: "2022-02",
             requestUrl: "/root",
             type: "browser",
             ui: {
                 action: "active",
                 message: [{
-                    context: null,
+                    context: "api",
                     id: 1,
                     text: "update",
                     type: "container"
@@ -25,7 +25,7 @@ const getData = ({id}) => {
                     },
                     group: "one",
                     messages: [{
-                        context: null,
+                        context: "api",
                         id: 2,
                         text: "update",
                         type: "container"
