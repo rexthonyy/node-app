@@ -12,7 +12,7 @@ const getData = ({id}) => {
             type: "browser",
             ui: {
                 action: "active",
-                message: [{
+                messages: [{
                     context: "api",
                     id: 1,
                     text: "update",
@@ -24,12 +24,13 @@ const getData = ({id}) => {
                         type: "attr"
                     },
                     group: "one",
-                    messages: [{
+                    messages: {
                         context: "api",
                         id: 2,
                         text: "update",
                         type: "container"
-                    }]
+                    },
+                    type: "api"
                 }
             }
         });
