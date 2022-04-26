@@ -12,7 +12,12 @@ const getData = ({id}) => {
             type: "browser",
             ui: {
                 action: "active",
-                message: [],
+                message: [{
+                    context: null,
+                    id: id,
+                    text: "update",
+                    type: "container"
+                }],
                 method: "post",
                 nodes: {
                     attributes: {
@@ -21,7 +26,7 @@ const getData = ({id}) => {
                     group: "one",
                     messages: [{
                         context: null,
-                        id: 1,
+                        id: id,
                         text: "update",
                         type: "container"
                     }]
