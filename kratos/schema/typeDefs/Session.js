@@ -2,7 +2,7 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
-    GraphQLList
+    GraphQLBoolean
 } = require("graphql");
 
 // data types
