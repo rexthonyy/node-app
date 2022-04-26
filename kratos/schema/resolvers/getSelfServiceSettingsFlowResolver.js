@@ -6,7 +6,7 @@ const getData = ({id}) => {
             active: "active",
             expiresAt: "2022-01",
             id: id,
-            id: "identity"+id,
+            identity: "identity"+id,
             issuedAt: "2022-02",
             messages: [{
                 context: "api",
