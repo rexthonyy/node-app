@@ -38,6 +38,7 @@ const getVerificationFlowResolver = require("../resolvers/getVerificationFlowRes
 const getVersionResolver = require("../resolvers/getVersionResolver");
 const getSelfServiceSettingsFlowResolver = require("../resolvers/getSelfServiceSettingsFlowResolver");
 const getSessionResolver = require("../resolvers/getSessionResolver");
+const getSettingsFlowResolver = require("../resolvers/getSettingsFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -164,6 +165,11 @@ module.exports = new GraphQLObjectType({
                 cookie: { type: GraphQLString },
             },
             resolve: getSessionResolver
+        },
+        settingsFlow_: {
+            type: SettingsFlow,
+            description: "This endpoint initiates a settings flow for API clients such as mobile devices, smart TVs, and so on. You must provide a valid Ory Kratos Session Token for this endpoint to respond with HTTP 200 OK.\n\nTo fetch an existing settings flow call /self-service/settings/flows?flow=<flow_id>.\n\n:::warning\n\nYou MUST NOT use this endpoint in client-side (Single Page Apps, ReactJS, AngularJS) nor server-side (Java Server Pages, NodeJS, PHP, Golang, ...) browser applications. Using this endpoint in these applications will make you vulnerable to a variety of CSRF attacks.\n\nThis endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).\n\n:::\n\nMore information can be found at Ory Kratos User Settings & Profile Management Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/settings/api",
+            resolve: getSettingsFlowResolver
         },
     })
 });
