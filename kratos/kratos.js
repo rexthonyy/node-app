@@ -12,7 +12,6 @@ require('./postgres/initialize_dbs').init()
   // const oas1 = require("./openapi1.json");
   // const { schema, report1 } = await createGraphQLSchema([oas1]);
   const schema1 = require('./schema/index');
-  console.log(schema);
 
   const app = express();
 
