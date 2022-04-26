@@ -12,6 +12,7 @@ const LoginFlow = require("./LoginFlow");
 const RecoveryFlow = require("./RecoveryFlow");
 const RegistrationFlow = require("./RegistrationFlow");
 const VerificationFlow = require("./VerificationFlow");
+const HealthAlive = require("./HealthAlive");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -19,6 +20,7 @@ const getSelfServiceLoginFlowResolver = require("../resolvers/getSelfServiceLogi
 const getSelfServiceRecoveryFlowResolver = require("../resolvers/getSelfServiceRecoveryFlowResolver");
 const getSelfServiceRegistrationFlowResolver = require("../resolvers/getSelfServiceRegistrationFlowResolver");
 const getSelfServiceVerificationFlowResolver = require("../resolvers/getSelfServiceVerificationFlowResolver");
+const getHealthAliveResolver = require("../resolvers/getHealthAliveResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -67,6 +69,11 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getSelfServiceVerificationFlowResolver
+        },
+        healthAlive_: {
+            type: HealthAlive,
+            description: "This endpoint returns a HTTP 200 status code when Ory Kratos is accepting incoming HTTP requests. This status does currently not include checks whether the database connection is working.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the X-Forwarded-Proto header to be set.\n\nBe aware that if you are running multiple nodes of this service, the health status will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /health/alive",
+            resolve: getHealthAliveResolver
         },
     })
 });
