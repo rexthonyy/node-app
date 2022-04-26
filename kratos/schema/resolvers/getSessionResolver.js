@@ -3,7 +3,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const getData = ({authorization, cookie}) => {
     return new Promise((resolve, reject) => {
         resolve({
-            active: "active",
+            active: false,
             authenticatedAt: "2022-01",
             expiresAt: "2022-01",
             id: 1,
