@@ -11,12 +11,14 @@ const ErrorContainer = require("./ErrorContainer");
 const LoginFlow = require("./LoginFlow");
 const RecoveryFlow = require("./RecoveryFlow");
 const RegistrationFlow = require("./RegistrationFlow");
+const VerificationFlow = require("./VerificationFlow");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
 const getSelfServiceLoginFlowResolver = require("../resolvers/getSelfServiceLoginFlowResolver");
 const getSelfServiceRecoveryFlowResolver = require("../resolvers/getSelfServiceRecoveryFlowResolver");
 const getSelfServiceRegistrationFlowResolver = require("../resolvers/getSelfServiceRegistrationFlowResolver");
+const getSelfServiceVerificationFlowResolver = require("../resolvers/getSelfServiceVerificationFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -57,6 +59,14 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getSelfServiceRegistrationFlowResolver
+        },
+        getSelfServiceVerificationFlow_: {
+            type: VerificationFlow,
+            description: "This endpoint returns a verification flow's context with, for example, error details and other information.",
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: getSelfServiceVerificationFlowResolver
         },
     })
 });
