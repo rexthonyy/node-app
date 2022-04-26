@@ -14,7 +14,7 @@ const getData = ({id}) => {
                 action: "active",
                 message: [{
                     context: null,
-                    id: id,
+                    id: 1,
                     text: "update",
                     type: "container"
                 }],
@@ -26,7 +26,7 @@ const getData = ({id}) => {
                     group: "one",
                     messages: [{
                         context: null,
-                        id: id,
+                        id: 2,
                         text: "update",
                         type: "container"
                     }]
