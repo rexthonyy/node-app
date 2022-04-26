@@ -26,6 +26,7 @@ const getHealthAliveResolver = require("../resolvers/getHealthAliveResolver");
 const getHealthReadyResolver = require("../resolvers/getHealthReadyResolver");
 const getIdentitiesResolver = require("../resolvers/getIdentitiesResolver");
 const getIdentityResolver = require("../resolvers/getIdentityResolver");
+const getJSONSchemaResolver = require("../resolvers/getJSONSchemaResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -97,9 +98,16 @@ module.exports = new GraphQLObjectType({
         identity_: {
             type: Identity,
             args: {
-                id: { type: GraphQLString }
+                id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getIdentityResolver
+        },
+        jsonSchema_: {
+            type: GraphQLString,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: getJSONSchemaResolver
         },
     })
 });
