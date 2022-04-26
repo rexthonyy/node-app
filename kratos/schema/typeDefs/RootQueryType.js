@@ -25,6 +25,7 @@ const getSelfServiceVerificationFlowResolver = require("../resolvers/getSelfServ
 const getHealthAliveResolver = require("../resolvers/getHealthAliveResolver");
 const getHealthReadyResolver = require("../resolvers/getHealthReadyResolver");
 const getIdentitiesResolver = require("../resolvers/getIdentitiesResolver");
+const getIdentityResolver = require("../resolvers/getIdentityResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -92,6 +93,13 @@ module.exports = new GraphQLObjectType({
                 perPage: { type: GraphQLInt }
             },
             resolve: getIdentitiesResolver
+        },
+        identity_: {
+            type: Identity,
+            args: {
+                id: { type: GraphQLString }
+            },
+            resolve: getIdentityResolver
         },
     })
 });
