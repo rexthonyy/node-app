@@ -14,6 +14,7 @@ const RegistrationFlow = require("./RegistrationFlow");
 const VerificationFlow = require("./VerificationFlow");
 const HealthAlive = require("./HealthAlive");
 const HealthReady = require("./HealthReady");
+const Identity = require("./Identity");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -23,6 +24,7 @@ const getSelfServiceRegistrationFlowResolver = require("../resolvers/getSelfServ
 const getSelfServiceVerificationFlowResolver = require("../resolvers/getSelfServiceVerificationFlowResolver");
 const getHealthAliveResolver = require("../resolvers/getHealthAliveResolver");
 const getHealthReadyResolver = require("../resolvers/getHealthReadyResolver");
+const getIdentitiesResolver = require("../resolvers/getIdentitiesResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -81,6 +83,15 @@ module.exports = new GraphQLObjectType({
             type: HealthReady,
             description: "This endpoint returns a HTTP 200 status code when Ory Kratos is up running and the environment dependencies (e.g. the database) are responsive as well.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the `X-Forwarded-Proto` header to be set.\n\nBe aware that if you are running multiple nodes of Ory Kratos, the health status will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /health/ready",
             resolve: getHealthReadyResolver
+        },
+        identities_: {
+            type: GraphQLList(Identity),
+            description: "Lists all identities. Does not support search at the moment.",
+            args: {
+                page: { type: GraphQLInt }, 
+                perPage: { type: GraphQLInt }
+            },
+            resolve: getIdentitiesResolver
         },
     })
 });
