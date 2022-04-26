@@ -3,7 +3,8 @@ const {
     GraphQLInt,
     GraphQLObjectType,
     GraphQLString,
-    GraphQLList
+    GraphQLList,
+    GraphQLBoolean
 } = require("graphql");
 
 // data types
@@ -27,6 +28,7 @@ const getHealthReadyResolver = require("../resolvers/getHealthReadyResolver");
 const getIdentitiesResolver = require("../resolvers/getIdentitiesResolver");
 const getIdentityResolver = require("../resolvers/getIdentityResolver");
 const getJSONSchemaResolver = require("../resolvers/getJSONSchemaResolver");
+const getLoginFlowResolver = require("../resolvers/getLoginFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -108,6 +110,13 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getJSONSchemaResolver
+        },
+        loginFlow_: {
+            type: LoginFlow,
+            args: {
+                refresh: { type: GraphQLBoolean }
+            },
+            resolve: getLoginFlowResolver
         },
     })
 });
