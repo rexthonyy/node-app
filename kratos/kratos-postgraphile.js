@@ -1,24 +1,33 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
-.then(async () => {
+.then(() => {
+  const pg = require("pg");
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
+  const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
-  const { createGraphQLSchema } = require("openapi-to-graphql");
-  const oas1 = require("./api.openapi.json");
-  const oas2 = require("./openapi.json");
-  const { schema, report1 } = await createGraphQLSchema([oas1, oas2]);
-  // const oas1 = require("./openapi1.json");
-  // const { schema, report1 } = await createGraphQLSchema([oas1]);
+  const { graphqlUploadExpress } = require('graphql-upload');
   const schema1 = require('./schema/index');
 
   const app = express();
 
+  const pgPool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL
+  });
+  
   app.use(express.static('public'));
   app.use(express.json());
   
   async function main() {
+    const { schema, plugin } = await makeSchemaAndPlugin(
+      pgPool,
+      'public', // PostgreSQL schema to use
+      {
+        // PostGraphile options, see:
+        // https://www.graphile.org/postgraphile/usage-library/
+      }
+    );
 
     const server = new ApolloServer({
       schema: stitchSchemas({
@@ -31,15 +40,16 @@ require('./postgres/initialize_dbs').init()
         }
       ]
       }),
+      plugins: [plugin],
       uploads: false
     });
   
-    let apolloPort = process.env.PORT1 || 1100;
-    const { url } = await server.listen({port: apolloPort});
+    const { url } = await server.listen();
     console.log(`🚀 Server ready at ${url}`);
 
 
     app.use('/graphql', 
+    graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
     graphqlHTTP({
         schema: stitchSchemas({
       subschemas: [
