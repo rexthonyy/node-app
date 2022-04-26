@@ -18,6 +18,7 @@ const HealthReady = require("./HealthReady");
 const Identity = require("./Identity");
 const Version = require("./Version");
 const SettingsFlow = require("./SettingsFlow");
+const Session = require("./Session");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -36,6 +37,7 @@ const getRegistrationFlowResolver = require("../resolvers/getRegistrationFlowRes
 const getVerificationFlowResolver = require("../resolvers/getVerificationFlowResolver");
 const getVersionResolver = require("../resolvers/getVersionResolver");
 const getSelfServiceSettingsFlowResolver = require("../resolvers/getSelfServiceSettingsFlowResolver");
+const getSessionResolver = require("../resolvers/getSessionResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -153,6 +155,15 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLString }            
             },
             resolve: getSelfServiceSettingsFlowResolver
+        },
+        session: {
+            type: Session,
+            description: "Uses the HTTP Headers in the GET request to determine (e.g. by using checking the cookies) who is authenticated. Returns a session object in the body or 401 if the credentials are invalid or no credentials were sent. Additionally when the request it successful it adds the user ID to the 'X-Kratos-Authenticated-Identity-Id' header in the response.\n\nThis endpoint is useful for reverse proxies and API Gateways.\n\nEquivalent to Ory Kratos API GET /sessions/whoami",
+            args: {
+                authorization: { type: GraphQLString },
+                cookie: { type: GraphQLString },
+            },
+            resolve: getSessionResolver
         },
     })
 });
