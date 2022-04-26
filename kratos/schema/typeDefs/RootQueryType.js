@@ -17,6 +17,7 @@ const HealthAlive = require("./HealthAlive");
 const HealthReady = require("./HealthReady");
 const Identity = require("./Identity");
 const Version = require("./Version");
+const SettingsFlow = require("./SettingsFlow");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
@@ -34,6 +35,7 @@ const getRecoveryFlowResolver = require("../resolvers/getRecoveryFlowResolver");
 const getRegistrationFlowResolver = require("../resolvers/getRegistrationFlowResolver");
 const getVerificationFlowResolver = require("../resolvers/getVerificationFlowResolver");
 const getVersionResolver = require("../resolvers/getVersionResolver");
+const getSelfServiceSettingsFlowResolver = require("../resolvers/getSelfServiceSettingsFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -143,6 +145,14 @@ module.exports = new GraphQLObjectType({
             type: Version,
             description: "This endpoint returns the version of Ory Kratos.\n\nIf the service supports TLS Edge Termination, this endpoint does not require the X-Forwarded-Proto header to be set.\n\nBe aware that if you are running multiple nodes of this service, the version will never refer to the cluster state, only to a single instance.\n\nEquivalent to Ory Kratos API GET /version",
             resolve: getVersionResolver
+        },
+        getSelfServiceSettingsFlow_: {
+            type: SettingsFlow,
+            description: "When accessing this endpoint through Ory Kratos' Public API you must ensure that either the Ory Kratos Session Cookie or the Ory Kratos Session Token are set. The public endpoint does not return 404 status codes but instead 403 or 500 to improve data privacy.\n\nYou can access this endpoint without credentials when using Ory Kratos' Admin API.\n\nMore information can be found at Ory Kratos User Settings & Profile Management Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/settings/flows",
+            args: {
+                id: { type: GraphQLString }            
+            },
+            resolve: getSelfServiceSettingsFlowResolver
         },
     })
 });
