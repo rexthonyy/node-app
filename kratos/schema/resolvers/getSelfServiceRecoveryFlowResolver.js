@@ -13,7 +13,7 @@ const getData = ({id}) => {
                 text: "update",
                 type: "container"
             }],
-            method: "post",
+            methods: "post",
             requestUrl: "/root",
             state: "active",
             type: "browser"
