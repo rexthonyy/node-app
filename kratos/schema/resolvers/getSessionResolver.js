@@ -14,5 +14,5 @@ const getData = ({authorization, cookie}) => {
 }
 
 module.exports = async (parent, args) => {
-    return await getData(args);
+    return getData(args);
 }

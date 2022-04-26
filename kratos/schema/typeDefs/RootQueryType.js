@@ -156,7 +156,7 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getSelfServiceSettingsFlowResolver
         },
-        session: {
+        session_: {
             type: Session,
             description: "Uses the HTTP Headers in the GET request to determine (e.g. by using checking the cookies) who is authenticated. Returns a session object in the body or 401 if the credentials are invalid or no credentials were sent. Additionally when the request it successful it adds the user ID to the 'X-Kratos-Authenticated-Identity-Id' header in the response.\n\nThis endpoint is useful for reverse proxies and API Gateways.\n\nEquivalent to Ory Kratos API GET /sessions/whoami",
             args: {
