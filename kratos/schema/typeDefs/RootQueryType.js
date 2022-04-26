@@ -10,11 +10,13 @@ const {
 const ErrorContainer = require("./ErrorContainer");
 const LoginFlow = require("./LoginFlow");
 const RecoveryFlow = require("./RecoveryFlow");
+const RegistrationFlow = require("./RegistrationFlow");
 
 // resolvers
 const getErrorContainerResolver = require("../resolvers/getErrorContainerResolver");
 const getSelfServiceLoginFlowResolver = require("../resolvers/getSelfServiceLoginFlowResolver");
 const getSelfServiceRecoveryFlowResolver = require("../resolvers/getSelfServiceRecoveryFlowResolver");
+const getSelfServiceRegistrationFlowResolver = require("../resolvers/getSelfServiceRegistrationFlowResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -47,6 +49,14 @@ module.exports = new GraphQLObjectType({
                 id: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: getSelfServiceRecoveryFlowResolver
+        },
+        getSelfServiceRegistrationFlow_: {
+            type: RegistrationFlow,
+            description: "This endpoint returns a registration flow's context with, for example, error details and other information.",
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: getSelfServiceRegistrationFlowResolver
         },
     })
 });
