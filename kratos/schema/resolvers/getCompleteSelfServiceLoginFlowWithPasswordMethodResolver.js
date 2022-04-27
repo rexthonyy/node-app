@@ -10,11 +10,11 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                 id: "202232",
                 identity: { 
                     id: "202232",
-                    recoveryAddresses: { 
+                    recoveryAddresses: [{ 
                         id: "202232",
                         value: "202232",
                         via: "api"
-                     },
+                     }],
                     schemaId: "202232",
                     schemaUrl: "/root",
                     traits: "202232",
