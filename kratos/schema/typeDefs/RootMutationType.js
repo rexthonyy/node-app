@@ -14,6 +14,8 @@ const CreateIdentityInput = require("./CreateIdentityInput");
 const RecoveryLink = require("./RecoveryLink");
 const CreateRecoveryLinkInput = require("./CreateRecoveryLinkInput");
 const UpdateIdentityInput = require("./UpdateIdentityInput");
+const SettingsViaApiResponse = require("./SettingsViaApiResponse");
+const CompleteSelfServiceSettingsFlowWithPasswordMethodInput = require("./CompleteSelfServiceSettingsFlowWithPasswordMethodInput");
 
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
@@ -21,6 +23,7 @@ const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = req
 const executeCreateIdentityResolver = require("../resolvers/executeCreateIdentityResolver");
 const executeCreateRecoveryLinkResolver = require("../resolvers/executeCreateRecoveryLinkResolver");
 const executeUpdateIdentityResolver = require("../resolvers/executeUpdateIdentityResolver");
+const executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -73,5 +76,15 @@ module.exports = new GraphQLObjectType({
             },
             resolve: executeUpdateIdentityResolver
         },
+        completeSelfServiceSettingsFlowWithPasswordMethod_: {
+            type: SettingsViaApiResponse,
+            description: "Use this endpoint to complete a settings flow by sending an identity's updated password. This endpoint behaves differently for API and browser flows.\n\nAPI-initiated flows expect application/json to be sent in the body and respond with HTTP 200 and an application/json body with the session token on success; HTTP 302 redirect to a fresh settings flow if the original flow expired with the appropriate error messages set; HTTP 400 on form validation errors. HTTP 401 when the endpoint is called without a valid session token. HTTP 403 when selfservice.flows.settings.privileged_session_max_age was reached. Implies that the user needs to re-authenticate.\n\nBrowser flows expect application/x-www-form-urlencoded to be sent in the body and responds with a HTTP 302 redirect to the post/after settings URL or the return_to value if it was set and if the flow succeeded; a HTTP 302 redirect to the Settings UI URL with the flow ID containing the validation errors otherwise. a HTTP 302 redirect to the login endpoint when selfservice.flows.settings.privileged_session_max_age was reached.\n\nMore information can be found at Ory Kratos User Settings & Profile Management Documentation.\n\nEquivalent to Ory Kratos API POST /self-service/settings/methods/password",
+            args: {
+                completeSelfServiceSettingsFlowWithPasswordMethodInput: { type: CompleteSelfServiceSettingsFlowWithPasswordMethodInput },
+                flow: { type: GraphQLString },
+            },
+            resolve: executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver
+        },
+
     })
 });
