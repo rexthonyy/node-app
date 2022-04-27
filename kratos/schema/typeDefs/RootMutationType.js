@@ -9,10 +9,13 @@ const {
 const LoginViaApiResponse = require("./LoginViaApiResponse");
 const CompleteSelfServiceLoginFlowWithPasswordMethodInput = require("./CompleteSelfServiceLoginFlowWithPasswordMethodInput");
 const RegistrationViaApiResponse = require("./RegistrationViaApiResponse");
+const Identity = require("./Identity");
+const CreateIdentityInput = require("./CreateIdentityInput");
 
 // resolvers
-const getCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/getCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
-const getCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/getCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
+const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
+const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
+const executeCreateIdentityResolver = require("../resolvers/executeCreateIdentityResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -29,7 +32,7 @@ module.exports = new GraphQLObjectType({
                 completeSelfServiceLoginFlowWithPasswordMethodInput: { type: CompleteSelfServiceLoginFlowWithPasswordMethodInput },
                 flow: { type: GraphQLNonNull(GraphQLString) }
             },
-            resolve: getCompleteSelfServiceLoginFlowWithPasswordMethodResolver
+            resolve: executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver
         },
         completeSelfServiceRegistrationFlowWithPasswordMethod_: {
             type: RegistrationViaApiResponse,
@@ -38,7 +41,15 @@ module.exports = new GraphQLObjectType({
                 flow: { type: GraphQLString },
                 selfServiceRegistrationMethodsPasswordInput: { type: GraphQLString },
             },
-            resolve: getCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver
+            resolve: executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver
+        },
+        createIdentity_: {
+            type: Identity,
+            description: "This endpoint creates an identity. It is NOT possible to set an identity's credentials (password, ...) using this method! A way to achieve that will be introduced in the future.\n\nLearn how identities work in Ory Kratos' User And Identity Model Documentation.\n\nEquivalent to Ory Kratos API POST /identities",
+            args: {
+                createIdentityInput: { type: CreateIdentityInput }
+            },
+            resolve: executeCreateIdentityResolver
         },
     })
 });
