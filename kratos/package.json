@@ -25,6 +25,7 @@
     "graphql-upload": "^13.0.0",
     "@graphql-tools/schema": "^8.3.6",
     "@graphql-tools/stitch": "^8.6.3",
+    "openapi-to-graphql-cli": "^2.6.3",
     "pg": "^8.7.3",
     "postgraphile": "^4.12.5",
     "postgraphile-apollo-server": "^0.1.1"
