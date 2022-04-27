@@ -1,10 +1,10 @@
 const {
     GraphQLString,
     GraphQLNonNull,
-    GraphQLInputObjectType
+    GraphQLObjectType,
 } = require("graphql");
 
-module.exports = new GraphQLInputObjectType({
+module.exports = new GraphQLObjectType({
     name: "RecoveryLink_",
     fields: () => ({
             expiresAt: { type: GraphQLString, description: "Recovery Link Expires At\n\nThe timestamp when the recovery link expires." },
