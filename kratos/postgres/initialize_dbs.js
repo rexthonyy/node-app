@@ -107,6 +107,15 @@ function createKratosDatabase(cb){
     });
 }
 
+function executeAndReturn(query, cb){
+    client.query(query, (err, res) => {
+        if(err){
+            console.log(err);
+        }
+        cb();
+    });
+}
+
 function createContinuityContainersTB(cb){
     let query = 
     `CREATE TABLE IF NOT EXISTS continuity_containers (
@@ -119,12 +128,7 @@ function createContinuityContainersTB(cb){
         updated_at timestamp without time zone not null, 
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createCourierMessagesTB(cb){
@@ -142,12 +146,7 @@ function createCourierMessagesTB(cb){
         template_data bytea,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentitiesTB(cb){
@@ -162,12 +161,7 @@ function createIdentitiesTB(cb){
         state varchar not null default 'active',
         state_changed_at timestamp without time zone
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityCredentialIdentifiersTB(cb){
@@ -179,12 +173,7 @@ function createIdentityCredentialIdentifiersTB(cb){
         created_at timestamp without time zone not null, 
         updated_at timestamp without time zone not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityCredentialTypesTB(cb){
@@ -193,12 +182,7 @@ function createIdentityCredentialTypesTB(cb){
         id serial primary key not null, 
         name varchar not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityCredentialsTB(cb){
@@ -212,12 +196,7 @@ function createIdentityCredentialsTB(cb){
         updated_at timestamp without time zone not null,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityRecoveryAddressesTB(cb){
@@ -231,12 +210,7 @@ function createIdentityRecoveryAddressesTB(cb){
         updated_at timestamp without time zone not null,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityRecoveryTokensTB(cb){
@@ -254,12 +228,7 @@ function createIdentityRecoveryTokensTB(cb){
         issued_at timestamp without time zone not null default timezone('utc'::text, now()), 
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityVerifiableAddressesTB(cb){
@@ -276,12 +245,7 @@ function createIdentityVerifiableAddressesTB(cb){
         updated_at timestamp without time zone not null,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createIdentityVerificationTokensTB(cb){
@@ -299,12 +263,7 @@ function createIdentityVerificationTokensTB(cb){
         updated_at timestamp without time zone not null,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createNetworksTB(cb){
@@ -314,12 +273,7 @@ function createNetworksTB(cb){
         created_at timestamp without time zone not null, 
         updated_at timestamp without time zone not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSchemaMigrationTB(cb){
@@ -328,12 +282,7 @@ function createSchemaMigrationTB(cb){
         version varchar not null,
         version_self integer not null default 0
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceErrorsTB(cb){
@@ -347,12 +296,7 @@ function createSelfServiceErrorsTB(cb){
         updated_at timestamp without time zone not null,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceLoginFlowsTB(cb){
@@ -373,12 +317,7 @@ function createSelfServiceLoginFlowsTB(cb){
         requested_aal varchar not null default 'aal1',
         internal_context jsonb not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceRecoveryFlowsTB(cb){
@@ -398,12 +337,7 @@ function createSelfServiceRecoveryFlowsTB(cb){
         ui jsonb,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceRegistrationFlowsTB(cb){
@@ -423,12 +357,7 @@ function createSelfServiceRegistrationFlowsTB(cb){
         nid varchar,
         internal_context jsonb not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceSettingsFlowsTB(cb){
@@ -448,12 +377,7 @@ function createSelfServiceSettingsFlowsTB(cb){
         nid varchar,
         internal_context jsonb not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSelfServiceVerificationFlowsTB(cb){
@@ -472,12 +396,7 @@ function createSelfServiceVerificationFlowsTB(cb){
         ui jsonb,
         nid varchar
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 function createSessionsTB(cb){
@@ -497,12 +416,7 @@ function createSessionsTB(cb){
         aal varchar not null default 'aal1',
         authentication_methods jsonb not null
     )`;
-    client.query(query, (err, res) => {
-        if(err){
-            console.log(err);
-        }
-        cb();
-    });
+    executeAndReturn(query, cb);
 }
 
 

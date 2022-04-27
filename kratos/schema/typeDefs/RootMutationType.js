@@ -95,7 +95,6 @@ module.exports = new GraphQLObjectType({
                 selfServiceSettingsMethodsProfileInput: { type: GraphQLString }
             },
             resolve: executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver
-        },
-
+        }
     })
 });
