@@ -1,0 +1,16 @@
+{
+  "name": "graphql-shield",
+  "version": "1.0.0",
+  "description": "",
+  "main": "graphql-shield.js",
+  "scripts": {
+    "test": "node graphql-shield.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "dotenv": "^16.0.0"
+  }
+}

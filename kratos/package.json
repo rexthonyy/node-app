@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.6.7",
-    "@sentry/node": "^6.17.9",
     "body-parser": "^1.19.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
@@ -25,7 +24,6 @@
     "graphql-upload": "^13.0.0",
     "@graphql-tools/schema": "^8.3.6",
     "@graphql-tools/stitch": "^8.6.3",
-    "openapi-to-graphql-cli": "^2.6.3",
     "pg": "^8.7.3",
     "postgraphile": "^4.12.5",
     "postgraphile-apollo-server": "^0.1.1"
