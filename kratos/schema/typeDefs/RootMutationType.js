@@ -11,11 +11,14 @@ const CompleteSelfServiceLoginFlowWithPasswordMethodInput = require("./CompleteS
 const RegistrationViaApiResponse = require("./RegistrationViaApiResponse");
 const Identity = require("./Identity");
 const CreateIdentityInput = require("./CreateIdentityInput");
+const RecoveryLink = require("./RecoveryLink");
+const CreateRecoveryLinkInput = require("./CreateRecoveryLinkInput");
 
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
 const executeCreateIdentityResolver = require("../resolvers/executeCreateIdentityResolver");
+const executeCreateRecoveryLinkResolver = require("../resolvers/executeCreateRecoveryLinkResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -50,6 +53,14 @@ module.exports = new GraphQLObjectType({
                 createIdentityInput: { type: CreateIdentityInput }
             },
             resolve: executeCreateIdentityResolver
+        },
+        createRecoveryLink_: {
+            type: RecoveryLink,
+            description: "This endpoint creates a recovery link which should be given to the user in order for them to recover (or activate) their account.\n\nEquivalent to Ory Kratos API POST /recovery/link",
+            args: {
+                createRecoveryLinkInput: { type: CreateRecoveryLinkInput }
+            },
+            resolve: executeCreateRecoveryLinkResolver
         },
     })
 });
