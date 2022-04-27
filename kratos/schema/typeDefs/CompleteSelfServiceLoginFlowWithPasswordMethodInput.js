@@ -1,11 +1,9 @@
 const {
-    GraphQLObjectType,
     GraphQLString,
-    GraphQLNonNull,
-    GraphQLList
+    GraphQLInputObjectType
 } = require("graphql");
 
-module.exports = new GraphQLObjectType({
+module.exports = new GraphQLInputObjectType({
     name: "CompleteSelfServiceLoginFlowWithPasswordMethodInput_",
     fields: () => ({
             csrfToken: { type: GraphQLString, description: "Sending the anti-csrf token is only required for browser login flows." },
