@@ -13,12 +13,14 @@ const Identity = require("./Identity");
 const CreateIdentityInput = require("./CreateIdentityInput");
 const RecoveryLink = require("./RecoveryLink");
 const CreateRecoveryLinkInput = require("./CreateRecoveryLinkInput");
+const UpdateIdentityInput = require("./UpdateIdentityInput");
 
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
 const executeCreateIdentityResolver = require("../resolvers/executeCreateIdentityResolver");
 const executeCreateRecoveryLinkResolver = require("../resolvers/executeCreateRecoveryLinkResolver");
+const executeUpdateIdentityResolver = require("../resolvers/executeUpdateIdentityResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -61,6 +63,15 @@ module.exports = new GraphQLObjectType({
                 createRecoveryLinkInput: { type: CreateRecoveryLinkInput }
             },
             resolve: executeCreateRecoveryLinkResolver
+        },
+        updateIdentity_: {
+            type: Identity,
+            description: "This endpoint updates an identity. It is NOT possible to set an identity's credentials (password, ...) using this method! A way to achieve that will be introduced in the future.\n\nThe full identity payload (except credentials) is expected. This endpoint does not support patching.\n\nLearn how identities work in Ory Kratos' User And Identity Model Documentation.\n\nEquivalent to Ory Kratos API PUT /identities/{id}",
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString) },
+                updateIdentityInput: { type: UpdateIdentityInput }
+            },
+            resolve: executeUpdateIdentityResolver
         },
     })
 });
