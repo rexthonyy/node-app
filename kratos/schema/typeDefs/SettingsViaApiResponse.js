@@ -2,14 +2,14 @@ const {
     GraphQLString,
     GraphQLNonNull,
     GraphQLList,
-    GraphQLInputObjectType
+    GraphQLObjectType
 } = require("graphql");
 
 // data types
 const Identity = require("./Identity");
 const SettingsFlow = require("./SettingsFlow");
 
-module.exports = new GraphQLInputObjectType({
+module.exports = new GraphQLObjectType({
     name: "SettingsViaApiResponse_",
     description: "The Response for Settings Flows via API",
     fields: () => ({
