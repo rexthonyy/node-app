@@ -1,6 +1,7 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
 .then(async () => {
+  Sentry.init({ dsn: "http://d78601a2198e422d8855c8be53f57061@88.208.212.249:8000/2" });
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
@@ -15,7 +16,8 @@ require('./postgres/initialize_dbs').init()
 
   app.use(express.static('public'));
   app.use(express.json());
-  
+  app.use(Sentry.Handlers.requestHandler());
+
   async function main() {
 
     const server = new ApolloServer({
@@ -63,4 +65,5 @@ require('./postgres/initialize_dbs').init()
     process.exit(1);
   });
 
+  app.use(Sentry.Handlers.errorHandler());
 });
