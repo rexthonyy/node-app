@@ -2,24 +2,41 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
-        resolve({
-            active: "active",
-            expiresAt: "2022-01",
-            id: id,
-            issuedAt: "2022-02",
-            messages: [{
+
+        pgKratosQueries.getSelfServiceRegistrationFlowById([id], result => {
+            if(result.err){
+                return reject("Registration flow ID not found");
+            }
+
+            let selfServiceRecoveryFlow = result.res[0];
+
+            let active = selfServiceRecoveryFlow.active_method;
+            let expiresAt = selfServiceRecoveryFlow.expires_at;
+            let issuedAt = selfServiceRecoveryFlow.issued_at;
+            let requestUrl = selfServiceRecoveryFlow.request_url;
+            let messages = [{
                 context: "api",
                 id: 1,
                 text: "update",
                 type: "container"
-            }],
-            methods: "post",
-            requestUrl: "/root",
-            type: "browser"
+            }];
+            let methods = "{}";
+            let type = selfServiceRecoveryFlow.type;
+
+            resolve({
+                active,
+                expiresAt,
+                id,
+                issuedAt,
+                messages,
+                methods,
+                requestUrl,
+                type
+            });
         });
     });
 }
 
 module.exports = async (parent, args) => {
-    return await getData(args);
+    return getData(args);
 }
