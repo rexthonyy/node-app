@@ -1,6 +1,7 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = ({id}) => {
+    console.log(id);
     pgKratosQueries.getSelfServiceRecoveryFlowById([id], result => {
         if(result.err){
             return reject("Recovery flow ID not found");
