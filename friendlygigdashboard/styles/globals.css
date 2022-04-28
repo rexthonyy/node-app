@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+div#__next {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #d0c6c687;
+}
+
+.thinBorder {
+  border-width: 1px;
+  border-color: #2c2c2e1f;
+}
+.thinBorderTop {
+  border-top-width: 1px;
+  border-color: #2c2c2e1f;
+}
+.thinBorderBottom {
+  border-bottom-width: 1px;
+  border-color: #2c2c2e1f;
+}
+.thinBorderLeft {
+  border-left-width: 1px;
+  border-color: #2c2c2e1f;
+}
+.thinBorderRight {
+  border-right-width: 1px;
+  border-color: #2c2c2e1f;
+}
+.shadow {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 19%), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+.align-center {
+  align-items: center;
+}
+.bg-gray-200 {
+  background-color: #edf2f7;
+}
+.bg-gray-900 {
+  background-color: #1a202c;
+}
+
+.language-tabs {
+  display: flex;
+  overflow: auto;
+  margin-bottom: 12px;
+}
+.language-tabs .language-tab {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  padding: 2px 10px;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-right: 10px;
+  text-align: center;
+  color: red;
+  border: 1px solid;
+  border-color: red;
+  margin: 0px 10px 0px 0px;
+}
+.min-w-half {
+  min-width: 50%;
+  width: 50%;
+}
+.text-gray-700 {
+  color: #7c7c7c;
+}
+.headlessui-dialog-1 {
+  background: #15131361;
+  z-index: 99999;
+}

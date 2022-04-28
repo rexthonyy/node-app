@@ -1,0 +1,34 @@
+table thead tr th {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
+table tbody tr td {
+  text-align: left;
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+}
+.w-\[40px\] {
+  width: 40px;
+  min-width: 40px;
+}
+.w-\[80px\] {
+  width: 80px;
+  min-width: 80px;
+}
+.icon-center {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+.icon-right {
+  display: flex;
+  align-content: flex-end;
+  align-items: center;
+  justify-content: end;
+}

@@ -1,0 +1,12 @@
+# sources:
+#   - name: PetStore
+#     handler:
+#       openapi:
+#         baseUrl: https://petstore.swagger.io/v2/
+#         oasFilePath: https://petstore.swagger.io/v2/swagger.json
+sources:
+  - name: Books
+    handler:
+      openapi:
+        baseUrl: http://localhost:3002/
+        source:  service/service.json

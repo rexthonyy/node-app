@@ -1,0 +1,214 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  """
+  For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
+  
+  Equivalent to GET /store/order/{orderId}
+  """
+  order(
+    """ID of pet that needs to be fetched"""
+    orderId: Float!
+  ): Order
+  """
+  Returns a single pet
+  
+  Equivalent to GET /pet/{petId}
+  """
+  pet(
+    """ID of pet to return"""
+    petId: Float!
+  ): Pet
+  """
+  Multiple status values can be provided with comma separated strings
+  
+  Equivalent to GET /pet/findByStatus
+  """
+  petFindByStatus(
+    """
+    Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list
+    """
+    limit: Int
+    """Status values that need to be considered for filter"""
+    status: [Status4ListItem]!
+  ): [Pet]
+  """
+  Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+  
+  Equivalent to GET /pet/findByTags
+  """
+  petFindByTags(
+    """
+    Auto-generated argument that limits the size of returned list of objects/list, selecting the first `n` elements of the list
+    """
+    limit: Int
+    """Tags to filter by"""
+    tags: [String]!
+  ): [Pet]
+  """
+  Returns a map of status codes to quantities
+  
+  Equivalent to GET /store/inventory
+  """
+  storeInventory: JSON
+  """
+  Get user by user name
+  
+  Equivalent to GET /user/{username}
+  """
+  user(
+    """The name that needs to be fetched. Use user1 for testing. """
+    username: String!
+  ): User
+  """
+  Logs user into the system
+  
+  Equivalent to GET /user/login
+  """
+  userLogin(
+    """The password for login in clear text"""
+    password: String!
+    """The user name for login"""
+    username: String!
+  ): String
+  """
+  Logs out current logged in user session
+  
+  Equivalent to GET /user/logout
+  """
+  userLogout: JSON
+}
+
+type Order {
+  complete: Boolean
+  id: Float
+  petId: Float
+  quantity: Int
+  shipDate: String
+  """Order Status"""
+  status: Status3
+}
+
+enum Status3 {
+  PLACED
+  APPROVED
+  DELIVERED
+}
+
+type Pet {
+  category: Category
+  id: Float
+  name: String!
+  photoUrls: [String]!
+  """pet status in the store"""
+  status: Status
+  tags: [Tag]
+}
+
+type Category {
+  id: Float
+  name: String
+}
+
+enum Status {
+  AVAILABLE
+  PENDING
+  SOLD
+}
+
+type Tag {
+  id: Float
+  name: String
+}
+
+enum Status4ListItem {
+  AVAILABLE
+  PENDING
+  SOLD
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type User {
+  email: String
+  firstName: String
+  id: Float
+  lastName: String
+  password: String
+  phone: String
+  """User Status"""
+  userStatus: Int
+  username: String
+}
+
+type Mutation {
+  """
+  This can only be done by the logged in user.
+  
+  Equivalent to POST /user
+  """
+  createUser(userInput: UserInput!): JSON
+  """
+  Creates list of users with given input array
+  
+  Equivalent to POST /user/createWithArray
+  """
+  createUsersWithArrayInput(userCreateWithArrayInput: [UserInput]!): JSON
+  """
+  Creates list of users with given input array
+  
+  Equivalent to POST /user/createWithList
+  """
+  createUsersWithListInput(userCreateWithListInput: [UserInput]!): JSON
+  """
+  Place an order for a pet
+  
+  Equivalent to POST /store/order
+  """
+  placeOrder(orderInput: OrderInput!): Order
+  """
+  uploads an image
+  
+  Equivalent to POST /pet/{petId}/uploadImage
+  """
+  uploadFile(
+    """String represents payload of content type 'multipart/form-data'"""
+    multipartFormDataInput: String
+    """ID of pet to update"""
+    petId: Float!
+  ): ApiResponse
+}
+
+input UserInput {
+  email: String
+  firstName: String
+  id: Float
+  lastName: String
+  password: String
+  phone: String
+  """User Status"""
+  userStatus: Int
+  username: String
+}
+
+input OrderInput {
+  complete: Boolean
+  id: Float
+  petId: Float
+  quantity: Int
+  shipDate: String
+  """Order Status"""
+  status: Status3
+}
+
+type ApiResponse {
+  code: Int
+  message: String
+  type: String
+}

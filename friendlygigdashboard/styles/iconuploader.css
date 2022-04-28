@@ -1,0 +1,42 @@
+.input-file-wrapper {
+  position: relative;
+  max-width: 170px;
+}
+.input-file-wrapper .upload-placeholder {
+  position: relative;
+}
+.input-file-wrapper .upload-placeholder img {
+  min-width: 150px;
+}
+.input-file-wrapper .upload-placeholder .overlay {
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+  cursor: pointer;
+}
+.input-file-wrapper .upload-placeholder:hover .overlay {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 0.8em;
+  align-items: center;
+  justify-content: center;
+}
+.input-file-wrapper .upload-placeholder .overlay .icon {
+  width: 2em;
+  height: 2em;
+}
+.input-file-wrapper input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 999;
+}
