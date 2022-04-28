@@ -60,7 +60,7 @@ module.exports = new GraphQLObjectType({
             type: LoginFlow,
             description: "This endpoint returns a login flow's context with, for example, error details and other information.",
             args: {
-                id: { type: GraphQLNonNull(GraphQLString) }
+                id: { type: GraphQLNonNull(GraphQLString), description: "The Login Flow ID\n\nThe value for this parameter comes from flow URL Query parameter sent to your application (e.g. /login?flow=abcde)." }
             },
             resolve: getSelfServiceLoginFlowResolver
         },
