@@ -36,4 +36,4 @@ module.exports = async (parent, args) => {
 }
 
 
-//{action: "active",messages: [{context: "api",id: 1,text: "update",type: "container"}],method: "post",nodes: {attributes: {type: "attr"},group: "one",messages: {context: "api",id: 2,text: "update",type: "container"},type: "api"}}
+//{"action": "active","messages": [{"context": "api","id": 1,"text": "update","type": "container"}],"method": "post","nodes": {"attributes": {"type": "attr"},"group": "one","messages": {"context": "api","id": 2,"text": "update","type": "container"},"type": "api"}}
