@@ -11,7 +11,7 @@ const getData = ({error}) => {
 
             let errors = [];
             err.forEach(er => {
-                errors.push(er.errors);
+                errors.push(JSON.stringify(er.errors));
             })
 
             resolve({
