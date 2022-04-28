@@ -2,13 +2,13 @@ const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
-    GraphQLJSON
+    GraphQLList
 } = require("graphql");
 
 module.exports = new GraphQLObjectType({
     name: "ErrorContainer_",
     fields: () => ({
-            errors: { type: GraphQLNonNull(GraphQLString), description: "Errors in the container" },
+            errors: { type: GraphQLNonNull(GraphQLList(GraphQLString)), description: "Errors in the container" },
             id: { type: GraphQLNonNull(GraphQLString) }
     })
 });
