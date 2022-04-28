@@ -22,7 +22,7 @@ require('./postgres/initialize_dbs').init()
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(
       pgPool,
-      'public', // PostgreSQL schema to use
+      'public', // PostgreSQL schema to use.
       {
         // PostGraphile options, see:
         // https://www.graphile.org/postgraphile/usage-library/
