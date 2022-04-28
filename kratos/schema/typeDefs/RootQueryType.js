@@ -84,7 +84,7 @@ module.exports = new GraphQLObjectType({
             type: VerificationFlow,
             description: "This endpoint returns a verification flow's context with, for example, error details and other information.",
             args: {
-                id: { type: GraphQLNonNull(GraphQLString) }
+                id: { type: GraphQLNonNull(GraphQLString), description: "The Flow ID\n\nThe value for this parameter comes from request URL Query parameter sent to your application `(e.g. /verification?flow=abcde)`." }
             },
             resolve: getSelfServiceVerificationFlowResolver
         },

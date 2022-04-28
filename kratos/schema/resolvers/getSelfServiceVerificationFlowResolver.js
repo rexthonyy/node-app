@@ -22,5 +22,5 @@ const getData = ({id}) => {
 }
 
 module.exports = async (parent, args) => {
-    return await getData(args);
+    return getData(args);
 }
