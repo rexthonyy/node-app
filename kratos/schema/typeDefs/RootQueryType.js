@@ -76,7 +76,7 @@ module.exports = new GraphQLObjectType({
             type: RegistrationFlow,
             description: "This endpoint returns a registration flow's context with, for example, error details and other information.",
             args: {
-                id: { type: GraphQLNonNull(GraphQLString) }
+                id: { type: GraphQLNonNull(GraphQLString), description: "The Registration Flow ID\n\nThe value for this parameter comes from flow URL Query parameter sent to your application `(e.g. /registration?flow=abcde)`." }
             },
             resolve: getSelfServiceRegistrationFlowResolver
         },
