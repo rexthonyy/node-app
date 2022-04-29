@@ -4,7 +4,7 @@ const getData = ({id}) => {
     return new Promise((resolve, reject) => {
 
         pgKratosQueries.getSelfServiceRegistrationFlowById([id], result => {
-            if(result.err){
+            if(result.err || result.res.length == 0){
                 return reject("Registration flow ID not found");
             }
 

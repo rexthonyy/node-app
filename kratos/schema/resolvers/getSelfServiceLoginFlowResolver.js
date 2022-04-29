@@ -3,7 +3,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getSelfServiceLoginFlowById([id], result => {
-            if(result.err){
+            if(result.err || result.res.length == 0){
                 return reject("Login flow ID not found");
             }
 

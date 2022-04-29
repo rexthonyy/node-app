@@ -1,7 +1,7 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         resolve({
             status: "ok"
         });
