@@ -8,6 +8,7 @@ const getData = ({id}) => {
         return reject("Schema not found");
       }
 
+      console.log(jsonSchema);
        resolve(JSON.stringify(jsonSchema));
     });
 }
