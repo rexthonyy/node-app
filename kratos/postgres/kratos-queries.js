@@ -110,10 +110,28 @@ const getSelfServiceVerificationFlowById = (values, response) => {
     });
 };
 
+const getNetworks = (response) => {
+    pool.query("SELECT * from networks", (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
     getSelfServiceRecoveryFlowById,
     getSelfServiceRegistrationFlowById,
-    getSelfServiceVerificationFlowById
+    getSelfServiceVerificationFlowById,
+    getNetworks
 }
