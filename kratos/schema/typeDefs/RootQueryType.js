@@ -125,7 +125,7 @@ module.exports = new GraphQLObjectType({
             type: LoginFlow,
             description: "This endpoint initiates a login flow for API clients such as mobile devices, smart TVs, and so on.\n\nIf a valid provided session cookie or session token is provided, a 400 Bad Request error will be returned unless the URL query parameter ?refresh=true is set.\n\nTo fetch an existing login flow call /self-service/login/flows?flow=<flow_id>.\n\n:::warning\n\nYou MUST NOT use this endpoint in client-side (Single Page Apps, ReactJS, AngularJS) nor server-side (Java Server Pages, NodeJS, PHP, Golang, ...) browser applications. Using this endpoint in these applications will make you vulnerable to a variety of CSRF attacks, including CSRF login attacks.\n\nThis endpoint MUST ONLY be used in scenarios such as native mobile apps (React Native, Objective C, Swift, Java, ...).\n\n:::\n\nMore information can be found at Ory Kratos User Login and User Registration Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/login/api",
             args: {
-                refresh: { type: GraphQLBoolean }
+                refresh: { type: GraphQLBoolean, description: "Refresh a login session\n\nIf set to true, this will refresh an existing login session by asking the user to sign in again. This will reset the authenticated_at time of the session." }
             },
             resolve: getLoginFlowResolver
         },
