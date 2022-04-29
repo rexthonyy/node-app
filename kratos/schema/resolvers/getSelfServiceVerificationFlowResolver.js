@@ -20,6 +20,7 @@ const getData = ({id}) => {
                 type: "container"
             }];
             let methods = "{}";
+            let state = selfServiceVerificationFlow.state;
             let type = selfServiceVerificationFlow.type;
 
             resolve({
@@ -30,6 +31,7 @@ const getData = ({id}) => {
                 messages,
                 methods,
                 requestUrl,
+                state,
                 type
             });
         });
