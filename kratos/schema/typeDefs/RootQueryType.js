@@ -102,8 +102,8 @@ module.exports = new GraphQLObjectType({
             type: GraphQLList(Identity),
             description: "Lists all identities. Does not support search at the moment.",
             args: {
-                page: { type: GraphQLInt }, 
-                perPage: { type: GraphQLInt }
+                page: { type: GraphQLInt, description: "Pagination Page" }, 
+                perPage: { type: GraphQLInt, description: "Items per Page\n\nThis is the number of items per page." }
             },
             resolve: getIdentitiesResolver
         },

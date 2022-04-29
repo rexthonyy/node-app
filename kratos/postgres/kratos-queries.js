@@ -127,11 +127,65 @@ const getNetworks = (response) => {
     });
 };
 
+const getIdentities = (values, response) => {
+    pool.query("SELECT * from identities LIMIT $1 OFFSET $2", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getRecoveryAddressesByIdentityId = (values, response) => {
+    pool.query("SELECT * from identity_recovery_addresses WHERE identity_id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getVerifiableAddressesByIdentityId = (values, response) => {
+    pool.query("SELECT * from identity_verifiable_addresses WHERE identity_id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
     getSelfServiceRecoveryFlowById,
     getSelfServiceRegistrationFlowById,
     getSelfServiceVerificationFlowById,
-    getNetworks
+    getNetworks,
+    getIdentities,
+    getRecoveryAddressesByIdentityId,
+    getVerifiableAddressesByIdentityId
 }
