@@ -12,7 +12,6 @@ const getData = ({page, perPage}) => {
 
             let identitiesType = [];
             let identities = result.res;
-            console.log(identities);
             let num_identities = identities.length;
             let count = -1;
 
@@ -21,7 +20,7 @@ const getData = ({page, perPage}) => {
                     id: identity.id,
                     schemaId: identity.schema_id,
                     schemaUrl: "",
-                    traits: identity.traits,
+                    traits: JSON.stringify(identity.traits),
                     recoveryAddresses: [],
                     verifiableAddresses: []
                 };
