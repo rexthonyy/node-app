@@ -2,6 +2,11 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
+        
+      
+      
+
+      /*
         resolve(JSON.stringify({
             "components": {
               "responses": {
@@ -21,6 +26,7 @@ const getData = ({id}) => {
               }
             }
         }));
+        */
     });
 }
 
