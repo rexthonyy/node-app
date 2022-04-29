@@ -10,9 +10,9 @@ const getData = ({page, perPage}) => {
                 return resolve([]);
             }
 
-            console.log(identities);
             let identitiesType = [];
             let identities = result.res;
+            console.log(identities);
             let num_identities = identities.length;
             let count = -1;
 
