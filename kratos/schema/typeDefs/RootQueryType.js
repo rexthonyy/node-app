@@ -117,7 +117,7 @@ module.exports = new GraphQLObjectType({
         jsonSchema_: {
             type: GraphQLString,
             args: {
-                id: { type: GraphQLNonNull(GraphQLString) }
+                id: { type: GraphQLNonNull(GraphQLString), description: "ID must be set to the ID of schema you want to get" }
             },
             resolve: getJSONSchemaResolver
         },
