@@ -1,11 +1,11 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = ({page, perPage}) => {
-    //if(page == null || page == 0) page = null;
-    //if(perPage == null) perPage = 0;
+    if(page == null || page == 0) page = null;
+    if(perPage == null) perPage = 0;
 
     return new Promise((resolve, reject) => {
-        pgKratosQueries.getIdentities([page, perPage], result => {
+        pgKratosQueries.getIdentities([perPage, page], result => {
             if(result.err){
                 return resolve([]);
             }

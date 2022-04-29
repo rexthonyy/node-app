@@ -128,7 +128,7 @@ const getNetworks = (response) => {
 };
 
 const getIdentities = (values, response) => {
-    pool.query("SELECT * from identities", values, (err, res) => {
+    pool.query("SELECT * from identities LIMIT $1 OFFSET $2", values, (err, res) => {
         if(err){
             response({
                 err: err,
