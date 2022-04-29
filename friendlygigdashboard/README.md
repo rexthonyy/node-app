@@ -1,2 +1,0 @@
-# Next-JS Friendlygig Dashboard
-

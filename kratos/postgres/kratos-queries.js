@@ -93,9 +93,27 @@ const getSelfServiceRegistrationFlowById = (values, response) => {
     });
 };
 
+const getSelfServiceVerificationFlowById = (values, response) => {
+    pool.query("SELECT * from selfservice_verification_flows WHERE id=$1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
     getSelfServiceRecoveryFlowById,
-    getSelfServiceRegistrationFlowById
+    getSelfServiceRegistrationFlowById,
+    getSelfServiceVerificationFlowById
 }
