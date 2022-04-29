@@ -3,37 +3,30 @@ const util = require('../../libs/util');
 const getData = ({refresh}) => {
     return new Promise((resolve, reject) => {
         let id = util.getSessionId();
-        pgKratosQueries.getSelfServiceRecoveryFlowById([id], result => {
+        pgKratosQueries.getSelfServiceLoginFlowById([id], result => {
             if(result.err || result.res.length == 0){
-                return reject("Recovery flow ID not found");
+                return reject("Login flow ID not found");
             }
 
-            let selfServiceRecoveryFlow = result.res[0];
+            let selfServiceLoginFlow = result.res[0];
 
-            let active = selfServiceRecoveryFlow.active_method;
-            let expiresAt = selfServiceRecoveryFlow.expires_at;
-            let issuedAt = selfServiceRecoveryFlow.issued_at;
-            let requestUrl = selfServiceRecoveryFlow.request_url;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
-            let state = selfServiceRecoveryFlow.state;
-            let type = selfServiceRecoveryFlow.type;
+            let active = selfServiceLoginFlow.active_method;
+            let expiresAt = selfServiceLoginFlow.expires_at;
+            let forced = selfServiceLoginFlow.forced;
+            let issuedAt = selfServiceLoginFlow.issued_at;
+            let requestUrl = selfServiceLoginFlow.request_url;
+            let type = selfServiceLoginFlow.type;
+            let ui = selfServiceLoginFlow.ui;
 
             resolve({
                 active,
                 expiresAt,
+                forced,
                 id,
                 issuedAt,
-                messages,
-                methods,
                 requestUrl,
-                state,
-                type
+                type,
+                ui
             });
         });
     });
