@@ -110,7 +110,7 @@ module.exports = new GraphQLObjectType({
         identity_: {
             type: Identity,
             args: {
-                id: { type: GraphQLNonNull(GraphQLString) }
+                id: { type: GraphQLNonNull(GraphQLString), description: "ID must be set to the ID of identity you want to get" }
             },
             resolve: getIdentityResolver
         },

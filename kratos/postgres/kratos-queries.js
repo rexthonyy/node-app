@@ -144,6 +144,23 @@ const getIdentities = (values, response) => {
     });
 };
 
+const getIdentityById = (values, response) => {
+    pool.query("SELECT * from identities WHERE id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getRecoveryAddressesByIdentityId = (values, response) => {
     pool.query("SELECT * from identity_recovery_addresses WHERE identity_id = $1", values, (err, res) => {
         if(err){
@@ -186,6 +203,7 @@ module.exports = {
     getSelfServiceVerificationFlowById,
     getNetworks,
     getIdentities,
+    getIdentityById,
     getRecoveryAddressesByIdentityId,
     getVerifiableAddressesByIdentityId
 }
