@@ -1,32 +1,14 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const schemaHandler = require('../../identities/schemaHandler');
 
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
-        
-      
-      
+      let jsonSchema = schemaHandler.getJSONSchemaById(id);
+      if(!jsonSchema){
+        return reject("Schema not found");
+      }
 
-      /*
-        resolve(JSON.stringify({
-            "components": {
-              "responses": {
-                "emptyResponse": {
-                  "description": "Empty responses are sent when, for example, resources are deleted. The HTTP status code for empty responses is\ntypically 201."
-                },
-                "errorContainer": {
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/errorContainer"
-                      }
-                    }
-                  },
-                  "description": "User-facing error response"
-                }
-              }
-            }
-        }));
-        */
+       resolve(JSON.stringify(jsonSchema));
     });
 }
 
