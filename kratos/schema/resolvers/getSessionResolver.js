@@ -76,7 +76,7 @@ const getData = ({authorization, cookie}) => {
                             authenticatedAt,
                             expiresAt,
                             id,
-                            identityType,
+                            identity: identityType,
                             issuedAt
                         });
                     });
