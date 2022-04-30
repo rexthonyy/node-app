@@ -153,7 +153,7 @@ module.exports = new GraphQLObjectType({
             type: SettingsFlow,
             description: "When accessing this endpoint through Ory Kratos' Public API you must ensure that either the Ory Kratos Session Cookie or the Ory Kratos Session Token are set. The public endpoint does not return 404 status codes but instead 403 or 500 to improve data privacy.\n\nYou can access this endpoint without credentials when using Ory Kratos' Admin API.\n\nMore information can be found at Ory Kratos User Settings & Profile Management Documentation.\n\nEquivalent to Ory Kratos API GET /self-service/settings/flows",
             args: {
-                id: { type: GraphQLString }            
+                id: { type: GraphQLString, description: "ID is the Settings Flow ID\n\nThe value for this parameter comes from flow URL Query parameter sent to your application `(e.g. /settings?flow=abcde)`." }
             },
             resolve: getSelfServiceSettingsFlowResolver
         },
