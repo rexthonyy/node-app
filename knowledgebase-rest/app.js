@@ -9,21 +9,21 @@ require('./postgres/initialize_dbs').init()
     var BodyParser = require("body-parser");
     const {postgraphile} = require("postgraphile");
     const cookieParser = require('cookie-parser');
-    const cors = require('cors');
-    const util = require('./util');
-    const mapRouter = require('./api/apiMaps');
+    //const cors = require('cors');
+    // const util = require('./util');
+    // const mapRouter = require('./api/apiMaps');
     const knowledgeBaseRouter = require('./api/apiKnowledgeBase');
     const forumRouter = require('./api/apiForums');
     const ticketsRouter = require('./api/apiTickets');
-    const usersRouter = require('./api/apiUsers');
-    const ketoRouter = require('./api/apiKeto');
-    const jobRouter = require('./api/apiJobs');
-    const taskRouter = require('./api/apiTasks');
-    const permissionsRouter = require('./api/apiPermissions');
-    const reviewsAppRouter = require('./apps/reviews/index');
-    const currencyAndDiscountsRouter = require('./apps/currency_and_discounts/index');
-    const dolibarrRouter = require('./apps/dolibarr/index');
-    const configurationsRouter = require('./apps/configurations/index');
+    // const usersRouter = require('./api/apiUsers');
+    // const ketoRouter = require('./api/apiKeto');
+    // const jobRouter = require('./api/apiJobs');
+    // const taskRouter = require('./api/apiTasks');
+    // const permissionsRouter = require('./api/apiPermissions');
+    // const reviewsAppRouter = require('./apps/reviews/index');
+    // const currencyAndDiscountsRouter = require('./apps/currency_and_discounts/index');
+    // const dolibarrRouter = require('./apps/dolibarr/index');
+    // const configurationsRouter = require('./apps/configurations/index');
     
     const consts = require('./consts');
     
