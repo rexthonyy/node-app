@@ -1,10 +1,8 @@
 // local machine
 //const LOCAL_URL = "http://localhost";
-//const LOCAL_URL = "http://77.68.102.60";
 const LOCAL_URL = "http://88.208.199.175";
 
 // helpy credentials
-//const ROOT = "http://77.68.102.60";
 const ROOT = "http://88.208.199.175";
 const TOKEN = "4ff0a08a8df91d876cdfc5842d1aa058";
 
@@ -28,7 +26,6 @@ const roles = {
 };
 
 const POSTGRES_USER = "knowledgebase";
-//const POSTGRES_PASSWORD = "abc%8d_a10";
 const POSTGRES_PASSWORD = "anthony";
 const POSTGRES_PORT = 5432;
 const POSTGRES_HOST = "localhost";

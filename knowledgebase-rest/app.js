@@ -48,19 +48,19 @@ require('./postgres/initialize_dbs').init()
     //     })
     // );
     
-    app.use('/map', mapRouter);
+    //app.use('/map', mapRouter);
     app.use('/knowledgebase', knowledgeBaseRouter);
     app.use('/forum', forumRouter);
     app.use('/tickets', ticketsRouter);
-    app.use('/users', usersRouter);
-    app.use('/keto', ketoRouter);
-    app.use('/jobs', jobRouter);
-    app.use('/tasks', taskRouter);
-    app.use('/permissions', permissionsRouter);
-    app.use('/app/review', reviewsAppRouter);
-    app.use('/app/currency', currencyAndDiscountsRouter);
-    app.use('/app/dolibarr', dolibarrRouter);
-    app.use('/app/configurations', configurationsRouter);
+    // app.use('/users', usersRouter);
+    // app.use('/keto', ketoRouter);
+    // app.use('/jobs', jobRouter);
+    // app.use('/tasks', taskRouter);
+    // app.use('/permissions', permissionsRouter);
+    // app.use('/app/review', reviewsAppRouter);
+    // app.use('/app/currency', currencyAndDiscountsRouter);
+    // app.use('/app/dolibarr', dolibarrRouter);
+    // app.use('/app/configurations', configurationsRouter);
     
     // var minioClient = new Minio.Client({
     //     endPoint: '77.68.102.60',
