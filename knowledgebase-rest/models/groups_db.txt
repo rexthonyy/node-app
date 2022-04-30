@@ -1,0 +1,12 @@
+                                                            Table "public.groups"
+   Column   |            Type             | Collation | Nullable |              Default               | Storage  | Stats target | Description
+------------+-----------------------------+-----------+----------+------------------------------------+----------+--------------+-------------
+ id         | integer                     |           | not null | nextval('groups_id_seq'::regclass) | plain    |              |
+ name       | character varying           |           | not null |                                    | extended |              |
+ active     | boolean                     |           | not null | true                               | plain    |              |
+ note       | character varying           |           |          |                                    | extended |              |
+ created_at | timestamp without time zone |           | not null | timezone('utc'::text, now())       | plain    |              |
+ updated_at | timestamp without time zone |           | not null | timezone('utc'::text, now())       | plain    |              |
+ type       | character varying           |           |          |                                    | extended |              |
+Indexes:
+    "groups_pkey" PRIMARY KEY, btree (id)

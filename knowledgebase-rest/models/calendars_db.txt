@@ -1,0 +1,18 @@
+                                                               Table "public.calendars"
+     Column      |            Type             | Collation | Nullable |                Default                | Storage  | Stats target | Description
+-----------------+-----------------------------+-----------+----------+---------------------------------------+----------+--------------+-------------
+ id              | integer                     |           | not null | nextval('calendars_id_seq'::regclass) | plain    |              |
+ name            | character varying           |           |          |                                       | extended |              |
+ timezone        | character varying           |           |          |                                       | extended |              |
+ business_hours  | character varying           |           |          |                                       | extended |              |
+ default_        | boolean                     |           | not null | false                                 | plain    |              |
+ ical_url        | character varying           |           |          |                                       | extended |              |
+ public_holidays | text                        |           |          |                                       | extended |              |
+ last_log        | text                        |           |          |                                       | extended |              |
+ last_sync       | timestamp without time zone |           |          |                                       | plain    |              |
+ updated_by_id   | integer                     |           | not null |                                       | plain    |              |
+ created_by_id   | integer                     |           | not null |                                       | plain    |              |
+ created_at      | timestamp without time zone |           | not null | timezone('utc'::text, now())          | plain    |              |
+ updated_at      | timestamp without time zone |           | not null | timezone('utc'::text, now())          | plain    |              |
+Indexes:
+    "calendars_pkey" PRIMARY KEY, btree (id)

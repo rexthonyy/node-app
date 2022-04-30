@@ -1,0 +1,17 @@
+                                                            Table "public.delayed_jobs"
+   Column   |            Type             | Collation | Nullable |                 Default                  | Storage  | Stats target | Description
+------------+-----------------------------+-----------+----------+------------------------------------------+----------+--------------+-------------
+ id         | integer                     |           | not null | nextval('delayed_jobs_id_seq'::regclass) | plain    |              |
+ priority   | integer                     |           |          |                                          | plain    |              |
+ attempts   | integer                     |           |          |                                          | plain    |              |
+ handler    | text                        |           |          |                                          | extended |              |
+ last_error | text                        |           |          |                                          | extended |              |
+ run_at     | timestamp without time zone |           |          |                                          | plain    |              |
+ locked_at  | timestamp without time zone |           |          |                                          | plain    |              |
+ failed_at  | timestamp without time zone |           |          |                                          | plain    |              |
+ locked_by  | character varying           |           |          |                                          | extended |              |
+ queue      | character varying           |           |          |                                          | extended |              |
+ created_at | timestamp without time zone |           |          | timezone('utc'::text, now())             | plain    |              |
+ updated_at | timestamp without time zone |           |          | timezone('utc'::text, now())             | plain    |              |
+Indexes:
+    "delayed_jobs_pkey" PRIMARY KEY, btree (id)

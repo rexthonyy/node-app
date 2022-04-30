@@ -1,0 +1,13 @@
+[knowledge_bases]
+id,name,icon,footer,created_at,homepage_layout,category_layout,active,updated_at,front_page
+39,Professions,,,Fri Mar 04 2022 11:43:33 GMT+0000 (Coordinated Universal Time),No,,true,Mon Mar 07 2022 12:22:02 GMT+0000 (Coordinated Universal Time),false
+
+[knowledge_base_translations]
+id,knowledge_base_id,title,created_at,updated_at,footer_note,kb_locale_id,active
+239,39,English (United States),Mon Mar 07 2022 12:22:02 GMT+0000 (Coordinated Universal Time),Mon Mar 07 2022 12:22:02 GMT+0000 (Coordinated Universal Time),,1,true
+
+[knowledge_base_categories]
+id,knowledge_base_id,parent_id,position,created_at,updated_at
+48,39,-1,7,Wed Feb 02 2022 22:07:34 GMT+0000 (Coordinated Universal Time),Tue Feb 08 2022 11:59:57 GMT+0000 (Coordinated Universal Time)
+49,39,-1,12,Wed Feb 02 2022 22:13:40 GMT+0000 (Coordinated Universal Time),Tue Feb 08 2022 12:00:02 GMT+0000 (Coordinated Universal Time)
+50,39,-1,14,Wed Feb 02 2022 22:21:39 GMT+0000 (Coordinated Universal Time),Tue Feb 08 2022 12:00:07 GMT+0000 (Coordinated Universal Time)

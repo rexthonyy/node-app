@@ -1,0 +1,7 @@
+                                               Table "public.groups_users"
+  Column  |       Type        | Collation | Nullable |          Default          | Storage  | Stats target | Description
+----------+-------------------+-----------+----------+---------------------------+----------+--------------+-------------
+ user_id  | integer           |           | not null |                           | plain    |              |
+ group_id | integer           |           | not null |                           | plain    |              |
+ access   | character varying |           | not null | 'full'::character varying | extended |              |
+
