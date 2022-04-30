@@ -62,28 +62,28 @@ require('./postgres/initialize_dbs').init()
     app.use('/app/dolibarr', dolibarrRouter);
     app.use('/app/configurations', configurationsRouter);
     
-    var minioClient = new Minio.Client({
-        endPoint: '77.68.102.60',
-        port: 9000,
-        useSSL: false,
-        accessKey: 'rexanthony',
-        secretKey: 'rexanthony'
-    });
-    
-    minioClient.bucketExists("test", function(error) {
-        if(error) {
-            return console.log(error);
-        }
-        let port = process.env.PORT || 1000;
-        var server = app.listen(port, function() {
-            console.log("Listening on port %s...", server.address().port);
-        });
-    });
-    
-    // let port = process.env.PORT || 1000;
-    // var server = app.listen(port, function() {
-    //     console.log("Listening on port %s...", server.address().port);
+    // var minioClient = new Minio.Client({
+    //     endPoint: '77.68.102.60',
+    //     port: 9000,
+    //     useSSL: false,
+    //     accessKey: 'rexanthony',
+    //     secretKey: 'rexanthony'
     // });
+    
+    // minioClient.bucketExists("test", function(error) {
+    //     if(error) {
+    //         return console.log(error);
+    //     }
+    //     let port = process.env.PORT || 1000;
+    //     var server = app.listen(port, function() {
+    //         console.log("Listening on port %s...", server.address().port);
+    //     });
+    // });
+    
+    let port = process.env.PORT || 1000;
+    var server = app.listen(port, function() {
+        console.log("Listening on port %s...", server.address().port);
+    });
     
     // const MONGODB_URL = "mongodb://rex:anthony@localhost:27017/maptoolsdb?authSource=admin";
     // mongoose.connect(MONGODB_URL, {
