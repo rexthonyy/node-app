@@ -26,6 +26,7 @@
     "@graphql-tools/stitch": "^8.6.3",
     "pg": "^8.7.3",
     "postgraphile": "^4.12.5",
-    "postgraphile-apollo-server": "^0.1.1"
+    "postgraphile-apollo-server": "^0.1.1",
+    "uuidv4": "^6.2.13"
   }
 }
