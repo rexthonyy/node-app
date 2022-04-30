@@ -229,6 +229,74 @@ const getVerifiableAddressesByIdentityId = (values, response) => {
     });
 };
 
+const getLoginFlowById = (values, response) => {
+    pool.query("SELECT * from selfservice_login_flows WHERE id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getIdentityCredentialsByIdentityCredentialTypeId = (values, response) => {
+    pool.query("SELECT * from identity_credentials WHERE identity_credential_type_id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId = (values, response) => {
+    pool.query("SELECT * from identity_credential_identifiers WHERE identity_credential_id=$1 AND identity_credential_type_id = $2", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createSession = (values, response) => {
+    client.query('INSERT INTO sessions (id, issued_at, expires_at, authenticated_at, identity_id, created_at, updated_at, token, active, nid, logout_token, aal, authentication_methods) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -241,5 +309,10 @@ module.exports = {
     getIdentityById,
     getRecoveryAddressesByIdentityId,
     getVerifiableAddressesByIdentityId,
-    getSessionByToken
+    getSessionByToken,
+    getLoginFlowById,
+    getIdentityCredentialsByIdentityCredentialTypeId,
+    getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId,
+
+    createSession
 }
