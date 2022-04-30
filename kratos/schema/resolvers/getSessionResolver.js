@@ -3,7 +3,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const getData = ({authorization, cookie}) => {
     return new Promise((resolve, reject) => {
         if(!(authorization || cookie)){
-            return "Please provide an authorization token";
+            return reject("Please provide an authorization token");
         }
         let token;
         if(cookie){
