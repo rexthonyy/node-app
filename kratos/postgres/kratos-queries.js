@@ -128,7 +128,7 @@ const getSelfServiceSettingsFlowById = (values, response) => {
 };
 
 const getSessionByToken = (values, response) => {
-    pool.query("SELECT * from sessions WHERE id=$1", values, (err, res) => {
+    pool.query("SELECT * from sessions WHERE token=$1", values, (err, res) => {
         if(err){
             response({
                 err: err,
