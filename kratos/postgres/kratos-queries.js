@@ -110,6 +110,23 @@ const getSelfServiceVerificationFlowById = (values, response) => {
     });
 };
 
+const getSelfServiceSettingsFlowById = (values, response) => {
+    pool.query("SELECT * from selfservice_settings_flows WHERE id=$1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getNetworks = (response) => {
     pool.query("SELECT * from networks", (err, res) => {
         if(err){
@@ -201,6 +218,7 @@ module.exports = {
     getSelfServiceRecoveryFlowById,
     getSelfServiceRegistrationFlowById,
     getSelfServiceVerificationFlowById,
+    getSelfServiceSettingsFlowById,
     getNetworks,
     getIdentities,
     getIdentityById,

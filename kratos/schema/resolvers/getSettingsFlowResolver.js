@@ -4,7 +4,7 @@ const util = require('../../libs/util');
 const getData = () => {
     return new Promise((resolve, reject) => {
         let id = util.getSessionId();
-        pgKratosQueries.getSelfServiceVerificationFlowById([id], result => {
+        pgKratosQueries.getSelfServiceSettingsFlowById([id], result => {
             if(result.err || result.res.length == 0){
                 return reject("Settings flow ID not found");
             }

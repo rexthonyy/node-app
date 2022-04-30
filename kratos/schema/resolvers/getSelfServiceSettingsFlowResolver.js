@@ -2,7 +2,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
-        pgKratosQueries.getSelfServiceVerificationFlowById([id], result => {
+        pgKratosQueries.getSelfServiceSettingsFlowById([id], result => {
             if(result.err || result.res.length == 0){
                 return reject("Settings flow ID not found");
             }
