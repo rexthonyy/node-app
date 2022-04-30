@@ -127,6 +127,23 @@ const getSelfServiceSettingsFlowById = (values, response) => {
     });
 };
 
+const getSessionByToken = (values, response) => {
+    pool.query("SELECT * from sessions WHERE id=$1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getNetworks = (response) => {
     pool.query("SELECT * from networks", (err, res) => {
         if(err){
@@ -223,5 +240,6 @@ module.exports = {
     getIdentities,
     getIdentityById,
     getRecoveryAddressesByIdentityId,
-    getVerifiableAddressesByIdentityId
+    getVerifiableAddressesByIdentityId,
+    getSessionByToken
 }
