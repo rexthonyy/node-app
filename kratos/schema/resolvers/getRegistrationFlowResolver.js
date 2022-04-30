@@ -1,5 +1,5 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
-
+const util = require('../../libs/util');
 const getData = () => {
     return new Promise((resolve, reject) => {
         let id = util.getSessionId();
