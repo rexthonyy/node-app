@@ -15,7 +15,31 @@ const getType = () => {
 };
 
 const getUI = () => {
-    return "{}";
+    return JSON.stringify({
+        action: "/",
+        method: "post",
+        messages: [
+            {
+                context: "current",
+                id: "attr",
+                text: "info",
+                type: "ui"
+            }
+        ],
+        nodes: {
+            attributes: {
+                type: "id"
+            },
+            group: "none",
+            type: "ui",
+            messages: {
+                context: "current",
+                id: "attr",
+                text: "info",
+                type: "ui"
+            }
+        }
+    });
 };
 
 const getRequestedAal = () => {
