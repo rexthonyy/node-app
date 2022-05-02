@@ -1,27 +1,39 @@
+let {uuid} = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
-const util = require('../../libs/util');
+const registrationFlowHandler = require('../../flows/registrationFlowHandler');
+const consts = require('../../libs/consts');
 const getData = () => {
     return new Promise((resolve, reject) => {
-        let id = util.getSessionId();
-        pgKratosQueries.getSelfServiceRegistrationFlowById([id], result => {
+        let now = new Date().toUTCString();
+        const values = [
+            uuid(),
+            registrationFlowHandler.getRequestUrl(),
+            now,
+            registrationFlowHandler.getExpiresAt().toUTCString(),
+            registrationFlowHandler.getActiveMethod(),
+            uuid(),
+            now,
+            now,
+            registrationFlowHandler.getType(),
+            registrationFlowHandler.getUI(),
+            consts.NETWORK_ID,
+            registrationFlowHandler.getInternalContext()
+        ];
+        pgKratosQueries.createRegistrationFlow(values, result => {
             if(result.err || result.res.length == 0){
-                return reject("Registration flow ID not found");
+                return reject("Failed to create registration flow");
             }
 
-            let selfServiceRecoveryFlow = result.res[0];
+            let selfServiceRegistrationFlow = result.res[0];
 
-            let active = selfServiceRecoveryFlow.active_method;
-            let expiresAt = selfServiceRecoveryFlow.expires_at;
-            let issuedAt = selfServiceRecoveryFlow.issued_at;
-            let requestUrl = selfServiceRecoveryFlow.request_url;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
-            let type = selfServiceRecoveryFlow.type;
+            let id = selfServiceRegistrationFlow.id;
+            let active = selfServiceRegistrationFlow.active_method;
+            let expiresAt = selfServiceRegistrationFlow.expires_at;
+            let issuedAt = selfServiceRegistrationFlow.issued_at;
+            let requestUrl = selfServiceRegistrationFlow.request_url;
+            let messages = selfServiceRegistrationFlow.ui.messages;
+            let methods = selfServiceRegistrationFlow.ui.method;
+            let type = selfServiceRegistrationFlow.type;
 
             resolve({
                 active,

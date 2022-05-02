@@ -10,14 +10,6 @@ const getActiveMethod = () => {
     return "password";
 };
 
-const getState = () => {
-    return "choose method"; //"choose_method" "sent_email" "passed_challenge"
-};
-
-const getRecoveredIdentityId = () => {
-    return null;
-};
-
 const getType = () => {
     return "api";
 };
@@ -50,12 +42,16 @@ const getUI = () => {
     });
 };
 
+const getInternalContext = () => {
+    return "{}";
+};
+
+
 module.exports = {
     getRequestUrl,
     getExpiresAt,
     getActiveMethod,
-    getState,
-    getRecoveredIdentityId,
     getType,
-    getUI
+    getUI,
+    getInternalContext
 }
