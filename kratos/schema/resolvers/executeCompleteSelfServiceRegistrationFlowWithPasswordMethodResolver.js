@@ -20,7 +20,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
             if(expiresAt != null){
                 let expireDate = new Date(expiresAt);
                 if(Date.now() > expireDate.getTime()){
-                    return reject("Flow expired");
+                    return reject("Flow ID expired");
                 }
             }
 

@@ -48,7 +48,7 @@ const getSelfServiceLoginFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 202
             });
         }else{
             response({
@@ -65,7 +65,7 @@ const getSelfServiceRecoveryFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 203
             });
         }else{
             response({
@@ -82,7 +82,7 @@ const getSelfServiceRegistrationFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 204
             });
         }else{
             response({
@@ -99,7 +99,7 @@ const getSelfServiceVerificationFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 205
             });
         }else{
             response({
@@ -116,7 +116,7 @@ const getSelfServiceSettingsFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 206
             });
         }else{
             response({
@@ -133,7 +133,7 @@ const getSessionByToken = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 207
             });
         }else{
             response({
@@ -150,7 +150,7 @@ const getNetworks = (response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 208
             });
         }else{
             response({
@@ -167,7 +167,7 @@ const getIdentities = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 209
             });
         }else{
             response({
@@ -184,7 +184,7 @@ const getIdentityById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 210
             });
         }else{
             response({
@@ -201,7 +201,7 @@ const getRecoveryAddressesByIdentityId = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 211
             });
         }else{
             response({
@@ -218,7 +218,7 @@ const getVerifiableAddressesByIdentityId = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 212
             });
         }else{
             response({
@@ -235,7 +235,7 @@ const getLoginFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 213
             });
         }else{
             response({
@@ -252,7 +252,7 @@ const getRegistrationFlowById = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 214
             });
         }else{
             response({
@@ -269,7 +269,7 @@ const getIdentityCredentialsByIdentityCredentialTypeId = (values, response) => {
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 215
             });
         }else{
             response({
@@ -286,7 +286,7 @@ const getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredential
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 216
             });
         }else{
             response({
@@ -303,7 +303,7 @@ const createLoginFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                code: 217
             });
         } else {
             response({
@@ -320,7 +320,7 @@ const createRecoveryFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                code: 218
             });
         } else {
             response({

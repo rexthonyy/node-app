@@ -44,7 +44,7 @@ require('./postgres/initialize_dbs').init()
       uploads: false
     });
   
-    const { url } = await server.listen();
+    const { url } = await server.listen({process.env.PORT1});
     console.log(`🚀 Server ready at ${url}`);
 
 
