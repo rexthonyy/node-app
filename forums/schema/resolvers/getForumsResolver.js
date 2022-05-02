@@ -13,7 +13,7 @@ const getData = () => {
                 pgForumQueries.getTopicsByForumId(forum.id, result1 => {
                     if(result1.err || result1.res.length == 0){
                         console.log("Topic not found");
-                        topics.posts = [];
+                        forum.topics = [];
                         setTopicsToForum();
                     }else{
                         let topics = result1.res;
