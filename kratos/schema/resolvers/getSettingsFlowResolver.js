@@ -46,28 +46,29 @@ const getData = ({sessionToken}) => {
                 
                 let selfServiceSettingsFlow = result.res;
     
-                let id = selfServiceSettingsFlow.id;
-                let active = selfServiceSettingsFlow.active_method;
-                let expiresAt = selfServiceSettingsFlow.expires_at;
-                let issuedAt = selfServiceSettingsFlow.issued_at;
-                let requestUrl = selfServiceSettingsFlow.request_url;
-                let identity = getIdentityById(selfServiceSettingsFlow.identity_id);
-                let messages = selfServiceSettingsFlow.ui.messages;
-                let methods = selfServiceSettingsFlow.ui.method;
-                let state = selfServiceSettingsFlow.state;
-                let type = selfServiceSettingsFlow.type;
-    
-                resolve({
-                    active,
-                    expiresAt,
-                    id,
-                    identity,
-                    issuedAt,
-                    messages,
-                    methods,
-                    requestUrl,
-                    state,
-                    type
+                getIdentityById(selfServiceSettingsFlow.identity_id, identity => {
+                    let id = selfServiceSettingsFlow.id;
+                    let active = selfServiceSettingsFlow.active_method;
+                    let expiresAt = selfServiceSettingsFlow.expires_at;
+                    let issuedAt = selfServiceSettingsFlow.issued_at;
+                    let requestUrl = selfServiceSettingsFlow.request_url;
+                    let messages = selfServiceSettingsFlow.ui.messages;
+                    let methods = selfServiceSettingsFlow.ui.method;
+                    let state = selfServiceSettingsFlow.state;
+                    let type = selfServiceSettingsFlow.type;
+        
+                    resolve({
+                        active,
+                        expiresAt,
+                        id,
+                        identity,
+                        issuedAt,
+                        messages,
+                        methods,
+                        requestUrl,
+                        state,
+                        type
+                    });
                 });
             });
             /*resolve({
