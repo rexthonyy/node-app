@@ -19,6 +19,7 @@ const getData = () => {
                         let topics = result1.res;
                         let count = -1;
         
+                        console.log(topics);
                         topics.forEach(topic => {
                             pgForumQueries.getPostsByTopicId(topic.id, result2 => {
                                 if(result2.err || result2.res.length == 0){
@@ -26,7 +27,9 @@ const getData = () => {
                                     topic.posts = [];
                                     setTopicsToForum();
                                 }else{
-                                    topic.posts = result2.res;
+                                    let posts = result2.res;
+                                    topic.posts = posts;
+                                    console.log(posts);
                                     setTopicsToForum();
                                 }
                             });
