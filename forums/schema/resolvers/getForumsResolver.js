@@ -7,7 +7,7 @@ const getData = () => {
                 return reject(JSON.stringify(result.err));
             }
             let forums = result.res;
-    
+            console.log(forums);
             let forum_count = -1;
     
             forums.forEach(forum => {
