@@ -3,7 +3,7 @@ const pgForumQueries = require('../../postgres/forum-queries');
 const getData = () => {
     return new Promise((resolve, reject) => {
         pgForumQueries.getForums(result => {
-            if(result.err){
+            if(result.err || result.res.length == 0){
                 return reject(result.err);
             }
             let forums = result.res;
@@ -12,7 +12,7 @@ const getData = () => {
     
             forums.forEach(forum => {
                 pgForumQueries.getTopicsByForumId(forum.id, result1 => {
-                    if(result1.err){
+                    if(result1.err || result1.res.length == 0){
                         return reject(result1.err);
                     }
                     let topics = result1.res;
@@ -20,7 +20,7 @@ const getData = () => {
     
                     topics.forEach(topic => {
                         pgForumQueries.getPostsByTopicId(topic.id, result2 => {
-                            if(result2.err){
+                            if(result2.err || result2.res.length == 0){
                                 return reject(result2.err);
                             }
                             topic.posts = result2.res;
