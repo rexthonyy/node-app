@@ -18,6 +18,7 @@
     "@sentry/node": "^6.17.9",
     "dotenv": "^16.0.0",
     "openapi-to-graphql": "^2.6.3",
+    "jsonschema": "^1.4.0",
     "express": "^4.17.2",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.7",

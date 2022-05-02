@@ -3,7 +3,7 @@ const getSessionId = () => {
 }
 
 const getSessionExpirationTime = () => {
-    return new Date(new Date().getHours() + 30);
+    return new Date(new Date().setDate(new Date().getDate() + 2));
 };
 
 module.exports = {

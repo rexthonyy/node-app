@@ -13,13 +13,8 @@ const getData = ({id}) => {
             let expiresAt = selfServiceVerificationFlow.expires_at;
             let issuedAt = selfServiceVerificationFlow.issued_at;
             let requestUrl = selfServiceVerificationFlow.request_url;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
+            let messages = selfServiceVerificationFlow.ui.messages;
+            let methods = selfServiceVerificationFlow.ui.method;
             let state = selfServiceVerificationFlow.state;
             let type = selfServiceVerificationFlow.type;
 

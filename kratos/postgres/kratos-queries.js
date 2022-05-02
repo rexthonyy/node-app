@@ -246,6 +246,23 @@ const getLoginFlowById = (values, response) => {
     });
 };
 
+const getRegistrationFlowById = (values, response) => {
+    pool.query("SELECT * from selfservice_registration_flows WHERE id = $1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getIdentityCredentialsByIdentityCredentialTypeId = (values, response) => {
     pool.query("SELECT * from identity_credentials WHERE identity_credential_type_id = $1", values, (err, res) => {
         if(err){
@@ -382,6 +399,23 @@ const createSession = (values, response) => {
     });
 };
 
+const createIdentity = (values, response) => {
+    client.query('INSERT INTO identities (id, schema_id, traits, created_at, updated_at, nid, state, state_changed_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -396,6 +430,7 @@ module.exports = {
     getVerifiableAddressesByIdentityId,
     getSessionByToken,
     getLoginFlowById,
+    getRegistrationFlowById,
     getIdentityCredentialsByIdentityCredentialTypeId,
     getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId,
 
@@ -404,5 +439,6 @@ module.exports = {
     createRegistrationFlow,
     createSettingsFlow,
     createVerificationFlow,
-    createSession
+    createSession,
+    createIdentity,
 }

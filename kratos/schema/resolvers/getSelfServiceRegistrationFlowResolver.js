@@ -14,13 +14,8 @@ const getData = ({id}) => {
             let expiresAt = selfServiceRecoveryFlow.expires_at;
             let issuedAt = selfServiceRecoveryFlow.issued_at;
             let requestUrl = selfServiceRecoveryFlow.request_url;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
+            let messages = selfServiceRecoveryFlow.ui.messages;
+            let methods = selfServiceRecoveryFlow.ui.method;
             let type = selfServiceRecoveryFlow.type;
 
             resolve({

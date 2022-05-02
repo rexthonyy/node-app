@@ -14,13 +14,8 @@ const getData = ({id}) => {
             let issuedAt = selfServiceSettingsFlow.issued_at;
             let requestUrl = selfServiceSettingsFlow.request_url;
             let identity = selfServiceSettingsFlow.identity_id;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
+            let messages = selfServiceSettingsFlow.ui.messages;
+            let methods = selfServiceSettingsFlow.ui.method;
             let state = selfServiceSettingsFlow.state;
             let type = selfServiceSettingsFlow.type;
 

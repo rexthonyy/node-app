@@ -49,6 +49,9 @@ const getData = ({sessionToken}) => {
                 let selfServiceSettingsFlow = result.res;
     
                 getIdentityById(selfServiceSettingsFlow.identity_id, identity => {
+                    if(typeof identity == "string"){
+                        return reject(identity);
+                    }
                     let id = selfServiceSettingsFlow.id;
                     let active = selfServiceSettingsFlow.active_method;
                     let expiresAt = selfServiceSettingsFlow.expires_at;
