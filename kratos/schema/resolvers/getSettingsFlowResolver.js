@@ -15,8 +15,10 @@ const getData = ({sessionToken}) => {
 
             if(expiresAt != null){
                 let expireDate = new Date(expiresAt);
-                if(expireDate.getTime() > Date.now()){
+                if(Date.now() > expireDate.getTime()){
                     return reject("Session expired");
+                }else{
+                    console.log(Date.now() - expireDate.getTime());
                 }
             }
 

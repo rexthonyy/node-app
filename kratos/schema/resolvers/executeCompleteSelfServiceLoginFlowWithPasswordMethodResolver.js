@@ -21,7 +21,7 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
 
             if(expiresAt != null){
                 let expireDate = new Date(expiresAt);
-                if(expireDate.getTime() > Date.now()){
+                if(Date.now() > expireDate.getTime()){
                     return reject("Flow expired");
                 }
             }
