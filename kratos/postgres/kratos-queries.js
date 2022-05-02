@@ -331,6 +331,23 @@ const createRegistrationFlow = (values, response) => {
     });
 };
 
+const createVerificationFlow = (values, response) => {
+    client.query('INSERT INTO selfservice_verification_flows (id, request_url, issued_at, expires_at, csrf_token, created_at, updated_at, type, state, active_method, ui, nid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const createSession = (values, response) => {
     client.query('INSERT INTO sessions (id, issued_at, expires_at, authenticated_at, identity_id, created_at, updated_at, token, active, nid, logout_token, aal, authentication_methods) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', values, (err, res) => {
         if (err) {
@@ -368,5 +385,6 @@ module.exports = {
     createLoginFlow,
     createRecoveryFlow,
     createRegistrationFlow,
+    createVerificationFlow,
     createSession
 }
