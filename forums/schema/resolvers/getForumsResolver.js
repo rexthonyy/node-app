@@ -53,5 +53,5 @@ const getData = () => {
 }
 
 module.exports = async () => {
-    return await getData(args);
+    return getData();
 }
