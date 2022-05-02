@@ -3,7 +3,7 @@ const getRequestUrl = () => {
 };
 
 const getExpiresAt = () => {
-    return new Date(new Date().setDate(new Date().getMinutes() + 10));
+    return new Date(new Date().setMinutes(new Date().getMinutes() + 10));
 };
 
 const getActiveMethod = () => {
