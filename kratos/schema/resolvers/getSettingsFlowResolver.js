@@ -1,7 +1,7 @@
 let {uuid} = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const settingsFlowHandler = require('../../flows/settingsFlowHandler');
-const {getIdentityById} = require('../resolverUtils/getIdentityById');
+const getIdentityById = require('../resolverUtils/getIdentityById');
 const consts = require('../../libs/consts');
 const getData = ({sessionToken}) => {
     return new Promise((resolve, reject) => {
