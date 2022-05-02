@@ -4,7 +4,7 @@ const getData = () => {
     return new Promise((resolve, reject) => {
         pgForumQueries.getForums(result => {
             if(result.err || result.res.length == 0){
-                return reject(result.err);
+                return reject(JSON.stringify(result.err));
             }
             let forums = result.res;
     
@@ -13,7 +13,7 @@ const getData = () => {
             forums.forEach(forum => {
                 pgForumQueries.getTopicsByForumId(forum.id, result1 => {
                     if(result1.err || result1.res.length == 0){
-                        return reject(result1.err);
+                        return reject(JSON.stringify(result1.err));
                     }
                     let topics = result1.res;
                     let count = -1;
@@ -21,7 +21,7 @@ const getData = () => {
                     topics.forEach(topic => {
                         pgForumQueries.getPostsByTopicId(topic.id, result2 => {
                             if(result2.err || result2.res.length == 0){
-                                return reject(result2.err);
+                                return reject(JSON.stringify(result2.err));
                             }
                             topic.posts = result2.res;
                             setTopicsToForum();
