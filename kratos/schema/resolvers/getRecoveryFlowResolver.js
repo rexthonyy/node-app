@@ -1,26 +1,39 @@
+let {uuid} = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
-const util = require('../../libs/util');
+const recoveryFlowHandler = require('../../flows/recoveryFlowHandler');
+const consts = require('../../libs/consts');
 const getData = () => {
     return new Promise((resolve, reject) => {
-        let id = util.getSessionId();
-        pgKratosQueries.getSelfServiceRecoveryFlowById([id], result => {
+        let now = new Date().toUTCString();
+        const values = [
+            uuid(),
+            recoveryFlowHandler.getRequestUrl(),
+            now,
+            recoveryFlowHandler.getExpiresAt().toUTCString(),
+            recoveryFlowHandler.getActiveMethod(),
+            uuid(),
+            recoveryFlowHandler.getState(),
+            recoveryFlowHandler.getRecoveredIdentityId(),
+            now,
+            now,
+            recoveryFlowHandler.getType(),
+            recoveryFlowHandler.getUI(),
+            consts.NETWORK_ID
+        ];
+        pgKratosQueries.createRecoveryFlow(values, result => {
             if(result.err || result.res.length == 0){
-                return reject("Recovery flow ID not found");
+                return reject("Failed to create recovery flow");
             }
 
-            let selfServiceRecoveryFlow = result.res[0];
+            let selfServiceRecoveryFlow = result.res;
 
+            let id = selfServiceRecoveryFlow.id;
             let active = selfServiceRecoveryFlow.active_method;
             let expiresAt = selfServiceRecoveryFlow.expires_at;
             let issuedAt = selfServiceRecoveryFlow.issued_at;
             let requestUrl = selfServiceRecoveryFlow.request_url;
-            let messages = [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }];
-            let methods = "{}";
+            let messages = selfServiceRecoveryFlow.ui.messages;
+            let methods = selfServiceRecoveryFlow.ui.method;
             let state = selfServiceRecoveryFlow.state;
             let type = selfServiceRecoveryFlow.type;
 

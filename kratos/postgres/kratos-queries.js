@@ -297,6 +297,23 @@ const createLoginFlow = (values, response) => {
     });
 };
 
+const createRecoveryFlow = (values, response) => {
+    client.query('INSERT INTO selfservice_recovery_flows (id, request_url, issued_at, expires_at, active_method, csrf_token, state, recovered_identity_id, created_at, updated_at, type, ui, nid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const createSession = (values, response) => {
     client.query('INSERT INTO sessions (id, issued_at, expires_at, authenticated_at, identity_id, created_at, updated_at, token, active, nid, logout_token, aal, authentication_methods) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *', values, (err, res) => {
         if (err) {
@@ -332,5 +349,6 @@ module.exports = {
     getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId,
 
     createLoginFlow,
+    createRecoveryFlow,
     createSession
 }
