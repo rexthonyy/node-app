@@ -24,7 +24,7 @@ const getData = () => {
                 return reject("Failed to create registration flow");
             }
 
-            let selfServiceRegistrationFlow = result.res[0];
+            let selfServiceRegistrationFlow = result.res;
 
             let id = selfServiceRegistrationFlow.id;
             let active = selfServiceRegistrationFlow.active_method;
