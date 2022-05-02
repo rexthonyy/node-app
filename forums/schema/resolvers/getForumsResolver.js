@@ -7,34 +7,39 @@ const getData = () => {
                 return reject(JSON.stringify(result.err));
             }
             let forums = result.res;
-            console.log(forums);
             let forum_count = -1;
     
             forums.forEach(forum => {
                 pgForumQueries.getTopicsByForumId(forum.id, result1 => {
                     if(result1.err || result1.res.length == 0){
-                        return reject(JSON.stringify(result1.err));
-                    }
-                    let topics = result1.res;
-                    let count = -1;
-    
-                    topics.forEach(topic => {
-                        pgForumQueries.getPostsByTopicId(topic.id, result2 => {
-                            if(result2.err || result2.res.length == 0){
-                                return reject(JSON.stringify(result2.err));
-                            }
-                            topic.posts = result2.res;
-                            setTopicsToForum();
+                        console.log("Topic not found");
+                        topics.posts = [];
+                        setTopicsToForum();
+                    }else{
+                        let topics = result1.res;
+                        let count = -1;
+        
+                        topics.forEach(topic => {
+                            pgForumQueries.getPostsByTopicId(topic.id, result2 => {
+                                if(result2.err || result2.res.length == 0){
+                                    console.log("Post not found");
+                                    topic.posts = [];
+                                    setTopicsToForum();
+                                }else{
+                                    topic.posts = result2.res;
+                                    setTopicsToForum();
+                                }
+                            });
                         });
-                    });
-    
-                    setTopicsToForum();
-    
-                    function setTopicsToForum(){
-                        count++;
-                        if(topics.length == count){
-                            forum.topics = topics;
-                            submitForumToFrontEnd();
+        
+                        setTopicsToForum();
+        
+                        function setTopicsToForum(){
+                            count++;
+                            if(topics.length == count){
+                                forum.topics = topics;
+                                submitForumToFrontEnd();
+                            }
                         }
                     }
                 });
