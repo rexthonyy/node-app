@@ -7,7 +7,7 @@ const getExpiresAt = () => {
 };
 
 const getActiveMethod = () => {
-    return new Date(new Date().setDate(new Date().getMinutes() + 10));
+    return "password";
 };
 
 const getType = () => {

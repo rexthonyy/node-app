@@ -31,6 +31,7 @@ const getData = ({refresh}) => {
 
             let selfServiceLoginFlow = result.res;
 
+            let id = selfServiceLoginFlow.id;
             let active = selfServiceLoginFlow.active_method;
             let expiresAt = selfServiceLoginFlow.expires_at;
             let forced = selfServiceLoginFlow.forced;
