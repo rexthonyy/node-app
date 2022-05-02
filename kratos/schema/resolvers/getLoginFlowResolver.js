@@ -1,14 +1,35 @@
+let {uuid} = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
-const util = require('../../libs/util');
+const loginFlowHandler = require('../../flows/loginFlowHandler');
+const consts = require('../../libs/consts');
 const getData = ({refresh}) => {
     return new Promise((resolve, reject) => {
-        let id = util.getSessionId();
-        pgKratosQueries.getSelfServiceLoginFlowById([id], result => {
+        if(!refresh){
+            refresh = false;
+        }
+        let now = new Date().toUTCString();
+        const values = [
+            uuid(),
+            loginFlowHandler.getRequestUrl(),
+            now,
+            loginFlowHandler.getExpiresAt().toUTCString(),
+            loginFlowHandler.getActiveMethod(),
+            uuid(),
+            now,
+            now,
+            refresh,
+            loginFlowHandler.getType(),
+            loginFlowHandler.getUI(),
+            consts.NETWORK_ID,
+            loginFlowHandler.getRequestedAal(),
+            loginFlowHandler.getInternalContext()
+        ];
+        pgKratosQueries.createLoginFlow(values, result => {
             if(result.err || result.res.length == 0){
-                return reject("Login flow ID not found");
+                return reject("Failed to create Login flow");
             }
 
-            let selfServiceLoginFlow = result.res[0];
+            let selfServiceLoginFlow = result.res;
 
             let active = selfServiceLoginFlow.active_method;
             let expiresAt = selfServiceLoginFlow.expires_at;
