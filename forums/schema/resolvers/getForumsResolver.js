@@ -14,7 +14,7 @@ const getData = () => {
                     if(result1.err || result1.res.length == 0){
                         console.log("Topic not found");
                         forum.topics = [];
-                        setTopicsToForum();
+                        submitForumToFrontEnd();
                     }else{
                         let topics = result1.res;
                         let count = -1;
