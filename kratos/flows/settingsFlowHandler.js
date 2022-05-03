@@ -1,55 +1,73 @@
-const getRequestUrl = () => {
-    return "/";
-};
+const fs = require('fs');
+const YAML = require('yaml');
 
-const getExpiresAt = () => {
-    return new Date(new Date().setMinutes(new Date().getMinutes() + 120));
-};
+class SettingsFlowHandler {
+    constructor(){
+        const file = fs.readFileSync('./config/flows/settings.yml', 'utf8')
+        console.log(YAML.parse(file));
+    }
 
-const getActiveMethod = () => {
-    return "password";
-};
+    getRequestUrl(){
+        return "/";
+    }
 
-const getType = () => {
-    return "api";
-};
+    getExpiresAt(){
+        return new Date(new Date().setMinutes(new Date().getMinutes() + 120));
+    }
 
-const getState = () => {
-    return "choose method"; //"choose_method" "sent_email" "passed_challenge"
-};
+    getActiveMethod(){
+        return "password";
+    }
 
-const getUI = () => {
-    return JSON.stringify({
-        action: "/",
-        method: "post",
-        messages: [
-            {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
+    getType(){
+        return "api";
+    }
+
+    getState(){
+        return "choose method"; //"choose_method" "sent_email" "passed_challenge"
+    }
+
+    getUI(){
+        return JSON.stringify({
+            action: "/",
+            method: "post",
+            messages: [
+                {
+                    context: "current",
+                    id: "attr",
+                    text: "info",
+                    type: "ui"
+                }
+            ],
+            nodes: {
+                attributes: {
+                    type: "id"
+                },
+                group: "none",
+                type: "ui",
+                messages: {
+                    context: "current",
+                    id: "attr",
+                    text: "info",
+                    type: "ui"
+                }
             }
-        ],
-        nodes: {
-            attributes: {
-                type: "id"
-            },
-            group: "none",
-            type: "ui",
-            messages: {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        }
-    });
-};
+        });
+    }
 
-const getInternalContext = () => {
-    return "{}";
-};
+    getInternalContext(){
+        return "{}";
+    }
+}
 
+const handler = new SettingsFlowHandler();
+const getRequestUrl = handler.getRequestUrl;
+const getExpiresAt = handler.getExpiresAt;
+const getActiveMethod = handler.getActiveMethod;
+const getType = handler.getType;
+const getState = handler.getState;
+const getUI = handler.getUI;
+const getInternalContext = handler.getInternalContext;
 
 module.exports = {
     getRequestUrl,
