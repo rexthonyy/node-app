@@ -14,6 +14,7 @@ const getData = ({flow, completeSelfServiceSettingsFlowWithPasswordMethodInput})
 
             let selfServiceSettingsFlow = result.res[0];
 
+            let id = selfServiceSettingsFlow.id;
             let active = selfServiceSettingsFlow.active_method;
             let expiresAt = selfServiceSettingsFlow.expires_at;
             let issuedAt = selfServiceSettingsFlow.issued_at;
