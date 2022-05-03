@@ -30,19 +30,6 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                 if(typeof identity == "string"){
                     return reject(identity);
                 }
-                
-                const settingsFlow = {
-                    active,
-                    expiresAt,
-                    id,
-                    identity,
-                    issuedAt,
-                    messages,
-                    methods,
-                    requestUrl,
-                    state,
-                    type
-                };
 
                 if(expiresAt != null){
                     let expireDate = new Date(expiresAt);
@@ -70,7 +57,27 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                         return reject("Identity could not be updated");
                     }
 
-                    resolve(settingsFlow);
+                    getIdentityById(identityId, identity => {
+                        if(typeof identity == "string"){
+                            return reject(identity);
+                        }
+                        
+                        const settingsFlow = {
+                            active,
+                            expiresAt,
+                            id,
+                            identity,
+                            issuedAt,
+                            messages,
+                            methods,
+                            requestUrl,
+                            state,
+                            type
+                        };
+
+                        resolve(settingsFlow);
+
+                    });
                 });
             });
         });
