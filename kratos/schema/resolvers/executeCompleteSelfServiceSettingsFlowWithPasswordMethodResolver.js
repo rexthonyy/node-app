@@ -12,7 +12,7 @@ const getData = ({flow, completeSelfServiceSettingsFlowWithPasswordMethodInput})
                 return reject("Settings flow ID not found");
             }
 
-            let selfserviceSettingsFlow = result.res[0];
+            let selfServiceSettingsFlow = result.res[0];
 
             let active = selfServiceSettingsFlow.active_method;
             let expiresAt = selfServiceSettingsFlow.expires_at;
