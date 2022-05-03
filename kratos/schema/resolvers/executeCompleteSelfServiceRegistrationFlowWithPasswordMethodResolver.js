@@ -3,12 +3,16 @@ var v = new Validator();
 const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const schemaHandler = require('../../identities/schemaHandler');
-const {getSessionExpirationTime} = require('../../libs/util');
+const {getSessionExpirationTime, isEmailValid} = require('../../libs/util');
 const { NETWORK_ID, IDENTITY_CREDENTIAL_TYPE_PASSWORD } = require('../../libs/consts');
 const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
     return new Promise((resolve, reject) => {
         let traits = JSON.parse(selfServiceRegistrationMethodsPasswordInput);
 
+        if(!isEmailValid(traits.email)){
+            return reject("Email is not valid");
+        }
+        
         pgKratosQueries.getRegistrationFlowById([flow], result => {
             if(result.err || result.res.length == 0){
                 return reject("Flow ID not found");
