@@ -298,7 +298,7 @@ const getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredential
 };
 
 const getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId = (values, response) => {
-    pool.query("SELECT * from identity_credential_identifiers WHERE identity_credential_type_id=$1 AND identity_id = $2", values, (err, res) => {
+    pool.query("SELECT * from identity_credentials WHERE identity_credential_type_id=$1 AND identity_id = $2", values, (err, res) => {
         if(err){
             response({
                 err: err,
