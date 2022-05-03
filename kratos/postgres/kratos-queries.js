@@ -297,6 +297,23 @@ const getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredential
     });
 };
 
+const getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId = (values, response) => {
+    pool.query("SELECT * from identity_credential_identifiers WHERE identity_credential_type_id=$1 AND identity_id = $2", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 216
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createLoginFlow = (values, response) => {
     client.query('INSERT INTO selfservice_login_flows (id, request_url, issued_at, expires_at, active_method, csrf_token, created_at, updated_at, forced, type, ui, nid, requested_aal, internal_context) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', values, (err, res) => {
         if (err) {
@@ -502,6 +519,25 @@ const updateIdentity = (values, response) => {
         }
     });
 };
+
+const updateIdentityCredentials = (values, response) => {
+    client.query('UPDATE identity_credentials SET config=$2, updated_at=$3 WHERE id=$1 RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 23
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -519,6 +555,7 @@ module.exports = {
     getRegistrationFlowById,
     getIdentityCredentialsByIdentityCredentialTypeId,
     getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId,
+    getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId,
 
     createLoginFlow,
     createRecoveryFlow,
@@ -533,4 +570,5 @@ module.exports = {
     createIdentityRecoveryToken,
 
     updateIdentity,
+    updateIdentityCredentials,
 }

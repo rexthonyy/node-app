@@ -1,4 +1,5 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const getIdentityById = require('../resolverUtils/getIdentityById');
 
 const getData = ({id}) => {
     return new Promise((resolve, reject) => {
@@ -13,24 +14,31 @@ const getData = ({id}) => {
             let expiresAt = selfServiceSettingsFlow.expires_at;
             let issuedAt = selfServiceSettingsFlow.issued_at;
             let requestUrl = selfServiceSettingsFlow.request_url;
-            let identity = selfServiceSettingsFlow.identity_id;
+            let identityId = selfServiceSettingsFlow.identity_id;
             let messages = selfServiceSettingsFlow.ui.messages;
             let methods = selfServiceSettingsFlow.ui.method;
             let state = selfServiceSettingsFlow.state;
             let type = selfServiceSettingsFlow.type;
 
-            resolve({
-                active,
-                expiresAt,
-                id,
-                identity,
-                issuedAt,
-                messages,
-                methods,
-                requestUrl,
-                state,
-                type
+            getIdentityById(identityId, identity => {
+                if(typeof identity == "string"){
+                    return reject(identity);
+                }
+
+                resolve({
+                    active,
+                    expiresAt,
+                    id,
+                    identity,
+                    issuedAt,
+                    messages,
+                    methods,
+                    requestUrl,
+                    state,
+                    type
+                });
             });
+            
             /*resolve({
                 active: "active",
                 expiresAt: "2022-01",
