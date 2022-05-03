@@ -4,6 +4,7 @@ const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const schemaHandler = require('../../identities/schemaHandler');
 const getIdentityById = require('../resolverUtils/getIdentityById');
+const { NETWORK_ID } = require('../../libs/consts');
 
 const getData = ({createIdentityInput}) => {
     return new Promise((resolve, reject) => {
