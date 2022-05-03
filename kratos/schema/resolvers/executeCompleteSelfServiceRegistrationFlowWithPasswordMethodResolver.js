@@ -77,7 +77,8 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                     now
                 ];
                 pgKratosQueries.createIdentity(values, result => {
-                    if(result.err || result.res.length == 0){
+                    if(result.err){
+                        console.error(result.err);
                         return reject("Identity could not be created");
                     }
     
@@ -97,7 +98,8 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         NETWORK_ID
                     ];
                     pgKratosQueries.createIdentityCredentials(values, result => {
-                        if(result.err || result.res.length == 0){
+                        if(result.err){
+                            console.error(result.err);
                             return reject("Identity credentials could not be created");
                         }
     
@@ -115,7 +117,8 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                             IDENTITY_CREDENTIAL_TYPE_PASSWORD
                         ];
                         pgKratosQueries.createIdentityCredentialIdentifier(values, result => {
-                            if(result.err || result.res.length == 0){
+                            if(result.err){
+                                console.error(result.err);
                                 return reject("Identity credential identifier could not be created");
                             }
     
@@ -137,6 +140,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                             ];
                             pgKratosQueries.createSession(values, result => {
                                 if(result.err){
+                                    console.error(result.err);
                                     return reject("Failed to create session");
                                 }
     
