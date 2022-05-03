@@ -9,9 +9,19 @@ const getData = ({createRecoveryLinkInput}) => {
         let expiresIn = createRecoveryLinkInput.expiresIn;
         let identityId = createRecoveryLinkInput.identityId;
 
+        let expiresAt = new Date(expiresIn).toUTCString()
+
+        if(expiresIn != null){
+            let expireDate = new Date(expiresIn);
+            if(Date.now() > expireDate.getTime()){
+                return reject("Expires is in the past. Please specify a future date");
+            }
+        }
+
         let token = generateToken(32);
         let recoveryLink = `/recovery/${token}`;
-        let expiresAt = new Date(expiresIn).toUTCString()
+
+
         let now = new Date().toUTCString();
         let values = [
             uuid(),
