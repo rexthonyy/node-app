@@ -154,11 +154,6 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 let issuedAt = session.issued_at;
                                 let sessionToken = session.token;
 
-                                console.log(issuedAt);
-                                console.log(expiresAt);
-                                console.log(session.expires_at);
-                                console.log(authenticatedAt);
-    
                                 getIdentityById(identityId, identity => {
                                     if(typeof identity == "string"){
                                         return reject(identity);
