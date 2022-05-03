@@ -81,7 +81,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         return reject("Identity could not be created");
                     }
     
-                    let identityId = result.res[0].id;
+                    let identityId = result.res.id;
     
                     let config = {
                         password: traits.password
@@ -101,7 +101,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                             return reject("Identity credentials could not be created");
                         }
     
-                        let identityCredentialId = result.res[0].id;
+                        let identityCredentialId = result.res.id;
     
                         let identifier = traits.email;
     
