@@ -450,6 +450,23 @@ const createIdentityCredentialIdentifier = (values, response) => {
     });
 };
 
+const createIdentityRecoveryAddress = (values, response) => {
+    client.query('INSERT INTO identity_recovery_addresses (id, via, value, identity_id, created_at, updated_at, nid) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -477,4 +494,5 @@ module.exports = {
     createIdentity,
     createIdentityCredentials,
     createIdentityCredentialIdentifier,
+    createIdentityRecoveryAddress,
 }
