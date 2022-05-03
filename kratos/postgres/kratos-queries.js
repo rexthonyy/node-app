@@ -484,6 +484,24 @@ const createIdentityRecoveryToken = (values, response) => {
     });
 };
 
+
+
+const updateIdentity = (values, response) => {
+    client.query('UPDATE identities SET schema_id=$2, traits=$3, updated_at=$4 WHERE id=$1 RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 23
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -513,4 +531,6 @@ module.exports = {
     createIdentityCredentialIdentifier,
     createIdentityRecoveryAddress,
     createIdentityRecoveryToken,
+
+    updateIdentity,
 }
