@@ -82,7 +82,7 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
 
                             let active = session.active;
                             let authenticatedAt = session.authenticated_at;
-                            let expiresAtt = session.expires_at;
+                            let expiresAt = session.expires_at;
                             let id = session.id;
                             let identityId = session.identity_id;
                             let issuedAt = session.issued_at;
@@ -97,7 +97,7 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                                     session: {
                                         active,
                                         authenticatedAt,
-                                        expiresAtt,
+                                        expiresAt,
                                         id,
                                         identity,
                                         issuedAt
