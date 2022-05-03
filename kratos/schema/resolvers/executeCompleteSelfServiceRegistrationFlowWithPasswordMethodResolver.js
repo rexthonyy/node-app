@@ -149,10 +149,15 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
     
                                 let active = session.active;
                                 let authenticatedAt = session.authenticated_at;
-                                let expiresAtt = session.expires_at;
+                                expiresAt = session.expires_at;
                                 let id = session.id;
                                 let issuedAt = session.issued_at;
                                 let sessionToken = session.token;
+
+                                console.log(issuedAt);
+                                console.log(expiresAt);
+                                console.log(session.expires_at);
+                                console.log(authenticatedAt);
     
                                 getIdentityById(identityId, identity => {
                                     if(typeof identity == "string"){
@@ -164,7 +169,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                         session: {
                                             active,
                                             authenticatedAt,
-                                            expiresAtt,
+                                            expiresAt,
                                             id,
                                             identity,
                                             issuedAt
