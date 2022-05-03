@@ -467,6 +467,23 @@ const createIdentityRecoveryAddress = (values, response) => {
     });
 };
 
+const createIdentityRecoveryToken = (values, response) => {
+    client.query('INSERT INTO identity_recovery_tokens (id, token, used, used_at, identity_recovery_address_id, selfservice_recovery_flow_id, created_at, updated_at, expires_at, issued_at, nid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 184
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -495,4 +512,5 @@ module.exports = {
     createIdentityCredentials,
     createIdentityCredentialIdentifier,
     createIdentityRecoveryAddress,
+    createIdentityRecoveryToken,
 }
