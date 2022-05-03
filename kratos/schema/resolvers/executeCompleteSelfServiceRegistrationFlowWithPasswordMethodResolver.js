@@ -2,6 +2,7 @@ var Validator = require('jsonschema').Validator;
 var v = new Validator();
 const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const getIdentityById = require('../resolverUtils/getIdentityById');
 const schemaHandler = require('../../identities/schemaHandler');
 const {getSessionExpirationTime, generateToken, isEmailValid} = require('../../libs/util');
 const { NETWORK_ID, IDENTITY_CREDENTIAL_TYPE_PASSWORD } = require('../../libs/consts');
