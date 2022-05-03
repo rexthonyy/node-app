@@ -1,9 +1,8 @@
-const jwt = require('jsonwebtoken');
 const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getIdentityById = require('../resolverUtils/getIdentityById');
 const {NETWORK_ID,IDENTITY_CREDENTIAL_TYPE_PASSWORD} = require('../../libs/consts');
-const {getSessionExpirationTime} = require('../../libs/util');
+const {getSessionExpirationTime, generateToken} = require('../../libs/util');
 const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) => {
     return new Promise((resolve, reject) => {
         let csrfToken = completeSelfServiceLoginFlowWithPasswordMethodInput.csrfToken;
@@ -58,7 +57,7 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                         }
 
                         let now = new Date().toUTCString();
-                        let token = jwt.sign(loggedInIdentityCredential, process.env.ACCESS_TOKEN_SECRET);
+                        let token = generateToken(30);
                         let values = [
                             uuid(),
                             now,

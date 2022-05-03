@@ -3,7 +3,7 @@ var v = new Validator();
 const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const schemaHandler = require('../../identities/schemaHandler');
-const {getSessionExpirationTime, isEmailValid} = require('../../libs/util');
+const {getSessionExpirationTime, generateToken, isEmailValid} = require('../../libs/util');
 const { NETWORK_ID, IDENTITY_CREDENTIAL_TYPE_PASSWORD } = require('../../libs/consts');
 const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
     return new Promise((resolve, reject) => {
@@ -122,7 +122,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 return reject("Identity credential identifier could not be created");
                             }
     
-                            let token = uuid();
+                            let token = generateToken(30);
                             let values = [
                                 uuid(),
                                 now,
