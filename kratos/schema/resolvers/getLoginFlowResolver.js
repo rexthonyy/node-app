@@ -4,6 +4,10 @@ const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
 const getData = ({refresh}) => {
     return new Promise((resolve, reject) => {
+
+        console.log(consts.NETWORK_ID);
+        return reject("err");
+
         if(!refresh){
             refresh = false;
         }
