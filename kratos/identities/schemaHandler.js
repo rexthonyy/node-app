@@ -11,7 +11,9 @@ class JSONSchemaHandler {
       console.log(this.config.identity.schemas);
       this.config.identity.schemas.forEach(schema => {
         if(schema.id == id){
-          return fs.readFileSync(`.${schema.url}`);
+          let file = fs.readFileSync(`.${schema.url}`);
+          console.log(file);
+          return file;
         }
       });
       return null;
