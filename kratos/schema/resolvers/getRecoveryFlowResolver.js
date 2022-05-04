@@ -4,6 +4,10 @@ const recoveryFlowHandler = require('../../flows/recoveryFlowHandler');
 const consts = require('../../libs/consts');
 const getData = () => {
     return new Promise((resolve, reject) => {
+        console.log(".flow");
+        console.log(recoveryFlowHandler.getRequestUrl());
+        console.log(recoveryFlowHandler.getRecoveredIdentityId());
+        console.log(".flow.");
         let now = new Date().toUTCString();
         const values = [
             uuid(),
@@ -17,7 +21,7 @@ const getData = () => {
             now,
             now,
             recoveryFlowHandler.getType(),
-            recoveryFlowHandler.getUI(),
+            JSON.stringify(recoveryFlowHandler.getUI()),
             consts.NETWORK_ID
         ];
         pgKratosQueries.createRecoveryFlow(values, result => {

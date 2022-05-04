@@ -19,6 +19,22 @@ class JSONSchemaHandler {
       return selectedSchema;
     }
 
+    getDefaultJSONSchema(){
+      let default_schema_id = this.getDefaultJSONSchemaId();
+      let selectedSchema = null;
+      let schemas = this.config.identity.schemas;
+      for(let i = 0, j = schemas.length; i < j; i++){
+        let schema = schemas[i];
+        if(schema.id == default_schema_id){
+          selectedSchema = fs.readFileSync(`.${schema.url}`, "utf8");
+        }
+      }
+      return selectedSchema;
+    }
+
+    getDefaultJSONSchemaId(){
+      return this.config.identity.default_schema_id;
+    }
 }
 
 const handler = new JSONSchemaHandler();
@@ -27,23 +43,12 @@ const getJSONSchemaById = (id) => {
   return handler.getJSONSchemaById(id);
 };
 
-const getDefaultJSONSchema = (id) => {
-  return {
-    "id": "/SimpleAddress",
-    "type": "object",
-    "properties": {
-      "firstName": {"type": "string"},
-      "lastName": {"type": "string"},
-      "email": {"type": "string"},
-      "password": {"type": "string"}
-    },
-    "required": ["firstName","lastName","email","password"]
-  };
-   
+const getDefaultJSONSchema = () => {
+  return handler.getDefaultJSONSchema();
 };
 
 const getDefaultJSONSchemaId = () => {
-  return "default";
+  return handler.getDefaultJSONSchemaId();
 }
 
 module.exports = {

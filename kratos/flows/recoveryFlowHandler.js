@@ -37,13 +37,34 @@ class RecoveryFlowHandler {
 }
 
 const handler = new RecoveryFlowHandler();
-const getRequestUrl = handler.getRequestUrl;
-const getExpiresAt = handler.getExpiresAt;
-const getActiveMethod = handler.getActiveMethod;
-const getState = handler.getState;
-const getRecoveredIdentityId = handler.getRecoveredIdentityId;
-const getType = handler.getType;
-const getUI = handler.getUI;
+
+const getRequestUrl = () => {
+    return handler.getRequestUrl();
+};
+
+const getExpiresAt = () => {
+    return handler.getExpiresAt();
+};
+
+const getActiveMethod = () => {
+    return handler.getActiveMethod();
+};
+
+const getState = () => {
+    return handler.getState();
+};
+
+const getRecoveredIdentityId = () => {
+    return handler.getRecoveredIdentityId();
+};
+
+const getType = () => {
+    return handler.getType();
+};
+
+const getUI = () => {
+    return handler.getUI();
+};
 
 module.exports = {
     getRequestUrl,

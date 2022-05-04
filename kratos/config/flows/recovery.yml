@@ -1,10 +1,11 @@
 flow:
   request_url: /
-  expires_at: 10000 # milliseconds
+  expires_at: 900000 # milliseconds
   active_method: password
   type: api
   state: active
   default_state: choose method
+  recovered_identity_id: null
   ui:
     action: /
     method: post
