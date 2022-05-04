@@ -42,13 +42,6 @@ const getData = ({refresh}) => {
             let type = selfServiceLoginFlow.type;
             let ui = selfServiceLoginFlow.ui;
 
-            if(expiresAt != null){
-                let expireDate = new Date(expiresAt);
-                if(Date.now() > expireDate.getTime()){
-                    active = false;
-                }
-            }
-
             resolve({
                 active,
                 expiresAt,
