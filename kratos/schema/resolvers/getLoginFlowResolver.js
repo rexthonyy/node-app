@@ -7,6 +7,9 @@ const getData = ({refresh}) => {
         if(!refresh){
             refresh = false;
         }
+
+        console.log(loginFlowHandler.getInternalContext());
+        
         let now = new Date().toUTCString();
         const values = [
             uuid(),
@@ -39,6 +42,13 @@ const getData = ({refresh}) => {
             let requestUrl = selfServiceLoginFlow.request_url;
             let type = selfServiceLoginFlow.type;
             let ui = selfServiceLoginFlow.ui;
+
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                if(Date.now() > expireDate.getTime()){
+                    active = false;
+                }
+            }
 
             resolve({
                 active,
