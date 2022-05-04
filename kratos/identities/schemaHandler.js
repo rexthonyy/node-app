@@ -5,7 +5,6 @@ class JSONSchemaHandler {
     constructor(){
         const file = fs.readFileSync('./config/schemas/index.yml', 'utf8')
         this.config = YAML.parse(file);
-        console.log(this.getJSONSchemaById("person"));
     }
 
     getJSONSchemaById(id){
@@ -20,7 +19,7 @@ class JSONSchemaHandler {
 }
 
 const handler = new JSONSchemaHandler();
-
+console.log(handler.getJSONSchemaById("customer"));
 const getJSONSchemaById = (id) => {
   return {
     "id": "/SimpleAddress",
