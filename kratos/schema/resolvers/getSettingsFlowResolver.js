@@ -13,6 +13,13 @@ const getData = ({sessionToken}) => {
             let session = result.res[0];
             let identityId = session.identity_id;
 
+            if(session.expiresAt != null){
+                let expireDate = new Date(session.expiresAt);
+                if(Date.now() > expireDate.getTime()){
+                    return reject("Session token expired");
+                }
+            }
+
             let now = new Date().toUTCString();
             const values = [
                 uuid(),
@@ -49,20 +56,6 @@ const getData = ({sessionToken}) => {
                     let methods = selfServiceSettingsFlow.ui.method;
                     let state = selfServiceSettingsFlow.state;
                     let type = selfServiceSettingsFlow.type;
-        
-                    if(expiresAt != null){
-                        let expireDate = new Date(expiresAt);
-                        if(Date.now() > expireDate.getTime()){
-                            state = "Flow expired";
-                        }
-                    }
-
-                    if(session.expiresAt != null){
-                        let expireDate = new Date(expiresAt);
-                        if(Date.now() > expireDate.getTime()){
-                            state = "Session expired";
-                        }
-                    }
         
                     resolve({
                         active,
