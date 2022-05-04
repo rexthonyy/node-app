@@ -8,14 +8,6 @@ const getData = ({refresh}) => {
             refresh = false;
         }
 
-        console.log(loginFlowHandler.getRequestUrl());
-        console.log(loginFlowHandler.getExpiresAt().toUTCString());
-        console.log(loginFlowHandler.getActiveMethod());
-        console.log(loginFlowHandler.getType());
-        console.log(loginFlowHandler.getUI());
-        console.log(loginFlowHandler.getRequestedAal());
-        console.log(loginFlowHandler.getInternalContext());
-        
         let now = new Date().toUTCString();
         const values = [
             uuid(),
@@ -34,7 +26,8 @@ const getData = ({refresh}) => {
             loginFlowHandler.getInternalContext()
         ];
         pgKratosQueries.createLoginFlow(values, result => {
-            if(result.err || result.res.length == 0){
+            if(result.err){
+                console.error(result.err);
                 return reject("Failed to create Login flow");
             }
 
