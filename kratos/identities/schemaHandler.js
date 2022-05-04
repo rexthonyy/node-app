@@ -8,12 +8,15 @@ class JSONSchemaHandler {
     }
 
     getJSONSchemaById(id){
-      this.config.identity.schemas.forEach(schema => {
+      let selectedSchema = null;
+      let schemas = this.config.identity.schemas;
+      for(let i = 0, j = schemas.length; i < j; i++){
+        let schema = schemas[i];
         if(schema.id == id){
-          return fs.readFileSync(`.${schema.url}`, "utf8");
+          selectedSchema = fs.readFileSync(`.${schema.url}`, "utf8");
         }
-      });
-      return null;
+      }
+      return selectedSchema;
     }
 
 }
