@@ -1,12 +1,15 @@
 flow:
   request_url: /
-  expires_at: 10000 # milliseconds
+  expires_at: 900000 # milliseconds
   active_method: password
   type: api
-  state: active
-  default_state: choose method
   ui:
     action: /
+    messages:
+    - context: context
+      id: attr
+      text: info
+      type: ui
     method: post
     nodes:
       attributes:
@@ -18,4 +21,4 @@ flow:
         id: attr
         text: info
         type: ui
-  internal_context: /
+  internal_context: {"context":"default"}

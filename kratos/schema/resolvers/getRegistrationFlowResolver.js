@@ -15,9 +15,9 @@ const getData = () => {
             now,
             now,
             registrationFlowHandler.getType(),
-            registrationFlowHandler.getUI(),
+            JSON.stringify(registrationFlowHandler.getUI()),
             consts.NETWORK_ID,
-            registrationFlowHandler.getInternalContext()
+            JSON.stringify(registrationFlowHandler.getInternalContext())
         ];
         pgKratosQueries.createRegistrationFlow(values, result => {
             if(result.err || result.res.length == 0){
