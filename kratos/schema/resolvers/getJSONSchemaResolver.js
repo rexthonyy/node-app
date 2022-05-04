@@ -5,6 +5,7 @@ const getData = ({id}) => {
       console.log(id);
       let jsonSchema = schemaHandler.getJSONSchemaById(id);
       if(!jsonSchema){
+        console.log(jsonSchema);
         return reject("Schema not found");
       }
 
