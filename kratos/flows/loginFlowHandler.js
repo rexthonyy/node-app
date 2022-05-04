@@ -5,7 +5,6 @@ class LoginFlowHandler {
     constructor(){
         const file = fs.readFileSync('./config/flows/login.yml', 'utf8')
         this.config = YAML.parse(file);
-        console.log(this.config.flow.messages);
     }
 
     getRequestUrl(){

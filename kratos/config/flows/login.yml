@@ -5,13 +5,13 @@ flow:
   type: api
   default_state: choose method
   requested_aal: aal1
-  messages:
-  - context: context
-    id: attr
-    text: info
-    type: ui
   ui:
     action: /
+    messages:
+    - context: context
+      id: attr
+      text: info
+      type: ui
     method: post
     nodes:
       attributes:
@@ -23,4 +23,4 @@ flow:
         id: attr
         text: info
         type: ui
-  internal_context: /
+  internal_context: default
