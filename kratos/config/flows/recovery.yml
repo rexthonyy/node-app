@@ -8,6 +8,11 @@ flow:
   recovered_identity_id: null
   ui:
     action: /
+    messages:
+    - context: context
+      id: attr
+      text: info
+      type: ui
     method: post
     nodes:
       attributes:
@@ -19,4 +24,4 @@ flow:
         id: attr
         text: info
         type: ui
-  internal_context: /
+  internal_context: {"context":"default"}

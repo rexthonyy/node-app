@@ -11,19 +11,7 @@ const getData = ({sessionToken}) => {
             }
 
             let session = result.res[0];
-            let expiresAt = session.expires_at;
-
-            if(expiresAt != null){
-                let expireDate = new Date(expiresAt);
-                if(Date.now() > expireDate.getTime()){
-                    return reject("Session expired");
-                }else{
-                    console.log(Date.now() - expireDate.getTime());
-                }
-            }
-
             let identityId = session.identity_id;
-
 
             let now = new Date().toUTCString();
             const values = [
@@ -37,9 +25,9 @@ const getData = ({sessionToken}) => {
                 settingsFlowHandler.getActiveMethod(),
                 settingsFlowHandler.getState(),
                 settingsFlowHandler.getType(),
-                settingsFlowHandler.getUI(),
+                JSON.stringify(settingsFlowHandler.getUI()),
                 consts.NETWORK_ID,
-                settingsFlowHandler.getInternalContext()
+                JSON.stringify(settingsFlowHandler.getInternalContext())
             ];
             pgKratosQueries.createSettingsFlow(values, result => {
                 if(result.err || result.res.length == 0){
@@ -61,6 +49,20 @@ const getData = ({sessionToken}) => {
                     let methods = selfServiceSettingsFlow.ui.method;
                     let state = selfServiceSettingsFlow.state;
                     let type = selfServiceSettingsFlow.type;
+        
+                    if(expiresAt != null){
+                        let expireDate = new Date(expiresAt);
+                        if(Date.now() > expireDate.getTime()){
+                            state = "Flow expired";
+                        }
+                    }
+
+                    if(session.expiresAt != null){
+                        let expireDate = new Date(expiresAt);
+                        if(Date.now() > expireDate.getTime()){
+                            state = "Session expired";
+                        }
+                    }
         
                     resolve({
                         active,
