@@ -37,13 +37,34 @@ class LoginFlowHandler {
 }
 
 const handler = new LoginFlowHandler();
-const getRequestUrl = handler.getRequestUrl;
-const getExpiresAt = handler.getExpiresAt;
-const getActiveMethod = handler.getActiveMethod;
-const getType = handler.getType;
-const getRequestedAal = handler.getRequestedAal;
-const getUI = handler.getUI;
-const getInternalContext = handler.getInternalContext;
+
+const getRequestUrl = () => {
+    return handler.getRequestUrl();
+};
+
+const getExpiresAt = () => {
+    return handler.getExpiresAt();
+};
+
+const getActiveMethod = () => {
+    return handler.getActiveMethod();
+};
+
+const getType = () => {
+    return handler.getType();
+};
+
+const getRequestedAal = () => {
+    return handler.getRequestedAal();
+};
+
+const getUI = () => {
+    return handler.getUI();
+};
+
+const getInternalContext = () => {
+    return handler.getInternalContext();
+};
 
 module.exports = {
     getRequestUrl,

@@ -10,8 +10,7 @@ const getData = ({refresh}) => {
         if(!refresh){
             refresh = false;
         }
-
-
+        
         let now = new Date().toUTCString();
         const values = [
             uuid(),
