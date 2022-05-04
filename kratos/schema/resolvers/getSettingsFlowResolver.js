@@ -13,8 +13,8 @@ const getData = ({sessionToken}) => {
             let session = result.res[0];
             let identityId = session.identity_id;
 
-            if(session.expiresAt != null){
-                let expireDate = new Date(session.expiresAt);
+            if(session.expires_at != null){
+                let expireDate = new Date(session.expires_at);
                 if(Date.now() > expireDate.getTime()){
                     return reject("Session token expired");
                 }
