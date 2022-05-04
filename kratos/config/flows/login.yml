@@ -3,8 +3,8 @@ flow:
   expires_at: 10000 # milliseconds
   active_method: password
   type: api
-  state: active
   default_state: choose method
+  requested_aal: aal1
   ui:
     action: /
     method: post

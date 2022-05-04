@@ -1,4 +1,5 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const getIdentityById = require('../resolverUtils/getIdentityById');
 
 const getData = ({authorization, cookie}) => {
     return new Promise((resolve, reject) => {
@@ -26,63 +27,23 @@ const getData = ({authorization, cookie}) => {
             let id = session.id;
             let issuedAt = session.issued_at;
 
-            pgKratosQueries.getIdentityById([session.identity_id], result => {
-                if(result.err || result.res.length == 0){
-                    return reject("Identity not found");
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                if(Date.now() > expireDate.getTime()){
+                    active = false;
                 }
-    
-                let identity = result.res[0];
-    
-                let identityType = {
-                    id: identity.id,
-                    schemaId: identity.schema_id,
-                    schemaUrl: "",
-                    traits: JSON.stringify(identity.traits),
-                    recoveryAddresses: [],
-                    verifiableAddresses: []
-                };
-    
-                pgKratosQueries.getRecoveryAddressesByIdentityId([identity.id], result => {
-                    if(result.err){
-                        result.res = [];
-                    }
-                    let recoveryAddresses = result.res;
-                    recoveryAddresses.forEach(recoveryAddress => {
-                        identityType.recoveryAddresses.push({
-                            id: recoveryAddress.id,
-                            value: recoveryAddress.value,
-                            via: recoveryAddress.via
-                        });
-                    });
-    
-                    pgKratosQueries.getVerifiableAddressesByIdentityId([identity.id], result => {
-                        if(result.err){
-                            result.res = [];
-                        }
-                        let verifiableAddresses = result.res;
-                        verifiableAddresses.forEach(verifiableAddress => {
-                            identityType.verifiableAddresses.push({
-                                id: verifiableAddress.id,
-                                status: verifiableAddress.status,
-                                value: verifiableAddress.value,
-                                verified: verifiableAddress.verified,
-                                verifiedAt: verifiableAddress.verified_at,
-                                via: verifiableAddress.via
-                            });
-                        });
-    
-                        resolve({
-                            active,
-                            authenticatedAt,
-                            expiresAt,
-                            id,
-                            identity: identityType,
-                            issuedAt
-                        });
-                    });
+            }
+
+            getIdentityById(session.identity_id, identity => {
+                resolve({
+                    active,
+                    authenticatedAt,
+                    expiresAt,
+                    id,
+                    identity,
+                    issuedAt
                 });
             });
-
         });
     });
 }

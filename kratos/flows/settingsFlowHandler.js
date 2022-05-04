@@ -4,59 +4,35 @@ const YAML = require('yaml');
 class SettingsFlowHandler {
     constructor(){
         const file = fs.readFileSync('./config/flows/settings.yml', 'utf8')
-        console.log(YAML.parse(file));
+        this.config = YAML.parse(file);
     }
 
     getRequestUrl(){
-        return "/";
+        return this.config.flow.request_url;
     }
 
     getExpiresAt(){
-        return new Date(new Date().setMinutes(new Date().getMinutes() + 120));
+        return new Date(new Date().setMilliseconds(new Date().getMilliseconds() + this.config.flow.expires_at));
     }
 
     getActiveMethod(){
-        return "password";
+        return this.config.flow.active_method;
     }
 
     getType(){
-        return "api";
+        return this.config.flow.type;
     }
 
     getState(){
-        return "choose method"; //"choose_method" "sent_email" "passed_challenge"
+        return this.config.flow.state;
     }
 
     getUI(){
-        return JSON.stringify({
-            action: "/",
-            method: "post",
-            messages: [
-                {
-                    context: "current",
-                    id: "attr",
-                    text: "info",
-                    type: "ui"
-                }
-            ],
-            nodes: {
-                attributes: {
-                    type: "id"
-                },
-                group: "none",
-                type: "ui",
-                messages: {
-                    context: "current",
-                    id: "attr",
-                    text: "info",
-                    type: "ui"
-                }
-            }
-        });
+        return this.config.flow.ui;
     }
 
     getInternalContext(){
-        return "{}";
+        return this.config.flow.internal_context;
     }
 }
 

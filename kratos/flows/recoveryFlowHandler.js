@@ -1,54 +1,49 @@
-const getRequestUrl = () => {
-    return "/";
-};
+const fs = require('fs');
+const YAML = require('yaml');
 
-const getExpiresAt = () => {
-    return new Date(new Date().setMinutes(new Date().getMinutes() + 120));
-};
+class RecoveryFlowHandler {
+    constructor(){
+        const file = fs.readFileSync('./config/flows/recovery.yml', 'utf8')
+        this.config = YAML.parse(file);
+    }
 
-const getActiveMethod = () => {
-    return "password";
-};
+    getRequestUrl(){
+        return this.config.flow.request_url;
+    }
 
-const getState = () => {
-    return "choose method"; //"choose_method" "sent_email" "passed_challenge"
-};
+    getExpiresAt(){
+        return new Date(new Date().setMilliseconds(new Date().getMilliseconds() + this.config.flow.expires_at));
+    }
 
-const getRecoveredIdentityId = () => {
-    return null;
-};
+    getActiveMethod(){
+        return this.config.flow.active_method;
+    }
 
-const getType = () => {
-    return "api";
-};
+    getState(){
+        return this.config.flow.state;
+    }
 
-const getUI = () => {
-    return JSON.stringify({
-        action: "/",
-        method: "post",
-        messages: [
-            {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        ],
-        nodes: {
-            attributes: {
-                type: "id"
-            },
-            group: "none",
-            type: "ui",
-            messages: {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        }
-    });
-};
+    getRecoveredIdentityId(){
+        return this.config.flow.recovered_identity_id;
+    }
+
+    getType(){
+        return this.config.flow.type;
+    }
+
+    getUI(){
+        return this.config.flow.ui;
+    }
+}
+
+const handler = new RecoveryFlowHandler();
+const getRequestUrl = handler.getRequestUrl;
+const getExpiresAt = handler.getExpiresAt;
+const getActiveMethod = handler.getActiveMethod;
+const getState = handler.getState;
+const getRecoveredIdentityId = handler.getRecoveredIdentityId;
+const getType = handler.getType;
+const getUI = handler.getUI;
 
 module.exports = {
     getRequestUrl,
