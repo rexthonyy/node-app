@@ -1,53 +1,69 @@
+const fs = require('fs');
+const YAML = require('yaml');
+
+class RegistrationFlowHandler {
+    constructor(){
+        const file = fs.readFileSync('./config/flows/verification.yml', 'utf8')
+        this.config = YAML.parse(file);
+    }
+
+    getRequestUrl(){
+        return this.config.flow.request_url;
+    }
+
+    getExpiresAt(){
+        return new Date(new Date().setMilliseconds(new Date().getMilliseconds() + this.config.flow.expires_at));
+    }
+
+    getActiveMethod(){
+        return this.config.flow.active_method;
+    }
+
+    getType(){
+        return this.config.flow.type;
+    }
+
+    getState(){
+        return this.config.flow.state;
+    }
+
+    getUI(){
+        return this.config.flow.ui;
+    }
+    
+    getInternalContext(){
+        return this.config.flow.internal_context;
+    }
+}
+
+const handler = new RegistrationFlowHandler();
+
 const getRequestUrl = () => {
-    return "/";
+    return handler.getRequestUrl();
 };
 
 const getExpiresAt = () => {
-    return new Date(new Date().setMinutes(new Date().getMinutes() + 120));
+    return handler.getExpiresAt();
 };
 
 const getActiveMethod = () => {
-    return "password";
+    return handler.getActiveMethod();
 };
 
 const getType = () => {
-    return "api";
+    return handler.getType();
 };
 
 const getState = () => {
-    return "choose method"; //"choose_method" "sent_email" "passed_challenge"
+    return handler.getState();
 };
 
 const getUI = () => {
-    return JSON.stringify({
-        action: "/",
-        method: "post",
-        messages: [
-            {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        ],
-        nodes: {
-            attributes: {
-                type: "id"
-            },
-            group: "none",
-            type: "ui",
-            messages: {
-                context: "current",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        }
-    });
+    return handler.getUI();
 };
 
 const getInternalContext = () => {
-    return "{}";
+    return handler.getInternalContext();
 };
 
 

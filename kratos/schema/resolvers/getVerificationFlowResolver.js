@@ -16,7 +16,7 @@ const getData = () => {
             verificationFlowHandler.getType(),
             verificationFlowHandler.getState(),
             verificationFlowHandler.getActiveMethod(),
-            verificationFlowHandler.getUI(),
+            JSON.stringify(verificationFlowHandler.getUI()),
             consts.NETWORK_ID
         ];
         pgKratosQueries.createVerificationFlow(values, result => {

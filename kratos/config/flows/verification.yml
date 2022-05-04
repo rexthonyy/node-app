@@ -1,0 +1,25 @@
+flow:
+  request_url: /
+  expires_at: 900000 # milliseconds
+  active_method: password
+  type: api
+  state: active
+  ui:
+    action: /
+    messages:
+    - context: context
+      id: attr
+      text: info
+      type: ui
+    method: post
+    nodes:
+      attributes:
+        type: id
+      group: none
+      type: ui
+      messages:
+        context: current
+        id: attr
+        text: info
+        type: ui
+  internal_context: {"context":"default"}
