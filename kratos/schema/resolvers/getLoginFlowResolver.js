@@ -20,10 +20,10 @@ const getData = ({refresh}) => {
             now,
             refresh,
             loginFlowHandler.getType(),
-            loginFlowHandler.getUI(),
+            JSON.stringify(loginFlowHandler.getUI()),
             consts.NETWORK_ID,
             loginFlowHandler.getRequestedAal(),
-            loginFlowHandler.getInternalContext()
+            JSON.stringify(loginFlowHandler.getInternalContext())
         ];
         pgKratosQueries.createLoginFlow(values, result => {
             if(result.err){
