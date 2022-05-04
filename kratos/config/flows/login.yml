@@ -1,6 +1,6 @@
 flow:
   request_url: /
-  expires_at: 10000 # milliseconds
+  expires_at: 900000 # milliseconds
   active_method: password
   type: api
   default_state: choose method
