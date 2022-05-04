@@ -19,19 +19,9 @@ class JSONSchemaHandler {
 }
 
 const handler = new JSONSchemaHandler();
-console.log(handler.getJSONSchemaById("customer"));
+
 const getJSONSchemaById = (id) => {
-  return {
-    "id": "/SimpleAddress",
-    "type": "object",
-    "properties": {
-      "firstName": {"type": "string"},
-      "lastName": {"type": "string"},
-      "email": {"type": "string"},
-      "password": {"type": "string"}
-    },
-    "required": ["firstName","lastName","email","password"]
-  };
+  return handler.getJSONSchemaById(id);
 };
 
 const getDefaultJSONSchema = (id) => {
