@@ -5,6 +5,11 @@ flow:
   type: api
   default_state: choose method
   requested_aal: aal1
+  messages:
+  - context: context
+    id: attr
+    text: info
+    type: ui
   ui:
     action: /
     method: post

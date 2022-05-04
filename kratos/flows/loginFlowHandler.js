@@ -5,21 +5,7 @@ class LoginFlowHandler {
     constructor(){
         const file = fs.readFileSync('./config/flows/login.yml', 'utf8')
         this.config = YAML.parse(file);
-        console.log(YAML.stringify([
-            {
-                context: "context",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            },
-            {
-                context: "context",
-                id: "attr",
-                text: "info",
-                type: "ui"
-            }
-        ]));
-        //console.log(this.config.flow.ui);
+        console.log(this.config.flow.messages);
     }
 
     getRequestUrl(){
