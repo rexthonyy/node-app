@@ -3,7 +3,9 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
 const getData = ({refresh}) => {
+    console.log("flow.");
     console.log(loginFlowHandler.getInternalContext());
+    console.log("flow");
     return new Promise((resolve, reject) => {
         if(!refresh){
             refresh = false;
