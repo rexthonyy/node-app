@@ -3,13 +3,13 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
 const getData = ({refresh}) => {
+    console.log(loginFlowHandler.getInternalContext());
     return new Promise((resolve, reject) => {
         if(!refresh){
             refresh = false;
         }
 
-        console.log(loginFlowHandler.getInternalContext());
-        
+
         let now = new Date().toUTCString();
         const values = [
             uuid(),
