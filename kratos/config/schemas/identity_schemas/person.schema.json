@@ -9,3 +9,4 @@
     },
     "required": ["firstName","lastName","email","password"]
   }
+}
