@@ -24,7 +24,7 @@ const getData = ({id}) => {
                 let expireDate = new Date(expiresAt);
                 active = Date.now() < expireDate.getTime();
             }
-            
+
             getIdentityById(identityId, identity => {
                 if(typeof identity == "string"){
                     return reject(identity);
@@ -43,24 +43,6 @@ const getData = ({id}) => {
                     type
                 });
             });
-            
-            /*resolve({
-                active: "active",
-                expiresAt: "2022-01",
-                id: id,
-                identity: "identity"+id,
-                issuedAt: "2022-02",
-                messages: [{
-                    context: "api",
-                    id: 1,
-                    text: "update",
-                    type: "container"
-                }],
-                methods: "post",
-                requestUrl: "/root",
-                state: "active",
-                type: "browser"
-            });*/
         });
     });
 }

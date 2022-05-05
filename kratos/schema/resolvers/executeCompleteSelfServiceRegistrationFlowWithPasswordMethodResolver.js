@@ -36,18 +36,18 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                 return reject(JSON.stringify(errors));
             }
 
-            pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
-                if(result.err || result.res.length == 0){
-                    console.log(result.err);
+            pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result1 => {
+                if(result1.err || result1.res.length == 0){
+                    console.log(result1.err);
                     createIdentity();
                 }else{
-                    let identityCredentials = result.res;
+                    let identityCredentials = result1.res;
                     let numIdentityCredentials = identityCredentials.length;
                     let count = -1;
     
                     identityCredentials.forEach(identityCredential => {
-                        pgKratosQueries.getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId([identityCredential.id, IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
-                            let identityCredentialIdentifier = result.res[0];
+                        pgKratosQueries.getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId([identityCredential.id, IDENTITY_CREDENTIAL_TYPE_PASSWORD], result2 => {
+                            let identityCredentialIdentifier = result2.res[0];
                             if(identityCredentialIdentifier.identifier == traits.email){
                                 return reject("Email is already registered");
                             }
@@ -80,13 +80,13 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                     "active",
                     now
                 ];
-                pgKratosQueries.createIdentity(values, result => {
-                    if(result.err){
-                        console.error(result.err);
+                pgKratosQueries.createIdentity(values, result3 => {
+                    if(result3.err){
+                        console.error(result3.err);
                         return reject("Identity could not be created");
                     }
     
-                    let identityId = result.res.id;
+                    let identityId = result3.res.id;
     
                     let config = {
                         password: traits.password
@@ -101,13 +101,13 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         now,
                         NETWORK_ID
                     ];
-                    pgKratosQueries.createIdentityCredentials(values, result => {
-                        if(result.err){
-                            console.error(result.err);
+                    pgKratosQueries.createIdentityCredentials(values, result4 => {
+                        if(result4.err){
+                            console.error(result4.err);
                             return reject("Identity credentials could not be created");
                         }
     
-                        let identityCredentialId = result.res.id;
+                        let identityCredentialId = result4.res.id;
     
                         let identifier = traits.email;
 
@@ -120,9 +120,9 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                             NETWORK_ID,
                             IDENTITY_CREDENTIAL_TYPE_PASSWORD
                         ];
-                        pgKratosQueries.createIdentityCredentialIdentifier(values, result => {
-                            if(result.err){
-                                console.error(result.err);
+                        pgKratosQueries.createIdentityCredentialIdentifier(values, result5 => {
+                            if(result5.err){
+                                console.error(result5.err);
                                 return reject("Identity credential identifier could not be created");
                             }
     
@@ -141,13 +141,13 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 sessionHandler.getRequestedAal(),
                                 JSON.stringify(sessionHandler.getAuthenticationMethods())
                             ];
-                            pgKratosQueries.createSession(values, result => {
-                                if(result.err){
-                                    console.error(result.err);
+                            pgKratosQueries.createSession(values, result6 => {
+                                if(result6.err){
+                                    console.error(result6.err);
                                     return reject("Failed to create session");
                                 }
     
-                                let session = result.res;
+                                let session = result6.res;
 
                                 let active = session.active;
                                 let authenticatedAt = session.authenticated_at;
@@ -180,54 +180,6 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                 });
             }
         });
-        /*resolve({
-            identity: { 
-                id: "202232",
-                recoveryAddresses: [{ 
-                    id: "202232",
-                    value: "202232",
-                    via: "api"
-                 }],
-                schemaId: "202232",
-                schemaUrl: "/root",
-                traits: "202232",
-                verifiableAddresses: [{  
-                    id: "202232",
-                    status: "pending",
-                    value: "202232",
-                    verified: true,
-                    verifiedAt: "202232",
-                    via: "api",
-                }]
-            },
-            session: {
-                active: true,
-                authenticatedAt: "2022-01-32",
-                expiresAt: "2022-01-32",
-                id: "202232",
-                identity: { 
-                    id: "202232",
-                    recoveryAddresses: [{ 
-                        id: "202232",
-                        value: "202232",
-                        via: "api"
-                     }],
-                    schemaId: "202232",
-                    schemaUrl: "/root",
-                    traits: "202232",
-                    verifiableAddresses: [{  
-                        id: "202232",
-                        status: "pending",
-                        value: "202232",
-                        verified: true,
-                        verifiedAt: "202232",
-                        via: "api",
-                    }]
-                },
-                issuedAt: "202232",
-            },
-            sessionToken: "2022-01-3234242"
-        });*/
     });
 }
 

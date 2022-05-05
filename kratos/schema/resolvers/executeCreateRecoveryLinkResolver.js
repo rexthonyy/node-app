@@ -56,13 +56,12 @@ const getData = ({createRecoveryLinkInput}) => {
                 NETWORK_ID
             ];
 
-            pgKratosQueries.createRecoveryFlow(values, result => {
-                if(result.err){
+            pgKratosQueries.createRecoveryFlow(values, result1 => {
+                if(result1.err){
                     return reject("Failed to create recovery flow");
                 }
     
-                let selfServiceRecoveryFlowId = result.res.id;
-
+                let selfServiceRecoveryFlowId = result1.res.id;
 
                 values = [
                     uuid(),
@@ -78,8 +77,8 @@ const getData = ({createRecoveryLinkInput}) => {
                     NETWORK_ID
                 ];
 
-                pgKratosQueries.createIdentityRecoveryToken(values, result => {
-                    if(result.err){
+                pgKratosQueries.createIdentityRecoveryToken(values, result2 => {
+                    if(result2.err){
                         return reject("Failed to create identity recovery token");
                     }
 

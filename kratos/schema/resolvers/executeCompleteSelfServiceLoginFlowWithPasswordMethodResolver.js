@@ -6,7 +6,6 @@ const sessionHandler = require('../../identities/sessionHandler');
 
 const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) => {
     return new Promise((resolve, reject) => {
-        let csrfToken = completeSelfServiceLoginFlowWithPasswordMethodInput.csrfToken;
         let identifier = completeSelfServiceLoginFlowWithPasswordMethodInput.identifier;
         let password  = completeSelfServiceLoginFlowWithPasswordMethodInput.password;
 
@@ -25,18 +24,18 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                 }
             }
 
-            pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
-                if(result.err || result.res.length == 0){
+            pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result1 => {
+                if(result1.err || result1.res.length == 0){
                     return reject("Identity credentials not found");
                 }
-                let identityCredentials = result.res;
+                let identityCredentials = result1.res;
                 let numIdentityCredentials = identityCredentials.length;
                 let count = -1;
                 let loggedInIdentityCredential;
 
                 identityCredentials.forEach(identityCredential => {
-                    pgKratosQueries.getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId([identityCredential.id, IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
-                        let identityCredentialIdentifier = result.res[0];
+                    pgKratosQueries.getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId([identityCredential.id, IDENTITY_CREDENTIAL_TYPE_PASSWORD], result2 => {
+                        let identityCredentialIdentifier = result2.res[0];
                         if(identityCredentialIdentifier.identifier == identifier){
                             if(identityCredential.config.password == password){
                                 loggedInIdentityCredential = identityCredential;
@@ -72,16 +71,16 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                             sessionHandler.getRequestedAal(),
                             JSON.stringify(sessionHandler.getAuthenticationMethods())
                         ];
-                        pgKratosQueries.createSession(values, result => {
-                            if(result.err){
+                        pgKratosQueries.createSession(values, result3 => {
+                            if(result3.err){
                                 return reject("Failed to create session");
                             }
 
-                            let session = result.res;
+                            let session = result3.res;
 
                             let active = session.active;
                             let authenticatedAt = session.authenticated_at;
-                            let expiresAt = session.expires_at;
+                            expiresAt = session.expires_at;
                             let id = session.id;
                             let identityId = session.identity_id;
                             let issuedAt = session.issued_at;

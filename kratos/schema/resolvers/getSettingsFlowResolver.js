@@ -36,12 +36,12 @@ const getData = ({sessionToken}) => {
                 consts.NETWORK_ID,
                 JSON.stringify(settingsFlowHandler.getInternalContext())
             ];
-            pgKratosQueries.createSettingsFlow(values, result => {
-                if(result.err || result.res.length == 0){
+            pgKratosQueries.createSettingsFlow(values, result1 => {
+                if(result1.err || result1.res.length == 0){
                     return reject("Failed to create settings flow");
                 }
                 
-                let selfServiceSettingsFlow = result.res;
+                let selfServiceSettingsFlow = result1.res;
     
                 getIdentityById(selfServiceSettingsFlow.identity_id, identity => {
                     if(typeof identity == "string"){
@@ -71,23 +71,6 @@ const getData = ({sessionToken}) => {
                     });
                 });
             });
-            /*resolve({
-                active: "active",
-                expiresAt: "2022-01",
-                id: "id-1",
-                identity: "identity",
-                issuedAt: "2022-02",
-                messages: [{
-                    context: "api",
-                    id: 1,
-                    text: "update",
-                    type: "container"
-                }],
-                methods: "post",
-                requestUrl: "/root",
-                state: "active",
-                type: "browser"
-            });*/
         });
     });
 }

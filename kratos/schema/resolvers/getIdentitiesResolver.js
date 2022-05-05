@@ -1,4 +1,5 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const getIdentityById = require('../resolverUtils/getIdentityById');
 
 const getData = ({page, perPage}) => {
     if(page == null || page == 0) page = null;
@@ -16,48 +17,11 @@ const getData = ({page, perPage}) => {
             let count = -1;
 
             identities.forEach(identity => {
-                let identityType = {
-                    id: identity.id,
-                    schemaId: identity.schema_id,
-                    schemaUrl: "",
-                    traits: JSON.stringify(identity.traits),
-                    recoveryAddresses: [],
-                    verifiableAddresses: []
-                };
-
-                pgKratosQueries.getRecoveryAddressesByIdentityId([identity.id], result => {
-                    if(result.err){
-                        result.res = [];
-                    }
-                    let recoveryAddresses = result.res;
-                    recoveryAddresses.forEach(recoveryAddress => {
-                        identityType.recoveryAddresses.push({
-                            id: recoveryAddress.id,
-                            value: recoveryAddress.value,
-                            via: recoveryAddress.via
-                        });
-                    });
-
-                    pgKratosQueries.getVerifiableAddressesByIdentityId([identity.id], result => {
-                        if(result.err){
-                            result.res = [];
-                        }
-                        let verifiableAddresses = result.res;
-                        verifiableAddresses.forEach(verifiableAddress => {
-                            identityType.verifiableAddresses.push({
-                                id: verifiableAddress.id,
-                                status: verifiableAddress.status,
-                                value: verifiableAddress.value,
-                                verified: verifiableAddress.verified,
-                                verifiedAt: verifiableAddress.verified_at,
-                                via: verifiableAddress.via
-                            });
-                        });
-
+                getIdentityById(identity.id, identityType => {
+                    if(typeof identity != "string"){
                         identitiesType.push(identityType);
-
-                        checkComplete();
-                    });
+                    }
+                    checkComplete();
                 });
             });
 
@@ -70,33 +34,6 @@ const getData = ({page, perPage}) => {
                 }
             }
         });
-        /*
-        resolve([
-            {
-                id: "id-1",
-                recoveryAddresses: [
-                    {
-                        id: "id-1",
-                        value: "/home",
-                        via: "api"
-                    }
-                ],
-                schemaId: "schema123",
-                schemaUrl: "/root",
-                traits: "trait",
-                verifiableAddresses: [
-                    {
-                        id: "id-1",
-                        status: "active",
-                        value: "/home",
-                        verified: true,
-                        verifiedAt: "2022",
-                        via: "api"
-                    }
-                ]
-            }    
-        ]);
-        */
     });
 }
 

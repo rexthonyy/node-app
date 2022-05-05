@@ -303,7 +303,7 @@ const getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId = (values, r
             response({
                 err: err,
                 res: null,
-                code: 216
+                code: 217
             });
         }else{
             response({
@@ -320,7 +320,7 @@ const createLoginFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 217
+                code: 218
             });
         } else {
             response({
@@ -337,7 +337,7 @@ const createRecoveryFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                code: 218
+                code: 219
             });
         } else {
             response({
@@ -354,7 +354,7 @@ const createRegistrationFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 220
             });
         } else {
             response({
@@ -371,7 +371,7 @@ const createSettingsFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 221
             });
         } else {
             response({
@@ -388,7 +388,7 @@ const createVerificationFlow = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 222
             });
         } else {
             response({
@@ -405,7 +405,7 @@ const createSession = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 223
             });
         } else {
             response({
@@ -422,7 +422,7 @@ const createIdentity = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 224
             });
         } else {
             response({
@@ -439,7 +439,7 @@ const createIdentityCredentials = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 225
             });
         } else {
             response({
@@ -456,7 +456,7 @@ const createIdentityCredentialIdentifier = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 226
             });
         } else {
             response({
@@ -473,7 +473,7 @@ const createIdentityRecoveryAddress = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 227
             });
         } else {
             response({
@@ -490,7 +490,7 @@ const createIdentityRecoveryToken = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                tes: 184
+                tes: 228
             });
         } else {
             response({
@@ -509,7 +509,7 @@ const updateIdentity = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: 23
+                test: 229
             });
         } else {
             response({
@@ -526,7 +526,7 @@ const updateIdentityCredentials = (values, response) => {
             response({
                 err: err.stack,
                 res: null,
-                test: 23
+                test: 230
             });
         } else {
             response({

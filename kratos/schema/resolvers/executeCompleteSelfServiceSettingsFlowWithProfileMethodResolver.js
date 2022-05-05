@@ -37,7 +37,7 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                 if(typeof identity == "string"){
                     return reject(identity);
                 }
-                
+
                 let schemaId = identity.schemaId;
                 let identitySchema = JSON.parse(schemaHandler.getJSONSchemaById(schemaId));
                 let errors = v.validate(traits,identitySchema).errors
@@ -52,21 +52,21 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                     traits,
                     now
                 ];
-                pgKratosQueries.updateIdentity(values, result => {
-                    if(result.err || result.res.length == 0){
+                pgKratosQueries.updateIdentity(values, result1 => {
+                    if(result1.err || result1.res.length == 0){
                         return reject("Identity could not be updated");
                     }
 
-                    getIdentityById(identityId, identity => {
-                        if(typeof identity == "string"){
-                            return reject(identity);
+                    getIdentityById(identityId, identity_ => {
+                        if(typeof identity_ == "string"){
+                            return reject(identity_);
                         }
                         
                         const settingsFlow = {
                             active,
                             expiresAt,
                             id,
-                            identity,
+                            identity_,
                             issuedAt,
                             messages,
                             methods,
@@ -81,24 +81,6 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                 });
             });
         });
-
-        /*resolve({
-            active: "active",
-            expiresAt: "2022-01",
-            id: "id-1",
-            identity: "identity",
-            issuedAt: "2022-02",
-            messages: [{
-                context: "api",
-                id: 1,
-                text: "update",
-                type: "container"
-            }],
-            methods: "post",
-            requestUrl: "/root",
-            state: "active",
-            type: "browser"
-        });*/
     });
 }
 

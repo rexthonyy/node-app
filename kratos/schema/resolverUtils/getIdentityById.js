@@ -18,11 +18,11 @@ let getIdentityById = (identityId, cb) => {
             verifiableAddresses: []
         };
 
-        pgKratosQueries.getRecoveryAddressesByIdentityId([identity.id], result => {
-            if(result.err){
-                result.res = [];
+        pgKratosQueries.getRecoveryAddressesByIdentityId([identity.id], result2 => {
+            if(result2.err){
+                result2.res = [];
             }
-            let recoveryAddresses = result.res;
+            let recoveryAddresses = result2.res;
             recoveryAddresses.forEach(recoveryAddress => {
                 identityType.recoveryAddresses.push({
                     id: recoveryAddress.id,
@@ -31,11 +31,11 @@ let getIdentityById = (identityId, cb) => {
                 });
             });
 
-            pgKratosQueries.getVerifiableAddressesByIdentityId([identity.id], result => {
-                if(result.err){
-                    result.res = [];
+            pgKratosQueries.getVerifiableAddressesByIdentityId([identity.id], result1 => {
+                if(result1.err){
+                    result1.res = [];
                 }
-                let verifiableAddresses = result.res;
+                let verifiableAddresses = result1.res;
                 verifiableAddresses.forEach(verifiableAddress => {
                     identityType.verifiableAddresses.push({
                         id: verifiableAddress.id,
