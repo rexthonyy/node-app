@@ -26,18 +26,18 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
             let state = selfServiceSettingsFlow.state;
             let type = selfServiceSettingsFlow.type;
 
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                if(Date.now() > expireDate.getTime()){
+                    return reject("Settings Flow ID expired");
+                }
+            }
+
             getIdentityById(identityId, identity => {
                 if(typeof identity == "string"){
                     return reject(identity);
                 }
-
-                if(expiresAt != null){
-                    let expireDate = new Date(expiresAt);
-                    if(Date.now() > expireDate.getTime()){
-                        return reject("Settings Flow ID expired");
-                    }
-                }
-
+                
                 let schemaId = identity.schemaId;
                 let identitySchema = JSON.parse(schemaHandler.getJSONSchemaById(schemaId));
                 let errors = v.validate(traits,identitySchema).errors
