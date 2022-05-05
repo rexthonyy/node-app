@@ -19,6 +19,7 @@ const getData = ({createRecoveryLinkInput}) => {
             }
         }
 
+        let token = identityRecoveryTokenHandler.generateToken();
         let recoveryLink = `/recovery/${token}`;
 
         let now = new Date().toUTCString();
@@ -62,9 +63,10 @@ const getData = ({createRecoveryLinkInput}) => {
     
                 let selfServiceRecoveryFlowId = result.res.id;
 
+
                 values = [
                     uuid(),
-                    identityRecoveryTokenHandler.generateToken(),
+                    token,
                     false,
                     null,
                     identityRecoveryAddressId,
