@@ -11,3 +11,7 @@ identity_credential_type_ids:
     id: 567a0730-7f48-4dd7-a13d-df87a51c245f
   webauthn:
     id: 6b213fa0-e6ad-46cb-8878-b088d2ce2e3c
+session:
+  expires_at: 900000
+  requested_aal: aal1
+  authentication_method: {"method":"password"}

@@ -29,9 +29,7 @@ const getData = ({authorization, cookie}) => {
 
             if(expiresAt != null){
                 let expireDate = new Date(expiresAt);
-                if(Date.now() > expireDate.getTime()){
-                    active = false;
-                }
+                active = Date.now() < expireDate.getTime();
             }
 
             getIdentityById(session.identity_id, identity => {

@@ -2,13 +2,13 @@ const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getIdentityById = require('../resolverUtils/getIdentityById');
 const {NETWORK_ID,IDENTITY_CREDENTIAL_TYPE_PASSWORD} = require('../../libs/consts');
-const {getSessionExpirationTime, generateToken} = require('../../libs/util');
+const sessionHandler = require('../../identities/sessionHandler');
+
 const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) => {
     return new Promise((resolve, reject) => {
         let csrfToken = completeSelfServiceLoginFlowWithPasswordMethodInput.csrfToken;
         let identifier = completeSelfServiceLoginFlowWithPasswordMethodInput.identifier;
         let password  = completeSelfServiceLoginFlowWithPasswordMethodInput.password;
-
 
         pgKratosQueries.getLoginFlowById([flow], result => {
             if(result.err || result.res.length == 0){
@@ -57,21 +57,20 @@ const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) =>
                         }
 
                         let now = new Date().toUTCString();
-                        let token = generateToken(30);
                         let values = [
                             uuid(),
                             now,
-                            getSessionExpirationTime().toUTCString(),
+                            sessionHandler.getExpiresAt().toUTCString(),
                             now,
                             loggedInIdentityCredential.identity_id,
                             now,
                             now,
-                            token,
+                            sessionHandler.generateToken(),
                             true,
                             NETWORK_ID,
-                            token,
-                            'aal1',
-                            '{"method":"password"}'
+                            sessionHandler.generateLogoutToken(),
+                            sessionHandler.getRequestedAal(),
+                            JSON.stringify(sessionHandler.getAuthenticationMethods())
                         ];
                         pgKratosQueries.createSession(values, result => {
                             if(result.err){

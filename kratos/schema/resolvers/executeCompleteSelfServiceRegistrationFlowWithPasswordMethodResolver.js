@@ -4,7 +4,8 @@ const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getIdentityById = require('../resolverUtils/getIdentityById');
 const schemaHandler = require('../../identities/schemaHandler');
-const {getSessionExpirationTime, generateToken, isEmailValid} = require('../../libs/util');
+const sessionHandler = require('../../identities/sessionHandler');
+const {isEmailValid} = require('../../libs/util');
 const { NETWORK_ID, IDENTITY_CREDENTIAL_TYPE_PASSWORD } = require('../../libs/consts');
 const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
     return new Promise((resolve, reject) => {
@@ -123,21 +124,20 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 return reject("Identity credential identifier could not be created");
                             }
     
-                            let token = generateToken(30);
                             let values = [
                                 uuid(),
                                 now,
-                                getSessionExpirationTime().toUTCString(),
+                                sessionHandler.getExpiresAt().toUTCString(),
                                 now,
                                 identityId,
                                 now,
                                 now,
-                                token,
+                                sessionHandler.generateToken(),
                                 true,
                                 NETWORK_ID,
-                                token,
-                                'aal1',
-                                '{"method":"password"}'
+                                sessionHandler.generateLogoutToken(),
+                                sessionHandler.getRequestedAal(),
+                                JSON.stringify(sessionHandler.getAuthenticationMethods())
                             ];
                             pgKratosQueries.createSession(values, result => {
                                 if(result.err){

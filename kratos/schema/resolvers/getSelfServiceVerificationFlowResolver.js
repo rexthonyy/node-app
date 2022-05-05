@@ -18,6 +18,11 @@ const getData = ({id}) => {
             let state = selfServiceVerificationFlow.state;
             let type = selfServiceVerificationFlow.type;
 
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                active = Date.now() < expireDate.getTime();
+            }
+            
             resolve({
                 active,
                 expiresAt,

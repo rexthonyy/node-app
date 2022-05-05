@@ -18,6 +18,11 @@ const getData = ({id}) => {
             let methods = selfServiceRecoveryFlow.ui.method;
             let type = selfServiceRecoveryFlow.type;
 
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                active = Date.now() < expireDate.getTime();
+            }
+
             resolve({
                 active,
                 expiresAt,

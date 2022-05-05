@@ -1,9 +1,9 @@
-const pgKratosQueries = require('../../postgres/kratos-queries');
+const versionHandler = require('../../identities/versionHandler');
 
 const getData = () => {
     return new Promise((resolve, reject) => {
         resolve({
-            version: "1.0"
+            version: versionHandler.getVersion()
         });
     });
 }

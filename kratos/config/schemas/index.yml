@@ -9,6 +9,6 @@ identity:
   schemas:
     # When creating an identity that uses this schema, `traits_schema_id: customer` would be set for that identity.
     - id: customer
-      url: /config/schemas/identity_schemas/customer.schema.json
+      url: ./config/schemas/identity_schemas/customer.schema.json
     - id: person
-      url: /config/schemas/identity_schemas/person.schema.json
+      url: ./config/schemas/identity_schemas/person.schema.json

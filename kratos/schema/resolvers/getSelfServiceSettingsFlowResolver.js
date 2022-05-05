@@ -20,6 +20,11 @@ const getData = ({id}) => {
             let state = selfServiceSettingsFlow.state;
             let type = selfServiceSettingsFlow.type;
 
+            if(expiresAt != null){
+                let expireDate = new Date(expiresAt);
+                active = Date.now() < expireDate.getTime();
+            }
+            
             getIdentityById(identityId, identity => {
                 if(typeof identity == "string"){
                     return reject(identity);

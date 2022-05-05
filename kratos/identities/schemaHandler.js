@@ -13,7 +13,7 @@ class JSONSchemaHandler {
       for(let i = 0, j = schemas.length; i < j; i++){
         let schema = schemas[i];
         if(schema.id == id){
-          selectedSchema = fs.readFileSync(`.${schema.url}`, "utf8");
+          selectedSchema = fs.readFileSync(`${schema.url}`, "utf8");
         }
       }
       return selectedSchema;
@@ -26,7 +26,8 @@ class JSONSchemaHandler {
       for(let i = 0, j = schemas.length; i < j; i++){
         let schema = schemas[i];
         if(schema.id == default_schema_id){
-          selectedSchema = fs.readFileSync(`.${schema.url}`, "utf8");
+          selectedSchema = fs.readFileSync(`${schema.url}`, "utf8");
+          break;
         }
       }
       return selectedSchema;
