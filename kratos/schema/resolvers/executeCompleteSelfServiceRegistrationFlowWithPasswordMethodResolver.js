@@ -32,8 +32,9 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
 
             let traitsJSON = JSON.stringify(traits);
             let identitySchema = schemaHandler.getDefaultJSONSchema();
-            console.log(identitySchema);
-            console.log(traitsJSON);
+            console.log(typeof identitySchema);
+            console.log(typeof traitsJSON);
+            return;
             let errors = v.validate(traitsJSON,identitySchema).errors;
             if(errors.length > 0){
                 return reject(JSON.stringify(errors));
