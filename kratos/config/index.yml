@@ -15,3 +15,5 @@ session:
   expires_at: 900000
   requested_aal: aal1
   authentication_method: {"method":"password"}
+identity_recovery_address:
+  via: api

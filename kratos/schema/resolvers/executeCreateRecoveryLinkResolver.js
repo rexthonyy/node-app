@@ -1,7 +1,8 @@
 const {uuid} = require('uuidv4');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const recoveryFlowHandler = require('../../flows/recoveryFlowHandler');
-const {getSessionExpirationTime, generateToken} = require('../../libs/util');
+const identityRecoveryAddressHandler = require('../../identities/identityRecoveryAddressHandler');
+const identityRecoveryTokenHandler = require('../../identities/identityRecoveryTokenHandler');
 const { NETWORK_ID } = require('../../libs/consts');
 
 const getData = ({createRecoveryLinkInput}) => {
@@ -18,14 +19,12 @@ const getData = ({createRecoveryLinkInput}) => {
             }
         }
 
-        let token = generateToken(32);
         let recoveryLink = `/recovery/${token}`;
-
 
         let now = new Date().toUTCString();
         let values = [
             uuid(),
-            "api",
+            identityRecoveryAddressHandler.getVia(),
             recoveryLink,
             identityId,
             now,
@@ -65,7 +64,7 @@ const getData = ({createRecoveryLinkInput}) => {
 
                 values = [
                     uuid(),
-                    token,
+                    identityRecoveryTokenHandler.generateToken(),
                     false,
                     null,
                     identityRecoveryAddressId,
