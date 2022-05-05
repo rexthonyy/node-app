@@ -11,7 +11,11 @@ const getData = ({createIdentityInput}) => {
         let schemaId = createIdentityInput.schemaId;
         let traits = JSON.parse(createIdentityInput.traits);
 
-        let identitySchema = JSON.parse(schemaHandler.getJSONSchemaById(schemaId));
+        let schema = schemaHandler.getJSONSchemaById(schemaId);
+        if(!schema){
+            return reject("Schema not found");
+        }
+        let identitySchema = JSON.parse(schema);
         let errors = v.validate(traits,identitySchema).errors
         if(errors.length > 0){
             return reject(JSON.stringify(errors));
