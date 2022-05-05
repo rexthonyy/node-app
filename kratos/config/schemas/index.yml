@@ -3,7 +3,7 @@ identity:
   # Admin API, or a user signs up using a selfservice flow, this schema will be used.
   #
   # This is a required configuration field!
-  default_schema_id: person
+  default_schema_id: customer
 
   # Optionally define additional schemas here:
   schemas:
