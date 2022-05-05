@@ -42,6 +42,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
             console.log(errors);
             pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
                 if(result.err || result.res.length == 0){
+                    console.log(result.err);
                     createIdentity();
                 }else{
                     let identityCredentials = result.res;
@@ -64,6 +65,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                     function checkComplete(){
                         count++;
                         if(count == numIdentityCredentials){
+                            console.log(numIdentityCredentials);
                             createIdentity();                           
                         }
                     }
@@ -94,6 +96,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         password: traits.password
                     };
     
+                    console.log(config);
                     values = [
                         uuid(),
                         JSON.stringify(config),
@@ -112,7 +115,8 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         let identityCredentialId = result.res.id;
     
                         let identifier = traits.email;
-    
+                        console.log(identifier);
+
                         values = [
                             uuid(),
                             identifier,
@@ -151,6 +155,8 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
     
                                 let session = result.res;
     
+                                console.log(session);
+
                                 let active = session.active;
                                 let authenticatedAt = session.authenticated_at;
                                 expiresAt = session.expires_at;
