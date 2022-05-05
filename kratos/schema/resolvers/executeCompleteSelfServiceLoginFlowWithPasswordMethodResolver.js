@@ -105,7 +105,7 @@ function createSession(resolve, reject, identityCredential){
 
         let active = session.active;
         let authenticatedAt = session.authenticated_at;
-        expiresAt = session.expires_at;
+        let expiresAt = session.expires_at;
         let id = session.id;
         let identityId = session.identity_id;
         let issuedAt = session.issued_at;
