@@ -19,6 +19,19 @@ class JSONSchemaHandler {
       return selectedSchema;
     }
 
+    getJSONSchemaUrlById(id){
+      let schemaUrl = "";
+      let schemas = this.config.identity.schemas;
+      for(let i = 0, j = schemas.length; i < j; i++){
+        let schema = schemas[i];
+        if(schema.id == id){
+          schemaUrl = schema.url;
+          break;
+        }
+      }
+      return schemaUrl;
+    }
+
     getDefaultJSONSchema(){
       let default_schema_id = this.getDefaultJSONSchemaId();
       let selectedSchema = null;
@@ -44,6 +57,10 @@ const getJSONSchemaById = (id) => {
   return handler.getJSONSchemaById(id);
 };
 
+const getJSONSchemaUrlById = (id) => {
+  return handler.getJSONSchemaUrlById(id);
+};
+
 const getDefaultJSONSchema = () => {
   return handler.getDefaultJSONSchema();
 };
@@ -54,6 +71,7 @@ const getDefaultJSONSchemaId = () => {
 
 module.exports = {
     getJSONSchemaById,
+    getJSONSchemaUrlById,
     getDefaultJSONSchema,
     getDefaultJSONSchemaId
 }

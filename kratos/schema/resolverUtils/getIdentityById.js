@@ -1,4 +1,5 @@
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const schemaHandler = require('../../identities/schemaHandler');
 
 let getIdentityById = (identityId, cb) => {
     pgKratosQueries.getIdentityById([identityId], result => {
@@ -11,7 +12,7 @@ let getIdentityById = (identityId, cb) => {
         let identityType = {
             id: identity.id,
             schemaId: identity.schema_id,
-            schemaUrl: "",
+            schemaUrl: schemaHandler.getJSONSchemaUrlById(identity.schema_id),
             traits: JSON.stringify(identity.traits),
             recoveryAddresses: [],
             verifiableAddresses: []
