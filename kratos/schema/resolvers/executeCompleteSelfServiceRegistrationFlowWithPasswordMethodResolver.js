@@ -30,17 +30,12 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                 }
             }
 
-            //let traitsJSON = JSON.stringify(traits);
-            let identitySchema = JSON.parse(schemaHandler.getDefaultJSONSchema());
-            console.log(typeof identitySchema);
-            console.log(typeof traits);
-            
+            let identitySchema = JSON.parse(schemaHandler.getDefaultJSONSchema());            
             let errors = v.validate(traits,identitySchema).errors;
             if(errors.length > 0){
                 return reject(JSON.stringify(errors));
             }
 
-            console.log(errors);
             pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
                 if(result.err || result.res.length == 0){
                     console.log(result.err);
@@ -97,7 +92,6 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         password: traits.password
                     };
     
-                    console.log(config);
                     values = [
                         uuid(),
                         JSON.stringify(config),
@@ -116,7 +110,6 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                         let identityCredentialId = result.res.id;
     
                         let identifier = traits.email;
-                        console.log(identifier);
 
                         values = [
                             uuid(),
@@ -155,8 +148,6 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 }
     
                                 let session = result.res;
-    
-                                console.log(session);
 
                                 let active = session.active;
                                 let authenticatedAt = session.authenticated_at;

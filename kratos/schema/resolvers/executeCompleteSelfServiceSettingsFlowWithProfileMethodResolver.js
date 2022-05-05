@@ -39,7 +39,7 @@ const getData = ({flow, selfServiceSettingsMethodsProfileInput}) => {
                 }
 
                 let schemaId = identity.schemaId;
-                let identitySchema = schemaHandler.getJSONSchemaById(schemaId);
+                let identitySchema = JSON.parse(schemaHandler.getJSONSchemaById(schemaId));
                 let errors = v.validate(traits,identitySchema).errors
                 if(errors.length > 0){
                     return reject(JSON.stringify(errors));

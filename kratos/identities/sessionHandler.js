@@ -1,5 +1,6 @@
 const fs = require('fs');
 const YAML = require('yaml');
+const {uuid} = require('uuidv4');
 
 class SessionHandler {
     constructor(){
