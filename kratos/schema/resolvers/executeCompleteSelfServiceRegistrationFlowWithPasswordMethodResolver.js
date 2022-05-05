@@ -34,11 +34,12 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
             let identitySchema = schemaHandler.getDefaultJSONSchema();
             console.log(identitySchema);
             console.log(traitsJSON);
-            let errors = v.validate(traitsJSON,identitySchema).errors
+            let errors = v.validate(traitsJSON,identitySchema).errors;
             if(errors.length > 0){
                 return reject(JSON.stringify(errors));
             }
 
+            console.log(errors);
             pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result => {
                 if(result.err || result.res.length == 0){
                     createIdentity();
@@ -127,7 +128,7 @@ const getData = ({flow, selfServiceRegistrationMethodsPasswordInput}) => {
                                 return reject("Identity credential identifier could not be created");
                             }
     
-                            let values = [
+                            values = [
                                 uuid(),
                                 now,
                                 sessionHandler.getExpiresAt().toUTCString(),
