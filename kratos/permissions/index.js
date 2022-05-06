@@ -2,7 +2,7 @@ const { shield, deny } = require('graphql-shield');
 
 const permissions = shield({
   Query: {
-    ping: deny
+    ping: allow
   }
 });
 module.exports = {
