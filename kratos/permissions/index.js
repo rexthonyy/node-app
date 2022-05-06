@@ -1,4 +1,4 @@
-const { shield, deny } = require('graphql-shield');
+const { shield, allow } = require('graphql-shield');
 
 const permissions = shield({
   Query: {
