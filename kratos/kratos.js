@@ -7,11 +7,15 @@ require('./postgres/initialize_dbs').init()
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
   const { graphqlHTTP } = require('express-graphql');
+  const { applyMiddleware } = require('graphql-middleware');
   const { createGraphQLSchema } = require("openapi-to-graphql");
   const oas1 = require("./api.openapi.json");
   const oas2 = require("./openapi.json");
+  const { permissions } = require('./permissions');
   const { schema } = await createGraphQLSchema([oas1, oas2]);
   const schema1 = require('./schema/index');
+
+  let permission_schema = applyMiddleware(schema1, permissions)
 
   const app = express();
 
@@ -28,7 +32,7 @@ require('./postgres/initialize_dbs').init()
           schema: schema
         },
         {
-          schema: schema1
+          schema: permission_schema
         }
       ]
       }),
@@ -48,7 +52,7 @@ require('./postgres/initialize_dbs').init()
           schema: schema
         },
         {
-          schema: schema1
+          schema: permission_schema
         }
       ]
       }),
