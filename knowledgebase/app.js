@@ -2,6 +2,7 @@ require("dotenv").config();
 require('./postgres/initialize_dbs').init()
 .then(() => {
   const pg = require("pg");
+  const cors = require("cors");
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
   const { ApolloServer } = require("apollo-server");
@@ -13,7 +14,7 @@ require('./postgres/initialize_dbs').init()
   const app = express();
 
   app.use(cors());
-  
+
   const pgPool = new pg.Pool({
     connectionString: process.env.DATABASE_URL
   });
