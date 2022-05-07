@@ -54,7 +54,7 @@ require('./postgres/initialize_dbs').init()
           schema: schema
         },
         {
-          schema: permission_schema
+          schema: schema1
         }
       ]
       }),
