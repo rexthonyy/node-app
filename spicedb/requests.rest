@@ -1,0 +1,37 @@
+POST http://88.208.199.175:50051/v1/relationships/read
+Content-Type: application/json
+
+*
+
+### 
+POST http://88.208.199.175:50051/v1/permissions/check
+Content-Type: application/json
+
+{
+  "consistency": {
+    "minimizeLatency": true,
+    "atLeastAsFresh": {
+      "token": "string"
+    },
+    "atExactSnapshot": {
+      "token": "string"
+    },
+    "fullyConsistent": true
+  },
+  "resource": {
+    "objectType": "string",
+    "objectId": "string"
+  },
+  "permission": "string",
+  "subject": {
+    "object": {
+      "objectType": "string",
+      "objectId": "string"
+    },
+    "optionalRelation": "string"
+  }
+}
+
+### 
+GET http://88.208.199.175:1400/graphql
+Content-Type: application/json

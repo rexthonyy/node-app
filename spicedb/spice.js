@@ -7,7 +7,10 @@ require('./postgres/initialize_dbs').init()
   const { ApolloServer } = require("apollo-server");
   const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
+  const { createGraphQLSchema } = require("openapi-to-graphql");
   const { graphqlUploadExpress } = require('graphql-upload');
+  const oas = require("./openapi.json");
+  const { schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
 
   const app = express();
@@ -20,14 +23,29 @@ require('./postgres/initialize_dbs').init()
   app.use(express.json());
   
   async function main() {
-    const { schema, plugin } = await makeSchemaAndPlugin(
-      pgPool,
-      'public', // PostgreSQL schema to use
-      {
-        // PostGraphile options, see:
-        // https://www.graphile.org/postgraphile/usage-library/
-      }
-    );
+    // const { schema, plugin } = await makeSchemaAndPlugin(
+    //   pgPool,
+    //   'public', // PostgreSQL schema to use
+    //   {
+    //     // PostGraphile options, see:
+    //     // https://www.graphile.org/postgraphile/usage-library/
+    //   }
+    // );
+
+    // const server = new ApolloServer({
+    //   schema: stitchSchemas({
+    //   subschemas: [
+    //     {
+    //       schema: schema
+    //     },
+    //     {
+    //       schema: schema1
+    //     }
+    //   ]
+    //   }),
+    //   plugins: [plugin],
+    //   uploads: false
+    // });
 
     const server = new ApolloServer({
       schema: stitchSchemas({
@@ -36,15 +54,14 @@ require('./postgres/initialize_dbs').init()
           schema: schema
         },
         {
-          schema: schema1
+          schema: permission_schema
         }
       ]
       }),
-      plugins: [plugin],
       uploads: false
     });
   
-    const { url } = await server.listen({port: PORT1});
+    const { url } = await server.listen({port: process.env.PORT1});
     console.log(`🚀 Server ready at ${url}`);
 
 
