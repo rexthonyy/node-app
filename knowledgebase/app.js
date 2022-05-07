@@ -12,6 +12,8 @@ require('./postgres/initialize_dbs').init()
 
   const app = express();
 
+  app.use(cors());
+  
   const pgPool = new pg.Pool({
     connectionString: process.env.DATABASE_URL
   });
