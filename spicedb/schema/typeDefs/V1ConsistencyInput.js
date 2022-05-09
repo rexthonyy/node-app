@@ -1,12 +1,12 @@
 const {
     GraphQLString,
     GraphQLNonNull,
-    GraphQLObjectInputType,
+    GraphQLInputObjectType,
 } = require("graphql");
 
 const V1ZedTokenInput = require("./V1ZedTokenInput");
 
-module.exports = new GraphQLObjectInputType({
+module.exports = new GraphQLInputObjectType ({
     name: "V1ConsistencyInput_",
     description: "Consistency will define how a request is handled by the backend. By defining a consistency requirement, and a token at which those requirements should be applied, where applicable.",
     fields: () => ({
