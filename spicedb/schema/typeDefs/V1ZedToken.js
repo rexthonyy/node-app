@@ -1,6 +1,5 @@
 const {
     GraphQLString,
-    GraphQLNonNull,
     GraphQLObjectType,
 } = require("graphql");
 
