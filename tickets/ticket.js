@@ -29,17 +29,23 @@ require('./postgres/initialize_dbs').init()
       }
     );
 
+    // const server = new ApolloServer({
+    //   schema: stitchSchemas({
+    //   subschemas: [
+    //     {
+    //       schema: schema
+    //     },
+    //     {
+    //       schema: schema1
+    //     }
+    //   ]
+    //   }),
+    //   plugins: [plugin],
+    //   uploads: false
+    // });
+
     const server = new ApolloServer({
-      schema: stitchSchemas({
-      subschemas: [
-        {
-          schema: schema
-        },
-        {
-          schema: schema1
-        }
-      ]
-      }),
+      schema: schema1,
       plugins: [plugin],
       uploads: false
     });
@@ -51,17 +57,8 @@ require('./postgres/initialize_dbs').init()
     app.use('/graphql', 
     graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
     graphqlHTTP({
-        schema: stitchSchemas({
-      subschemas: [
-        {
-          schema: schema
-        },
-        {
-          schema: schema1
-        }
-      ]
-      }),
-        graphiql: true,
+      schema: schema1,
+      graphiql: true,
     }));
     
     let port = process.env.PORT || 1000;
