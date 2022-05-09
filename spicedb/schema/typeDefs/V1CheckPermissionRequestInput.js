@@ -1,14 +1,14 @@
 const {
     GraphQLString,
     GraphQLNonNull,
-    GraphQLObjectInputType,
+    GraphQLInputObjectType,
 } = require("graphql");
 
 const V1ConsistencyInput = require("./V1ConsistencyInput");
 const V1ObjectReferenceInput = require("./V1ObjectReferenceInput");
 const V1SubjectReferenceInput = require("./V1SubjectReferenceInput");
 
-module.exports = new GraphQLObjectInputType({
+module.exports = new GraphQLInputObjectType({
     name: "V1CheckPermissionRequestInput_",
     description: "CheckPermissionRequest issues a check on whether a subject has a permission or is a member of a relation, on a specific resource.",
     fields: () => ({

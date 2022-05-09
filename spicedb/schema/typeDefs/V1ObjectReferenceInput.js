@@ -1,10 +1,10 @@
 const {
     GraphQLString,
     GraphQLNonNull,
-    GraphQLObjectInputType,
+    GraphQLInputObjectType,
 } = require("graphql");
 
-module.exports = new GraphQLObjectInputType({
+module.exports = new GraphQLInputObjectType({
     name: "V1ObjectReferenceInput_",
     description: "ObjectReference is used to refer to a specific object in the system.",
     fields: () => ({
