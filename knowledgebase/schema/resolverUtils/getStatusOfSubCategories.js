@@ -74,7 +74,7 @@ let getStatusOfSubCategories = (category_id, cb) => {
                         break;
                     }
 
-                    let cat_id = tr;
+                    let cat_id = trans.category_id;
 
                     pgQueries.getKnowledgeBaseArticleTranslationsByCategoryId(cat_id, result2 => {
                         let article_translations = result2.res;
