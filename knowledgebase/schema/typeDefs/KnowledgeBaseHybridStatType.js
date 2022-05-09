@@ -5,8 +5,8 @@ const KnowledgeBaseType = require("./KnowledgeBaseType");
 const KnowledgeBaseCategoryStatType = require("./KnowledgeBaseCategoryStatType");
 
 module.exports = new GraphQLObjectType({
-    name: "KnowledgeBaseCategoryHybridStatType",
-    description: "This returns an object of the knowledge base category, knowledge base category translation and stat type",
+    name: "KnowledgeBaseHybridStatType",
+    description: "This returns an object of the knowledge base, knowledge base and stat type",
     fields: () => ({
         data: { type: KnowledgeBaseType},
         stat: { type: KnowledgeBaseCategoryStatType}
