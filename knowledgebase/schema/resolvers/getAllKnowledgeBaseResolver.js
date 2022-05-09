@@ -41,16 +41,20 @@ const getData = () => {
                 let count = -1;
                 
                 knowledgebases.forEach(kb => {
-                    getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(kb.id, -1, val => {
-                        knowledgebaseHybridStatType.push({
-                            data: kb,
-                            stat: {
-                                level: val.level,
-                                num_categories: val.num_categories,
-                                num_articles: val.num_articles
-                            }
+                    pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(kb.id, -1, result => {
+                        let num_categories = result.res.length;
+                        pgQueries.getKnowledgeBaseArticlesByKnowledgeBaseIdAndCategoryId([kb.id, -1], result2 => {
+                            let num_articles = result2.res.length;
+                            knowledgebaseHybridStatType.push({
+                                data: kb,
+                                stat: {
+                                    level: -1,
+                                    num_categories,
+                                    num_articles
+                                }
+                            });
+                            checkComplete();
                         });
-                        checkComplete();
                     });
                 });
 
