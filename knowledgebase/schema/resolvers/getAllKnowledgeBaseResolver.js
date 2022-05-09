@@ -46,8 +46,8 @@ const getData = () => {
                             data: kb,
                             stat: {
                                 level: val.level,
-                                num_categories: level.num_categories,
-                                num_articles: level.num_articles
+                                num_categories: val.num_categories,
+                                num_articles: val.num_articles
                             }
                         });
                         checkComplete();
