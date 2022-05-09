@@ -35,3 +35,6 @@ Content-Type: application/json
 ### 
 GET http://88.208.199.175:1400/graphql
 Content-Type: application/json
+
+###
+GET http://88.208.199.175:1000/graphql?query=%7Bping%7D

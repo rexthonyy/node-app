@@ -37,6 +37,7 @@ const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListR
 const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
 const exportKnowledgebaseResolver = require("../resolvers/exportKnowledgebaseResolver");
+const KnowledgeBaseHybridStatType = require("./KnowledgeBaseHybridStatType");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -47,7 +48,7 @@ module.exports = new GraphQLObjectType({
             resolve: () => "pong"
         },
         knowledgebases_: {
-            type: GraphQLList(KnowledgeBaseType),
+            type: GraphQLList(KnowledgeBaseHybridStatType),
             description: "Get all knowledgebases",
             resolve: getAllKnowledgeBaseResolver
         },

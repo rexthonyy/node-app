@@ -2,6 +2,7 @@ const pgQueries = require('../../postgres/kb-queries');
 const consts = require('../../consts');
 const setOrderForKnowledgebases = require('../resolverUtils/setOrderForKnowledgebases');
 const util = require('../../util');
+const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('../resolverUtils/getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId');
 
 const getData = () => {
     return new Promise((resolve, reject) => {
@@ -35,7 +36,32 @@ const getData = () => {
             });
 
             setOrderForKnowledgebases(kb_ids, () => {
-                resolve(knowledgebases);
+                let knowledgebaseHybridStatType = [];
+                let num_kbs = knowledgebases.length;
+                let count = -1;
+                
+                knowledgebases.forEach(kb => {
+                    getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId(kb.id, -1, val => {
+                        knowledgebaseHybridStatType.push({
+                            data: kb,
+                            stat: {
+                                level: val.level,
+                                num_categories: level.num_categories,
+                                num_articles: level.num_articles
+                            }
+                        });
+                        checkComplete();
+                    });
+                });
+
+                checkComplete();
+
+                function checkComplete(){
+                    count++;
+                    if(count == num_kbs){
+                        resolve(knowledgebaseHybridStatType);
+                    }
+                }
             });
         });
     });
