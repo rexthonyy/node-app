@@ -5,7 +5,9 @@ const getData = ({v1CheckPermissionRequestInput}) => {
         let permission = v1CheckPermissionRequestInput.permission;
         let resource = v1CheckPermissionRequestInput.resource;
         let subject = v1CheckPermissionRequestInput.subject;
-
+        console.log(permission);
+        console.log(resource);
+        console.log(subject);
         pgQueries.getRelationTuplesByRelation([relation], result => {
             if(result.err){
                 console.log(err);
