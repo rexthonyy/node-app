@@ -26,7 +26,6 @@ const client = new Client({
 client.connect();
 
 const getRelationTuplesByRelation = (values, response) => {
-    console.log(values);
     pool.query("SELECT * from relation_tuple WHERE relation=$1", values, (err, res) => {
         if(err){
             response({
