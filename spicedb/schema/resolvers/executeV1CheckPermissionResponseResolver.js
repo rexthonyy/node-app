@@ -6,8 +6,9 @@ const getData = ({v1CheckPermissionRequestInput}) => {
         let resource = v1CheckPermissionRequestInput.resource;
         let subject = v1CheckPermissionRequestInput.subject;
 
-        pgQueries.getRelationTupleByRelation([relation], result => {
+        pgQueries.getRelationTuplesByRelation([relation], result => {
             if(result.err){
+                console.log(err);
                 return reject(result.err);
             }
 
@@ -16,8 +17,9 @@ const getData = ({v1CheckPermissionRequestInput}) => {
                     permissionship: "PERMISSIONSHIP_UNSPECIFIED"
                 });
             }else{
-                pgQueries.getRelationTupleByNamespaceObjectIdAndRelation([subject, resource, permission], result => {
+                pgQueries.getRelationTuplesByNamespaceObjectIdAndRelation([subject, resource, permission], result => {
                     if(result.err){
+                        console.log(err);
                         return reject(result.err);
                     }
         
