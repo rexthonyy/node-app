@@ -1,16 +1,16 @@
 const { Pool, Client } = require('pg');
 
 let pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
     database: "postgres",
-    password: process.env.DB_PASS,
-    port: process.env.DB_PORT
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 
 let client = null;
 
-const databaseName = process.env.DB_NAME;
+const databaseName = process.env.POSTGRES_DB;
 /*
     first create a postgres user called knowledgebase
     second setup the postgres consts variables
@@ -34,19 +34,19 @@ function createKnowledgeBaseDatabase(cb){
         pool.end();
 
         pool = new Pool({
-            user: process.env.DB_USER,
-            host: process.env.DB_HOST,
+            user: process.env.POSTGRES_USER,
+            host: process.env.POSTGRES_HOST,
             database: databaseName,
-            password: process.env.DB_PASS,
-            port: process.env.DB_PORT
+            password: process.env.POSTGRES_PASSWORD,
+            port: process.env.POSTGRES_PORT
         });
 
         client = new Client({
-            user: process.env.DB_USER,
-            host: process.env.DB_HOST,
+            user: process.env.POSTGRES_USER,
+            host: process.env.POSTGRES_HOST,
             database: databaseName,
-            password: process.env.DB_PASS,
-            port: process.env.DB_PORT
+            password: process.env.POSTGRES_PASSWORD,
+            port: process.env.POSTGRES_PORT
         });
         client.connect();
 

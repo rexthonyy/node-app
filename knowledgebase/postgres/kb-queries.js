@@ -1,27 +1,27 @@
 const { Pool, Client } = require('pg');
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
-    port: process.env.DB_PORT
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 
 pool.query('SELECT NOW()', (err, res) => {
     if(err){
-        console.log(`${process.env.DB_NAME} databse initialization failed!!!`);
+        console.log(`${process.env.POSTGRES_DB} databse initialization failed!!!`);
     }else{
-        console.log(`${process.env.DB_NAME} databse initialized successfully....!!!`);
+        console.log(`${process.env.POSTGRES_DB} databse initialized successfully....!!!`);
     }
 });
 
 const client = new Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASS,
-    port: process.env.DB_PORT
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 client.connect();
 
