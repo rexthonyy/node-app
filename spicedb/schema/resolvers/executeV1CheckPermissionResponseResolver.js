@@ -8,6 +8,9 @@ const getData = ({v1CheckPermissionRequestInput}) => {
         console.log(permission);
         console.log(resource);
         console.log(subject);
+        return resolve({
+            permissionship: "PERMISSIONSHIP_UNSPECIFIED"
+        });
         pgQueries.getRelationTuplesByRelation([relation], result => {
             console.log(result);
             if(result.err){
