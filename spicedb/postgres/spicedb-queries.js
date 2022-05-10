@@ -26,6 +26,7 @@ const client = new Client({
 client.connect();
 
 const getRelationTuplesByRelation = (values, response) => {
+    console.log(values);
     pool.query("SELECT * from relation_tuple WHERE relation=$1", values, (err, res) => {
         if(err){
             response({
@@ -43,12 +44,13 @@ const getRelationTuplesByRelation = (values, response) => {
 };
 
 const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
+    console.log(values);
     pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND object_id=$2 AND relation=$3", values, (err, res) => {
         if(err){
             response({
                 err: err,
                 res: null,
-                code: 201
+                code: 202
             });
         }else{
             response({
