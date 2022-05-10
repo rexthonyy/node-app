@@ -25,8 +25,41 @@ const client = new Client({
 });
 client.connect();
 
+const getRelationTuplesByRelation = (values, response) => {
+    pool.query("SELECT * from relation_tuple WHERE relation=$1", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
+const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
+    pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND object_id=$2 AND relation=$3", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
 module.exports = {
-    
+    getRelationTuplesByRelation,
+    getRelationTuplesByNamespaceObjectIdAndRelation
 }

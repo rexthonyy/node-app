@@ -1,30 +1,40 @@
-const pgKratosQueries = require('../../postgres/spicedb-queries');
+const pgQueries = require('../../postgres/spicedb-queries');
 
 const getData = ({v1CheckPermissionRequestInput}) => {
     return new Promise((resolve, reject) => {
-        let consistency = v1CheckPermissionRequestInput.consistency;
         let permission = v1CheckPermissionRequestInput.permission;
         let resource = v1CheckPermissionRequestInput.resource;
         let subject = v1CheckPermissionRequestInput.subject;
 
-        let atExactSnapshot = consistency.atExactSnapshot;
-        let atLeastAsFresh = consistency.atLeastAsFresh;
-        let fullyConsistent = consistency.fullyConsistent;
-        let minimizeLatency = consistency.minimizeLatency;
+        pgQueries.getRelationTupleByRelation([relation], result => {
+            if(result.err){
+                return reject(result.err);
+            }
 
-        let atExactSnapshot_token = atExactSnapshot.token;
-        let atLeastAsFresh_token = atLeastAsFresh.token;
+            if(result.res.length == 0){
+                return resolve({
+                    permissionship: "PERMISSIONSHIP_UNSPECIFIED"
+                });
+            }else{
+                pgQueries.getRelationTupleByNamespaceObjectIdAndRelation([subject, resource, permission], result => {
+                    if(result.err){
+                        return reject(result.err);
+                    }
         
-        let resource_objectId = resource.objectId;
-        let resource_objectType = resource.objectType;
-
-        let object = subject.object;
-        let optionalRelation = subject.optionalRelation;
-
-        let object_objectId = object.objectId;
-        let object_objectType = object.objectType;
-
-        reject("");
+                    let relation_tuple = result.res;
+        
+                    if(relation_tuple.length == 0){
+                        return resolve({
+                            permissionship: "PERMISSIONSHIP_NO_PERMISSION"
+                        });
+                    }else{
+                        return resolve({
+                            permissionship: "PERMISSIONSHIP_HAS_PERMISSION"
+                        });
+                    }
+                });
+            }
+        });
     });
 }
 
