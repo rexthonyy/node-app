@@ -30,11 +30,15 @@ const getData = ({v1DeleteRelationshipsRequestInput}) => {
             values.push(subject);
         }
         
-        console.log(whereClause);
-        console.log("");
-        console.log(values);
-        resolve({
-            status: "success"
+        pgQueries.deleteRelationTuples(whereClause, values, result => {
+            if(result.err){
+                console.log(result.err);
+                return reject(result.err);
+            }
+            
+            resolve({
+                status: "success"
+            });
         });
     });
 }
