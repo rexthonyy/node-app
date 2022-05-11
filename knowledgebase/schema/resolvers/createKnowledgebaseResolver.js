@@ -88,6 +88,6 @@ const getData = ({name, icon, footer, homepage_layout, category_layout, active, 
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }
