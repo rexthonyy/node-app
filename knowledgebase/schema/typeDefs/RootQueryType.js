@@ -39,7 +39,7 @@ const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListR
 const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
 const exportKnowledgebaseResolver = require("../resolvers/exportKnowledgebaseResolver");
-const getKnowledgeBaseLanguageSelectionListResolver = require("./getKnowledgeBaseLanguageSelectionListResolver");
+const getKnowledgeBaseLanguageSelectionListResolver = require("../resolvers/getKnowledgeBaseLanguageSelectionListResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
