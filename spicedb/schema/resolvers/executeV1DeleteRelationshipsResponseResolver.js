@@ -1,27 +1,38 @@
 const pgQueries = require('../../postgres/spicedb-queries');
 
-const deletePermission = (permission) => {
-
-};
-
-const deleteRelation = (relation) => {
-
-};
-
-const deleteSubject = (subject) => {
-
-};
-
 const getData = ({v1DeleteRelationshipsRequestInput}) => {
     return new Promise((resolve, reject) => {
         let permission = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalRelation;
         let resource = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalResourceId;
         let subject = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalSubjectFilter;
 
-        console.log(permission);
-        console.log(resource);
-        console.log(subject);
+        let whereClause = "";
+        let values = [];
+        let index = 0;
+
+        if(permission){
+            index++;
+            whereClause += `relation=$${index}`;
+            values.push(permission);
+        }
         
+        if(resource){
+            if(whereClause) whereClause += " AND ";
+            index++;
+            whereClause += `object_id=$${index}`;
+            values.push(resource);
+        }
+
+        if(subject){
+            if(whereClause) whereClause += " AND ";
+            index++;
+            whereClause += `namespace=$${index}`;
+            values.push(subject);
+        }
+        
+        console.log(whereClause);
+        console.log("");
+        console.log(values);
         resolve({
             status: "success"
         });

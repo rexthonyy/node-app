@@ -43,7 +43,6 @@ const getRelationTuplesByRelation = (values, response) => {
 };
 
 const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
-    console.log(values);
     pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND object_id=$2 AND relation=$3", values, (err, res) => {
         if(err){
             response({
@@ -60,7 +59,26 @@ const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
     });
 };
 
+
+const deleteRelationTuples = (whereClause, values, response) => {
+    client.query(`DELETE FROM relation_tuple WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 203
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getRelationTuplesByRelation,
-    getRelationTuplesByNamespaceObjectIdAndRelation
+    getRelationTuplesByNamespaceObjectIdAndRelation,
+    deleteRelationTuples
 }
