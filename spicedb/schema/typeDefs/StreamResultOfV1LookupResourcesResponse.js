@@ -1,5 +1,6 @@
 const {
     GraphQLObjectType,
+    GraphQLString
 } = require("graphql");
 
 const RpcStatus = require("./RpcStatus");
