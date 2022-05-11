@@ -77,8 +77,26 @@ const deleteRelationTuples = (whereClause, values, response) => {
     });
 };
 
+const getRelationTuplesByNamespaceAndRelation = (values, response) => {
+    pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND relation=$2", values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 204
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getRelationTuplesByRelation,
     getRelationTuplesByNamespaceObjectIdAndRelation,
-    deleteRelationTuples
+    deleteRelationTuples,
+    getRelationTuplesByNamespaceAndRelation
 }

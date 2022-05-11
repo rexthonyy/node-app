@@ -11,11 +11,14 @@ const V1CheckPermissionResponse = require("./V1CheckPermissionResponse");
 const V1CheckPermissionRequestInput = require("./V1CheckPermissionRequestInput");
 const V1DeleteRelationshipsResponse = require("./V1DeleteRelationshipsResponse");
 const V1DeleteRelationshipsRequestInput = require("./V1DeleteRelationshipsRequestInput");
+const StreamResultOfV1LookupResourcesResponse = require("./StreamResultOfV1LookupResourcesResponse");
+const V1LookupResourcesRequestInput = require("./V1LookupResourcesRequestInput");
 
 
 // resolvers
 const executeV1CheckPermissionResponseResolver = require("../resolvers/executeV1CheckPermissionResponseResolver");
 const executeV1DeleteRelationshipsResponseResolver = require("../resolvers/executeV1DeleteRelationshipsResponseResolver");
+const executeStreamResultOfV1LookupResourcesResponseResolver = require("../resolvers/executeStreamResultOfV1LookupResourcesResponseResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -40,6 +43,14 @@ module.exports = new GraphQLObjectType({
                 v1DeleteRelationshipsRequestInput: { type: GraphQLNonNull(V1DeleteRelationshipsRequestInput), description: "CheckPermissionRequest issues a check on whether a subject has a permission or is a member of a relation, on a specific resource." }
             },
             resolve: executeV1DeleteRelationshipsResponseResolver
+        },
+        permissionsServiceLookupResources_: {
+            type: StreamResultOfV1LookupResourcesResponse,
+            description: "LookupResources returns the IDs of all resources on which the specified subject has permission or on which the specified subject is a member of the relation.\n\nEquivalent to POST /v1/permissions/resources",
+            args: {
+                v1LookupResourcesRequestInput: { type: GraphQLNonNull(V1LookupResourcesRequestInput) }
+            },
+            resolve: executeStreamResultOfV1LookupResourcesResponseResolver
         },
     })
 });
