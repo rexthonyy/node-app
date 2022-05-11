@@ -1,5 +1,6 @@
 const {
     GraphQLInputObjectType,
+    GraphQLString
 } = require("graphql");
 
 const V1PreconditionInput = require("./V1PreconditionInput");
