@@ -20,6 +20,8 @@ const KnowledgeBaseListType = require("./KnowledgeBaseListType");
 const KnowledgeBaseLevelStatusHybridType = require("./KnowledgeBaseLevelStatusHybridType");
 const KnowledgeBaseCategoryLevelType = require("./KnowledgeBaseCategoryLevelType");
 const ExportKnowledgeBaseType = require("./ExportKnowledgeBaseType");
+const KnowledgeBaseHybridStatType = require("./KnowledgeBaseHybridStatType");
+const KnowledgeBaseLocales = require("./KnowledgeBaseLocales");
 
 // resolvers
 const getAllKnowledgeBaseResolver = require("../resolvers/getAllKnowledgeBaseResolver");
@@ -37,7 +39,7 @@ const getKnowledgeBaseListResolver = require("../resolvers/getKnowledgeBaseListR
 const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
 const exportKnowledgebaseResolver = require("../resolvers/exportKnowledgebaseResolver");
-const KnowledgeBaseHybridStatType = require("./KnowledgeBaseHybridStatType");
+const getKnowledgeBaseLanguageSelectionListResolver = require("./getKnowledgeBaseLanguageSelectionListResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -67,6 +69,14 @@ module.exports = new GraphQLObjectType({
                 knowledge_base_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getAllKnowledgeBaseTranslationsForKnowledgeBaseResolver
+        },
+        getKnowledgeBaseLanguageSelectionList_: {
+            type: GraphQLList(KnowledgeBaseLocales),
+            description: "Get all knowledgebase language selection for a given knowledgebase",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getKnowledgeBaseLanguageSelectionListResolver
         },
         knowledgebaseTranslationStatusColor_: {
             type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
@@ -135,15 +145,6 @@ module.exports = new GraphQLObjectType({
                 kb_locale_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: getKnowledgeBaseArticleTranslationResolver
-        },
-        getScheduleForKnowledgeBaseArticle_: {
-            type: KnowledgeBaseArticleDelayedJobType,
-            description: "Returns details about a scheduled knowledgebase article for deletion or update",
-            args: {
-                knowledge_base_article_translation_id: { type: GraphQLNonNull(GraphQLID)},
-                schedule_type: { type: GraphQLNonNull(GraphQLString)}
-            },
-            resolve: getScheduleForKnowledgeBaseArticleResolver
         },
         getScheduleForKnowledgeBaseArticle_: {
             type: KnowledgeBaseArticleDelayedJobType,

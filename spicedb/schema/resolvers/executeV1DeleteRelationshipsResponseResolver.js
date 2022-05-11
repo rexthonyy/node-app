@@ -2,9 +2,9 @@ const pgQueries = require('../../postgres/spicedb-queries');
 
 const getData = ({v1DeleteRelationshipsRequestInput}) => {
     return new Promise((resolve, reject) => {
-        let permission = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalRelation;
-        let resource = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalResourceId;
-        let subject = v1DeleteRelationshipsRequestInput.relationshipFilter.optionalSubjectFilter;
+        let permission = v1DeleteRelationshipsRequestInput.optionalRelation;
+        let resource = v1DeleteRelationshipsRequestInput.optionalResourceId;
+        let subject = v1DeleteRelationshipsRequestInput.optionalSubjectFilter;
 
         let whereClause = "";
         let values = [];
