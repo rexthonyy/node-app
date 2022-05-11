@@ -4,6 +4,14 @@ const getLanguageTitleFromLocaleId = require('../resolverUtils/getLanguageTitleF
 const consts = require('../../consts');
 
 const getData = ({name, icon, footer, homepage_layout, category_layout, active, front_page, kb_locale_ids}) => {
+    console.log(name);
+    console.log(icon);
+    console.log(footer);
+    console.log(homepage_layout);
+    console.log(category_layout);
+    console.log(active);
+    console.log(front_page);
+    console.log(kb_locale_ids);
     return new Promise((resolve, reject) => {
         
         if(kb_locale_ids.length == 0) return reject(JSON.stringify({ status: "error", message: "Not allowed, please provide a language selection for this knowledgebase"}));
