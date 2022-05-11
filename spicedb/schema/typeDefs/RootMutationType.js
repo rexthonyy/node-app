@@ -1,6 +1,6 @@
 const {
     GraphQLObjectType,
-    GraphQLID,
+    GraphQLList,
     GraphQLString,
     GraphQLNonNull
 } = require("graphql");
@@ -45,7 +45,7 @@ module.exports = new GraphQLObjectType({
             resolve: executeV1DeleteRelationshipsResponseResolver
         },
         permissionsServiceLookupResources_: {
-            type: StreamResultOfV1LookupResourcesResponse,
+            type: GraphQLList(StreamResultOfV1LookupResourcesResponse),
             description: "LookupResources returns the IDs of all resources on which the specified subject has permission or on which the specified subject is a member of the relation.\n\nEquivalent to POST /v1/permissions/resources",
             args: {
                 v1LookupResourcesRequestInput: { type: GraphQLNonNull(V1LookupResourcesRequestInput) }

@@ -3,7 +3,7 @@ const pgQueries = require('../../postgres/spicedb-queries');
 const getData = ({v1LookupResourcesRequestInput}) => {
     return new Promise((resolve, reject) => {
         let permission = v1LookupResourcesRequestInput.permission;
-        let subject = v1LookupResourcesRequestInput.subject.object.objectId;
+        let subject = v1LookupResourcesRequestInput.subject;
 
         pgQueries.getRelationTuplesByNamespaceAndRelation([subject, permission], result => {
             if(result.err){
@@ -13,17 +13,13 @@ const getData = ({v1LookupResourcesRequestInput}) => {
 
             let relation_tuples = result.res;
 
-            let resourceObjectId = [];
-            let error = null;
+            let objectIds = [];
 
             relation_tuples.forEach(tuple => {
-                resourceObjectId.push(tuple.object_id);
+                objectIds.push(tuple.object_id);
             });
-
-            resolve({
-                error,
-                resourceObjectId
-            });
+            
+            resolve(objectIds);
         });
     });
 }
