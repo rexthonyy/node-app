@@ -169,6 +169,6 @@ function filterOutArchive(obj){
     return new_obj;
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

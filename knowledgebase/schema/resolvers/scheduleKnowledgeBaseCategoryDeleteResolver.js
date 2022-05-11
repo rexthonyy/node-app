@@ -41,6 +41,6 @@ const getData = ({knowledge_base_category_translation_id, run_at, knowledge_base
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

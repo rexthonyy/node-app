@@ -195,6 +195,6 @@ const getData = ({ knowledge_base_id, kb_locale_id, level }) => {
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

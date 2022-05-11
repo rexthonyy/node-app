@@ -115,6 +115,6 @@ const getData = ({knowledge_base_category_translation_id, schedule_type}) => {
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

@@ -22,6 +22,6 @@ const getData = async ({image}) => {
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

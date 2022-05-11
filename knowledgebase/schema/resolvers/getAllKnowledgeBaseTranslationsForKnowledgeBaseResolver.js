@@ -22,6 +22,6 @@ const getData = ({knowledge_base_id}) => {
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

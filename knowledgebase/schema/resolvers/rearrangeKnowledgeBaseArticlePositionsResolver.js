@@ -40,6 +40,6 @@ const getData = ({article_ids}) => {
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }

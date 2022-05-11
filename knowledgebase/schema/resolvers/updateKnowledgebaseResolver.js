@@ -208,6 +208,6 @@ const getData = ({knowledge_base_id, name, icon, footer, homepage_layout, catego
     });
 }
 
-module.exports = async (args) => {
+module.exports = async (parents, args) => {
     return getData(args);
 }
