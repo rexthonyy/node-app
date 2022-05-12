@@ -78,6 +78,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getKnowledgeBaseLanguageSelectionListResolver
         },
+        getLocales_: {
+            type: GraphQLList(KnowledgeBaseLocales),
+            description: "Get all knowledgebase language selection for a given knowledgebase",
+            args: {
+                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: getKnowledgeBaseLanguageSelectionListResolver
+        },
         knowledgebaseTranslationStatusColor_: {
             type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
             description: "Get the status color for the knowledgebase translations at the category specified",

@@ -2,7 +2,6 @@ const pgQueries = require('../../postgres/kb-queries');
 const consts = require('../../consts');
 const setOrderForKnowledgebases = require('../resolverUtils/setOrderForKnowledgebases');
 const util = require('../../util');
-const getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId = require('../resolverUtils/getNumberOfSubcategoriesArticlesAndCurrentLevelForCategoryId');
 
 const getData = () => {
     return new Promise((resolve, reject) => {
@@ -63,6 +62,9 @@ const getData = () => {
                 function checkComplete(){
                     count++;
                     if(count == num_kbs){
+                        knowledgebaseHybridStatType.sort((a, b) => {
+                            return a.data.position - b.data.position;
+                        });
                         resolve(knowledgebaseHybridStatType);
                     }
                 }

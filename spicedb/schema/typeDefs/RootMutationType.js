@@ -13,12 +13,15 @@ const V1DeleteRelationshipsResponse = require("./V1DeleteRelationshipsResponse")
 const V1DeleteRelationshipsRequestInput = require("./V1DeleteRelationshipsRequestInput");
 const StreamResultOfV1LookupResourcesResponse = require("./StreamResultOfV1LookupResourcesResponse");
 const V1LookupResourcesRequestInput = require("./V1LookupResourcesRequestInput");
+const StreamResultOfV1ReadRelationshipsResponse = require("./StreamResultOfV1ReadRelationshipsResponse");
+const V1ReadRelationshipsRequestInput = require("./V1ReadRelationshipsRequestInput");
 
 
 // resolvers
 const executeV1CheckPermissionResponseResolver = require("../resolvers/executeV1CheckPermissionResponseResolver");
 const executeV1DeleteRelationshipsResponseResolver = require("../resolvers/executeV1DeleteRelationshipsResponseResolver");
 const executeStreamResultOfV1LookupResourcesResponseResolver = require("../resolvers/executeStreamResultOfV1LookupResourcesResponseResolver");
+const executePermissionsServiceReadRelationshipsResolver = require("../resolvers/executePermissionsServiceReadRelationshipsResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -51,6 +54,14 @@ module.exports = new GraphQLObjectType({
                 v1LookupResourcesRequestInput: { type: GraphQLNonNull(V1LookupResourcesRequestInput) }
             },
             resolve: executeStreamResultOfV1LookupResourcesResponseResolver
+        },
+        permissionsServiceReadRelationships_: {
+            type: StreamResultOfV1ReadRelationshipsResponse,
+            description: "ReadRelationships reads a set of the relationships matching one or more filters.\n\nEquivalent to POST /v1/relationships/read",
+            args: {
+                v1ReadRelationshipsRequestInput: { type: GraphQLNonNull(V1ReadRelationshipsRequestInput) }
+            },
+            resolve: executePermissionsServiceReadRelationshipsResolver
         },
     })
 });
