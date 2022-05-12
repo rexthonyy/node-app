@@ -16,12 +16,12 @@ const getData = ({v1LookupResourcesRequestInput}) => {
             let objectIds = [];
 
             relation_tuples.forEach(tuple => {
-                objectIds.push(tuple.object_id);
+                objectIds.push({
+                    objectId: tuple.object_id
+                });
             });
             
-            resolve({
-                resourceObjectId: objectIds
-            });
+            resolve(objectIds);
         });
     });
 }
