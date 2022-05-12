@@ -85,8 +85,10 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
         function checkComplete(){
             count++;
             if(count == numRelations){
+                let token = Date.now().toString();
+                console.log(token);
                 resolve({
-                    token: Date.now()
+                    token
                 });
             }
         }
