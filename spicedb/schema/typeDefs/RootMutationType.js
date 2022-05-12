@@ -13,7 +13,7 @@ const V1DeleteRelationshipsResponse = require("./V1DeleteRelationshipsResponse")
 const V1DeleteRelationshipsRequestInput = require("./V1DeleteRelationshipsRequestInput");
 const StreamResultOfV1LookupResourcesResponse = require("./StreamResultOfV1LookupResourcesResponse");
 const V1LookupResourcesRequestInput = require("./V1LookupResourcesRequestInput");
-const StreamResultOfV1ReadRelationshipsResponse = require("./StreamResultOfV1ReadRelationshipsResponse");
+const V1Relationship = require("./V1Relationship");
 const V1ReadRelationshipsRequestInput = require("./V1ReadRelationshipsRequestInput");
 
 
@@ -56,7 +56,7 @@ module.exports = new GraphQLObjectType({
             resolve: executeStreamResultOfV1LookupResourcesResponseResolver
         },
         permissionsServiceReadRelationships_: {
-            type: StreamResultOfV1ReadRelationshipsResponse,
+            type: GraphQLList(V1Relationship),
             description: "ReadRelationships reads a set of the relationships matching one or more filters.\n\nEquivalent to POST /v1/relationships/read",
             args: {
                 v1ReadRelationshipsRequestInput: { type: GraphQLNonNull(V1ReadRelationshipsRequestInput) }

@@ -94,9 +94,27 @@ const getRelationTuplesByNamespaceAndRelation = (values, response) => {
     });
 };
 
+const getRelationTuples = (whereClause, values, response) => {
+    client.query(`SELECT * from relation_tuple WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 205
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getRelationTuplesByRelation,
     getRelationTuplesByNamespaceObjectIdAndRelation,
     deleteRelationTuples,
-    getRelationTuplesByNamespaceAndRelation
+    getRelationTuplesByNamespaceAndRelation,
+    getRelationTuples
 }
