@@ -12,8 +12,6 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
             });
         });
 
-        console.log(writeRelationships);
-
         let numRelations = writeRelationships.length;
         let count = 0;
 
@@ -46,9 +44,6 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
                 values.push(subject);
             }
 
-            console.log(whereClause);
-            console.log(values);
-            
             pgQueries.getRelationTuples(whereClause, values, result => {
                 if(result.err){
                     console.log(result.err);
@@ -74,7 +69,6 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
                         return reject(result.err);
                     }
 
-                    console.log(result.res);
                     checkComplete();
                 });
             }
@@ -86,7 +80,6 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
             count++;
             if(count == numRelations){
                 let token = Date.now().toString();
-                console.log(token);
                 resolve({
                     writtenAt: {
                         token

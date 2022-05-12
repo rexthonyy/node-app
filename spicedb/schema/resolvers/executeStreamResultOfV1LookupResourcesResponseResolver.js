@@ -19,7 +19,9 @@ const getData = ({v1LookupResourcesRequestInput}) => {
                 objectIds.push(tuple.object_id);
             });
             
-            resolve(objectIds);
+            resolve({
+                resourceObjectId: objectIds
+            });
         });
     });
 }
