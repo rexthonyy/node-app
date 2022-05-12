@@ -27,7 +27,7 @@ require('./postgres/initialize_dbs').init()
   
   app.use(express.static('public'));
   app.use(express.json());
-  
+
   const accessKeyId = process.env.WASABI_ACCESS_KEY_ID;
   const secretAccessKey = process.env.WASABI_SECRET_ACCESS_KEY;
 
@@ -51,7 +51,7 @@ require('./postgres/initialize_dbs').init()
   });
   
   //use by upload form
-  app.post('/upload', upload.array('upl', 25), function (req, res, next) {
+  app.post('/upload', upload.array('upload', 25), function (req, res, next) {
     res.send({
         message: "Uploaded!",
         urls: req.files.map(function(file) {
