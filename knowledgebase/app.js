@@ -11,6 +11,34 @@ require('./postgres/initialize_dbs').init()
   const { graphqlUploadExpress } = require('graphql-upload');
   const schema1 = require('./schema/index');
 
+  const S3 = require('aws-sdk/clients/s3');
+  const AWS = require('aws-sdk');
+  const wasabiEndpoint = new AWS.Endpoint('s3.eu-west-1.wasabisys.com');
+
+  const accessKeyId = process.env.WASABI_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.WASABI_SECRET_ACCESS_KEY;
+
+  const s3 = new S3({
+    endpoint: wasabiEndpoint,
+    region: 'us-east-2',
+    accessKeyId,
+    secretAccessKey
+  });
+
+  
+  s3.putObject({
+    Body: 'Hello World',
+    Bucket: "friendlygig",
+    Key: 'hello.txt'
+  }, (err, data) => {
+    if (err) {
+      console.log("upload unsuccessful");
+       return console.log(err);
+    }
+    console.log("upload successful");
+    console.log(data);
+  });
+
   const app = express();
 
   app.use(cors());
