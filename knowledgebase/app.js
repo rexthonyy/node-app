@@ -10,12 +10,7 @@ require('./postgres/initialize_dbs').init()
   const { graphqlHTTP } = require('express-graphql');
   const { graphqlUploadExpress } = require('graphql-upload');
   const schema1 = require('./schema/index');
-
-  const S3 = require('aws-sdk/clients/s3');
-  const AWS = require('aws-sdk');
-  var multer = require('multer')
-  var multerS3 = require('multer-s3')
-  const wasabiEndpoint = new AWS.Endpoint('s3.eu-west-1.wasabisys.com');
+  const s3Handler = require('./libs/s3Handler');
 
   const app = express();
 
@@ -27,31 +22,9 @@ require('./postgres/initialize_dbs').init()
   
   app.use(express.static('public'));
   app.use(express.json());
-
-  const accessKeyId = process.env.WASABI_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.WASABI_SECRET_ACCESS_KEY;
-
-  const s3 = new S3({
-    endpoint: wasabiEndpoint,
-    region: 'eu-west-1',
-    accessKeyId,
-    secretAccessKey
-  });
-
-  var upload = multer({
-    storage: multerS3({
-        s3: s3,
-        acl: 'public-read',
-        bucket: process.env.WASABI_BUCKET_NAME,
-        key: function (req, file, cb) {
-            console.log(file);
-            cb(null, file.originalname); //use Date.now() for unique file keys
-        }
-    })
-  });
   
   //use by upload form
-  app.post('/upload', upload.array('upload', 25), function (req, res, next) {
+  app.post('/upload', s3Handler.upload.array('upload', 25), function (req, res, next) {
     res.send({
         message: "Uploaded!",
         urls: req.files.map(function(file) {
@@ -59,7 +32,6 @@ require('./postgres/initialize_dbs').init()
         })
     });
   });
-
 
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(

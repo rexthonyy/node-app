@@ -37,6 +37,7 @@ const unarchiveKnowledgeBaseArticleResolver = require("../resolvers/unarchiveKno
 const scheduleKnowledgeBaseArticleUpdateResolver = require("../resolvers/scheduleKnowledgeBaseArticleUpdateResolver");
 const scheduleKnowledgeBaseArticleDeleteResolver = require("../resolvers/scheduleKnowledgeBaseArticleDeleteResolver");
 const removeScheduleForKnowledgeBaseArticleResolver = require("../resolvers/removeScheduleForKnowledgeBaseArticleResolver");
+const deleteIconResolver = require("../resolvers/deleteIconResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -297,6 +298,14 @@ module.exports = new GraphQLObjectType({
                 schedule_type: { type: GraphQLNonNull(GraphQLString)}
             },
             resolve: removeScheduleForKnowledgeBaseArticleResolver
-        }
+        },
+        deleteIcon_: {
+            type: StatusMessageResponseType,
+            description: "Deletes an uploaded icon",
+            args: {
+                filename: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve: deleteIconResolver
+        },
     })
 });
