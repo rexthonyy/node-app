@@ -12,6 +12,8 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
             });
         });
 
+        console.log(writeRelationships);
+
         let numRelations = writeRelationships.length;
         let count = 0;
 
@@ -43,6 +45,9 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
                 whereClause += `namespace=$${index}`;
                 values.push(subject);
             }
+
+            console.log(whereClause);
+            console.log(values);
             
             pgQueries.getRelationTuples(whereClause, values, result => {
                 if(result.err){
@@ -69,6 +74,7 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
                         return reject(result.err);
                     }
 
+                    console.log(result.res);
                     checkComplete();
                 });
             }
