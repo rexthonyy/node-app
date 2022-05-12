@@ -36,6 +36,8 @@ const getData = ({v1DeleteRelationshipsRequestInput}) => {
                 return reject(result.err);
             }
             
+            console.log(result.res);
+            
             resolve({
                 status: "success"
             });
