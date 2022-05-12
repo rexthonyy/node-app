@@ -59,7 +59,6 @@ const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
     });
 };
 
-
 const deleteRelationTuples = (whereClause, values, response) => {
     client.query(`DELETE FROM relation_tuple WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -111,10 +110,29 @@ const getRelationTuples = (whereClause, values, response) => {
     });
 };
 
+const createRelationTuple = (values, response) => {
+    values = values.concat("subject", "resource", "permission", Date.now(), Date.now());
+    client.query('INSERT INTO relation_tuple (namespace, object_id, relation, userset_namespace, userset_object_id, userset_relation, created_transaction, deleted_transaction) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 206
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getRelationTuplesByRelation,
     getRelationTuplesByNamespaceObjectIdAndRelation,
     deleteRelationTuples,
     getRelationTuplesByNamespaceAndRelation,
-    getRelationTuples
+    getRelationTuples,
+    createRelationTuple
 }

@@ -15,6 +15,8 @@ const StreamResultOfV1LookupResourcesResponse = require("./StreamResultOfV1Looku
 const V1LookupResourcesRequestInput = require("./V1LookupResourcesRequestInput");
 const V1Relationship = require("./V1Relationship");
 const V1ReadRelationshipsRequestInput = require("./V1ReadRelationshipsRequestInput");
+const V1WriteRelationshipsResponse = require("./V1WriteRelationshipsResponse");
+const V1WriteRelationshipsRequestInput = require("./V1WriteRelationshipsRequestInput");
 
 
 // resolvers
@@ -22,6 +24,7 @@ const executeV1CheckPermissionResponseResolver = require("../resolvers/executeV1
 const executeV1DeleteRelationshipsResponseResolver = require("../resolvers/executeV1DeleteRelationshipsResponseResolver");
 const executeStreamResultOfV1LookupResourcesResponseResolver = require("../resolvers/executeStreamResultOfV1LookupResourcesResponseResolver");
 const executePermissionsServiceReadRelationshipsResolver = require("../resolvers/executePermissionsServiceReadRelationshipsResolver");
+const executePermissionsServiceWriteRelationshipsResolver = require("../resolvers/executePermissionsServiceWriteRelationshipsResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -62,6 +65,14 @@ module.exports = new GraphQLObjectType({
                 v1ReadRelationshipsRequestInput: { type: GraphQLNonNull(V1ReadRelationshipsRequestInput) }
             },
             resolve: executePermissionsServiceReadRelationshipsResolver
+        },
+        permissionsServiceWriteRelationships_: {
+            type:  V1WriteRelationshipsResponse,
+            description: "WriteRelationships writes and/or deletes a set of specified relationships, with an optional set of precondition relationships that must exist before the operation can commit.\n\nEquivalent to POST /v1/relationships/write",
+            args: {
+                v1WriteRelationshipsRequestInput: { type: GraphQLNonNull(V1WriteRelationshipsRequestInput) }
+            },
+            resolve: executePermissionsServiceWriteRelationshipsResolver
         },
     })
 });
