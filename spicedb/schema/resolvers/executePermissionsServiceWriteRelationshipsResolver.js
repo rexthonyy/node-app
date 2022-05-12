@@ -88,7 +88,9 @@ const getData = ({v1WriteRelationshipsRequestInput}) => {
                 let token = Date.now().toString();
                 console.log(token);
                 resolve({
-                    token
+                    writtenAt: {
+                        token
+                    }
                 });
             }
         }
