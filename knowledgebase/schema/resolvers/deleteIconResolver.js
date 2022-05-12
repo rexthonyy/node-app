@@ -7,7 +7,6 @@ const getData = ({filename}) => {
                 console.error(err);
                 return reject(err);
             }
-            console.log(data);
             resolve({
                 status: "success",
                 message: "Deleted successfully"
