@@ -30,6 +30,8 @@ const getData = ({v1DeleteRelationshipsRequestInput}) => {
             values.push(subject);
         }
         
+        console.log(whereClause);
+        console.log(values);
         pgQueries.deleteRelationTuples(whereClause, values, result => {
             if(result.err){
                 console.log(result.err);

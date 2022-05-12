@@ -60,7 +60,7 @@ const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
 };
 
 const deleteRelationTuples = (whereClause, values, response) => {
-    client.query(`DELETE FROM relation_tuple WHERE ${whereClause}`, values, (err, res) => {
+    client.query(`DELETE FROM relation_tuple WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
