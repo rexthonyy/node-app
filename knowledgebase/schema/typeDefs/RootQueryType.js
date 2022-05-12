@@ -40,6 +40,7 @@ const getLevelStatusResolver = require("../resolvers/getLevelStatusResolver");
 const getKnowledgeBaseCategoryLevelResolver = require("../resolvers/getKnowledgeBaseCategoryLevelResolver");
 const exportKnowledgebaseResolver = require("../resolvers/exportKnowledgebaseResolver");
 const getKnowledgeBaseLanguageSelectionListResolver = require("../resolvers/getKnowledgeBaseLanguageSelectionListResolver");
+const getAllKnowledgeBaseLocalesResolver = require("../resolvers/getAllKnowledgeBaseLocalesResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Query",
@@ -80,11 +81,8 @@ module.exports = new GraphQLObjectType({
         },
         getLocales_: {
             type: GraphQLList(KnowledgeBaseLocales),
-            description: "Get all knowledgebase language selection for a given knowledgebase",
-            args: {
-                knowledge_base_id: { type: GraphQLNonNull(GraphQLID) }
-            },
-            resolve: getKnowledgeBaseLanguageSelectionListResolver
+            description: "Get all knowledgebase locales",
+            resolve: getAllKnowledgeBaseLocalesResolver
         },
         knowledgebaseTranslationStatusColor_: {
             type: GraphQLList(KnowledgeBaseTranslationStatusColorType),
