@@ -7,8 +7,8 @@ require('./postgres/initialize_dbs').init()
   const { graphqlHTTP } = require('express-graphql');
   const { createGraphQLSchema } = require("openapi-to-graphql");
   const { graphqlUploadExpress } = require('graphql-upload');
-  const oas = require("./openapi.json");
-  const { schema } = await createGraphQLSchema([oas]);
+  // const oas = require("./openapi.json");
+  // const { schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
 
   const app = express();
@@ -18,17 +18,22 @@ require('./postgres/initialize_dbs').init()
   
   async function main() {
 
+    // const server = new ApolloServer({
+    //   schema: stitchSchemas({
+    //   subschemas: [
+    //     {
+    //       schema: schema
+    //     },
+    //     {
+    //       schema: schema1
+    //     }
+    //   ]
+    //   }),
+    //   uploads: false
+    // });
+  
     const server = new ApolloServer({
-      schema: stitchSchemas({
-      subschemas: [
-        {
-          schema: schema
-        },
-        {
-          schema: schema1
-        }
-      ]
-      }),
+      schema: schema1,
       uploads: false
     });
   
@@ -39,16 +44,7 @@ require('./postgres/initialize_dbs').init()
     app.use('/graphql', 
     graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
     graphqlHTTP({
-        schema: stitchSchemas({
-      subschemas: [
-        {
-          schema: schema
-        },
-        {
-          schema: schema1
-        }
-      ]
-      }),
+        schema: schema1,
         graphiql: true,
     }));
     
