@@ -4,7 +4,7 @@
   "description": "",
   "main": "calendso.js",
   "scripts": {
-    "test": "node calendso.js"
+    "start": "node calendso.js"
   },
   "keywords": [],
   "author": "",
