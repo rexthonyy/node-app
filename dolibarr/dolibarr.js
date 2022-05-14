@@ -3,6 +3,7 @@ require('./postgres/initialize_dbs').init()
 .then(async () => {
   const express = require('express');
   const { stitchSchemas } = require('@graphql-tools/stitch');
+  const { createGraphQLSchema } = require("openapi-to-graphql");
   const { ApolloServer } = require("apollo-server");
   const oas = require("./openapi.json");
   const { schema } = await createGraphQLSchema([oas]);
