@@ -52,7 +52,9 @@ for(const [key, value] of Object.entries(paths)){
   if(paths[key].from.length == 1){
     delete paths[key];
   }else{
+    console.log(paths[key].from);
     paths[key].from.forEach(from => {
+      console.log(from);
       let mod = getModuleByName(from);
       delete mod.file.paths[key];
     });
