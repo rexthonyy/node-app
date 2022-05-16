@@ -8,7 +8,7 @@ let fileModulesJSON = [
   { file: "./swagger/swagger_financial.json" },
   { file: "./swagger/swagger_human_resources_management.json" },
   { file: "./swagger/swagger_integrations.json" },
-  { file: "./swagger/swagger_multimode_tools.json" },
+  { file: "./swagger/swagger_multimodule_tools.json" },
   { file: "./swagger/swagger_payments_and_printing.json" },
   { file: "./swagger/swagger_projects_and_collaborative_work.json" },
   { file: "./swagger/swagger_vendor_relationship_management.json" },
