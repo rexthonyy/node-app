@@ -81,15 +81,15 @@ for(const [key, value] of Object.entries(definitions)){
 }
 
 let duplicatedModule = {
-  swagger: modules[0].swagger,
-  host: modules[0].host,
-  basePath: modules[0].basePath,
-  produces: modules[0].produces,
-  consumes: modules[0].consumes,
+  swagger: modules[0].file.swagger,
+  host: modules[0].file.host,
+  basePath: modules[0].file.basePath,
+  produces: modules[0].file.produces,
+  consumes: modules[0].file.consumes,
   paths,
   definitions,
-  securityDefinitions: modules[0].securityDefinitions,
-  info: modules[0].info
+  securityDefinitions: modules[0].file.securityDefinitions,
+  info: modules[0].file.info
 }
 
 let filename = "duplicates.json";
