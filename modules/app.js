@@ -40,8 +40,8 @@ modules.forEach(module => {
 
 function getModuleByName(name){
   for(let i = 0, j = modules.length; i < j; i++){
-    if(module[i].name == name){
-      return module;
+    if(modules[i].name == name){
+      return modules[i];
     }
   }
 }
