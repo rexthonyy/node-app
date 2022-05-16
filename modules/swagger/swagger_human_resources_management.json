@@ -1,0 +1,4559 @@
+{
+    "swagger": "2.0",
+    "host": "88.208.212.245",
+    "basePath": "/api/index.php",
+    "produces": [
+        "application/json",
+        "application/xml"
+    ],
+    "consumes": [
+        "application/json",
+        "application/xml",
+        "multipart/form-data"
+    ],
+    "paths": {
+        "/documents/download": {
+            "get": {
+                "operationId": "listDocuments",
+                "tags": [
+                    "documents"
+                ],
+                "parameters": [
+                    {
+                        "name": "modulepart",
+                        "type": "string",
+                        "description": "Name of module or area concerned by file download ('facture', ...)",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "name": "original_file",
+                        "type": "string",
+                        "description": "Relative path with filename, relative to modulepart (for example: IN201701-999/IN201701-999.pdf)",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Download a document. ??",
+                "description": " Note that, this API is similar to using the wrapper link \"documents.php\" to download a file (used for internal HTML links of documents into application), but with no need to have a session cookie (the token is used instead).",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/documents/builddoc": {
+            "put": {
+                "operationId": "documentsBuilddoc",
+                "tags": [
+                    "documents"
+                ],
+                "parameters": [
+                    {
+                        "name": "documentsBuilddocModel",
+                        "description": "**modulepart** (required)  \noriginal_file  \ndoctemplate  \nlangcode  \n",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/documentsBuilddocModel"
+                        }
+                    }
+                ],
+                "summary": "Build a document. ??",
+                "description": " Test sample 1: { \"modulepart\": \"invoice\", \"original_file\": \"FA1701-001/FA1701-001.pdf\", \"doctemplate\": \"crabe\", \"langcode\": \"fr_FR\" }.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "System error"
+                    },
+                    "501": {
+                        "description": "Not Implemented"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/documents": {
+            "get": {
+                "operationId": "documentsRetrieveDocumentsListByElement",
+                "tags": [
+                    "documents"
+                ],
+                "parameters": [
+                    {
+                        "name": "modulepart",
+                        "type": "string",
+                        "description": "Name of module or area concerned ('thirdparty', 'member', 'proposal', 'order', 'invoice', 'supplier_invoice', 'shipment', 'project', ...)",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of element",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "ref",
+                        "type": "string",
+                        "description": "Ref of element",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "description": "Sort criteria ('','fullname','relativename','name','date','size')",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "description": "Sort order ('asc' or 'desc')",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Return the list of documents of a dedicated element (from its ID or Ref) ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "System error"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeDocuments",
+                "tags": [
+                    "documents"
+                ],
+                "parameters": [
+                    {
+                        "name": "modulepart",
+                        "type": "string",
+                        "description": "Name of module or area concerned by file download ('product', ...)",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "name": "original_file",
+                        "type": "string",
+                        "description": "Relative path with filename, relative to modulepart (for example: PRODUCT-REF-999/IMAGE-999.jpg)",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete a document. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/documents/upload": {
+            "post": {
+                "operationId": "createDocuments",
+                "tags": [
+                    "documents"
+                ],
+                "parameters": [
+                    {
+                        "name": "createDocumentsModel",
+                        "description": "**filename** (required)  \n**modulepart** (required)  \nref  \nsubdir  \nfilecontent  \nfileencoding  \noverwriteifexists  \ncreatedirifnotexists  \n",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createDocumentsModel"
+                        }
+                    }
+                ],
+                "summary": "Upload a file. ??",
+                "description": " Test sample for invoice: { \"filename\": \"mynewfile.txt\", \"modulepart\": \"invoice\", \"ref\": \"FA1701-001\", \"subdir\": \"\", \"filecontent\": \"content text\", \"fileencoding\": \"\", \"overwriteifexists\": \"0\" }. Test sample for supplier invoice: { \"filename\": \"mynewfile.txt\", \"modulepart\": \"supplier_invoice\", \"ref\": \"FA1701-001\", \"subdir\": \"\", \"filecontent\": \"content text\", \"fileencoding\": \"\", \"overwriteifexists\": \"0\" }. Test sample for medias file: { \"filename\": \"mynewfile.txt\", \"modulepart\": \"medias\", \"ref\": \"\", \"subdir\": \"image/mywebsite\", \"filecontent\": \"Y29udGVudCB0ZXh0Cg==\", \"fileencoding\": \"base64\", \"overwriteifexists\": \"0\" }.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "System error"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/expensereports/{id}": {
+            "get": {
+                "operationId": "retrieveExpensereports",
+                "tags": [
+                    "expensereports"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of Expense Report",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a Expense Report object ??",
+                "description": "Return an array with Expense Report informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateExpensereports",
+                "tags": [
+                    "expensereports"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of Expense Report to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "updateExpensereportsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/updateExpensereportsModel"
+                        }
+                    }
+                ],
+                "summary": "Update Expense Report general fields (won't touch lines of expensereport) ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "401": {
+                        "description": "Not allowed"
+                    },
+                    "500": {
+                        "description": "System error"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeExpensereports",
+                "tags": [
+                    "expensereports"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Expense Report ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete Expense Report ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/expensereports": {
+            "get": {
+                "operationId": "listExpensereports",
+                "tags": [
+                    "expensereports"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "user_ids",
+                        "type": "string",
+                        "description": "User ids filter field. Example: '1' or '1,2,3'",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List Expense Reports ??",
+                "description": "Get a list of Expense Reports",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "createExpensereports",
+                "tags": [
+                    "expensereports"
+                ],
+                "parameters": [
+                    {
+                        "name": "createExpensereportsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/createExpensereportsModel"
+                        }
+                    }
+                ],
+                "summary": "Create Expense Report object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "get": {
+                "operationId": "loginLoginUnsecured",
+                "tags": [
+                    "login"
+                ],
+                "parameters": [
+                    {
+                        "name": "login",
+                        "type": "string",
+                        "description": "User login",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "name": "password",
+                        "type": "string",
+                        "description": "User password",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "name": "entity",
+                        "type": "string",
+                        "description": "Entity (when multicompany module is used). '' means 1=first company.",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "reset",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Reset token (0=get current token, 1=ask a new token and canceled old token. This means access using current existing API token of user will fails: new token will be required for new access)",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Login ??",
+                "description": "Request the API token for a couple username / password. WARNING: You should NEVER use this API, like you should never use the similare API that uses the POST method. This will expose your password. To use the APIs, you should instead set an API token to the user you want to allow to use API (This API token called DOLAPIKEY can be found/set on the user page) and use this token as credential for any API call. From the API explorer, you can enter directly the \"DOLAPIKEY\" into the field at the top right of the page to get access to any allowed APIs.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "500": {
+                        "description": "System error"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "listLogin",
+                "tags": [
+                    "login"
+                ],
+                "parameters": [
+                    {
+                        "name": "listLoginModel",
+                        "description": "**login** (required)  \n**password** (required)  \nentity  \nreset  \n",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/listLoginModel"
+                        }
+                    }
+                ],
+                "summary": "Login ??",
+                "description": "Request the API token for a couple username / password. WARNING: You should NEVER use this API, like you should never use the similare API that uses the POST method. This will expose your password. To use the APIs, you should instead set an API token to the user you want to allow to use API (This API token called DOLAPIKEY can be found/set on the user page) and use this token as credential for any API call. From the API explorer, you can enter directly the \"DOLAPIKEY\" into the field at the top right of the page to get access to any allowed APIs.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied"
+                    },
+                    "500": {
+                        "description": "System error"
+                    }
+                }
+            }
+        },
+        "/members/{id}": {
+            "get": {
+                "operationId": "retrieveMembers",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a member object ??",
+                "description": "Return an array with member informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateMembers",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "updateMembersModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/updateMembersModel"
+                        }
+                    }
+                ],
+                "summary": "Update member ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeMembers",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "member ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete member ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members/thirdparty/{thirdparty}": {
+            "get": {
+                "operationId": "membersRetrieveByThirdparty",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "thirdparty",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of third party",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a member object by linked thirdparty ??",
+                "description": "Return an array with member informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members/thirdparty/email/{email}": {
+            "get": {
+                "operationId": "membersRetrieveByThirdpartyEmail",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "email",
+                        "type": "string",
+                        "description": "Email of third party",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a member object by linked thirdparty email ??",
+                "description": "Return an array with member informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members/thirdparty/barcode/{barcode}": {
+            "get": {
+                "operationId": "membersRetrieveByThirdpartyBarcode",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "barcode",
+                        "type": "string",
+                        "description": "Barcode of third party",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a member object by linked thirdparty barcode ??",
+                "description": "Return an array with member informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members": {
+            "get": {
+                "operationId": "listMembers",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "typeid",
+                        "type": "string",
+                        "description": "ID of the type of member",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "category",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Use this param to filter list by category",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Example: \"(t.ref:like:'SO-%') and ((t.date_creation:<:'20160101') or (t.nature:is:NULL))\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List members ??",
+                "description": "Get a list of members",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "createMembers",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "createMembersModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/createMembersModel"
+                        }
+                    }
+                ],
+                "summary": "Create member object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members/{id}/subscriptions": {
+            "get": {
+                "operationId": "membersRetrieveSubscriptions",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "List subscriptions of a member ??",
+                "description": "Get a list of subscriptions",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "membersCreateSubscription",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "membersCreateSubscriptionModel",
+                        "description": "**start_date** (required)  \n**end_date** (required)  \n**amount** (required)  \nlabel  \n",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/membersCreateSubscriptionModel"
+                        }
+                    }
+                ],
+                "summary": "Add a subscription for a member ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/members/{id}/categories": {
+            "get": {
+                "operationId": "membersRetrieveCategories",
+                "tags": [
+                    "members"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "s.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get categories for a member ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/memberstypes/{id}": {
+            "get": {
+                "operationId": "retrieveMemberstypes",
+                "tags": [
+                    "memberstypes"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a member type object ??",
+                "description": "Return an array with member type informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateMemberstypes",
+                "tags": [
+                    "memberstypes"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of member type to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "updateMemberstypesModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/updateMemberstypesModel"
+                        }
+                    }
+                ],
+                "summary": "Update member type ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeMemberstypes",
+                "tags": [
+                    "memberstypes"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "member type ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete member type ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/memberstypes": {
+            "get": {
+                "operationId": "listMemberstypes",
+                "tags": [
+                    "memberstypes"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.libelle:like:'SO-%') and (t.subscription:=:'1')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List members types ??",
+                "description": "Get a list of members types",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "createMemberstypes",
+                "tags": [
+                    "memberstypes"
+                ],
+                "parameters": [
+                    {
+                        "name": "createMemberstypesModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/createMemberstypesModel"
+                        }
+                    }
+                ],
+                "summary": "Create member type object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/recruitment/jobposition/{id}": {
+            "get": {
+                "operationId": "recruitmentRetrieveJobPosition",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of jobposition",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a jobposition object ??",
+                "description": "Return an array with jobposition informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Not allowed"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "recruitmentUpdateJobPosition",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of jobposition to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "recruitmentUpdateJobPositionModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/recruitmentUpdateJobPositionModel"
+                        }
+                    }
+                ],
+                "summary": "Update jobposition ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "recruitmentRemoveJobPosition",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "jobposition ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete jobposition ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/recruitment/candidature/{id}": {
+            "get": {
+                "operationId": "recruitmentRetrieveCandidature",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of candidature",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a candidature object ??",
+                "description": "Return an array with candidature informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Not allowed"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "recruitmentUpdateCandidature",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of candidature to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "recruitmentUpdateCandidatureModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/recruitmentUpdateCandidatureModel"
+                        }
+                    }
+                ],
+                "summary": "Update candidature ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "recruitmentRemoveCandidature",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "candidature ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete candidature ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/recruitment/jobposition": {
+            "get": {
+                "operationId": "recruitmentListJobPosition",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List jobpositions ??",
+                "description": "Get a list of jobpositions",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "recruitmentCreateJobPosition",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "recruitmentCreateJobPositionModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/recruitmentCreateJobPositionModel"
+                        }
+                    }
+                ],
+                "summary": "Create jobposition object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/recruitment/candidature": {
+            "get": {
+                "operationId": "recruitmentListCandidature",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.ref:like:'SO-%') and (t.date_creation:<:'20160101')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List candatures ??",
+                "description": "Get a list of candidatures",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "recruitmentCreateCandidature",
+                "tags": [
+                    "recruitment"
+                ],
+                "parameters": [
+                    {
+                        "name": "recruitmentCreateCandidatureModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/recruitmentCreateCandidatureModel"
+                        }
+                    }
+                ],
+                "summary": "Create candidature object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/ordering_methods": {
+            "get": {
+                "operationId": "setupRetrieveOrderingMethods",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter with. Syntax example \"(t.code:=:'OrderByWWW')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of ordering methods. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/ordering_origins": {
+            "get": {
+                "operationId": "setupRetrieveOrderingOrigins",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter with. Syntax example \"(t.code:=:'OrderByWWW')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of ordering origins. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/payment_types": {
+            "get": {
+                "operationId": "setupRetrievePaymentTypes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter with. Syntax example \"(t.code:=:'CHQ')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of payments types. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/states": {
+            "get": {
+                "operationId": "setupRetrieveListOfStates",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code_departement",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "description": "To filter the countries by name",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of states/provinces. ??",
+                "description": " The names of the states will be translated to the given language if the $lang parameter is provided. The value of $lang must be a language code supported by Dolibarr, for example 'en_US' or 'fr_FR'. The returned list is sorted by state ID.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/states/{id}": {
+            "get": {
+                "operationId": "setupRetrieveStateByID",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of state",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get state by ID. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/states/byCode/{code}": {
+            "get": {
+                "operationId": "setupRetrieveStateByCode",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "code",
+                        "type": "string",
+                        "description": "Code of state",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get state by Code. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/countries": {
+            "get": {
+                "operationId": "setupRetrieveListOfCountries",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "description": "To filter the countries by name",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "lang",
+                        "type": "string",
+                        "description": "Code of the language the label of the countries must be translated to",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of countries. ??",
+                "description": " The names of the countries will be translated to the given language if the $lang parameter is provided. The value of $lang must be a language code supported by Dolibarr, for example 'en_US' or 'fr_FR'. The returned list is sorted by country ID.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/countries/{id}": {
+            "get": {
+                "operationId": "setupRetrieveCountryByID",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of country",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "lang",
+                        "type": "string",
+                        "description": "Code of the language the name of the country must be translated to",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get country by ID. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/countries/byCode/{code}": {
+            "get": {
+                "operationId": "setupRetrieveCountryByCode",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "code",
+                        "type": "string",
+                        "description": "Code of country (2 characters)",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "lang",
+                        "type": "string",
+                        "description": "Code of the language the name of the country must be translated to",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get country by Code. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/countries/byISO/{iso}": {
+            "get": {
+                "operationId": "setupRetrieveCountryByISO",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "iso",
+                        "type": "string",
+                        "description": "ISO of country (3 characters)",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "lang",
+                        "type": "string",
+                        "description": "Code of the language the name of the country must be translated to",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get country by Iso. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/availability": {
+            "get": {
+                "operationId": "setupRetrieveAvailability",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Delivery times is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter with.",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of delivery times. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/event_types": {
+            "get": {
+                "operationId": "setupRetrieveListOfEventTypes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "To filter on type of event",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "module",
+                        "type": "string",
+                        "description": "To filter on module events",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Event's type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of events types. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/expensereport_types": {
+            "get": {
+                "operationId": "setupRetrieveListOfExpenseReportsTypes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "module",
+                        "type": "string",
+                        "description": "To filter on module",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Event's type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of Expense Report types. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/contact_types": {
+            "get": {
+                "operationId": "setupRetrieveListOfContactTypes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "To filter on type of contact",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "module",
+                        "type": "string",
+                        "description": "To filter on module contacts",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Contact's type is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of contacts types. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/civilities": {
+            "get": {
+                "operationId": "setupRetrieveListOfCivilities",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "module",
+                        "type": "string",
+                        "description": "To filter on module events",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Civility is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of civilities. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/currencies": {
+            "get": {
+                "operationId": "setupRetrieveListOfCurrencies",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "multicurrency",
+                        "type": "integer",
+                        "format": "int64",
+                        "maximum": 2,
+                        "description": "Multicurrency rates (0: no multicurrency, 1: last rate, 2: all rates)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code_iso",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment term is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of currencies. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/extrafields": {
+            "get": {
+                "operationId": "setupRetrieveListOfExtrafields",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.pos",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "type",
+                        "type": "string",
+                        "description": "Type of element ('adherent', 'commande', 'thirdparty', 'facture', 'propal', 'product', ...)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.label:like:'SO-%')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of extra fields. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/towns": {
+            "get": {
+                "operationId": "setupRetrieveListOfTowns",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "zip,town",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "zipcode",
+                        "type": "string",
+                        "description": "To filter on zipcode",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "town",
+                        "type": "string",
+                        "description": "To filter on city name",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Town is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of towns. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/payment_terms": {
+            "get": {
+                "operationId": "setupRetrievePaymentTerms",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "sortorder",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment term is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter. Syntax example \"(t.code:=:'CHQ')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of payments terms. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/shipping_methods": {
+            "get": {
+                "operationId": "setupRetrieveShippingModes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Shipping methodsm is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "SQL criteria to filter. Syntax example \"(t.code:=:'CHQ')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of shipping methods. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/units": {
+            "get": {
+                "operationId": "setupRetrieveListOfMeasuringUnits",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Measuring unit is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of measuring units. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/legal_form": {
+            "get": {
+                "operationId": "setupRetrieveListOfLegalForm",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "country",
+                        "type": "string",
+                        "description": "To filter on country",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Lega form is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of legal form of business. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/staff": {
+            "get": {
+                "operationId": "setupRetrieveListOfStaff",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "id",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Staff is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of staff. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/socialnetworks": {
+            "get": {
+                "operationId": "setupRetrieveListOfsocialNetworks",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "rowid",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Social network is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of social networks. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/ticket_categories": {
+            "get": {
+                "operationId": "setupRetrieveTicketsCategories",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment term is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of tickets categories. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/ticket_severities": {
+            "get": {
+                "operationId": "setupRetrieveTicketsSeverities",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment term is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of tickets severity. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/dictionary/ticket_types": {
+            "get": {
+                "operationId": "setupRetrieveTicketsTypes",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "code",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Number of items per page",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number (starting from zero)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "active",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 1,
+                        "maximum": 1,
+                        "description": "Payment term is active or not",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.code:like:'A%') and (t.active:>=:0)\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get the list of tickets types. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/company": {
+            "get": {
+                "operationId": "setupRetrieveCompany",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [],
+                "summary": "Get properties of company ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/establishments": {
+            "get": {
+                "operationId": "setupRetrieveEstablishments",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [],
+                "summary": "Get the list of establishments. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/establishments/{id}": {
+            "get": {
+                "operationId": "setupRetrieveEtablishmentByID",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of establishment",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get establishment by ID. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/conf/{constantname}": {
+            "get": {
+                "operationId": "setupRetrieveConf",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "constantname",
+                        "type": "string",
+                        "description": "Name of conf variable to get",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get value of a setup variables ??",
+                "description": "Note that conf variables that stores security key or password hashes can't be loaded with API.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Error Bad or unknown value for constantname"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/checkintegrity": {
+            "get": {
+                "operationId": "setupRetrieveCheckIntegrity",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [
+                    {
+                        "name": "target",
+                        "type": "string",
+                        "description": "Can be 'local' or 'default' or Url of the signatures file to use for the test. Must be reachable by the tested Dolibarr.",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "summary": "Do a test of integrity for files and setup. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Signature file not found"
+                    },
+                    "500": {
+                        "description": "Technical error"
+                    },
+                    "503": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/setup/modules": {
+            "get": {
+                "operationId": "setupRetrieveModules",
+                "tags": [
+                    "setup"
+                ],
+                "parameters": [],
+                "summary": "Get list of enabled modules ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/status": {
+            "get": {
+                "operationId": "listStatus",
+                "tags": [
+                    "status"
+                ],
+                "parameters": [],
+                "summary": "Get status (Dolibarr version) ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/subscriptions/{id}": {
+            "get": {
+                "operationId": "retrieveSubscriptions",
+                "tags": [
+                    "subscriptions"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of subscription",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get properties of a subscription object ??",
+                "description": "Return an array with subscription informations",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateSubscriptions",
+                "tags": [
+                    "subscriptions"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of subscription to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "updateSubscriptionsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/updateSubscriptionsModel"
+                        }
+                    }
+                ],
+                "summary": "Update subscription ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/Obj"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeSubscriptions",
+                "tags": [
+                    "subscriptions"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of subscription to delete",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete subscription ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/subscriptions": {
+            "get": {
+                "operationId": "listSubscriptions",
+                "tags": [
+                    "subscriptions"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "dateadh",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.ref:like:'SO-%') and (t.import_key:<:'20160101')\"",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List subscriptions ??",
+                "description": "Get a list of subscriptions",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "createSubscriptions",
+                "tags": [
+                    "subscriptions"
+                ],
+                "parameters": [
+                    {
+                        "name": "createSubscriptionsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/createSubscriptionsModel"
+                        }
+                    }
+                ],
+                "summary": "Create subscription object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "documentsBuilddocModel": {
+            "properties": {
+                "modulepart": {
+                    "type": "string",
+                    "description": "Name of module or area concerned by file download ('thirdparty', 'member', 'proposal', 'supplier_proposal', 'order', 'supplier_order', 'invoice', 'supplier_invoice', 'shipment', 'project', ...)"
+                },
+                "original_file": {
+                    "type": "string",
+                    "description": "Relative path with filename, relative to modulepart (for example: IN201701-999/IN201701-999.pdf)."
+                },
+                "doctemplate": {
+                    "type": "string",
+                    "description": "Set here the doc template to use for document generation (If not set, use the default template)."
+                },
+                "langcode": {
+                    "type": "string",
+                    "description": "Language code like 'en_US', 'fr_FR', 'es_ES', ... (If not set, use the default language)."
+                }
+            },
+            "required": [
+                "modulepart"
+            ]
+        },
+        "createDocumentsModel": {
+            "properties": {
+                "filename": {
+                    "type": "string",
+                    "description": "Name of file to create ('FA1705-0123.txt')"
+                },
+                "modulepart": {
+                    "type": "string",
+                    "description": "Name of module or area concerned by file upload ('product', 'service', 'invoice', 'proposal', 'project', 'project_task', 'supplier_invoice', 'expensereport', 'member', ...)"
+                },
+                "ref": {
+                    "type": "string",
+                    "description": "Reference of object (This will define subdir automatically and store submited file into it)"
+                },
+                "subdir": {
+                    "type": "string",
+                    "description": "Subdirectory (Only if ref not provided)"
+                },
+                "filecontent": {
+                    "type": "string",
+                    "description": "File content (string with file content. An empty file will be created if this parameter is not provided)"
+                },
+                "fileencoding": {
+                    "type": "string",
+                    "description": "File encoding (''=no encoding, 'base64'=Base 64)"
+                },
+                "overwriteifexists": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Overwrite file if exists (1 by default)"
+                },
+                "createdirifnotexists": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Create subdirectories if the doesn't exists (1 by default)",
+                    "defaultValue": 1
+                }
+            },
+            "required": [
+                "filename",
+                "modulepart"
+            ]
+        },
+        "updateExpensereportsModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "createExpensereportsModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request data"
+                }
+            }
+        },
+        "listLoginModel": {
+            "properties": {
+                "login": {
+                    "type": "string",
+                    "description": "User login"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "User password"
+                },
+                "entity": {
+                    "type": "string",
+                    "description": "Entity (when multicompany module is used). '' means 1=first company."
+                },
+                "reset": {
+                    "type": "integer",
+                    "format": "int64",
+                    "description": "Reset token (0=get current token, 1=ask a new token and canceled old token. This means access using current existing API token of user will fails: new token will be required for new access)"
+                }
+            },
+            "required": [
+                "login",
+                "password"
+            ]
+        },
+        "updateMembersModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "Obj": {
+            "properties": {
+                "stringEncoderFunction": {
+                    "type": "string",
+                    "description": ""
+                },
+                "numberEncoderFunction": {
+                    "type": "string",
+                    "description": ""
+                },
+                "fix": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "key value pairs for fixing value types using functions. For example 'id'=>'intval' will make sure all values of the id properties will be converted to integers intval function 'password'=> null will remove all the password entries"
+                },
+                "separatorChar": {
+                    "type": "string",
+                    "description": "character that is used to identify sub objects For example when Object::$separatorChar = '.'; array('my.object'=>true) will result in array( 'my'=>array('object'=>true) );"
+                },
+                "removeEmpty": {
+                    "type": "boolean",
+                    "description": "set it to true when empty arrays, blank strings, null values to be automatically removed from response"
+                },
+                "removeNull": {
+                    "type": "boolean",
+                    "description": "set it to true to remove all null values from the result"
+                }
+            },
+            "required": [
+                "stringEncoderFunction",
+                "numberEncoderFunction",
+                "fix",
+                "separatorChar",
+                "removeEmpty",
+                "removeNull"
+            ]
+        },
+        "createMembersModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request data"
+                }
+            }
+        },
+        "membersCreateSubscriptionModel": {
+            "properties": {
+                "start_date": {
+                    "type": "string",
+                    "description": "Start date"
+                },
+                "end_date": {
+                    "type": "string",
+                    "description": "End date"
+                },
+                "amount": {
+                    "type": "number",
+                    "format": "double",
+                    "description": "Amount (may be 0)"
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Label"
+                }
+            },
+            "required": [
+                "start_date",
+                "end_date",
+                "amount"
+            ]
+        },
+        "updateMemberstypesModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "createMemberstypesModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request data"
+                }
+            }
+        },
+        "recruitmentUpdateJobPositionModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "recruitmentUpdateCandidatureModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "recruitmentCreateJobPositionModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request datas"
+                }
+            }
+        },
+        "recruitmentCreateCandidatureModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request datas"
+                }
+            }
+        },
+        "updateSubscriptionsModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Datas"
+                }
+            }
+        },
+        "createSubscriptionsModel": {
+            "properties": {
+                "request_data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Request data"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "api_key",
+            "in": "query"
+        }
+    },
+    "info": {
+        "version": "1",
+        "title": "Restler API Explorer",
+        "description": "Live API Documentation",
+        "contact": {
+            "name": "Restler Support",
+            "url": "luracast.com/products/restler",
+            "email": "arul@luracast.com"
+        },
+        "license": {
+            "name": "LGPL-2.1",
+            "url": "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"
+        }
+    }
+}
