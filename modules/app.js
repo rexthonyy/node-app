@@ -39,11 +39,11 @@ modules.forEach(module => {
 });
 
 function getModuleByName(name){
-  modules.forEach(module => {
-    if(module.name == name){
+  for(let i = 0, j = modules.length; i < j; i++){
+    if(module[i].name == name){
       return module;
     }
-  });
+  }
 }
 
 //delete duplicate paths from files
