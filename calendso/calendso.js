@@ -6,7 +6,7 @@ require('./postgres/initialize_dbs').init()
   const { ApolloServer } = require("apollo-server");
   const { createGraphQLSchema } = require("openapi-to-graphql");
   const { graphqlHTTP } = require('express-graphql');
-  const oas = require("./openapi.json");
+  const oas = require("./openapi1.json");
   const { schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
 
