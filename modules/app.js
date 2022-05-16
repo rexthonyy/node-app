@@ -51,9 +51,7 @@ for(const [key, value] of Object.entries(paths)){
   if(paths[key].from.length == 1){
     delete paths[key];
   }else{
-    console.log(paths[key].from);
     paths[key].from.forEach(from => {
-      console.log(from);
       let mod = getModuleByName(from);
       delete mod.file.paths[key];
     });
@@ -61,7 +59,7 @@ for(const [key, value] of Object.entries(paths)){
 }
 
 modules.forEach(module => {
-  for(const [key, value] of Object.entries(module.definitions)){
+  for(const [key, value] of Object.entries(module.file.definitions)){
     if(definitions[key] == undefined){
       definitions[key] = value;
       definitions[key].from = [module.name];
