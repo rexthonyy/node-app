@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 let fileModulesJSON = [
   { file: "./swagger/swagger_crm.json", name: "swagger_crm.json" },
@@ -81,8 +80,6 @@ for(const [key, value] of Object.entries(definitions)){
   }
 }
 
-console.log(paths);
-
 let duplicatedModule = {
   swagger: modules[0].swagger,
   host: modules[0].host,
@@ -95,4 +92,27 @@ let duplicatedModule = {
   info: modules[0].info
 }
 
-//console.log(duplicatedModule);
+let filename = "duplicates.json";
+fs.writeFile(`${__dirname}/output/${filename}`, JSON.stringify(duplicatedModule), err => {
+    if (err) {
+        console.error(err)
+        return;
+    }
+    let numModules = modules.length;
+    let count = -1;
+
+    modules.forEach(module => {
+      fs.writeFile(`${__dirname}/modified/${module.name}`, JSON.stringify(module.file), err => {
+        checkComplete();
+      });
+    });
+
+    checkComplete();
+
+    function checkComplete(){
+      count++;
+      if(count == numModules){
+        console.log("success");
+      }
+    }
+});
