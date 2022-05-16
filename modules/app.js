@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 let fileModulesJSON = [
   { file: "./swagger/swagger_crm.json", name: "swagger_crm.json" },
@@ -37,6 +38,49 @@ modules.forEach(module => {
   }
 });
 
+function getModuleByName(name){
+  modules.forEach(module => {
+    if(module.name == name){
+      return module;
+    }
+  });
+  return null;
+}
+
+//delete duplicate paths from files
+for(const [key, value] of Object.entries(paths)){
+  if(paths[key].from.length == 1){
+    delete paths[key];
+  }else{
+    paths[key].from.forEach(from => {
+      let mod = getModuleByName(from);
+      delete mod.file.paths[key];
+    });
+  }
+}
+
+modules.forEach(module => {
+  for(const [key, value] of Object.entries(module.definitions)){
+    if(definitions[key] == undefined){
+      definitions[key] = value;
+      definitions[key].from = [module.name];
+    }else{
+      definitions[key].from.push(module.name);
+    }
+  }
+});
+
+//delete duplicate definitions from files
+for(const [key, value] of Object.entries(definitions)){
+  if(definitions[key].from.length == 1){
+    delete definitions[key];
+  }else{
+    definitions[key].from.forEach(from => {
+      let mod = getModuleByName(from);
+      delete mod.file.definitions[key];
+    });
+  }
+}
 
 console.log(paths);
 
