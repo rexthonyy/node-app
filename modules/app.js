@@ -20,4 +20,4 @@ fileModulesJSON.forEach(module => {
   modules.push(JSON.parse(fs.readFileSync(module.file, 'utf8')));
 });
 
-console.log(modules[0].host);
+console.log(modules[11].produces);
