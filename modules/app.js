@@ -20,4 +20,26 @@ fileModulesJSON.forEach(module => {
   modules.push(JSON.parse(fs.readFileSync(module.file, 'utf8')));
 });
 
-console.log(modules[11].produces);
+let paths = {};
+let definitions = {};
+
+modules.forEach(module => {
+  for(const [key, value] of Object.entries(module.paths)){
+    console.log(key);
+  }
+});
+
+
+let duplicatedModule = {
+  swagger: modules[0].swagger,
+  host: modules[0].host,
+  basePath: modules[0].basePath,
+  produces: modules[0].produces,
+  consumes: modules[0].consumes,
+  paths,
+  definitions,
+  securityDefinitions: modules[0].securityDefinitions,
+  info: modules[0].info
+}
+
+//console.log(duplicatedModule);
