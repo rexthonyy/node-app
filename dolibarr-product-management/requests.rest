@@ -1,0 +1,3 @@
+GET http://88.208.212.245/api/index.php/boms?sortfield=t.rowid&sortorder=ASC&limit=100
+Content-Type: application/json
+DOLAPIKEY: w944OdsvG64ARlbp1b15DrzB2jJZM3PH
