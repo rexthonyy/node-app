@@ -44,7 +44,6 @@ function getModuleByName(name){
       return module;
     }
   });
-  return null;
 }
 
 //delete duplicate paths from files
