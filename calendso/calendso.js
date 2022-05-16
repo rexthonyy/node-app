@@ -27,7 +27,6 @@ require('./postgres/initialize_dbs').init()
         }
       ]
       }),
-      plugins: [plugin],
       uploads: false
     });
   
