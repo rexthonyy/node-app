@@ -8,7 +8,9 @@ require('./postgres/initialize_dbs').init()
   const { ApolloServer } = require("apollo-server");
   const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
-  const { graphqlUploadExpress } = require('graphql-upload');
+  const { createGraphQLSchema } = require("openapi-to-graphql");
+  const oas = require("./openapi.json");
+  const { openapi_schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
   const s3Handler = require('./libs/s3Handler');
   const { useSofa, OpenAPI } = require('sofa-api');
@@ -43,66 +45,66 @@ require('./postgres/initialize_dbs').init()
       }
     );
 
-    const openApi = OpenAPI({
-      schema: stitchSchemas({
-        subschemas: [
-          {
-            schema: schema
-          },
-          {
-            schema: schema1
-          }
-        ]
-        }),
-      info: {
-        title: 'Knowledgebase API',
-        version: '1.0.0',
-      },
-    });
+    // const openApi = OpenAPI({
+    //   schema: stitchSchemas({
+    //     subschemas: [
+    //       {
+    //         schema: schema
+    //       },
+    //       {
+    //         schema: schema1
+    //       }
+    //     ]
+    //     }),
+    //   info: {
+    //     title: 'Knowledgebase API',
+    //     version: '1.0.0',
+    //   },
+    // });
 
-    app.use(
-      '/api',
-      useSofa({
-        basePath: '/api',
-        schema: stitchSchemas({
-          subschemas: [
-            {
-              schema: schema
-            },
-            {
-              schema: schema1
-            }
-          ]
-          }),
-          onRoute(info) {
-            openApi.addRoute(info, {
-              basePath: '/api',
-            });
-          },
-      })
-    );
+    // app.use(
+    //   '/api',
+    //   useSofa({
+    //     basePath: '/api',
+    //     schema: stitchSchemas({
+    //       subschemas: [
+    //         {
+    //           schema: schema
+    //         },
+    //         {
+    //           schema: schema1
+    //         }
+    //       ]
+    //       }),
+    //       onRoute(info) {
+    //         openApi.addRoute(info, {
+    //           basePath: '/api',
+    //         });
+    //       },
+    //   })
+    // );
 
-    openApi.save('./swagger.yml');
+    // openApi.save('./swagger.yml');
 
-    const server = new ApolloServer({
-      schema: stitchSchemas({
-      subschemas: [
-        {
-          schema: schema
-        },
-        {
-          schema: schema1
-        }
-      ]
-      }),
-      plugins: [plugin],
-      uploads: false
-    });
     // const server = new ApolloServer({
-    //   schema: schema1,
+    //   schema: stitchSchemas({
+    //   subschemas: [
+    //     {
+    //       schema: schema
+    //     },
+    //     {
+    //       schema: schema1
+    //     }
+    //   ]
+    //   }),
     //   plugins: [plugin],
     //   uploads: false
     // });
+    const server = new ApolloServer({
+      schema: openapi_schema,
+      plugins: [plugin],
+      uploads: false
+    });
   
     const { url } = await server.listen({port: process.env.PORT1});
     console.log(`🚀 Server ready at ${url}`);
@@ -110,17 +112,8 @@ require('./postgres/initialize_dbs').init()
 
     app.use('/graphql', 
     graphqlHTTP({
-      schema: stitchSchemas({
-        subschemas: [
-              {
-                schema: schema
-              },
-              {
-                schema: schema1
-              }
-            ]
-            }),
-        graphiql: true,
+      schema: openapi_schema,
+      graphiql: true,
     }));
     
     let port = process.env.PORT || 1000;
