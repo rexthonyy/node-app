@@ -9,7 +9,7 @@ require('./postgres/initialize_dbs').init()
   const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
   const { createGraphQLSchema } = require("openapi-to-graphql");
-  const oas = require("./swagger.yml");
+  const oas = require("./openapi.json");
   const { openapi_schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
   const s3Handler = require('./libs/s3Handler');

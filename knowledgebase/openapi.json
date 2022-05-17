@@ -10,24 +10,6 @@
         }
     ],
     "paths": {
-        "/api/ping": {
-            "get": {
-                "operationId": "ping_query",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string",
-                                    "description": "Is the server alive?"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/knowledgebases": {
             "get": {
                 "operationId": "knowledgebases__query",
@@ -1747,10 +1729,6 @@
             "Query": {
                 "type": "object",
                 "properties": {
-                    "ping": {
-                        "type": "string",
-                        "description": "Is the server alive?"
-                    },
                     "knowledgebases_": {
                         "type": "array",
                         "description": "Get all knowledgebases",
