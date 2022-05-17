@@ -9,8 +9,8 @@ require('./postgres/initialize_dbs').init()
   const { makeSchemaAndPlugin } = require("postgraphile-apollo-server");
   const { graphqlHTTP } = require('express-graphql');
   const { createGraphQLSchema } = require("openapi-to-graphql");
-  const oas = require("./openapi.json");
-  const { openapi_schema } = await createGraphQLSchema([oas]);
+  // const oas = require("./openapi.json");
+  // const { openapi_schema } = await createGraphQLSchema([oas]);
   const schema1 = require('./schema/index');
   const s3Handler = require('./libs/s3Handler');
   const { useSofa, OpenAPI } = require('sofa-api');
@@ -45,46 +45,28 @@ require('./postgres/initialize_dbs').init()
       }
     );
 
-    // const openApi = OpenAPI({
-    //   schema: stitchSchemas({
-    //     subschemas: [
-    //       {
-    //         schema: schema
-    //       },
-    //       {
-    //         schema: schema1
-    //       }
-    //     ]
-    //     }),
-    //   info: {
-    //     title: 'Knowledgebase API',
-    //     version: '1.0.0',
-    //   },
-    // });
+    const openApi = OpenAPI({
+      schema: schema1,
+      info: {
+        title: 'Knowledgebase API',
+        version: '1.0.0',
+      },
+    });
 
-    // app.use(
-    //   '/api',
-    //   useSofa({
-    //     basePath: '/api',
-    //     schema: stitchSchemas({
-    //       subschemas: [
-    //         {
-    //           schema: schema
-    //         },
-    //         {
-    //           schema: schema1
-    //         }
-    //       ]
-    //       }),
-    //       onRoute(info) {
-    //         openApi.addRoute(info, {
-    //           basePath: '/api',
-    //         });
-    //       },
-    //   })
-    // );
+    app.use(
+      '/api',
+      useSofa({
+        basePath: '/api',
+        schema: schema1,
+          onRoute(info) {
+            openApi.addRoute(info, {
+              basePath: '/api',
+            });
+          },
+      })
+    );
 
-    // openApi.save('./swagger.yml');
+    openApi.save('./swagger.yml');
 
     // const server = new ApolloServer({
     //   schema: stitchSchemas({
@@ -101,7 +83,7 @@ require('./postgres/initialize_dbs').init()
     //   uploads: false
     // });
     const server = new ApolloServer({
-      schema: openapi_schema,
+      schema: schema1,
       plugins: [plugin],
       uploads: false
     });
@@ -112,7 +94,7 @@ require('./postgres/initialize_dbs').init()
 
     app.use('/graphql', 
     graphqlHTTP({
-      schema: openapi_schema,
+      schema: schema1,
       graphiql: true,
     }));
     
