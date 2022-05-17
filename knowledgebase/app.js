@@ -11,7 +11,7 @@ require('./postgres/initialize_dbs').init()
   const { graphqlUploadExpress } = require('graphql-upload');
   const schema1 = require('./schema/index');
   const s3Handler = require('./libs/s3Handler');
-  const { useSofa } = require('sofa-api');
+  const { useSofa, OpenAPI } = require('sofa-api');
 
   const app = express();
 
@@ -43,13 +43,46 @@ require('./postgres/initialize_dbs').init()
       }
     );
 
+    const openApi = OpenAPI({
+      schema: stitchSchemas({
+        subschemas: [
+          {
+            schema: schema
+          },
+          {
+            schema: schema1
+          }
+        ]
+        }),
+      info: {
+        title: 'Knowledgebase API',
+        version: '1.0.0',
+      },
+    });
+
     app.use(
       '/api',
       useSofa({
         basePath: '/api',
-        schema,
+        schema: stitchSchemas({
+          subschemas: [
+            {
+              schema: schema
+            },
+            {
+              schema: schema1
+            }
+          ]
+          }),
+          onRoute(info) {
+            openApi.addRoute(info, {
+              basePath: '/api',
+            });
+          },
       })
     );
+
+    openApi.save('./swagger.yml');
 
     const server = new ApolloServer({
       schema: stitchSchemas({
