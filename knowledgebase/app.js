@@ -34,15 +34,6 @@ require('./postgres/initialize_dbs').init()
     });
   });
 
-  
-  app.use(
-    '/api',
-    useSofa({
-      basePath: '/api',
-      schema1,
-    })
-  );
-
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(
       pgPool,
@@ -50,6 +41,14 @@ require('./postgres/initialize_dbs').init()
       {
         
       }
+    );
+
+    app.use(
+      '/api',
+      useSofa({
+        basePath: '/api',
+        schema,
+      })
     );
 
     // const server = new ApolloServer({
