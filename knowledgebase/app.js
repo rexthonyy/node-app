@@ -1,6 +1,6 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
-.then(() => {
+.then(async () => {
   const pg = require("pg");
   const cors = require("cors");
   const express = require('express');
