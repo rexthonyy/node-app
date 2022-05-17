@@ -11,6 +11,7 @@ require('./postgres/initialize_dbs').init()
   const { graphqlUploadExpress } = require('graphql-upload');
   const schema1 = require('./schema/index');
   const s3Handler = require('./libs/s3Handler');
+  const { useSofa } = require('sofa-api');
 
   const app = express();
 
@@ -32,6 +33,15 @@ require('./postgres/initialize_dbs').init()
         })
     });
   });
+
+  
+  app.use(
+    '/api',
+    useSofa({
+      basePath: '/api',
+      schema1,
+    })
+  );
 
   async function main() {
     const { schema, plugin } = await makeSchemaAndPlugin(
