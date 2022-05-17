@@ -82,13 +82,13 @@ require('./postgres/initialize_dbs').init()
     //   plugins: [plugin],
     //   uploads: false
     // });
-    // const server = new ApolloServer({
-    //   schema: openapi_schema,
-    //   uploads: false
-    // });
+    const server = new ApolloServer({
+      schema: openapi_schema,
+      uploads: false
+    });
   
-    // const { url } = await server.listen({port: process.env.PORT1});
-    // console.log(`🚀 Server ready at ${url}`);
+    const { url } = await server.listen({port: process.env.PORT1});
+    console.log(`🚀 Server ready at ${url}`);
 
 
     app.use('/graphql', 
