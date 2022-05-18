@@ -1,0 +1,3206 @@
+
+        "/products/ref/{ref}": {
+            "get": {
+                "operationId": "productsRetrieveByRef",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "ref",
+                        "type": "string",
+                        "description": "Ref of element",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "includestockdata",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Load also information about stock (slower)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includesubproducts",
+                        "type": "boolean",
+                        "description": "Load information about subproducts",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includeparentid",
+                        "type": "boolean",
+                        "description": "Load also ID of parent product (if product is a variant of a parent product)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includetrans",
+                        "type": "boolean",
+                        "description": "Load also the translations of product label and description",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get properties of a product object by ref ??",
+                "description": "Return an array with product information.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            "from": [
+                "swagger_debug.json",
+                "swagger_emails_and_social_media.json",
+                "swagger_payments_and_printing.json",
+                "swagger_website_in_front_of_application.json"
+            ]
+        },
+
+
+
+
+
+
+
+        "/products/{id}": {
+            "get": {
+                "operationId": "retrieveProducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "ID of product",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "includestockdata",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Load also information about stock (slower)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includesubproducts",
+                        "type": "boolean",
+                        "description": "Load information about subproducts",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includeparentid",
+                        "type": "boolean",
+                        "description": "Load also ID of parent product (if product is a variant of a parent product)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includetrans",
+                        "type": "boolean",
+                        "description": "Load also the translations of product label and description",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get properties of a product object by id ??",
+                "description": "Return an array with product information.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "put": {
+                "operationId": "updateProducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of product to update",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "updateProductsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/updateProductsModel"
+                        }
+                    }
+                ],
+                "summary": "Update product. ??",
+                "description": "Price will be updated by this API only if option is set on \"One price per product\". See other APIs for other price modes.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "delete": {
+                "operationId": "removeProducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Product ID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Delete product ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "from": [
+                "swagger_debug.json",
+                "swagger_emails_and_social_media.json",
+                "swagger_payments_and_printing.json",
+                "swagger_website_in_front_of_application.json"
+            ]
+        },
+        
+        "/products/ref_ext/{ref_ext}": {
+            "get": {
+                "operationId": "productsRetrieveByRefExt",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "ref_ext",
+                        "type": "string",
+                        "description": "Ref_ext of element",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "includestockdata",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Load also information about stock (slower)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includesubproducts",
+                        "type": "boolean",
+                        "description": "Load information about subproducts",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includeparentid",
+                        "type": "boolean",
+                        "description": "Load also ID of parent product (if product is a variant of a parent product)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includetrans",
+                        "type": "boolean",
+                        "description": "Load also the translations of product label and description",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get properties of a product object by ref_ext ??",
+                "description": "Return an array with product information.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+
+
+
+
+
+
+
+Product Management (PM)
+
+
+
+
+
+
+
+
+
+
+
+            "from": [
+                "swagger_debug.json",
+                "swagger_emails_and_social_media.json",
+                "swagger_payments_and_printing.json",
+                "swagger_website_in_front_of_application.json"
+            ]
+        },
+        "/products/barcode/{barcode}": {
+            "get": {
+                "operationId": "productsRetrieveByBarcode",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "barcode",
+                        "type": "string",
+                        "description": "Barcode of element",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "name": "includestockdata",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Load also information about stock (slower)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includesubproducts",
+                        "type": "boolean",
+                        "description": "Load information about subproducts",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includeparentid",
+                        "type": "boolean",
+                        "description": "Load also ID of parent product (if product is a variant of a parent product)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includetrans",
+                        "type": "boolean",
+                        "description": "Load also the translations of product label and description",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "Get properties of a product object by barcode ??",
+                "description": "Return an array with product information.",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+
+
+
+
+
+
+Product Management (PM)
+
+
+
+
+
+
+
+
+            "from": [
+                "swagger_debug.json",
+                "swagger_emails_and_social_media.json",
+                "swagger_payments_and_printing.json",
+                "swagger_website_in_front_of_application.json"
+            ]
+        },
+        "/products": {
+            "get": {
+                "operationId": "listProducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "sortfield",
+                        "type": "string",
+                        "defaultValue": "t.ref",
+                        "description": "Sort field",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sortorder",
+                        "type": "string",
+                        "defaultValue": "ASC",
+                        "description": "Sort order",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "limit",
+                        "type": "integer",
+                        "format": "int64",
+                        "defaultValue": 100,
+                        "description": "Limit for list",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page number",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "mode",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Use this param to filter list (0 for all, 1 for only product, 2 for only service)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "category",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Use this param to filter list by category",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "sqlfilters",
+                        "type": "string",
+                        "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.tobuy:=:0) and (t.tosell:=:1)\"",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "ids_only",
+                        "type": "boolean",
+                        "description": "Return only IDs of product instead of all properties (faster, above all if list is long)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "variant_filter",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Use this param to filter list (0 = all, 1=products without variants, 2=parent of variants, 3=variants only)",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "pagination_data",
+                        "type": "boolean",
+                        "description": "If this parameter is set to true the response will include pagination data. Default value is false. Page starts from 0",
+                        "in": "query",
+                        "required": false
+                    },
+                    {
+                        "name": "includestockdata",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Load also information about stock (slower)",
+                        "in": "query",
+                        "required": false
+                    }
+                ],
+                "summary": "List products ??",
+                "description": "Get a list of products",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+            "post": {
+                "operationId": "createProducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "createProductsModel",
+                        "description": "request_data  \n",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/createProductsModel"
+                        }
+                    }
+                ],
+                "summary": "Create product object ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+
+
+
+
+
+Product Management (PM)
+
+
+
+
+
+
+
+
+            "from": [
+                "swagger_debug.json",
+                "swagger_emails_and_social_media.json",
+                "swagger_payments_and_printing.json",
+                "swagger_website_in_front_of_application.json"
+            ]
+        },
+        "/products/{id}/subproducts": {
+            "get": {
+                "operationId": "productsRetrieveSubproducts",
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Id of parent product/service",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "summary": "Get the list of subproducts of the product. ??",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "RestException"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            },
+
+
+
+
+
+
+
+
+            "/products/{id}/subproducts/add": {
+                "post": {
+                    "operationId": "productsAddSubproducts",
+                    "tags": [
+                        "products"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "Id of parent product/service",
+                            "in": "path",
+                            "required": true
+                        },
+                        {
+                            "name": "productsAddSubproductsModel",
+                            "description": "**subproduct_id** (required)  \n**qty** (required)  \nincdec  \n",
+                            "in": "body",
+                            "required": true,
+                            "schema": {
+                                "$ref": "#/definitions/productsAddSubproductsModel"
+                            }
+                        }
+                    ],
+                    "summary": "Add subproduct. ??",
+                    "description": " Link a product/service to a parent product/service",
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "schema": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        },
+                        "500": {
+                            "description": "RestException"
+                        }
+                    },
+                    "security": [
+                        {
+                            "api_key": []
+                        }
+                    ]
+                },
+    
+    
+    
+    
+    
+    
+    
+    Product Management (PM)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+                "from": [
+                    "swagger_debug.json",
+                    "swagger_emails_and_social_media.json",
+                    "swagger_payments_and_printing.json",
+                    "swagger_website_in_front_of_application.json"
+                ]
+            },
+
+
+
+            "/products/{id}/subproducts/remove/{subproduct_id}": {
+                "delete": {
+                    "operationId": "productsDelSubproducts",
+                    "tags": [
+                        "products"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "Id of parent product/service",
+                            "in": "path",
+                            "required": true
+                        },
+                        {
+                            "name": "subproduct_id",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "Id of child product/service",
+                            "in": "path",
+                            "required": true
+                        }
+                    ],
+                    "summary": "Remove subproduct. ??",
+                    "description": "Unlink a product/service from a parent product/service",
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "schema": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        },
+                        "401": {
+                            "description": "Unauthorized"
+                        },
+                        "404": {
+                            "description": "Not Found"
+                        }
+                    },
+                    "security": [
+                        {
+                            "api_key": []
+                        }
+                    ]
+                },
+                "from": [
+                    "swagger_debug.json",
+                    "swagger_emails_and_social_media.json",
+                    "swagger_payments_and_printing.json",
+                    "swagger_website_in_front_of_application.json"
+                ]
+            },
+            "/products/{id}/categories": {
+                "get": {
+                    "operationId": "productsRetrieveCategories",
+                    "tags": [
+                        "products"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "ID of product",
+                            "in": "path",
+                            "required": true
+                        },
+                        {
+                            "name": "sortfield",
+                            "type": "string",
+                            "defaultValue": "s.rowid",
+                            "description": "Sort field",
+                            "in": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "sortorder",
+                            "type": "string",
+                            "defaultValue": "ASC",
+                            "description": "Sort order",
+                            "in": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "limit",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "Limit for list",
+                            "in": "query",
+                            "required": false
+                        },
+                        {
+                            "name": "page",
+                            "type": "integer",
+                            "format": "int64",
+                            "description": "Page number",
+                            "in": "query",
+                            "required": false
+                        }
+                    ],
+                    "summary": "Get categories for a product ??",
+                    "description": "",
+                    "responses": {
+                        "200": {
+                            "description": "Success",
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "security": [
+                        {
+                            "api_key": []
+                        }
+                    ]
+                },
+    
+    
+    
+    
+    
+                "/products/{id}/selling_multiprices/per_segment": {
+                    "get": {
+                        "operationId": "productsRetrieveCustomerPricesPerSegment",
+                        "tags": [
+                            "products"
+                        ],
+                        "parameters": [
+                            {
+                                "name": "id",
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "ID of product",
+                                "in": "path",
+                                "required": true
+                            }
+                        ],
+                        "summary": "Get prices per segment for a product ??",
+                        "description": "",
+                        "responses": {
+                            "200": {
+                                "description": "Success",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "security": [
+                            {
+                                "api_key": []
+                            }
+                        ]
+                    },
+
+
+                    "/products/{id}/selling_multiprices/per_customer": {
+                        "get": {
+                            "operationId": "productsRetrieveCustomerPricesPerCustomer",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "thirdparty_id",
+                                    "type": "string",
+                                    "description": "Thirdparty id to filter orders of (example '1')",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get prices per customer for a product ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/{id}/selling_multiprices/per_quantity": {
+                        "get": {
+                            "operationId": "productsRetrieveCustomerPricesPerQuantity",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of product",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get prices per quantity for a product ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/{id}/purchase_prices": {
+                        "post": {
+                            "operationId": "productsAddPurchasePrice",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsAddPurchasePriceModel",
+                                    "description": "**qty** (required)  \n**buyprice** (required)  \n**price_base_type** (required)  \n**fourn_id** (required)  \n**availability** (required)  \n**ref_fourn** (required)  \n**tva_tx** (required)  \ncharges  \nremise_percent  \nremise  \nnewnpr  \ndelivery_time_days  \nsupplier_reputation  \nlocaltaxes_array  \nnewdefaultvatcode  \nmulticurrency_buyprice  \nmulticurrency_price_base_type  \nmulticurrency_tx  \nmulticurrency_code  \ndesc_fourn  \nbarcode  \nfk_barcode_type  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsAddPurchasePriceModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Add/Update purchase prices for a product. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "get": {
+                            "operationId": "productsRetrievePurchasePrices",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of element",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "ref_ext",
+                                    "type": "string",
+                                    "description": "Ref ext of element",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "barcode",
+                                    "type": "string",
+                                    "description": "Barcode of element",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get purchase prices for a product ??",
+                            "description": "Return an array with product information. TODO implement getting a product by ref or by $ref_ext",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "string"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "403": {
+                                    "description": "Forbidden"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/{id}/purchase_prices/{priceid}": {
+                        "delete": {
+                            "operationId": "productsRemovePurchasePrice",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Product ID",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "priceid",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "purchase price ID",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Delete purchase price for a product ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/purchase_prices": {
+                        "get": {
+                            "operationId": "productsRetrieveSupplierProducts",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "sortfield",
+                                    "type": "string",
+                                    "defaultValue": "t.ref",
+                                    "description": "Sort field",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "sortorder",
+                                    "type": "string",
+                                    "defaultValue": "ASC",
+                                    "description": "Sort order",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "limit",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "defaultValue": 100,
+                                    "description": "Limit for list",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "page",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Page number",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "mode",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Use this param to filter list (0 for all, 1 for only product, 2 for only service)",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "category",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Use this param to filter list by category of product",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "supplier",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Use this param to filter list by supplier",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "sqlfilters",
+                                    "type": "string",
+                                    "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.tobuy:=:0) and (t.tosell:=:1)\"",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get a list of all purchase prices of products ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributes",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "sortfield",
+                                    "type": "string",
+                                    "defaultValue": "t.ref",
+                                    "description": "Sort field",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "sortorder",
+                                    "type": "string",
+                                    "defaultValue": "ASC",
+                                    "description": "Sort order",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "limit",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "defaultValue": 100,
+                                    "description": "Limit for list",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "page",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Page number",
+                                    "in": "query",
+                                    "required": false
+                                },
+                                {
+                                    "name": "sqlfilters",
+                                    "type": "string",
+                                    "description": "Other criteria to filter answers separated by a comma. Syntax example \"(t.ref:like:color)\"",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get attributes. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                },
+                                "503": {
+                                    "description": "Service Unavailable"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "post": {
+                            "operationId": "productsAddAttributes",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "productsAddAttributesModel",
+                                    "description": "**ref** (required)  \n**label** (required)  \nref_ext  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsAddAttributesModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Add attributes. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/{id}": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributeById",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get attribute by ID. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "put": {
+                            "operationId": "productsUpdateAttributes",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsUpdateAttributesModel",
+                                    "description": "request_data  \n",
+                                    "in": "body",
+                                    "required": false,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsUpdateAttributesModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Update attributes by id. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                },
+                                "500": {
+                                    "description": "RestException"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "operationId": "productsRemoveAttributes",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Delete attributes by id. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/ref/{ref}": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributesByRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Reference of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get attributes by ref. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/ref_ext/{ref_ext}": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributesByRefExt",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "ref_ext",
+                                    "type": "string",
+                                    "description": "External reference of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get attributes by ref_ext. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/values/{id}": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributeValueById",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute value",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get attribute value by id. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "put": {
+                            "operationId": "productsUpdateAttributeValue",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsUpdateAttributeValueModel",
+                                    "description": "**request_data** (required)  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsUpdateAttributeValueModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Update attribute value. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "operationId": "productsRemoveAttributeValueById",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute value",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Delete attribute value by id. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/{id}/values/ref/{ref}": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributeValueByRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute value",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of Attribute value",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get attribute value by ref. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "operationId": "productsRemoveAttributeValueByRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of Attribute value",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Delete attribute value by ref. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/{id}/values": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributeValues",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of an Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get all values for an attribute id. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "post": {
+                            "operationId": "productsAddAttributeValue",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Attribute",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsAddAttributeValueModel",
+                                    "description": "**ref** (required)  \n**value** (required)  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsAddAttributeValueModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Add attribute value. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/attributes/ref/{ref}/values": {
+                        "get": {
+                            "operationId": "productsRetrieveAttributeValuesByRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of an Attribute",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get all values for an attribute ref. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/{id}/variants": {
+                        "get": {
+                            "operationId": "productsRetrieveVariants",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "includestock",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "Default value 0. If parameter is set to 1 the response will contain stock data of each variant",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get product variants. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "post": {
+                            "operationId": "productsAddVariant",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsAddVariantModel",
+                                    "description": "**weight_impact** (required)  \n**price_impact** (required)  \n**price_impact_is_percent** (required)  \n**features** (required)  \nreference  \nref_ext  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsAddVariantModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Add variant. ??",
+                            "description": " \"features\" is a list of attributes pairs id_attribute=>id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/ref/{ref}/variants": {
+                        "get": {
+                            "operationId": "productsRetrieveVariantsByProdRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of Product",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Get product variants by Product ref. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "post": {
+                            "operationId": "productsAddVariantByProductRef",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "ref",
+                                    "type": "string",
+                                    "description": "Ref of Product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsAddVariantByProductRefModel",
+                                    "description": "**weight_impact** (required)  \n**price_impact** (required)  \n**price_impact_is_percent** (required)  \n**features** (required)  \n",
+                                    "in": "body",
+                                    "required": true,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsAddVariantByProductRefModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Add variant by product ref. ??",
+                            "description": " \"features\" is a list of attributes pairs id_attribute=>id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/variants/{id}": {
+                        "put": {
+                            "operationId": "productsUpdateVariant",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Variant",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "productsUpdateVariantModel",
+                                    "description": "request_data  \n",
+                                    "in": "body",
+                                    "required": false,
+                                    "schema": {
+                                        "$ref": "#/definitions/productsUpdateVariantModel"
+                                    }
+                                }
+                            ],
+                            "summary": "Put product variants. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+                        "delete": {
+                            "operationId": "productsRemoveVariant",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Variant",
+                                    "in": "path",
+                                    "required": true
+                                }
+                            ],
+                            "summary": "Delete product variants. ??",
+                            "description": "",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "/products/{id}/stock": {
+                        "get": {
+                            "operationId": "productsRetrieveStock",
+                            "tags": [
+                                "products"
+                            ],
+                            "parameters": [
+                                {
+                                    "name": "id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of Product",
+                                    "in": "path",
+                                    "required": true
+                                },
+                                {
+                                    "name": "selected_warehouse_id",
+                                    "type": "integer",
+                                    "format": "int64",
+                                    "description": "ID of warehouse",
+                                    "in": "query",
+                                    "required": false
+                                }
+                            ],
+                            "summary": "Get stock data for the product id given. ??",
+                            "description": "Optionaly with $selected_warehouse_id parameter user can get stock of specific warehouse",
+                            "responses": {
+                                "200": {
+                                    "description": "Success",
+                                    "schema": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
+                                },
+                                "401": {
+                                    "description": "Unauthorized"
+                                },
+                                "404": {
+                                    "description": "Not Found"
+                                },
+                                "500": {
+                                    "description": "System error"
+                                }
+                            },
+                            "security": [
+                                {
+                                    "api_key": []
+                                }
+                            ]
+                        },
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+
+
+
+
+
+
+                    "updateProductsModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Datas"
+                            }
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    }
+
+
+
+
+                    "createProductsModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Request data"
+                            }
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+
+
+
+                    "productsAddSubproductsModel": {
+                        "properties": {
+                            "subproduct_id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Id of child product/service"
+                            },
+                            "qty": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Quantity"
+                            },
+                            "incdec": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "1=Increase/decrease stock of child when parent stock increase/decrease",
+                                "defaultValue": 1
+                            }
+                        },
+                        "required": [
+                            "subproduct_id",
+                            "qty"
+                        ],
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsAddPurchasePriceModel": {
+                        "properties": {
+                            "qty": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Min quantity for which price is valid"
+                            },
+                            "buyprice": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Purchase price for the quantity min"
+                            },
+                            "price_base_type": {
+                                "type": "string",
+                                "description": "HT or TTC"
+                            },
+                            "fourn_id": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Supplier ID"
+                            },
+                            "availability": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Product availability"
+                            },
+                            "ref_fourn": {
+                                "type": "string",
+                                "description": "Supplier ref"
+                            },
+                            "tva_tx": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "New VAT Rate (For example 8.5. Should not be a string)"
+                            },
+                            "charges": {
+                                "type": "string",
+                                "description": "costs affering to product"
+                            },
+                            "remise_percent": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Discount regarding qty (percent)"
+                            },
+                            "remise": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Discount regarding qty (amount)"
+                            },
+                            "newnpr": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Set NPR or not"
+                            },
+                            "delivery_time_days": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Delay in days for delivery (max). May be '' if not defined."
+                            },
+                            "supplier_reputation": {
+                                "type": "string",
+                                "description": "Reputation with this product to the defined supplier (empty, FAVORITE, DONOTORDER)"
+                            },
+                            "localtaxes_array": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Array with localtaxes info array('0'=>type1,'1'=>rate1,'2'=>type2,'3'=>rate2) (loaded by getLocalTaxesFromRate(vatrate, 0, ...) function)."
+                            },
+                            "newdefaultvatcode": {
+                                "type": "string",
+                                "description": "Default vat code"
+                            },
+                            "multicurrency_buyprice": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Purchase price for the quantity min in currency"
+                            },
+                            "multicurrency_price_base_type": {
+                                "type": "string",
+                                "description": "HT or TTC in currency",
+                                "defaultValue": "HT"
+                            },
+                            "multicurrency_tx": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Rate currency",
+                                "defaultValue": 1
+                            },
+                            "multicurrency_code": {
+                                "type": "string",
+                                "description": "Currency code"
+                            },
+                            "desc_fourn": {
+                                "type": "string",
+                                "description": "Custom description for product_fourn_price"
+                            },
+                            "barcode": {
+                                "type": "string",
+                                "description": "Barcode"
+                            },
+                            "fk_barcode_type": {
+                                "type": "integer",
+                                "format": "int64",
+                                "description": "Barcode type"
+                            }
+                        },
+                        "required": [
+                            "qty",
+                            "buyprice",
+                            "price_base_type",
+                            "fourn_id",
+                            "availability",
+                            "ref_fourn",
+                            "tva_tx"
+                        ],
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsAddAttributesModel": {
+                        "properties": {
+                            "ref": {
+                                "type": "string",
+                                "description": "Reference of Attribute"
+                            },
+                            "label": {
+                                "type": "string",
+                                "description": "Label of Attribute"
+                            },
+                            "ref_ext": {
+                                "type": "string",
+                                "description": "Reference of Attribute"
+                            }
+                        },
+                        "required": [
+                            "ref",
+                            "label"
+                        ],
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsUpdateAttributesModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Datas"
+                            }
+                        },
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsUpdateAttributeValueModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Datas"
+                            }
+                        },
+                        "required": [
+                            "request_data"
+                        ],
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsAddAttributeValueModel": {
+                        "properties": {
+                            "ref": {
+                                "type": "string",
+                                "description": "Reference of Attribute value"
+                            },
+                            "value": {
+                                "type": "string",
+                                "description": "Value of Attribute value"
+                            }
+                        },
+                        "required": [
+                            "ref",
+                            "value"
+                        ],
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsAddVariantModel": {
+                        "properties": {
+                            "weight_impact": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Weight impact of variant"
+                            },
+                            "price_impact": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Price impact of variant"
+                            },
+                            "price_impact_is_percent": {
+                                "type": "boolean",
+                                "description": "Price impact in percent (true or false)"
+                            },
+                            "features": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "List of attributes pairs id_attribute->id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)"
+                            },
+                            "reference": {
+                                "type": "string",
+                                "description": "Customized reference of variant"
+                            },
+                            "ref_ext": {
+                                "type": "string",
+                                "description": "External reference of variant"
+                            }
+                        },
+                        "required": [
+                            "weight_impact",
+                            "price_impact",
+                            "price_impact_is_percent",
+                            "features"
+                        ],
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsAddVariantByProductRefModel": {
+                        "properties": {
+                            "weight_impact": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Weight impact of variant"
+                            },
+                            "price_impact": {
+                                "type": "number",
+                                "format": "double",
+                                "description": "Price impact of variant"
+                            },
+                            "price_impact_is_percent": {
+                                "type": "boolean",
+                                "description": "Price impact in percent (true or false)"
+                            },
+                            "features": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "List of attributes pairs id_attribute->id_value. Example: array(id_color=>id_Blue, id_size=>id_small, id_option=>id_val_a, ...)"
+                            }
+                        },
+                        "required": [
+                            "weight_impact",
+                            "price_impact",
+                            "price_impact_is_percent",
+                            "features"
+                        ],
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "productsUpdateVariantModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Datas"
+                            }
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_payments_and_printing.json",
+                            "swagger_website_in_front_of_application.json"
+                        ]
+                    },
+                    "updateSubscriptionsModel": {
+                        "properties": {
+                            "request_data": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Datas"
+                            }
+                        },
+            
+            
+            
+            
+            
+            
+            
+            
+            Product Management (PM)
+            
+            
+            
+            
+            
+            
+            
+            
+            
+                        "from": [
+                            "swagger_debug.json",
+                            "swagger_emails_and_social_media.json",
+                            "swagger_human_resources_management.json",
+                            "swagger_integrations.json",
+                            "swagger_payments_and_printing.json"
+                        ]
+                    },
+    
+    
+    
+    
