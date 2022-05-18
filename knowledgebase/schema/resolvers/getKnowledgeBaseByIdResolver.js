@@ -6,11 +6,13 @@ const getData = ({knowledge_base_id}) => {
         
         pgQueries.listKnowledgeBasesById([knowledge_base_id], result => {
             if(result.err){
-                return resolve(result.err);
+                return reject(result.err);
+            }else if(result.res.length == 0){
+                return reject("Not found");
             }
             let knowledgebase = result.res[0];
             knowledgebase.tooltip = consts.STATUS_COLOR_TEXT[knowledgebase.ui_color];
-            resolve(knowledgebase);
+            return resolve(knowledgebase);
         });
     });
 }

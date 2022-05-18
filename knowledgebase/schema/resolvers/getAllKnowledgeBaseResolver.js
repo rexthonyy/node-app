@@ -8,7 +8,7 @@ const getData = () => {
         
         pgQueries.listKnowledgeBases(result => {
             if(result.err){
-                return resolve(result.err);
+                return reject(result.err);
             }
             let knowledgebases = result.res;
             knowledgebases.forEach(knowledgebase => {
