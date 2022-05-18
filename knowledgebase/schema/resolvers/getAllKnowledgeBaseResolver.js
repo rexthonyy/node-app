@@ -41,9 +41,9 @@ const getData = () => {
                 
                 knowledgebases.forEach(kb => {
                     pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(kb.id, -1, result => {
-                        let num_categories = result.res.length;
+                        let num_categories = result.res ? result.res.length : 0;
                         pgQueries.getKnowledgeBaseArticlesByKnowledgeBaseIdAndCategoryId([kb.id, -1], result2 => {
-                            let num_articles = result2.res.length;
+                            let num_articles = result2.res ? result2.res.length : 0;
                             knowledgebaseHybridStatType.push({
                                 data: kb,
                                 stat: {
