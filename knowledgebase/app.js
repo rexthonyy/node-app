@@ -83,7 +83,7 @@ require('./postgres/initialize_dbs').init()
     //   uploads: false
     // });
     const server = new ApolloServer({
-      schema: openapi_schema,
+      schema: schema1,
       uploads: false
     });
   
@@ -93,7 +93,7 @@ require('./postgres/initialize_dbs').init()
 
     app.use('/graphql', 
     graphqlHTTP({
-      schema: openapi_schema,
+      schema: schema1,
       graphiql: true,
     }));
     
