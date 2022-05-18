@@ -1,4 +1,5 @@
 const { Pool, Client } = require('pg');
+const { DB } = require('../consts');
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -10,9 +11,9 @@ const pool = new Pool({
 
 pool.query('SELECT NOW()', (err, res) => {
     if(err){
-        console.log("SpiceDB database initialization failed!!!");
+        console.log(`${process.env.POSTGRES_DB} database initialization failed!!!`);
     }else{
-        console.log("SpiceDB database initialized successfully!!!");
+        console.log(`${process.env.POSTGRES_DB} database initialized successfully!!!`);
     }
 });
 
@@ -24,6 +25,40 @@ const client = new Client({
     port: process.env.POSTGRES_PORT
 });
 client.connect();
+
+const getAllBranches = response => {
+    client.query(`SELECT * from ${DB.branch}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 205
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAllBranchTranslationsByBranchIdAndLocaleId = (values, response) => {
+    client.query(`SELECT * from ${DB.branch_translation} WHERE branch_id=$1 AND locale_id=$2`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 205
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
 const getRelationTuplesByRelation = (values, response) => {
     pool.query("SELECT * from relation_tuple WHERE relation=$1", values, (err, res) => {
@@ -93,26 +128,8 @@ const getRelationTuplesByNamespaceAndRelation = (values, response) => {
     });
 };
 
-const getRelationTuples = (whereClause, values, response) => {
-    client.query(`SELECT * from relation_tuple WHERE ${whereClause}`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                code: 205
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const createRelationTuple = (values, response) => {
-    values = values.concat("subject", "resource", "permission", Date.now(), Date.now());
-    client.query('INSERT INTO relation_tuple (namespace, object_id, relation, userset_namespace, userset_object_id, userset_relation, created_transaction, deleted_transaction) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *', values, (err, res) => {
+const createBranch = (values, response) => {
+    client.query(`INSERT INTO ${DB.branch} (position, archived) VALUES ($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -129,10 +146,11 @@ const createRelationTuple = (values, response) => {
 };
 
 module.exports = {
+    getAllBranches,
+    createBranch,
+    getAllBranchTranslationsByBranchIdAndLocaleId,
     getRelationTuplesByRelation,
     getRelationTuplesByNamespaceObjectIdAndRelation,
     deleteRelationTuples,
     getRelationTuplesByNamespaceAndRelation,
-    getRelationTuples,
-    createRelationTuple
 }

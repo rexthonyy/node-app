@@ -27,10 +27,10 @@ let getStatusOfSubCategories = (category_id, cb) => {
         categories.forEach(category => {
             pgQueries.getKnowledgeBaseCategoryTranslationsByCategoryId(null, category.id, (_null, result1) => {
                 let category_translations = result1.res;
-
-                category_translations.forEach(translation => {
-                    translations.push(translation);
-                });
+                if(category_translations != null)
+                    category_translations.forEach(translation => {
+                        translations.push(translation);
+                    });
                 checkComplete();
             });
         });
