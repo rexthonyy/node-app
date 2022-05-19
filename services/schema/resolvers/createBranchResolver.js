@@ -25,16 +25,16 @@ const getData = (arg) => {
 
             if(!isFound) return reject("Invalid translation. Enter a valid locale_id");
 
-            let num_translations = translations.length;
-            let count = -1;
+            pgQueries.createBranch([1, false], result => {
+                if(result.err){
+                    console.error(result.err);
+                    checkComplete();
+                }else{
+                    let branch_id = result.res.id;
+                    let num_translations = translations.length;
+                    let count = -1;
 
-            translations.forEach(translation => {
-                pgQueries.createBranch([1, false], result => {
-                    if(result.err){
-                        console.error(result.err);
-                        checkComplete();
-                    }else{
-                        let branch = result.res;
+                    translations.forEach(translation => {                
                         let ui_color;
 
                         if(arg.locale_id == translation.id){
@@ -44,7 +44,7 @@ const getData = (arg) => {
                         }
 
                         let values = [
-                            branch.id,
+                            branch_id,
                             arg.locale_id,
                             arg.name,
                             arg.address,
@@ -59,22 +59,22 @@ const getData = (arg) => {
                             }
                             checkComplete();
                         });
-                    }
-                });
-
-            });
-
-            checkComplete();
-
-            function checkComplete(){
-                count++;
-                if(count == num_translations){
-                    return resolve({
-                        status: "success",
-                        message: "New branch created successfully"
                     });
+
+                    
+                    checkComplete();
+        
+                    function checkComplete(){
+                        count++;
+                        if(count == num_translations){
+                            return resolve({
+                                status: "success",
+                                message: "New branch created successfully"
+                            });
+                        }
+                    }
                 }
-            }
+            });
         });
     });
 }
