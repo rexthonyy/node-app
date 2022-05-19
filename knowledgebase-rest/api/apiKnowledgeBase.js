@@ -2556,7 +2556,7 @@ function getKnowledgebases(req, res, knowledgebases) {
     namefilteredKnowledgeBases.forEach(knowledge_base => {
         knowledge_base.tooltip = consts.STATUS_COLOR_TEXT[knowledge_base.ui_color];
         pgQueries.getKnowledgeBaseCategoriesByKnowledgeBaseIdAndParentId(knowledge_base.id, -1, result => {
-            let numSubcategories = result.res.length;
+            let numSubcategories = result.res ? result.res.length : 0;
 
             knowledge_base.stat = {
                 num_categories: numSubcategories
