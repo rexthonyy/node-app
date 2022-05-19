@@ -26,6 +26,23 @@ const client = new Client({
 });
 client.connect();
 
+const getBranchById = (values, response) => {
+    client.query(`SELECT * from ${DB.branch} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 205
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAllBranches = response => {
     client.query(`SELECT * from ${DB.branch}`, (err, res) => {
         if (err) {
@@ -146,7 +163,44 @@ const deleteBranchTranslationByBranchId = (values, response) => {
     });
 };
 
+
+
+const createServiceCategory = (values, response) => {
+    client.query(`INSERT INTO ${DB.service_category} (branch_id) VALUES ($1) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 206
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+
+const createServiceCategoryTranslation = (values, response) => {
+    client.query(`INSERT INTO ${DB.service_category_translation} (branch_id, service_category_id, locale_id, name, ui_color) VALUES ($1, $2, $3, $4, $5) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 206
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 module.exports = {
+    getBranchById,
     getAllBranches,
     createBranch,
     createBranchTranslation,
@@ -154,4 +208,6 @@ module.exports = {
     updateBranchTranslation,
     deleteBranchById,
     deleteBranchTranslationByBranchId,
+    createServiceCategory,
+    createServiceCategoryTranslation
 }

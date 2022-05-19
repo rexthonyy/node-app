@@ -13,6 +13,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 const createBranchResolver = require("../resolvers/createBranchResolver");
 const updateBranchResolver = require("../resolvers/updateBranchResolver");
 const deleteBranchResolver = require("../resolvers/deleteBranchResolver");
+const createServiceCategoryResolver = require("../resolvers/createServiceCategoryResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -54,6 +55,16 @@ module.exports = new GraphQLObjectType({
                 branch_id: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: deleteBranchResolver
+        },
+        createServiceCategory_: {
+            type: StatusMessageResponseType,
+            description: "Creates a new service category",
+            args: {
+                branch_id: { type: GraphQLNonNull(GraphQLID) },
+                locale_id: { type: GraphQLNonNull(GraphQLID) },
+                name: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: createServiceCategoryResolver
         },
     })
 });
