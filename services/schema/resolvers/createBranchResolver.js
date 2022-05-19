@@ -34,7 +34,6 @@ const getData = (arg) => {
                         console.error(result.err);
                         checkComplete();
                     }else{
-                        console.log("create branch translation");
                         let branch = result.res;
                         let ui_color;
 
@@ -58,7 +57,6 @@ const getData = (arg) => {
                             if(result.err){
                                 console.error(result.err);
                             }
-                            console.log("created branch translation");
                             checkComplete();
                         });
                     }

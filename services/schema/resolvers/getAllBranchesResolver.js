@@ -16,11 +16,12 @@ const getData = ({locale_id}) => {
 
             branches.forEach(branch => {
                 pgQueries.getAllBranchTranslationsByBranchIdAndLocaleId([branch.id, locale_id], result => {
-                    if(result.err || result.res.length == 0){
-                        checkComplete();
-                    }else{
+                    if(result.err){
+                        console.error(result.err);
+                    }else if(result.res.length > 0){
                         branchTranslationTypeList.push(result.res[0]);
                     }
+                    checkComplete();
                 });
             });
 
