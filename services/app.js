@@ -8,15 +8,6 @@ const app = express();
 
 app.use(express.json());
 
-const server = new ApolloServer({
-  schema: schema1,
-  uploads: false
-});
-
-const { url } = await server.listen({port: process.env.PORT1});
-console.log(`🚀 Server ready at ${url}`);
-
-
 app.use('/graphql', 
 graphqlHTTP({
     schema: schema1,
