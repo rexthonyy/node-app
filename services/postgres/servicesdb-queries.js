@@ -129,7 +129,7 @@ const getRelationTuplesByNamespaceAndRelation = (values, response) => {
 };
 
 const createBranch = (values, response) => {
-    client.query(`INSERT INTO ${DB.branch} (position, archived) VALUES ($1, $2) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${DB.branch} (position, is_archived) VALUES ($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
