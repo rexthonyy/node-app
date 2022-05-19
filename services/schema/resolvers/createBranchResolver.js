@@ -1,5 +1,6 @@
 const pgQueries = require('../../postgres/servicesdb-queries');
 const pgSettingsQueries = require('../../postgres/settings-queries');
+const consts = require('../../consts');
 
 const getData = (arg) => {
     return new Promise((resolve, reject) => {
@@ -14,16 +15,33 @@ const getData = (arg) => {
                 return reject("Please specify at least one page translation");
             }
 
+            let isFound = false;
+
+            for(const element of translations){
+                if(arg.locale_id == element.id){
+                    isFound = true;
+                }
+            }
+
+            if(!isFound) return reject("Invalid translation. Enter a valid locale_id");
+
             let num_translations = translations.length;
             let count = -1;
 
             translations.forEach(translation => {
-                pgQueries.createBranch(result => {
+                pgQueries.createBranch([1, false], result => {
                     if(result.err){
                         console.error(result.err);
                         checkComplete();
                     }else{
                         let branch = result.res;
+                        let ui_color;
+
+                        if(arg.locale_id == translation.id){
+                            ui_color = consts.STATUS_COLOR.published;
+                        }else{
+                            ui_color = consts.STATUS_COLOR.pending_action;
+                        }
 
                         let values = [
                             branch.id,
@@ -32,8 +50,15 @@ const getData = (arg) => {
                             arg.address,
                             arg.location,
                             arg.ref,
-                            
+                            ui_color
                         ];
+
+                        pgQueries.createBranchTranslation(values, result => {
+                            if(result.err){
+                                console.error(result.err);
+                            }
+                            checkComplete();
+                        });
                     }
                 });
 
@@ -48,37 +73,6 @@ const getData = (arg) => {
                         status: "success",
                         message: "New branch created successfully"
                     });
-                }
-            }
-        });
-
-        pgQueries.getAllBranches(result1 => {
-            if(result1.err){
-                return reject(result1.err);
-            }
-            
-            let branches = result1.res;
-            let num_branches = branches.length;
-            let count = -1;
-
-            let branchTranslationTypeList = [];
-
-            branches.forEach(branch => {
-                pgQueries.getAllBranchTranslationsByBranchIdAndLocaleId([branch.id, locale_id], result => {
-                    if(result.err || result.res.length == 0){
-                        checkComplete();
-                    }else{
-                        branchTranslationTypeList.push(result.res[0]);
-                    }
-                });
-            });
-
-            checkComplete();
-
-            function checkComplete(){
-                count++;
-                if(count == num_branches){
-                    return resolve(branchTranslationTypeList);
                 }
             }
         });

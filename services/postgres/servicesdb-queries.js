@@ -145,9 +145,27 @@ const createBranch = (values, response) => {
     });
 };
 
+const createBranchTranslation = (values, response) => {
+    client.query(`INSERT INTO ${DB.branch_translation} (branch_id, locale_id, name, address, location, ref, ui_color) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 206
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getAllBranches,
     createBranch,
+    createBranchTranslation,
     getAllBranchTranslationsByBranchIdAndLocaleId,
     getRelationTuplesByRelation,
     getRelationTuplesByNamespaceObjectIdAndRelation,
