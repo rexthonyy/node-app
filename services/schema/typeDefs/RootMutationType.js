@@ -12,6 +12,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 // resolvers
 const createBranchResolver = require("../resolvers/createBranchResolver");
 const updateBranchResolver = require("../resolvers/updateBranchResolver");
+const deleteBranchResolver = require("../resolvers/deleteBranchResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -45,6 +46,14 @@ module.exports = new GraphQLObjectType({
                 ref: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: updateBranchResolver
+        },
+        deleteBranch_: {
+            type: StatusMessageResponseType,
+            description: "Deletes a branch",
+            args: {
+                branch_id: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: deleteBranchResolver
         },
     })
 });

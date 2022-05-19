@@ -111,10 +111,47 @@ const updateBranchTranslation = (values, response) => {
     });
 };
 
+
+const deleteBranchById = (values, response) => {
+    client.query(`DELETE FROM ${DB.branch} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 233
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const deleteBranchTranslationByBranchId = (values, response) => {
+    client.query(`DELETE FROM ${DB.branch_translation} WHERE branch_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 233
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getAllBranches,
     createBranch,
     createBranchTranslation,
     getAllBranchTranslationsByBranchIdAndLocaleId,
-    updateBranchTranslation
+    updateBranchTranslation,
+    deleteBranchById,
+    deleteBranchTranslationByBranchId,
 }
