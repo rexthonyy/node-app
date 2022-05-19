@@ -1,5 +1,5 @@
+//const pgSettingsQueries = require('../../postgres/settings-queries');
 const pgQueries = require('../../postgres/servicesdb-queries');
-const pgSettingsQueries = require('../../postgres/settings-queries');
 const consts = require('../../consts');
 
 const getData = (arg) => {
