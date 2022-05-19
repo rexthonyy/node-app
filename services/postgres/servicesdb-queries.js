@@ -60,74 +60,6 @@ const getAllBranchTranslationsByBranchIdAndLocaleId = (values, response) => {
     });
 };
 
-const getRelationTuplesByRelation = (values, response) => {
-    pool.query("SELECT * from relation_tuple WHERE relation=$1", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                code: 201
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getRelationTuplesByNamespaceObjectIdAndRelation = (values, response) => {
-    pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND object_id=$2 AND relation=$3", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                code: 202
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteRelationTuples = (whereClause, values, response) => {
-    client.query(`DELETE FROM relation_tuple WHERE ${whereClause} RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                code: 203
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
-
-const getRelationTuplesByNamespaceAndRelation = (values, response) => {
-    pool.query("SELECT * from relation_tuple WHERE namespace=$1 AND relation=$2", values, (err, res) => {
-        if(err){
-            response({
-                err: err,
-                res: null,
-                code: 204
-            });
-        }else{
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
 const createBranch = (values, response) => {
     client.query(`INSERT INTO ${DB.branch} (position, is_archived) VALUES ($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -162,13 +94,27 @@ const createBranchTranslation = (values, response) => {
     });
 };
 
+const updateBranchTranslation = (values, response) => {
+    client.query(`UPDATE ${DB.branch_translation} SET branch_id=$1, locale_id=$2, name=$3, address=$4, location=$5, ref=$6, ui_color=$7 WHERE branch_id=$1 AND locale_id=$2 RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 8301
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 module.exports = {
     getAllBranches,
     createBranch,
     createBranchTranslation,
     getAllBranchTranslationsByBranchIdAndLocaleId,
-    getRelationTuplesByRelation,
-    getRelationTuplesByNamespaceObjectIdAndRelation,
-    deleteRelationTuples,
-    getRelationTuplesByNamespaceAndRelation,
+    updateBranchTranslation
 }

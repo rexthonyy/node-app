@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require('express');
-const { ApolloServer } = require("apollo-server");
 const { graphqlHTTP } = require('express-graphql');
 const schema1 = require('./schema/index');
 

@@ -11,6 +11,7 @@ const StatusMessageResponseType = require("./StatusMessageResponseType");
 
 // resolvers
 const createBranchResolver = require("../resolvers/createBranchResolver");
+const updateBranchResolver = require("../resolvers/updateBranchResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -31,6 +32,19 @@ module.exports = new GraphQLObjectType({
                 ref: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: createBranchResolver
+        },
+        updateBranch_: {
+            type: StatusMessageResponseType,
+            description: "Updates a new branch",
+            args: {
+                branch_id: { type: GraphQLNonNull(GraphQLID) },
+                locale_id: { type: GraphQLNonNull(GraphQLID) },
+                name: { type: GraphQLNonNull(GraphQLString) },
+                address: { type: GraphQLNonNull(GraphQLString) },
+                location: { type: GraphQLNonNull(GraphQLString) },
+                ref: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: updateBranchResolver
         },
     })
 });
