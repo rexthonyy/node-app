@@ -51,7 +51,7 @@ const getData = (arg) => {
                             }
     
                             let values = [
-                                branch_id,
+                                arg.branch_id,
                                 service_category_id,
                                 translation.id,
                                 arg.name,
