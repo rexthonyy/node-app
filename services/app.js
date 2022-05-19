@@ -8,20 +8,20 @@ const app = express();
 
 app.use(express.json());
 
-// const server = new ApolloServer({
-//   schema: schema1,
-//   uploads: false
-// });
+const server = new ApolloServer({
+  schema: schema1,
+  uploads: false
+});
 
-// const { url } = await server.listen({port: process.env.PORT1});
-// console.log(`🚀 Server ready at ${url}`);
+const { url } = await server.listen({port: process.env.PORT1});
+console.log(`🚀 Server ready at ${url}`);
 
 
-// app.use('/graphql', 
-// graphqlHTTP({
-//     schema: schema1,
-//     graphiql: true,
-// }));
+app.use('/graphql', 
+graphqlHTTP({
+    schema: schema1,
+    graphiql: true,
+}));
 
 let port = process.env.PORT || 1000;
 var lesServer = app.listen(port, function() {
