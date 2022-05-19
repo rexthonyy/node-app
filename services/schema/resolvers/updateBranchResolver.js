@@ -4,7 +4,7 @@ const consts = require('../../consts');
 const getData = (arg) => {
     return new Promise((resolve, reject) => {
         let values = [
-            args.branch_id,
+            arg.branch_id,
             arg.locale_id,
             arg.name,
             arg.address,
