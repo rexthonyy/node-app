@@ -27,7 +27,7 @@ const client = new Client({
 client.connect();
 
 const getAllBranches = response => {
-    client.query(`SELECT * from ${DB.branch}`, values, (err, res) => {
+    client.query(`SELECT * from ${DB.branch}`, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
