@@ -45,7 +45,7 @@ const getData = (arg) => {
 
                         let values = [
                             branch_id,
-                            arg.locale_id,
+                            translation.id,
                             arg.name,
                             arg.address,
                             arg.location,
