@@ -17,11 +17,11 @@ app.use(express.json());
 // console.log(`🚀 Server ready at ${url}`);
 
 
-app.use('/graphql', 
-graphqlHTTP({
-    schema: schema1,
-    graphiql: true,
-}));
+// app.use('/graphql', 
+// graphqlHTTP({
+//     schema: schema1,
+//     graphiql: true,
+// }));
 
 let port = process.env.PORT || 1000;
 var lesServer = app.listen(port, function() {
