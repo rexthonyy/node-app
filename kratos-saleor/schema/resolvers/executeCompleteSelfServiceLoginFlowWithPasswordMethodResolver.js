@@ -48,6 +48,7 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
 
         identityCredentialsIterator(identityCredentials, identifier, password, res => {
             if(res) {
+                console.log(res);
                 loggedInIdentityCredential = res.credential;
                 identity = res.identity;
             }
