@@ -108,6 +108,7 @@ function createIdentityCredential(resolve, reject, traits, identityId){
         password: traits.password
     };
 
+    let now = new Date().toUTCString();
     let values = [
         uuid(),
         JSON.stringify(config),
@@ -132,6 +133,7 @@ function createIdentityCredential(resolve, reject, traits, identityId){
 function createIdentityCredentialIdentifier(resolve, reject, traits, identityId, identityCredentialId){
     let identifier = traits.email;
 
+    let now = new Date().toUTCString();
     let values = [
         uuid(),
         identifier,
@@ -153,6 +155,7 @@ function createIdentityCredentialIdentifier(resolve, reject, traits, identityId,
 }
 
 function createSession(resolve, reject, identityId){
+    let now = new Date().toUTCString();
     let values = [
         uuid(),
         now,
