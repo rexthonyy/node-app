@@ -1,6 +1,8 @@
 const {uuid} = require('uuidv4');
+const { authenticator } = require('otplib');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getIdentityById = require('../resolverUtils/getIdentityById');
+const identityRecoveryAddressHandler = require('../../identities/identityRecoveryAddressHandler');
 const {NETWORK_ID,IDENTITY_CREDENTIAL_TYPE_PASSWORD} = require('../../libs/consts');
 const sessionHandler = require('../../identities/sessionHandler');
 
@@ -42,9 +44,13 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
         let numIdentityCredentials = identityCredentials.length;
         let count = -1;
         let loggedInIdentityCredential;
+        let identity;
 
-        identityCredentialsIterator(identityCredentials, identifier, password, credential => {
-            if(credential) loggedInIdentityCredential = credential;
+        identityCredentialsIterator(identityCredentials, identifier, password, res => {
+            if(res) {
+                loggedInIdentityCredential = res.credential;
+                identity = res.identity;
+            }
             checkComplete();
         });
 
@@ -56,25 +62,54 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
                 if(!loggedInIdentityCredential){
                     return reject("Identity credentials invalid");
                 }
+                
+                let traits = JSON.parse(identity.traits);
+                if(traits.is2FA){
+                    let now = new Date().toUTCString();
+                    let values = [
+                        uuid(),
+                        identityRecoveryAddressHandler.getVia(),
+                        authenticator.generateSecret(),
+                        identity.id,
+                        now,
+                        now,
+                        NETWORK_ID
+                    ];
 
-                createSession(resolve, reject, loggedInIdentityCredential);
+                    pgKratosQueries.createIdentityRecoveryAddress(values, result => {
+                        return reject("@2FA required");
+                    });
+                }else{
+                    createSession(resolve, reject, loggedInIdentityCredential);
+                }
             }
         }
     });
 }
 
 function identityCredentialsIterator(identityCredentials, identifier, password, cb){
-    let loggedInIdentityCredential;
+    let res;
     identityCredentials.forEach(identityCredential => {
         pgKratosQueries.getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId([identityCredential.id, IDENTITY_CREDENTIAL_TYPE_PASSWORD], result2 => {
             let identityCredentialIdentifier = result2.res[0];
             if(identityCredentialIdentifier.identifier == identifier){
                 if(identityCredential.config.password == password){
-                    loggedInIdentityCredential = identityCredential;
+                    getIdentityById(identityCredential.identity_id, identity => {
+                        if(typeof identity == "string"){
+                            return reject(identity);
+                        }
+                        
+                        res = {
+                            identityCredential,
+                            identity  
+                        };
+                    });
+                }else{
+                    cb(res);
                 }
+            }else{
+                cb(res);
             }
-
-            cb(loggedInIdentityCredential);
         });
     });
 }
