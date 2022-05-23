@@ -1,0 +1,14 @@
+identity:
+  # This will be the default JSON Schema. If `schema_id` is empty when creating an identity using the
+  # Admin API, or a user signs up using a selfservice flow, this schema will be used.
+  #
+  # This is a required configuration field!
+  default_schema_id: customer
+
+  # Optionally define additional schemas here:
+  schemas:
+    # When creating an identity that uses this schema, `traits_schema_id: customer` would be set for that identity.
+    - id: customer
+      url: ./config/schemas/identity_schemas/customer.schema.json
+    - id: person
+      url: ./config/schemas/identity_schemas/person.schema.json
