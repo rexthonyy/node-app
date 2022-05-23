@@ -64,7 +64,7 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
                 }
                 
                 let traits = JSON.parse(identity.traits);
-                if(traits.is2FA){
+                if(traits.is2FA && traits.is2FA == "true"){
                     let now = new Date().toUTCString();
                     let values = [
                         uuid(),
