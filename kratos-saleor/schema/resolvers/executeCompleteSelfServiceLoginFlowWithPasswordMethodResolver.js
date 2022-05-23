@@ -2,7 +2,7 @@ const {uuid} = require('uuidv4');
 const { authenticator } = require('otplib');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getIdentityById = require('../resolverUtils/getIdentityById');
-const identityRecoveryAddressHandler = require('../../identities/identityRecoveryAddressHandler');
+const { getVia } = require('../../identities/identityRecoveryAddressHandler');
 const {NETWORK_ID,IDENTITY_CREDENTIAL_TYPE_PASSWORD} = require('../../libs/consts');
 const sessionHandler = require('../../identities/sessionHandler');
 
@@ -68,7 +68,7 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
                     let now = new Date().toUTCString();
                     let values = [
                         uuid(),
-                        identityRecoveryAddressHandler.getVia(),
+                        getVia(),
                         authenticator.generateSecret(),
                         identity.id,
                         now,
