@@ -29,6 +29,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: getAllBranchesResolver
         },
+        getAllServiceCategories_: {
+            type: GraphQLList(ServiceCategoryTranslationType),
+            description: "Get all service categories for a given branch and translation",
+            args: {
+                locale_id: { type: GraphQLNonNull(GraphQLID) },
+            },
+            resolve: getAllBranchesResolver
+        },
         
     })
 });

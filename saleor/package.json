@@ -1,10 +1,10 @@
 {
-  "name": "kratos",
+  "name": "Saleor",
   "version": "1.0.0",
   "description": "",
-  "main": "kratos.js",
+  "main": "app.js",
   "scripts": {
-    "test": "node kratos.js"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -15,25 +15,18 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express-graphql": "^0.12.0",
-    "@sentry/node": "^6.17.9",
     "dotenv": "^16.0.0",
-    "openapi-to-graphql": "^2.6.3",
-    "jsonschema": "^1.4.0",
     "express": "^4.17.2",
     "multer": "^1.4.4",
     "node-fetch": "^2.6.7",
     "node-rdkafka": "^2.10.1",
     "graphql": "^15.0.0",
-    "graphql-middleware": "^6.1.25",
-    "graphql-shield": "^7.5.0",
     "graphql-tools": "^8.2.4",
     "graphql-upload": "^13.0.0",
     "@graphql-tools/schema": "^8.3.6",
     "@graphql-tools/stitch": "^8.6.3",
     "pg": "^8.7.3",
     "postgraphile": "^4.12.5",
-    "postgraphile-apollo-server": "^0.1.1",
-    "uuidv4": "^6.2.13",
-    "yaml": "^2.0.1"
+    "postgraphile-apollo-server": "^0.1.1"
   }
 }
