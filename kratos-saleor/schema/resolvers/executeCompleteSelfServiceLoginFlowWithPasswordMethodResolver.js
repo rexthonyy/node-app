@@ -103,6 +103,8 @@ function identityCredentialsIterator(identityCredentials, identifier, password, 
                             identityCredential,
                             identity  
                         };
+
+                        cb(res);
                     });
                 }else{
                     cb(res);
