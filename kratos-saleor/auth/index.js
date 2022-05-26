@@ -175,6 +175,21 @@ router.get("/token/verify", (req, res) => {
 */
 
 
+router.get("/keys", (req, res) => {
+	console.log("keys");
+    console.log(req.query);
+	console.log(req.body);
+	res.sendStatus(401);
+});
+
+router.get("/userDetails", (req, res) => {
+	console.log("userDetails");
+    console.log(req.query);
+	console.log(req.body);
+	res.sendStatus(401);
+});
+
+
 router.get("/logout", (req, res) => {
     let returnTo = req.params.returnTo;
 
