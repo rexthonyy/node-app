@@ -1,4 +1,5 @@
 const { Pool, Client } = require('pg');
+const { db }  = require('../libs/consts');
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -537,7 +538,40 @@ const updateIdentityCredentials = (values, response) => {
     });
 };
 
+const createSessionToken = (values, response) => {
+    client.query(`INSERT INTO ${db.oauth_sessions} (token) VALUES($1) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                tes: 227
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 
+
+const getSessionToken = (values, response) => {
+    pool.query(`SELECT * from ${db.oauth_sessions} WHERE token=$1`, values, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 216
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 module.exports = {
     getSelfServiceErrorById,
     getSelfServiceLoginFlowById,
@@ -571,4 +605,7 @@ module.exports = {
 
     updateIdentity,
     updateIdentityCredentials,
+
+    createSessionToken,
+    getSessionToken,
 }

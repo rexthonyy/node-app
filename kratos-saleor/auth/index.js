@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const pgQueries = require('../postgres/user-queries');
+const pgKratosQueries = require('../postgres/kratos-queries');
+const pgUserQueries = require('../postgres/user-queries');
 
 const fs = require('fs');
 const YAML = require('yaml');
@@ -29,7 +30,7 @@ router.get("/", (req, res) => {
 				console.error(err);
 				loginUser(req, res);
 			}else{
-				pgQueries.getUserId([user.id], result => {
+				pgUserQueries.getUserId([user.id], result => {
 					if(result.err || result.res.length == 0){
 						return loginUser(req, res);
 					}
@@ -69,7 +70,7 @@ router.post("/login", (req, res) => {
 		password
 	];
 
-	pgQueries.getUserByEmailAndPassword(values, result => {
+	pgUserQueries.getUserByEmailAndPassword(values, result => {
 		if(result.err || result.res.length == 0){
 			return res.redirect("/oauth2/login");
 		}
@@ -79,7 +80,15 @@ router.post("/login", (req, res) => {
 		let accessToken = generateAccessToken(user);
 		let refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 
-		returnRedirect(req, res, accessToken, refreshToken);
+		pgKratosQueries.createSessionToken([refreshToken], result => {
+			if(result.err){
+				console.error(result.err);
+				res.sendStatus(501);
+			}
+
+			res.cookie(process.env.COOKIE_ID, accessToken, { maxAge: 1000 * 60 * 60 * parseInt(expiresIn), httponly: true });
+			returnRedirect(req, res, accessToken, refreshToken);
+		});
 	});
 });
 
@@ -181,18 +190,20 @@ router.post("/token/refresh", (req, res) => {
     let refreshToken = req.params.refreshToken;
 	if(refreshToken == null) return res.sendStatus(401);
 
-    let token = "";
+	pgKratosQueries.getSessionToken([refreshToken], result => {
+		if(result.err){
+			console.error(result.err);
+			return res.sendStatus(401);
+		}
 
-    res.json({
-        data: {
-            externalRefresh: {
-            token,
-            refreshToken,
-            csrfToken,
-            accountErrors: []
-          }
-        }
-      });
+		if(result.res.length == 0) return res.sendStatus(403);
+
+		jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+			if(err) return res.sendStatus(403);
+			const accessToken = generateAccessToken(user);
+			res.json({ accessToken, refreshToken });
+		});
+	});
 });
 /*
 {
@@ -215,17 +226,10 @@ router.post("/token/refresh", (req, res) => {
 
 
 
-router.get("/token/verify", (req, res) => {
-	console.log("verify");
-    console.log(req.query);
-	console.log(req.body);
-    let accessToken = req.params.token;
-    let refreshToken = req.params.refreshToken;
-    let csrfToken = req.params.csrfToken;
-
+router.get("/token/verify", isAuthenticated, (req, res) => {
     let isValid = true;
-    let verifyData = "";
-    let user_email = "";
+    let verifyData = req.user;
+    let user_email = req.user.email;
 
     res.json({
         data: {
@@ -266,7 +270,7 @@ router.get("/keys", (req, res) => {
 });
 
 router.get("/userDetails", isAuthenticated, (req, res) => {
-	pgQueries.getUsers(result => {
+	pgUserQueries.getUser([req.user.id], result => {
 		if(result.err) res.sendStatus(401);
 		res.json(result.res);
 	});

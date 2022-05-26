@@ -6,7 +6,8 @@ const NETWORK_ID = config.network_id;
 const IDENTITY_CREDENTIAL_TYPE_PASSWORD = config.identity_credential_type_ids.password.id;
 
 const db = {
-    oauth_sessions: "oauth_sessions"
+    oauth_sessions: "oauth_sessions",
+    account_user: "account_user",
 };
 
 module.exports = {

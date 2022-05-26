@@ -27,7 +27,7 @@ const client = new Client({
 client.connect();
 
 const getUserId = (values, response) => {
-    pool.query(`SELECT * from ${db.oauth_sessions} WHERE id=$1`, values, (err, res) => {
+    pool.query(`SELECT * from ${db.account_user} WHERE id=$1`, values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -44,7 +44,7 @@ const getUserId = (values, response) => {
 };
 
 const getUserByEmailAndPassword = (values, response) => {
-    pool.query(`SELECT * from ${db.oauth_sessions} WHERE email=$1 AND password=$2`, values, (err, res) => {
+    pool.query(`SELECT * from ${db.account_user} WHERE email=$1 AND password=$2`, values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -61,7 +61,24 @@ const getUserByEmailAndPassword = (values, response) => {
 };
 
 const getUsers = (response) => {
-    pool.query(`SELECT * from ${db.oauth_sessions}`, values, (err, res) => {
+    pool.query(`SELECT * from ${db.account_user}`, (err, res) => {
+        if(err){
+            response({
+                err: err,
+                res: null,
+                code: 203
+            });
+        }else{
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getUser = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user} WHERE id=$1`, values, (err, res) => {
         if(err){
             response({
                 err: err,
@@ -80,5 +97,6 @@ const getUsers = (response) => {
 module.exports = {
     getUserId,
     getUserByEmailAndPassword,
-    getUsers
+    getUsers,
+    getUser
 }
