@@ -62,8 +62,6 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-	console.log(req.body);
-	
 	let email = req.body.email;
 	let password = req.body.password;
 
@@ -71,8 +69,6 @@ router.post("/login", (req, res) => {
 		email,
 		password
 	];
-
-	console.log(values);
 
 	pgUserQueries.getUserByEmailAndPassword(values, result => {
 		if(result.err || result.res.length == 0){
