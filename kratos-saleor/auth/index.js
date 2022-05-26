@@ -3,7 +3,8 @@ const router = express.Router();
 const { authenticator } = require('otplib');
 
 router.get("/", (req, res) => {
-  	console.log(req);
+  	console.log(req.query);
+	console.log(req.body);
     let redirectUrl = req.params.redirectUrl;
     let state = authenticator.generateSecret();
     let client_id = req.params.client_id;

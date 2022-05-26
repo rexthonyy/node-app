@@ -14,23 +14,15 @@ require('./postgres/initialize_dbs').init()
   app.use(Sentry.Handlers.requestHandler());
   app.use("/oauth2", oauthRouter);
 
-  async function main() {
-
-    app.use('/graphql', 
-    graphqlHTTP({
-        schema,
-        graphiql: true,
-    }));
-    
-    let port = process.env.PORT || 1000;
-    var lesServer = app.listen(port, function() {
-        console.log("Listening on port %s...", lesServer.address().port);
-    });
-  }
-
-  main().catch(e => {
-    console.error(e);
-    process.exit(1);
+  app.use('/graphql', 
+  graphqlHTTP({
+      schema,
+      graphiql: true,
+  }));
+  
+  let port = process.env.PORT || 1000;
+  var lesServer = app.listen(port, function() {
+      console.log("Listening on port %s...", lesServer.address().port);
   });
 
   app.use(Sentry.Handlers.errorHandler());
