@@ -31,6 +31,9 @@ router.get("/", (req, res) => {
 
 
 router.get("/authorize", (req, res) => {
+	console.log("authorize");
+    console.log(req.query);
+	console.log(req.body);
     let code = req.params.code;
     let state = req.params.state;
 
@@ -85,6 +88,9 @@ router.get("/authorize", (req, res) => {
 
 
 router.get("/token/refresh", (req, res) => {
+	console.log("refresh");
+    console.log(req.query);
+	console.log(req.body);
     let refreshToken = req.params.refreshToken;
     let csrfToken = req.params.csrfToken;
 
@@ -123,6 +129,9 @@ router.get("/token/refresh", (req, res) => {
 
 
 router.get("/token/verify", (req, res) => {
+	console.log("verify");
+    console.log(req.query);
+	console.log(req.body);
     let accessToken = req.params.token;
     let refreshToken = req.params.refreshToken;
     let csrfToken = req.params.csrfToken;
@@ -178,6 +187,9 @@ router.get("/userDetails", (req, res) => {
 
 
 router.get("/logout", (req, res) => {
+	console.log("logout");
+    console.log(req.query);
+	console.log(req.body);
     let returnTo = req.params.returnTo;
 
 
