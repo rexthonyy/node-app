@@ -26,6 +26,7 @@ const executeCreateRecoveryLinkResolver = require("../resolvers/executeCreateRec
 const executeUpdateIdentityResolver = require("../resolvers/executeUpdateIdentityResolver");
 const executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver");
+const executeComplete2FAResolver = require("../resolvers/executeComplete2FAResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -95,6 +96,13 @@ module.exports = new GraphQLObjectType({
                 selfServiceSettingsMethodsProfileInput: { type: GraphQLString }
             },
             resolve: executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver
-        }
+        },
+        complete2FA_: {
+            type: GraphQLString,
+            args: {
+                authenticationData: { type: GraphQLString }
+            },
+            resolve: executeComplete2FAResolver
+        },
     })
 });

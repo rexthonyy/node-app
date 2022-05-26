@@ -6,16 +6,19 @@ const { getVia } = require('../../identities/identityRecoveryAddressHandler');
 const {NETWORK_ID,IDENTITY_CREDENTIAL_TYPE_PASSWORD} = require('../../libs/consts');
 const sessionHandler = require('../../identities/sessionHandler');
 
-const getData = ({completeSelfServiceLoginFlowWithPasswordMethodInput, flow}) => {
+const getData = ({authenticationData}) => {
     return new Promise((resolve, reject) => {
-        let identifier = completeSelfServiceLoginFlowWithPasswordMethodInput.identifier;
-        let password  = completeSelfServiceLoginFlowWithPasswordMethodInput.password;
+        const authData = JSON.parse(authenticationData);
+        let code = authData.code;
+        let flow = authData.flow;
+        let identifier = authData.identifier;
+        let password  = authData.password;
 
-        checkLoginFlow(resolve, reject, flow, identifier, password);
+        checkLoginFlow(resolve, reject, code, flow, identifier, password);
     });
 }
 
-function checkLoginFlow(resolve, reject, flow, identifier, password){
+function checkLoginFlow(resolve, reject, code, flow, identifier, password){
     pgKratosQueries.getLoginFlowById([flow], result => {
         if(result.err || result.res.length == 0){
             return reject("Flow ID not found");
@@ -31,11 +34,11 @@ function checkLoginFlow(resolve, reject, flow, identifier, password){
             }
         }
 
-        getIdentityCredentialsTypes(resolve, reject, identifier, password);
+        getIdentityCredentialsTypes(resolve, reject, code, identifier, password);
     });
 }
 
-function getIdentityCredentialsTypes(resolve, reject, identifier, password){
+function getIdentityCredentialsTypes(resolve, reject, code, identifier, password){
     pgKratosQueries.getIdentityCredentialsByIdentityCredentialTypeId([IDENTITY_CREDENTIAL_TYPE_PASSWORD], result1 => {
         if(result1.err || result1.res.length == 0){
             return reject("Identity credentials not found");
@@ -45,11 +48,13 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
         let count = -1;
         let loggedInIdentityCredential;
         let identity;
+        let secret;
 
         identityCredentialsIterator(identityCredentials, identifier, password, res => {
             if(res) {
                 loggedInIdentityCredential = res.identityCredential;
                 identity = res.identity;
+                secret = res.secret;
             }
             checkComplete();
         });
@@ -65,7 +70,11 @@ function getIdentityCredentialsTypes(resolve, reject, identifier, password){
                 
                 let traits = JSON.parse(identity.traits);
                 if(traits.settings && traits.settings.is2FA && traits.settings.is2FA == true ){
-                    return reject("@2FA required");
+                    if(!authenticator.check(code, secret)){
+                        return reject("Try again, authentication failed");
+                    }else{
+                        createSession(resolve, reject, loggedInIdentityCredential);
+                    }
                 }else{
                     createSession(resolve, reject, loggedInIdentityCredential);
                 }
@@ -88,7 +97,8 @@ function identityCredentialsIterator(identityCredentials, identifier, password, 
                         
                         res = {
                             identityCredential,
-                            identity  
+                            identity,
+                            secret: identityCredential.config.secret  
                         };
 
                         cb(res);

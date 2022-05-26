@@ -1,24 +1,18 @@
 require("dotenv").config();
 require('./postgres/initialize_dbs').init()
 .then(async () => {
-  const Sentry = require("@sentry/node");
-  Sentry.init({ dsn: "http://d78601a2198e422d8855c8be53f57061@88.208.212.249:8000/2" });
   const express = require('express');
   const { graphqlHTTP } = require('express-graphql');
   const schema = require('./schema/index');
-  const oauthRouter = require('./auth');
 
   const app = express();
-
+  
   app.use(express.json());
-  app.use(Sentry.Handlers.requestHandler());
-  app.use("/oauth2", oauthRouter);
-
+  
   async function main() {
-
     app.use('/graphql', 
     graphqlHTTP({
-        schema,
+        schema: schema,
         graphiql: true,
     }));
     
@@ -33,5 +27,4 @@ require('./postgres/initialize_dbs').init()
     process.exit(1);
   });
 
-  app.use(Sentry.Handlers.errorHandler());
 });
