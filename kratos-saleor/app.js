@@ -5,6 +5,7 @@ require('./postgres/initialize_dbs').init()
   Sentry.init({ dsn: "http://d78601a2198e422d8855c8be53f57061@88.208.212.249:8000/2" });
   const express = require('express');
   const session = require('express-session');
+  const cookieParser = require('cookie-parser');
   const { graphqlHTTP } = require('express-graphql');
   const schema = require('./schema/index');
   const oauthRouter = require('./auth');
@@ -19,6 +20,7 @@ require('./postgres/initialize_dbs').init()
   }));
   app.use(express.json());
   app.use(Sentry.Handlers.requestHandler());
+  app.use(cookieParser());
   app.use("/oauth2", oauthRouter);
 
   app.use('/graphql', 
