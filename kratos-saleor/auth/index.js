@@ -7,7 +7,7 @@ router.get("/", (req, res) => {
     let redirect_uri = req.query.redirect_uri;
 	let scopes = req.query.scope.split(" ");
     let state = req.query.state;
-	let code = "generateCode()";
+	let code = "87a4c72000afa22db79fbdac09116fc78e34dd65be0ed608f19587dda26761f20cb7fba6";
 
 	res.redirect(`${redirect_uri}?state=${state}&code=${code}`);
 });
