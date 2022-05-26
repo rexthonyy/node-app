@@ -14,7 +14,7 @@ const databaseName = process.env.POSTGRES_DB;
 
 const init = () => {
     return new Promise((resolve, reject) => {
-
+        return resolve();
         createKratosDatabase(() => {
             console.log("Kratos database created successfully");
             resolve();
