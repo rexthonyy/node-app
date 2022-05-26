@@ -12,7 +12,9 @@ require('./postgres/initialize_dbs').init()
   const oauthRouter = require('./auth');
 
   const app = express();
+  
   app.set('view engine', 'ejs');
+  app.use(Sentry.Handlers.requestHandler());
   app.use(express.static('public'));
   app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -20,8 +22,8 @@ require('./postgres/initialize_dbs').init()
     saveUninitialized: false
   }));
   app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
   app.use(BodyParser.json({limit: "4mb"}));
-  app.use(Sentry.Handlers.requestHandler());
   app.use(cookieParser());
   app.use("/oauth2", oauthRouter);
 
