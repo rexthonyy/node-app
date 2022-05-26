@@ -1,13 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { authenticator } = require('otplib');
+const jwt = require('jsonwebtoken');
 
 router.get("/", (req, res) => {
 	let response_type = req.query.response_type;
     let redirect_uri = req.query.redirect_uri;
 	let scopes = req.query.scope.split(" ");
     let state = req.query.state;
-	let code = "87a4c72000afa22db79fbdac09116fc78e34dd65be0ed608f19587dda26761f20cb7fba6";
+	let token = {
+		code: "87a4c72000afa22db79fbdac09116fc78e34dd65be0ed608f19587dda26761f20cb7fba6"
+	};
+	let code = jwt.sign(token, process.env.AUTHORIZATION_TOKEN_SECRET);
 
 	res.redirect(`${redirect_uri}?state=${state}&code=${code}`);
 });
