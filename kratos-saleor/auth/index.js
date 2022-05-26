@@ -3,26 +3,13 @@ const router = express.Router();
 const { authenticator } = require('otplib');
 
 router.get("/", (req, res) => {
-  	console.log(req.query);
-	console.log(req.body);
-    let redirectUrl = req.params.redirectUrl;
-    let state = authenticator.generateSecret();
-    let client_id = req.params.client_id;
-    let scope = req.params.scope;
-    let response_type = "code";
+	let response_type = req.query.response_type;
+    let redirect_uri = req.query.redirect_uri;
+	let scopes = req.query.scope.split(" ");
+    let state = req.query.state;
+	let code = "generateCode()";
 
-    let localhost = process.env.HOST;
-
-    res.json({
-        data: {
-          externalAuthenticationUrl: {
-            authenticationData: {
-                authorizationUrl: `http://${localhost}/authorize?response_type=${response_type}&client_id=${client_id}&redirect_uri=${redirectUrl}&scope=${scope}&state=${state}`
-            },
-            accountErrors: []
-          }
-        }
-      });
+	res.redirect(`${redirect_uri}?state=${state}&code=${code}`);
 });
 /*
 {
