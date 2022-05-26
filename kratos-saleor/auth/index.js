@@ -70,6 +70,8 @@ router.post("/login", (req, res) => {
 		password
 	];
 
+	console.log(values);
+
 	pgUserQueries.getUserByEmailAndPassword(values, result => {
 		if(result.err || result.res.length == 0){
 			return res.redirect("/oauth2/login");

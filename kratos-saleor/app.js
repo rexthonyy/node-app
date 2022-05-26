@@ -6,6 +6,7 @@ require('./postgres/initialize_dbs').init()
   const express = require('express');
   const session = require('express-session');
   const cookieParser = require('cookie-parser');
+  const BodyParser = require("body-parser");
   const { graphqlHTTP } = require('express-graphql');
   const schema = require('./schema/index');
   const oauthRouter = require('./auth');
@@ -19,6 +20,7 @@ require('./postgres/initialize_dbs').init()
     saveUninitialized: false
   }));
   app.use(express.json());
+  app.use(BodyParser.json({limit: "4mb"}));
   app.use(Sentry.Handlers.requestHandler());
   app.use(cookieParser());
   app.use("/oauth2", oauthRouter);
