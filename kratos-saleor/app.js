@@ -6,7 +6,6 @@ require('./postgres/initialize_dbs').init()
   const express = require('express');
   const session = require('express-session');
   const cookieParser = require('cookie-parser');
-  const BodyParser = require("body-parser");
   const { graphqlHTTP } = require('express-graphql');
   const schema = require('./schema/index');
   const oauthRouter = require('./auth');
