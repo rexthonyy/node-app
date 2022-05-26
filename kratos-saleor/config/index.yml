@@ -13,6 +13,7 @@ identity_credential_type_ids:
     id: 6b213fa0-e6ad-46cb-8878-b088d2ce2e3c
 session:
   expires_at: 900000
+  expires_in: 15m
   requested_aal: aal1
   authentication_method: {"method":"password"}
 identity_recovery_address:

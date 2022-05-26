@@ -1,20 +1,106 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const pgQueries = require('../postgres/user-queries');
+
+const fs = require('fs');
+const YAML = require('yaml');
+
+const config = YAML.parse(fs.readFileSync('./config/index.yml', 'utf8'));
+const expiresIn = config.session.expires_in;
 
 router.get("/", (req, res) => {
 	let response_type = req.query.response_type;
     let redirect_uri = req.query.redirect_uri;
 	let scopes = req.query.scope.split(" ");
     let state = req.query.state;
-	let identityId = "87a4c72000afa22db79fbdac09116fc78e34dd65be0ed608f19587dda26761f20cb7fba6";
-	let token = {
-		code: identityId
-	};
-	let code = jwt.sign(token, process.env.AUTHORIZATION_TOKEN_SECRET);
 
-	res.redirect(`${redirect_uri}?state=${state}&code=${code}`);
+	req.session.response_type = response_type;
+	req.session.redirect_uri = redirect_uri;
+	req.session.scopes = scopes;
+	req.session.sate = state;
+
+	let accessToken = req.cookies[process.env.COOKIE_ID];
+	if(accessToken == undefined ){
+		loginUser(req, res);
+	}else{
+		jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+			if(err) {
+				console.error(err);
+				loginUser(req, res);
+			}else{
+				pgQueries.getUserId([user.id], result => {
+					if(result.err || result.res.length == 0){
+						return loginUser(req, res);
+					}
+
+					user = result.res[0];
+					let refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+
+					return returnRedirect(req, res, accessToken, refreshToken);
+				});
+			}
+		});
+	}
+	
 });
+
+function returnRedirect(req, res, accessToken, refreshToken){
+    let redirect_uri = req.session.redirect_uri;
+    let state = req.session.state;
+
+	return res.redirect(`${redirect_uri}?state=${state}&accessToken=${accessToken}&refreshToken=${refreshToken}`);
+}
+
+function loginUser(req, res){
+	res.redirect("/oauth2/login");
+}
+
+router.get("/login", (req, res) => {
+	res.render("login");
+});
+
+router.post("/login", (req, res) => {
+	let email = req.body.email;
+	let password = req.body.password;
+
+	let values = [
+		email,
+		password
+	];
+
+	pgQueries.getUserByEmailAndPassword(values, result => {
+		if(result.err || result.res.length == 0){
+			return res.redirect("/oauth2/login");
+		}
+
+		let user = result.res[0];
+
+		let accessToken = generateAccessToken(user);
+		let refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+
+		returnRedirect(req, res, accessToken, refreshToken);
+	});
+});
+
+router.get("/signup", (req, res) => {
+	res.render("signup");
+});
+
+function generateAccessToken(user){
+	return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: expiresIn });
+}
+
+function isAuthenticated(req, res){
+	const authHeader = req.headers['authorization'];
+	const token = authHeader && authHeader.split(" ")[1];
+	if(token == null) return res.sendStatus(401);
+	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+		if(err) return res.sendStatus(403);
+		req.user = user;
+		next();
+	});
+}
 /*
 {
     "data": {
@@ -91,12 +177,9 @@ router.get("/authorize", (req, res) => {
 
 
 
-router.get("/token/refresh", (req, res) => {
-	console.log("refresh");
-    console.log(req.query);
-	console.log(req.body);
+router.post("/token/refresh", (req, res) => {
     let refreshToken = req.params.refreshToken;
-    let csrfToken = req.params.csrfToken;
+	if(refreshToken == null) return res.sendStatus(401);
 
     let token = "";
 
@@ -182,11 +265,11 @@ router.get("/keys", (req, res) => {
 	res.sendStatus(401);
 });
 
-router.get("/userDetails", (req, res) => {
-	console.log("userDetails");
-    console.log(req.query);
-	console.log(req.body);
-	res.sendStatus(401);
+router.get("/userDetails", isAuthenticated, (req, res) => {
+	pgQueries.getUsers(result => {
+		if(result.err) res.sendStatus(401);
+		res.json(result.res);
+	});
 });
 
 
