@@ -50,9 +50,6 @@ require('./postgres/initialize_dbs').init()
       subschemas: [
         {
           schema: schema
-        },
-        {
-          schema: permission_schema
         }
       ]
       }),
