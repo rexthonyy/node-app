@@ -49,7 +49,7 @@ require('./postgres/initialize_dbs').init()
         schema: stitchSchemas({
       subschemas: [
         {
-          schema: schema
+          schema: schema1
         }
       ]
       }),
