@@ -29,6 +29,10 @@ function checkLoginFlow(resolve, reject, flow, identifier, password){
             }
         }
 
+        if(password.length <= 5){
+            return reject("Password must be 6 or more characters");
+        }
+
         getIdentityCredentialsTypes(resolve, reject, identifier, password);
     });
 }

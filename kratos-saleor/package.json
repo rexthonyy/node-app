@@ -36,6 +36,8 @@
     "@graphql-tools/stitch": "^8.6.3",
     "pg": "^8.7.3",
     "qrcode": "^1.5.0",
+    "passport": "^0.6.0",
+    "passport-google-oauth2": "^0.2.0",
     "postgraphile": "^4.12.5",
     "postgraphile-apollo-server": "^0.1.1",
     "uuidv4": "^6.2.13",

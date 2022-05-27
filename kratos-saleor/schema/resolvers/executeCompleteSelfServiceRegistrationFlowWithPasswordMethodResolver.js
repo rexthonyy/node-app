@@ -35,6 +35,10 @@ function checkRegistrationFlow(resolve, reject, flow, traits){
             }
         }
 
+        if(traits.password.length <= 5){
+            return reject("Password must be 6 or more characters");
+        }
+
         let identitySchema = JSON.parse(schemaHandler.getDefaultJSONSchema());            
         let errors = v.validate(traits,identitySchema).errors;
         if(errors.length > 0){

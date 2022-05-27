@@ -6,8 +6,10 @@ require('./postgres/initialize_dbs').init()
   const express = require('express');
   const session = require('express-session');
   const cookieParser = require('cookie-parser');
+  const passport = require('passport');
   const { graphqlHTTP } = require('express-graphql');
   const schema = require('./schema/index');
+  const authGoogleRouter = require('./auth/authGoogle');
   const oauthRouter = require('./auth');
 
   const app = express();
@@ -15,6 +17,9 @@ require('./postgres/initialize_dbs').init()
   app.set('view engine', 'ejs');
 
   app.use(express.static('public'));
+  app.use(session({secret: process.env.SESSION_SECRET}));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(cookieParser());
@@ -26,6 +31,7 @@ require('./postgres/initialize_dbs').init()
   app.use(Sentry.Handlers.requestHandler());
 
   app.use("/oauth2", oauthRouter);
+  app.use("/auth", authGoogleRouter);
 
   app.use('/graphql', 
   graphqlHTTP({
