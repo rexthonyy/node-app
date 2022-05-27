@@ -2,12 +2,10 @@
 	"id": "/admin",
 	"type": "object",
 	"properties": {
-		"firstName": {"type": "string"},
-		"lastName": {"type": "string"},
+		"first_name": {"type": "string"},
+		"last_name": {"type": "string"},
 		"email": {"type": "string"},
-		"password": {"type": "string"},
-		"image_url": {"type": "string"},
-		"preferred_language": {"type": "string"}
+		"password": {"type": "string"}
 	},
 	"required": ["email","password"]
 }
