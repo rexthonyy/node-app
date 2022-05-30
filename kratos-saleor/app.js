@@ -8,7 +8,7 @@ require('./postgres/initialize_dbs').init()
         const cookieParser = require('cookie-parser');
         const passport = require('passport');
         const { graphqlHTTP } = require('express-graphql');
-        const schema1 = require('./schema/index');
+        //const schema1 = require('./schema/index');
         const authGoogleRouter = require('./auth/authGoogle');
         const oauthRouter = require('./auth');
         const { loadSchemaSync } = require('@graphql-tools/load');
