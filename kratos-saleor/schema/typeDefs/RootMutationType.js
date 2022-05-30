@@ -17,7 +17,40 @@ const UpdateIdentityInput = require("./UpdateIdentityInput");
 const SettingsViaApiResponse = require("./SettingsViaApiResponse");
 const CompleteSelfServiceSettingsFlowWithPasswordMethodInput = require("./CompleteSelfServiceSettingsFlowWithPasswordMethodInput");
 const SettingsFlow = require("./SettingsFlow");
+const tokenCreate = require("./TokenCreate");
+const accountRegister = require("./AccountRegister");
+const AccountRegisterInputType = require("./AccountRegisterInputType");
 
+const {
+    GraphQLInputObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLList,
+    GraphQLBoolean,
+    GraphQLFloat,
+    GraphQLID,
+    GraphQLInt
+} = require("graphql");
+
+
+// data types
+const TaxedMoney = require("./TaxedMoney");
+
+module.exports = new GraphQLInputObjectType({
+    name: "VariantPricingInfo",
+    description: "Represents availability of a variant in the storefront.",
+    args: {
+        addressInput: { type: GraphQLNonNull(GraphQLString), description: "The Flow ID" }
+    },
+    fields: () => ({
+        onSale: { type: GraphQLBoolean },
+        discount: { type: TaxedMoney },
+        discountLocalCurrency: { type: TaxedMoney },
+        price: { type: TaxedMoney },
+        priceUndiscounted: { type: TaxedMoney },
+        priceLocalCurrency: { type: TaxedMoney }
+    })
+});
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
@@ -27,6 +60,8 @@ const executeUpdateIdentityResolver = require("../resolvers/executeUpdateIdentit
 const executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver");
 const executeComplete2FAResolver = require("../resolvers/executeComplete2FAResolver");
+const executeTokenCreateResolver = require("../resolvers/executeTokenCreateResolver");
+const executeAccountRegisterResolver = require("../resolvers/executeAccountRegisterResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -103,6 +138,22 @@ module.exports = new GraphQLObjectType({
                 authenticationData: { type: GraphQLString }
             },
             resolve: executeComplete2FAResolver
+        },
+        tokenCreate: {
+            type: tokenCreate,
+            args: {
+                email: { type: GraphQLNonNulll(GraphQLString) },
+                password: { type: GraphQLNonNulll(GraphQLString) }
+            },
+            resolve: executeTokenCreateResolver
+        },
+        accountRegister: {
+            type: accountRegister,
+            description: "Register a new user.",
+            args: {
+                input: { type: GraphQLNonNull(AccountRegisterInputType) }
+            },
+            resolve: executeAccountRegisterResolver
         },
     })
 });
