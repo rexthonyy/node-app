@@ -34,7 +34,8 @@ roles.load({
         },
         "Administrators": {
             "keys": ["Marak"],
-            "roles": ["can delete resources"]
+            "roles": ["can delete resources"],
+            "inherits": []
         }
     }
 });
