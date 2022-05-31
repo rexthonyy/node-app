@@ -39,7 +39,7 @@ roles.load({
     }
 });
 
-roles.addUserToGroup("Marak", "Administrator");
+roles.addUserToGroup("Marak", "Administrators");
 
 
 // basic permission checks
