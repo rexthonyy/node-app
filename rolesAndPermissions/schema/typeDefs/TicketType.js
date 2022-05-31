@@ -1,0 +1,53 @@
+const {
+    GraphQLObjectType,
+    GraphQLString,
+    GraphQLID,
+    GraphQLInt,
+    GraphQLBoolean,
+    GraphQLList
+} = require("graphql");
+
+module.exports = new GraphQLObjectType({
+    name: "TicketType",
+    description: "An object that represents a ticket",
+    fields: () => ({
+            id: { type: GraphQLID },
+            group_id: { type: GraphQLID },
+            priority_id: { type: GraphQLID },
+            state_id: { type: GraphQLID },
+            organization_id: { type: GraphQLInt },
+            number: { type: GraphQLInt },
+            title: { type: GraphQLString },
+            owner_id: { type: GraphQLID },
+            customer_id: { type: GraphQLID },
+            note: { type: GraphQLString },
+            first_response_at: { type: GraphQLString },
+            first_response_escalation_at: { type: GraphQLString },
+            first_response_in_min: { type: GraphQLInt },
+            first_response_diff_in_min: { type: GraphQLInt },
+            close_at: { type: GraphQLString },
+            close_escalation_at: { type: GraphQLString },
+            close_in_min: { type: GraphQLInt },
+            close_diff_in_min: { type: GraphQLInt },
+            update_escalation_at: { type: GraphQLString },
+            update_in_min: { type: GraphQLInt },
+            update_diff_in_min: { type: GraphQLInt },
+            last_contact_at: { type: GraphQLString },
+            last_contact_agent_at: { type: GraphQLString },
+            last_contact_customer_at: { type: GraphQLString },
+            last_owner_update_at: { type: GraphQLString },
+            create_article_article_type_id: { type: GraphQLID },
+            create_article_sender_id: { type: GraphQLID },
+            article_count: { type: GraphQLInt },
+            escalation_at: { type: GraphQLString },
+            pending_time: { type: GraphQLString },
+            type: { type: GraphQLString },
+            time_unit: { type: GraphQLString },
+            preferences: { type: GraphQLString },
+            updated_by_id: { type: GraphQLID },
+            created_by_id: { type: GraphQLID },
+            created_at: { type: GraphQLString },
+            updated_at: { type: GraphQLString },
+            article_ids: { type: GraphQLList(GraphQLInt)}
+    })
+});
