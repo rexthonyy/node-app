@@ -8,19 +8,6 @@ const sys = {
 // first we are going to set some default role data
 
 roles.load({
-    "keys": [
-        "Marak",
-        "Charlie",
-        "Alexis",
-        "Isaacs",
-        "Guest"
-    ],
-    "roles": [
-        "can view resource",
-        "can edit resource",
-        "can add resource",
-        "can delete resources"
-    ],
     "groups": {
         "Guests": {
             "keys": ["Guest"],
@@ -75,9 +62,9 @@ if ("Isaacs".isntIn('Administrators')) {
     sys.puts('Isaacs is not in Administrators');
 }
 
-// if ("Noob".isntIn('Administrators')) {
-//     sys.puts('Noob is not in Administrators');
-// }
+if ("Charlie".isIn('Guests')) {
+    sys.puts('Charlie is in Guests');
+}
 
 
 
