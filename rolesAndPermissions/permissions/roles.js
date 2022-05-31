@@ -78,7 +78,7 @@ roles.isIn = function(key, group) {
     var found = false;
     var groups = roles.getGroups();
     for (var u in groups[group].keys) {
-        if (groups[group].keys[u] === this.toString()) {
+        if (groups[group].keys[u] === key) {
             found = true;
         }
     }
@@ -86,7 +86,7 @@ roles.isIn = function(key, group) {
 }
 
 roles.isntIn = function(key, group) {
-    return false;
+    return !roles.isIn(key, group);
 };
 
 // prototype string for some sugar syntax

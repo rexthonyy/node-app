@@ -44,10 +44,10 @@ roles.load({
 
 
 // basic permission checks
-if ("Noob".can('can delete resources')) {
-    sys.puts('Marak can delete resources');
+if ("Charlie".can('can view resources')) {
+    sys.puts('Charlie can delete resources');
 } else {
-    sys.puts('Marak cannot delete resources');
+    sys.puts('Charlie cannot delete resources');
 }
 
 // if (!"Noob".can('delete resources')) {
@@ -63,17 +63,17 @@ if ("Noob".can('can delete resources')) {
 // }
 
 // basic group checks
-// if ("Marak".isIn('Administrators')) {
-//     sys.puts('Marak is in Administrators');
-// }
+if ("Marak".isIn('Administrators')) {
+    sys.puts('Marak is in Administrators');
+}
 
 // if (!"Marak".isntIn('Administrators')) {
 //     sys.puts('Marak is in Administrators');
 // }
 
-// if (!"Noob".isIn('Administrators')) {
-//     sys.puts('Noob is not in Administrators');
-// }
+if ("Isaacs".isntIn('Administrators')) {
+    sys.puts('Isaacs is not in Administrators');
+}
 
 // if ("Noob".isntIn('Administrators')) {
 //     sys.puts('Noob is not in Administrators');
