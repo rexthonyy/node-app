@@ -1,4 +1,5 @@
-module.exports = async(parent, args) => {
+module.exports = async(parent, args, context) => {
+    console.log(context);
     return {
         id: args.id,
         name: "sample group",
