@@ -49,7 +49,7 @@ roles.addRoleToGroup = function(role, group) {
 /******* permission checks*******/
 
 roles.can = function(key, role) {
-
+    console.log(key);
     // get all groups that this key belongs to (both directly, and through inhertiance)
     var groups = roles.getGroups(key);
 
