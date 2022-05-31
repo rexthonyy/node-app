@@ -44,7 +44,7 @@ roles.load({
 
 
 // basic permission checks
-if ("Marak".can('can delete resources')) {
+if ("Noob".can('can delete resources')) {
     sys.puts('Marak can delete resources');
 } else {
     sys.puts('Marak cannot delete resources');
