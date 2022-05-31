@@ -117,6 +117,8 @@ roles.getGroups = function(key) {
         return roles._data.groups;
     } else {
         var groups = [];
+        console.log(key);
+        console.log(roles);
         for (var g in roles._data.groups) {
             for (var k = 0; k < roles._data.groups[g].keys.length; k++) {
                 if (roles._data.groups[g].keys[k] == key) {
