@@ -7,21 +7,33 @@ const sys = {
 
 // first we are going to set some default role data
 roles.load({
-    "permissions": [
-        "view page",
-        "edit page",
-        "add page",
-        "delete page"
+    "users": [
+        "Marak",
+        "Charlie",
+        "Alexis",
+        "Isaacs",
+        "Guest"
     ],
-    "roles": {
-        "Guest": {
-            "roles": ["view page"]
+    "roles": [
+        "can view resource",
+        "can edit resource",
+        "can add resource",
+        "can delete resource"
+    ],
+    "groups": {
+        "Guests": {
+            "users": ["Guest"],
+            "roles": ["can view resources"],
+            "inherits": []
         },
-        "Moderator": {
-            "roles": ["edit page", "add page"]
+        "Moderators": {
+            "users": ["Charlie", "Alexis", "Isaacs"],
+            "roles": ["can edit resources", "can add resources"],
+            "inherits": ["Guests"]
         },
-        "Administrator": {
-            "roles": ["delete page"]
+        "Administrators": {
+            "users": ["Marak"],
+            "roles": ["can delete resources"]
         }
     }
 });
