@@ -49,7 +49,7 @@ roles.addRoleToGroup = function(role, group) {
 /******* permission checks*******/
 
 roles.can = function(key, role) {
-    console.log(key.toString());
+    console.log(key);
     console.log(roles._data.groups["Administrators"].keys[0]);
     // get all groups that this key belongs to (both directly, and through inhertiance)
     var groups = roles.getGroups(key);
@@ -93,19 +93,19 @@ roles.isntIn = function(key, group) {
 
 // prototype string for some sugar syntax
 String.prototype.isIn = function(group) {
-    return roles.isIn(this, group);
+    return roles.isIn(this.toString(), group);
 };
 
 String.prototype.isntIn = function(group) {
-    return roles.isntIn(this, group);
+    return roles.isntIn(this.toString(), group);
 };
 
 String.prototype.can = function(role) {
-    return roles.can(this, role);
+    return roles.can(this.toString(), role);
 };
 
 String.prototype.cannot = function(role) {
-    return roles.cannot(this, role);
+    return roles.cannot(this.toString(), role);
 };
 
 /******* end permission checks *******/
