@@ -1,3 +1,5 @@
+// List of permission groups. Requires one of the following permissions: MANAGE_STAFF.
+
 module.exports = async(parent, args, context) => {
     return {
         id: args.id,

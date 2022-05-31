@@ -1,3 +1,5 @@
+// Permission: PERMISSION_MANAGE_STAFF
+// Look up permission group by ID. Requires one of the following permissions: MANAGE_STAFF.
 module.exports = async(parent, args, context) => {
     console.log(context);
     return {
