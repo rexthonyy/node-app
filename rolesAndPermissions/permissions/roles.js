@@ -1,21 +1,13 @@
 /* roles.js  - Marak Squires 2010 */
-
-var sys = require('sys'),
-    fs = require('fs'),
-    roles;
-
-roles = exports;
-
+const roles = {};
 roles._data = null;
 
-/*
-var group = function ( name ){
-  this.keys = [];
-  this.roles = [];
-  this.inherits = [];
-  return this;
+var group = function(name) {
+    this.keys = [];
+    this.roles = [];
+    this.inherits = [];
+    return this;
 };
-*/
 
 roles.load = function(data) {
     if (typeof data === 'object') {
@@ -86,8 +78,6 @@ roles.cannot = function(key, role) {
 roles.isIn = function(key, group) {
     var found = false;
     var groups = roles.getGroups();
-    sys.puts(groups[group], group);
-    return;
     for (var u in groups[group].keys) {
         if (groups[group].keys[u] === this.toString()) {
             found = true;

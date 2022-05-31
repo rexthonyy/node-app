@@ -1,14 +1,8 @@
-var sys = require('sys'),
-    fs = require('fs');
-roles = require('./roles');
-
-// define some users here
-var users = {
-    "Marak": ["Administrator", "Moderator", "Guest"],
-    "Charlie": ["Moderator", "Guest"],
-    "Alexis": ["Moderator", "Guest"],
-    "Isaacs": ["Moderator", "Guest"],
-    "Guest": ["Guest"]
+const roles = require('./roles');
+const sys = {
+    puts: val => {
+        console.log(val);
+    }
 };
 
 // first we are going to set some default role data
