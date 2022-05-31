@@ -5,7 +5,8 @@ const hasPermission = (permissions, required) => {
     for (let p in permissions) {
         console.log(p);
         if (p.isIn("Permissions")) {
-            for (let r in required) {
+            for (let i = 0; i < required.length; i++) {
+                let r = required[i];
                 console.log(r);
                 if (p == r) {
                     if (permissions[p] == true) {
