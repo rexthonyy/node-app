@@ -136,6 +136,7 @@ roles.getGroups = function(key) {
 
 // gets all groups that a group inherits from
 roles.inheritGroups = function(group) {
+    console.log(group);
     if (group == '') {
         return '';
     }
