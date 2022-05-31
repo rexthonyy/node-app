@@ -1,4 +1,5 @@
 const hasPermission = (permissions, required) => {
+    console.log(permissions);
     let found = false;
     for (let p in permissions) {
         for (let r in required) {
