@@ -50,6 +50,7 @@ roles.addRoleToGroup = function(role, group) {
 
 roles.can = function(key, role) {
     console.log(key);
+    console.log(roles._data.groups["Administrators"].keys[0]);
     // get all groups that this key belongs to (both directly, and through inhertiance)
     var groups = roles.getGroups(key);
 
