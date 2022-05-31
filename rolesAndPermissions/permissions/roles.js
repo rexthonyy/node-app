@@ -137,8 +137,8 @@ roles.getGroups = function(key) {
 // gets all groups that a group inherits from
 roles.inheritGroups = function(group) {
     console.log(group);
-    if (group == '') {
-        return '';
+    if (group == '' || group == undefined) {
+        return [];
     }
     var groupChain = [];
     var inherits = roles._data.groups[group].inherits || [];
@@ -149,7 +149,7 @@ roles.inheritGroups = function(group) {
             var inherit = inherits[i];
             groupChain.push(inherit);
             var r = roles.inheritGroups(inherit);
-            if (r !== '') {
+            if (r.length > 0) {
                 groupChain.push(roles.inheritGroups(inherit)[0]);
             }
         }
