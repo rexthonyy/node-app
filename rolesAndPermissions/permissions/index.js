@@ -6,6 +6,7 @@ const sys = {
 };
 
 // first we are going to set some default role data
+
 roles.load({
     "users": [
         "Marak",
@@ -37,6 +38,9 @@ roles.load({
         }
     }
 });
+
+roles.addUserToGroup("Marak", "Administrator");
+
 
 // basic permission checks
 if ("Marak".can('delete resources')) {
