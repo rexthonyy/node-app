@@ -62,8 +62,8 @@ if ("Isaacs".isntIn('Administrators')) {
     sys.puts('Isaacs is not in Administrators');
 }
 
-if ("Charlie".isIn('Guests')) {
-    sys.puts('Charlie is in Guests');
+if ("Charlie".isntIn('Guests')) {
+    sys.puts('Charlie is not in Guests');
 }
 
 
