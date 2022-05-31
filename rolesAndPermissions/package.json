@@ -1,10 +1,10 @@
 {
-    "name": "tickets",
+    "name": "RolesAndPermissions",
     "version": "1.0.0",
     "description": "",
-    "main": "ticket.js",
+    "main": "app.js",
     "scripts": {
-        "test": "node ticket.js"
+        "test": "node app.js"
     },
     "keywords": [],
     "author": "",
