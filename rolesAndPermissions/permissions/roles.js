@@ -49,8 +49,6 @@ roles.addRoleToGroup = function(role, group) {
 /******* permission checks*******/
 
 roles.can = function(key, role) {
-    console.log(key);
-    console.log(roles._data.groups["Administrators"].keys[0]);
     // get all groups that this key belongs to (both directly, and through inhertiance)
     var groups = roles.getGroups(key);
 
@@ -126,8 +124,9 @@ roles.getGroups = function(key) {
             }
         }
 
-        for (let g in groups) {
-            var inherittedGroups = roles.inheritGroups(g);
+        if (groups.length > 0) {
+            var inherittedGroups = roles.inheritGroups(groups[0]);
+            console.log(inherittedGroups);
             for (var i = 0; i < inherittedGroups.length; i++) {
                 groups.push(inherittedGroups[i]);
             }
@@ -138,12 +137,9 @@ roles.getGroups = function(key) {
 };
 
 // gets all groups that a group inherits from
-roles.inheritGroups = function(group) {
-    if (group == '' || group == undefined) {
-        return [];
-    }
+roles.inheritGroups = function(grp) {
     var groupChain = [];
-    var inherits = roles._data.groups[group].inherits || [];
+    var inherits = roles._data.groups[grp].inherits || [];
     if (inherits.length == 0) {
         return [];
     } else {
@@ -152,7 +148,7 @@ roles.inheritGroups = function(group) {
             groupChain.push(inherit);
             var r = roles.inheritGroups(inherit);
             if (r.length > 0) {
-                groupChain.push(roles.inheritGroups(inherit)[0]);
+                groupChain = groupChain.concat(r);
             }
         }
     }
