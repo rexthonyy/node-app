@@ -7,7 +7,9 @@ const permissionGroupDelete = require("../resolvers/permissionGroupDelete");
 module.exports = {
     Query: {
         permissionGroup,
-        permissionGroups,
+        permissionGroups
+    },
+    Mutation: {
         permissionGroupCreate,
         permissionGroupUpdate,
         permissionGroupDelete
