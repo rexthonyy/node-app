@@ -1,6 +1,31 @@
 const roles = require('./roles');
 roles.load({
     "groups": {
+        "Permissions": {
+            "keys": [
+                "PERMISSION_MANAGE_STAFF",
+                "PERMISSION_IMPERSONATE_USER",
+                "PERMISSION_MANAGE_APPS",
+                "PERMISSION_MANAGE_CHANNELS",
+                "PERMISSION_MANAGE_DISCOUNTS",
+                "PERMISSION_MANAGE_PLUGINS",
+                "PERMISSION_MANAGE_GIFT_CARD",
+                "PERMISSION_MANAGE_MENUS",
+                "PERMISSION_MANAGE_ORDERS",
+                "PERMISSION_MANAGE_PAGES",
+                "PERMISSION_MANAGE_PAGE_TYPES_AND_ATTRIBUTES",
+                "PERMISSION_HANDLE_PAYMENTS",
+                "PERMISSION_MANAGE_PRODUCTS",
+                "PERMISSION_MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES",
+                "PERMISSION_MANAGE_SHIPPING",
+                "PERMISSION_MANAGE_SETTINGS",
+                "PERMISSION_MANAGE_TRANSLATIONS",
+                "PERMISSION_MANAGE_CHECKOUTS",
+                "PERMISSION_HANDLE_CHECKOUT"
+            ],
+            "roles": [],
+            "inherits": []
+        },
         "Guests": {
             "keys": ["Guest"],
             "roles": ["can view resources"],
@@ -19,6 +44,7 @@ roles.load({
     }
 });
 
+module.exports = roles;
 //roles.addUserToGroup("Marak", "Administrators");
 
 

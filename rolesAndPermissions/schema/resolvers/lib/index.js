@@ -1,12 +1,17 @@
+const roles = require('../../../permissions');
+
 const hasPermission = (permissions, required) => {
-    console.log(permissions);
     let found = false;
     for (let p in permissions) {
-        for (let r in required) {
-            if (p == r) {
-                if (permissions[p] == true) {
-                    found = true;
-                    break;
+        console.log(p);
+        if (p.isIn("Permissions")) {
+            for (let r in required) {
+                console.log(r);
+                if (p == r) {
+                    if (permissions[p] == true) {
+                        found = true;
+                        break;
+                    }
                 }
             }
         }
