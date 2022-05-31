@@ -11,6 +11,7 @@ const hasPermission = (permissions, required) => {
             }
         }
     }
+    console.log(found);
     return found;
 }
 
