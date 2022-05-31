@@ -117,8 +117,8 @@ roles.getGroups = function(key) {
         return roles._data.groups;
     } else {
         var groups = [];
-        console.log(key);
-        console.log(roles);
+        // console.log(key);
+        // console.log(roles);
         for (var g in roles._data.groups) {
             for (var k = 0; k < roles._data.groups[g].keys.length; k++) {
                 if (roles._data.groups[g].keys[k] == key) {
@@ -126,7 +126,7 @@ roles.getGroups = function(key) {
                 }
             }
         }
-        var inherittedGroups = roles.inheritGroups(groups);
+        var inherittedGroups = roles.inheritGroups(groups[0]);
         for (var i = 0; i < inherittedGroups.length; i++) {
             groups.push(inherittedGroups[i]);
         }
