@@ -44,21 +44,23 @@ roles.addUserToGroup("Marak", "Administrators");
 
 
 // basic permission checks
-if ("Marak".can('delete resources')) {
-    sys.puts('Marak can delete resources');
+if ("Marak".can('can delete resource')) {
+    sys.puts('Marak can delete resource');
+} else {
+    sys.puts('Marak cannot delete resource');
 }
 
-if (!"Noob".can('delete resources')) {
-    sys.puts('Noob cannot delete resources.');
-}
+// if (!"Noob".can('delete resources')) {
+//     sys.puts('Noob cannot delete resources.');
+// }
 
-if (!"Marak".cannot('delete resources')) {
-    sys.puts('Marak can delete resources.');
-}
+// if (!"Marak".cannot('delete resources')) {
+//     sys.puts('Marak can delete resources.');
+// }
 
-if ("Noob".cannot('delete resources')) {
-    sys.puts('Noob cannot delete resources.');
-}
+// if ("Noob".cannot('delete resources')) {
+//     sys.puts('Noob cannot delete resources.');
+// }
 
 // basic group checks
 // if ("Marak".isIn('Administrators')) {
