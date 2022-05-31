@@ -8,7 +8,7 @@ const sys = {
 // first we are going to set some default role data
 
 roles.load({
-    "users": [
+    "keys": [
         "Marak",
         "Charlie",
         "Alexis",
@@ -19,7 +19,7 @@ roles.load({
         "can view resource",
         "can edit resource",
         "can add resource",
-        "can delete resource"
+        "can delete resources"
     ],
     "groups": {
         "Guests": {
@@ -44,10 +44,10 @@ roles.addUserToGroup("Marak", "Administrators");
 
 
 // basic permission checks
-if ("Marak".can('can delete resource')) {
-    sys.puts('Marak can delete resource');
+if ("Marak".can('can delete resources')) {
+    sys.puts('Marak can delete resources');
 } else {
-    sys.puts('Marak cannot delete resource');
+    sys.puts('Marak cannot delete resources');
 }
 
 // if (!"Noob".can('delete resources')) {

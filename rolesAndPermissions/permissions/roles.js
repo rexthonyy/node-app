@@ -124,10 +124,14 @@ roles.getGroups = function(key) {
                 }
             }
         }
-        var inherittedGroups = roles.inheritGroups(groups[0]);
-        for (var i = 0; i < inherittedGroups.length; i++) {
-            groups.push(inherittedGroups[i]);
+
+        for (let g in groups) {
+            var inherittedGroups = roles.inheritGroups(g);
+            for (var i = 0; i < inherittedGroups.length; i++) {
+                groups.push(inherittedGroups[i]);
+            }
         }
+
         return groups;
     }
 };
@@ -140,7 +144,7 @@ roles.inheritGroups = function(group) {
     var groupChain = [];
     var inherits = roles._data.groups[group].inherits || [];
     if (inherits.length == 0) {
-        return '';
+        return [];
     } else {
         for (var i = 0; i < inherits.length; i++) {
             var inherit = inherits[i];
