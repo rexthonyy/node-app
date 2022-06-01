@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         pgKratosQueries.getUserById([authUser.id], result => {
             if (result.err) return resolve(getError("token", "User not found", "NOT_FOUND", null));
             let accountUser = result.res[0];
-            if (!bcrypt.compareSync(oldPassword, accountUser.password)) return resolve(getError("password", "Password mismatch", "INVALID_PASSWORD"));
+            if (!bcrypt.compareSync(oldPassword, accountUser.password)) return resolve(getError("password", "Invalid password", "INVALID_PASSWORD"));
 
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync(newPassword, salt);
