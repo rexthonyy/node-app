@@ -2,14 +2,15 @@
 const { hasPermission } = require('./lib');
 
 module.exports = async(parent, args, context) => {
-    if (hasPermission(context.variables, ["PERMISSION_MANAGE_STAFF"])) {
-        let permissions = args.addPermissions;
-        let users = args.addUsers;
-        let groupName = args.name;
+    let permissions = args.addPermissions;
+    let users = args.addUsers;
+    let groupName = args.name;
 
-        console.log(permissions);
-        console.log(users);
-        console.log(groupName);
+    console.log(permissions);
+    console.log(users);
+    console.log(groupName);
+
+    if (hasPermission(context.variables, ["PERMISSION_MANAGE_STAFF"])) {
 
         return {
             id: args.id,
@@ -21,5 +22,15 @@ module.exports = async(parent, args, context) => {
             }],
             userCanManage: true
         };
+    } else {
+        return {
+            errors: [{
+                field: null,
+                message: "Permission not found. Requires PERMISSION_MANAGE_STAFF",
+                code: "OUT_OF_SCOPE_PERMISSION",
+                users
+            }],
+            group: undefined
+        }
     }
 }
