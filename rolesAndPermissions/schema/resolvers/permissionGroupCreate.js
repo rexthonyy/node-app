@@ -1,77 +1,109 @@
 // Create new permission group. Requires one of the following permissions: MANAGE_STAFF.
 const { hasPermission } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
+const getIdentityById = require('./lib/getIdentityById');
 
 module.exports = async(parent, args, context) => {
-    let permissions = args.input.addPermissions;
-    let users = args.input.addUsers;
-    let groupName = args.input.name;
+    return new Promise((resolve) => {
+        let permissions = args.input.addPermissions;
+        let users = args.input.addUsers;
+        let groupName = args.input.name;
 
-    if (hasPermission(context.variables, ["PERMISSION_MANAGE_STAFF"])) {
+        if (hasPermission(context.variables, ["PERMISSION_MANAGE_STAFF"])) {
 
-        for (let i = 0, j = permissions.length; i < j; i++) {
-            permissions[i] = permissions[i].toLowerCase();
-        }
-
-        permissionsdbQueries.createAuthGroup([groupName], result => {
-            if (result.err) {
-                return getError(
-                    "name",
-                    result.err,
-                    null, [],
-                    users,
-                    null
-                );
+            for (let i = 0, j = permissions.length; i < j; i++) {
+                permissions[i] = permissions[i].toLowerCase();
             }
 
-            let authGroup = result.res;
-
-            permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
+            permissionsdbQueries.createAuthGroup([groupName], result => {
                 if (result.err) {
-                    return getError(
-                        null,
+                    return resolve(getError(
+                        "name",
                         result.err,
                         null, [],
                         users,
                         null
-                    );
+                    ));
                 }
 
-                let authPermissions = result.res;
+                let authGroup = result.res;
 
-                if (authPermissions.length != permissions.length) {
-                    return getError(
-                        "addPermissions",
-                        "Invalid permission",
-                        "OUT_OF_SCOPE_PERMISSION",
-                        permissions,
-                        null,
-                        null
-                    );
-                } else {
-                    console.log("valid");
-                }
+                permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
+                    if (result.err) {
+                        return resolve(getError(
+                            null,
+                            result.err,
+                            null, [],
+                            users,
+                            null
+                        ));
+                    }
+
+                    let authPermissions = result.res;
+
+                    if (authPermissions.length != permissions.length) {
+                        return resolve(getError(
+                            "addPermissions",
+                            "Invalid permission",
+                            "OUT_OF_SCOPE_PERMISSION",
+                            permissions,
+                            null,
+                            null
+                        ));
+                    }
+
+                    let numPermissions = authPermissions.length;
+                    let count = -1;
+
+                    authPermissions.forEach(permission => {
+                        let values = [
+                            authGroup.id,
+                            permission.id
+                        ];
+
+                        permissionsdbQueries.createAuthGroupPermission(values, result => {
+                            let numUsers = users.length;
+                            let countUsers = -1;
+                            users.forEach(user => {
+                                values = [
+                                    user,
+                                    authGroup.id
+                                ];
+                                permissionsdbQueries.createAccountUserGroup(values, result => {
+                                    checkUsersComplete();
+                                });
+                            });
+                            checkUsersComplete();
+
+                            function checkUsersComplete() {
+                                countUsers++;
+                                if (countUsers == numUsers) {
+                                    checkComplete();
+                                }
+                            }
+                        });
+                    });
+
+                    checkComplete();
+
+                    function checkComplete() {
+                        count++;
+                        if (count == numPermissions) {
+                            getGroups(resolve, authGroup);
+                        }
+                    }
+                });
             });
-        });
-        return {
-            id: args.id,
-            name: "sample group",
-            users: null,
-            permissions: [{
-                code: "MANAGE_USERS",
-                name: "manage users"
-            }],
-            userCanManage: true
-        };
-    } else {
-        return getError(
-            null,
-            "Permission not found. Requires PERMISSION_MANAGE_STAFF",
-            "OUT_OF_SCOPE_PERMISSION", ["MANAGE_STAFF"],
-            users,
-            null
-        );
-    }
+        } else {
+            return resolve(getError(
+                null,
+                "Permission not found. Requires PERMISSION_MANAGE_STAFF",
+                "OUT_OF_SCOPE_PERMISSION", ["MANAGE_STAFF"],
+                users,
+                null
+            ));
+        }
+    });
 }
 
 function getError(field, message, code, permissions, users, group) {
@@ -96,4 +128,92 @@ function generateWhereClause(permissions) {
         whereClause += `codename=$${i+1}`;
     }
     return whereClause;
+}
+
+function getGroups(resolve, group) {
+    getPermissions(group.id, permissions => {
+        getUsers(group.id, users => {
+            let userCanManage = false;
+            if (permissions.find(permission => permission.code == "MANAGE_USERS")) {
+                userCanManage = true;
+            }
+
+            resolve({
+                id: group.id,
+                name: group.name,
+                users,
+                permissions,
+                userCanManage
+            })
+        });
+    });
+}
+
+function getPermissions(groupId, cb) {
+    permissionsdbQueries.getAuthGroupPermissionsByGroupId([groupId], result => {
+        if (result.err) {
+            return cb([]);
+        }
+        let groupPermissions = result.res;
+        let numPermissions = groupPermissions.length;
+        let countPermissions = -1;
+        let permissions = [];
+
+        groupPermissions.forEach(groupPermissionRow => {
+            permissionsdbQueries.getAuthPermissionById([groupPermissionRow.permission_id], result => {
+                if (result.res && result.res.length > 0) {
+                    let authPermissionRow = result.res[0];
+                    permissions.push({
+                        code: authPermissionRow.codename.toUpperCase(),
+                        name: authPermissionRow.name
+                    });
+                }
+                checkComplete();
+            });
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            countPermissions++;
+            if (countPermissions == numPermissions) {
+                cb(permissions);
+            }
+        }
+    });
+}
+
+function getUsers(groupId, cb) {
+    permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
+        if (result.err || result.res.length == 0) {
+            return cb([]);
+        }
+
+        let accountUserGroupRows = result.res;
+        let rows = accountUserGroupRows.length;
+        let count = -1;
+        let users = [];
+
+        accountUserGroupRows.forEach(row => {
+            let user_id = row.user_id;
+            getIdentityById(user_id, identity => {
+                if (typeof identity != "string") {
+                    let traits = identity.traits;
+                    users.push(traits);
+                }
+
+                checkComplete();
+            });
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            count++;
+            if (count == rows) {
+                cb(users);
+            }
+        }
+
+    });
 }

@@ -60,6 +60,92 @@ const getAuthPermissionsByCodename = (whereClause, values, response) => {
     });
 };
 
+const createAuthGroupPermission = (values, response) => {
+    client.query(`INSERT INTO ${db.auth_group_permissions} (group_id, permission_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 5
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const createAccountUserGroup = (values, response) => {
+    client.query(`INSERT INTO ${db.account_user_groups} (user_id, group_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 5
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
+const getAuthGroupPermissionsByGroupId = (values, response) => {
+    pool.query(`SELECT * from ${db.auth_group_permissions} WHERE group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAuthPermissionById = (values, response) => {
+    pool.query(`SELECT * from ${db.auth_permissions} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAccountUserGroupsByGroupId = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user_groups} WHERE group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+
 const updateTicket = (values, response) => {
     client.query('UPDATE tickets SET group_id=$2, priority_id=$3, state_id=$4, organization_id=$5, number=$6, title=$7, owner_id=$8, customer_id=$9, note=$10, first_response_at=$11, first_response_escalation_at=$12, first_response_in_min=$13, first_response_diff_in_min=$14, close_at=$15, close_escalation_at=$16, close_in_min=$17, close_diff_in_min=$18, update_escalation_at=$19, update_in_min=$20, update_diff_in_min=$21, last_contact_at=$22, last_contact_agent_at=$23, last_contact_customer_at=$24, last_owner_update_at=$25, create_article_article_type_id=$26, create_article_sender_id=$27, article_count=$28, escalation_at=$29, pending_time=$30, type=$31, time_unit=$32, preferences=$33, updated_by_id=$34, created_by_id=$35, created_at=$36, updated_at=$37 WHERE id=$1', values, (err, res) => {
         if (err) {
@@ -95,22 +181,7 @@ const deleteTicket = (values, response) => {
 };
 
 
-const createTicketTimeAccounting = (res_, values, response) => {
-    client.query('INSERT INTO ticket_time_accountings (ticket_id, ticket_article_id, time_unit, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', values, (err, res) => {
-        if (err) {
-            response(res_, {
-                err: err.stack,
-                res: null,
-                test: 5
-            });
-        } else {
-            response(res_, {
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
+
 
 const updateTicketTimeAccounting = (values, response) => {
     client.query('UPDATE ticket_time_accountings SET ticket_id=$2, ticket_article_id=$3, time_unit=$4, created_by_id=$5, created_at=$6, updated_at=$7 WHERE id=$1', values, (err, res) => {
@@ -141,24 +212,6 @@ const deleteTicketTimeAccounting = (values, response) => {
             response({
                 err: null,
                 res: res.rows[0]
-            });
-        }
-    });
-};
-
-
-const getTicketStateById = (id, response) => {
-    pool.query(`SELECT * from ticket_states WHERE id=${id}`, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                test: 88
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
             });
         }
     });
@@ -1131,5 +1184,10 @@ const deleteTagsByO_id = (values, response) => {
 
 module.exports = {
     createAuthGroup,
-    getAuthPermissionsByCodename
+    getAuthPermissionsByCodename,
+    createAuthGroupPermission,
+    createAccountUserGroup,
+    getAuthGroupPermissionsByGroupId,
+    getAuthPermissionById,
+    getAccountUserGroupsByGroupId
 }
