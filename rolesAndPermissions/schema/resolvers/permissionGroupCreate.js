@@ -24,7 +24,7 @@ module.exports = async(parent, args, context) => {
                 field: null,
                 message: "Permission not found. Requires PERMISSION_MANAGE_STAFF",
                 code: "OUT_OF_SCOPE_PERMISSION",
-                permissions: "MANAGE_STAFF",
+                permissions: ["MANAGE_STAFF"],
                 users: usrs
             }],
             group: undefined
