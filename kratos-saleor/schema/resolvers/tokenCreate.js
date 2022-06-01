@@ -12,7 +12,7 @@ module.exports = async(parent, args, context) => {
         if (!isEmailValid(email)) return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS"));
 
         pgKratosQueries.getUserByEmail([email], async result => {
-            if (result.err) return resolve(getError("email", "Email not registered", "INVALID"));
+            if (result.err || result.res.length == 0) return resolve(getError("email", "Email not registered", "INVALID"));
             let accountUser = result.res[0];
             if (!accountUser.is_active) return resolve(getError("credentials", "Email not confirmed", "ACCOUNT_NOT_CONFIRMED"));
             if (!bcrypt.compareSync(password, accountUser.password)) return resolve(getError("password", "Password mismatch", "INVALID_PASSWORD"));
