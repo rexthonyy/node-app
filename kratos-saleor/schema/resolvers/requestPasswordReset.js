@@ -64,6 +64,7 @@ async function sendEmailConfirmation(email, redirectUrl) {
             };
             let userToken = jwt.sign(user, jwtTokenKey);
             let confirmationData = {
+                requestType,
                 data: userToken
             };
 
