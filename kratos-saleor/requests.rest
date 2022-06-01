@@ -1,0 +1,73 @@
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56ZzFOVFk1ZlEuVDNIQkg2d1VjZ0RVb1N0WmxhSGwtUkVQXzJJTnRJYzQtdU90M3BscWI5VSIsImlhdCI6MTY1NDc4NTU2OSwiZXhwIjoxNjU0Nzg1ODY5LCJzdWIiOiIxMDA5In0.ITq7v4qHL1hfCZ9RGhC6TAqYQWju6QFL15HMu-C5nKk
+X-Request-Type: GraphQL
+
+mutation{
+ tokensDeactivateAll{
+    errors{
+      field
+      message
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+###
+POST http://88.208.199.175:2300/graphql
+Content-Type: application/json
+Authorization: Bearer 329fcbcd-3cc8-43e1-aad7-b3e604
+X-Request-Type: GraphQL
+
+query ($id: ID!){
+  permissionGroup(id: $id) {
+    id
+    name
+    users {
+      email
+      firstName
+      lastName
+      userPermissions{
+        code
+      }
+    }
+    permissions {
+      code
+      name
+    }
+    userCanManage
+  }
+}
+
+{
+    "id": 1,
+    "PERMISSION_MANAGE_USERS": true,
+  "PERMISSION_MANAGE_STAFF": true,
+  "PERMISSION_IMPERSONATE_USER": true,
+  "PERMISSION_MANAGE_APPS": true,
+  "PERMISSION_MANAGE_CHANNELS": true,
+  "PERMISSION_MANAGE_DISCOUNTS": true,
+  "PERMISSION_MANAGE_PLUGINS": true,
+  "PERMISSION_MANAGE_GIFT_CARD": true,
+  "PERMISSION_MANAGE_MENUS": true,
+  "PERMISSION_MANAGE_ORDERS": true,
+  "PERMISSION_MANAGE_PAGES": true,
+  "PERMISSION_MANAGE_PAGE_TYPES_AND_ATTRIBUTES": true,
+  "PERMISSION_HANDLE_PAYMENTS": true,
+  "PERMISSION_MANAGE_PRODUCTS": true,
+  "PERMISSION_MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES": true,
+  "PERMISSION_MANAGE_SHIPPING": true,
+  "PERMISSION_MANAGE_SETTINGS": true,
+  "PERMISSION_MANAGE_TRANSLATIONS": true,
+  "PERMISSION_MANAGE_CHECKOUTS": true,
+  "PERMISSION_HANDLE_CHECKOUTS": true
+}

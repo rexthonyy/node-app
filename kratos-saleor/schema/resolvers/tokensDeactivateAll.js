@@ -5,37 +5,23 @@ const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
-        console.log(context);
-        console.log(context.user.id);
-        console.log(context.user.firstName);
+        if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null));
+        let authUser = context.user;
+
         let jwt_token_key = authenticator.generateSecret().substring(0, 12);
         let values = [
-            accountUser.id,
+            authUser.id,
             jwt_token_key
         ];
         pgKratosQueries.updateAccountUserJWTTokenKey(values, async result => {
-            if (result.err) return resolve(getGraphQLOutput(null, null, "token", "Failed to refresh token", "GRAPHQL_ERROR", null));
-            let newUser = {
-                user_id: accountUser.id,
-                email: accountUser.email
-            };
-
-            let userToken = jwt.sign(newUser, jwt_token_key);
-            let confirmationData = {
-                data: userToken
-            };
-
-            let accessToken = jwt.sign(confirmationData, process.env.ACCESS_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_ACCESS });
-            let graphQLUser = await getGraphQLUserById(accountUser.id);
-            return resolve(getGraphQLOutput(accessToken, graphQLUser, "", "", "", null));
+            if (result.err) return resolve(getGraphQLOutput("token", "Failed to update user jwt_token_key", "GRAPHQL_ERROR", null));
+            return resolve(getGraphQLOutput("success", "All tokens deactivated", "DONE", null));
         });
     });
 }
 
-function getGraphQLOutput(token, user, field = null, message = null, code = null, addressType = null) {
+function getGraphQLOutput(field = null, message = null, code = null, addressType = null) {
     return {
-        token,
-        user,
         errors: [{
             field,
             message,
