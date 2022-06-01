@@ -28,72 +28,73 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res;
 
-                permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
-                    if (result.err) {
-                        return resolve(getError(
-                            null,
-                            result.err,
-                            null, [],
-                            users,
-                            null
-                        ));
-                    }
+                let numUsers = users.length;
+                let countUsers = -1;
 
-                    let authPermissions = result.res;
+                users.forEach(user => {
+                    let values = [
+                        user,
+                        authGroup.id
+                    ];
+                    permissionsdbQueries.createAccountUserGroup(values, result => {
+                        checkUsersComplete();
+                    });
+                });
 
-                    if (authPermissions.length != permissions.length) {
-                        return resolve(getError(
-                            "addPermissions",
-                            "Invalid permission",
-                            "OUT_OF_SCOPE_PERMISSION",
-                            permissions,
-                            null,
-                            null
-                        ));
-                    }
+                checkUsersComplete();
 
-                    let numPermissions = authPermissions.length;
-                    let count = -1;
+                function checkUsersComplete() {
+                    countUsers++;
+                    if (countUsers == numUsers) {
+                        permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
+                            if (result.err) {
+                                return resolve(getError(
+                                    null,
+                                    result.err,
+                                    null, [],
+                                    users,
+                                    null
+                                ));
+                            }
 
-                    authPermissions.forEach(permission => {
-                        let values = [
-                            authGroup.id,
-                            permission.id
-                        ];
+                            let authPermissions = result.res;
 
-                        permissionsdbQueries.createAuthGroupPermission(values, result => {
-                            let numUsers = users.length;
-                            let countUsers = -1;
-                            users.forEach(user => {
-                                values = [
-                                    user,
-                                    authGroup.id
+                            if (authPermissions.length != permissions.length) {
+                                return resolve(getError(
+                                    "addPermissions",
+                                    "Invalid permission",
+                                    "OUT_OF_SCOPE_PERMISSION",
+                                    permissions,
+                                    null,
+                                    null
+                                ));
+                            }
+
+                            let numPermissions = authPermissions.length;
+                            let count = -1;
+
+                            authPermissions.forEach(permission => {
+                                let values = [
+                                    authGroup.id,
+                                    permission.id
                                 ];
-                                permissionsdbQueries.createAccountUserGroup(values, result => {
-                                    checkUsersComplete();
+
+                                permissionsdbQueries.createAuthGroupPermission(values, result => {
+                                    checkComplete();
                                 });
                             });
-                            checkUsersComplete();
 
-                            function checkUsersComplete() {
-                                countUsers++;
-                                if (countUsers == numUsers) {
-                                    checkComplete();
+                            checkComplete();
+
+                            function checkComplete() {
+                                count++;
+                                if (count == numPermissions) {
+                                    getGroups(resolve, authGroup);
                                 }
                             }
                         });
-                    });
-
-                    checkComplete();
-
-                    function checkComplete() {
-                        count++;
-                        if (count == numPermissions) {
-                            console.log("get groups2");
-                            getGroups(resolve, authGroup);
-                        }
                     }
-                });
+                }
             });
         } else {
             return resolve(getError(
