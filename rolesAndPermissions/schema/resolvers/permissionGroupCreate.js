@@ -28,8 +28,6 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res;
 
-                console.log(generateWhereClause(permissions));
-
                 permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
                     if (result.err) {
                         return resolve(getError(
@@ -42,9 +40,6 @@ module.exports = async(parent, args, context) => {
                     }
 
                     let authPermissions = result.res;
-
-                    console.log(authPermissions);
-                    console.log(permissions);
 
                     if (authPermissions.length != permissions.length) {
                         return resolve(getError(
@@ -143,13 +138,25 @@ function getGroups(resolve, group) {
                 userCanManage = true;
             }
 
-            resolve({
-                id: group.id,
-                name: group.name,
-                users,
-                permissions,
-                userCanManage
-            })
+            let res = {
+                errors: [{
+                    field: null,
+                    message: "Group created successfully",
+                    code: "REQUIRED",
+                    permissions: null,
+                    users: null
+                }],
+                group: {
+                    id: group.id,
+                    name: group.name,
+                    users,
+                    permissions,
+                    userCanManage
+                }
+            };
+
+            console.log(res);
+            resolve(res);
         });
     });
 }
