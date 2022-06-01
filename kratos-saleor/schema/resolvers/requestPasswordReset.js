@@ -4,7 +4,7 @@ const pgKratosQueries = require("../../postgres/kratos-queries");
 const { isEmailValid } = require("../../libs/util");
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async(resolve) => {
         let redirectUrl = args.redirectUrl;
         let email = args.email.toLowerCase();
         let channel = args.channel;
@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         try {
             await getUserByEmail(email);
             await sendEmailConfirmation(email, redirectUrl);
-            return resolve(getError("success", "Email confirmation sent. Check your inbox", "DONE", null));
+            return resolve(getError("success", "Email confirmation sent. Check your inbox", "ACTIVATE_OWN_ACCOUNT", null));
         } catch (err) {
             return resolve(err);
         }
