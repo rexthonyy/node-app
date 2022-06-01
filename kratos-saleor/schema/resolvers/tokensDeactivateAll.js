@@ -4,9 +4,10 @@ const pgKratosQueries = require("../../postgres/kratos-queries");
 const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
-    console.log(context.user.id);
-    console.log(context.user.firstName);
     return new Promise((resolve) => {
+        console.log(context);
+        console.log(context.user.id);
+        console.log(context.user.firstName);
         let jwt_token_key = authenticator.generateSecret().substring(0, 12);
         let values = [
             accountUser.id,
