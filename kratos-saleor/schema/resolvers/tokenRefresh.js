@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { authenticator } = require('otplib');
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { getGraphQLUserById } = require("./lib");
 
