@@ -54,6 +54,7 @@ function getError(field, message, code, addressType, user) {
 
 
 function getResult(user) {
+    console.log(user);
     return {
         errors: [{}],
         accountErrors: [{}],
