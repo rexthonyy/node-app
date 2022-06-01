@@ -28,6 +28,8 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res;
 
+                console.log(generateWhereClause(permissions));
+
                 permissionsdbQueries.getAuthPermissionsByCodename(generateWhereClause(permissions), permissions, result => {
                     if (result.err) {
                         return resolve(getError(
