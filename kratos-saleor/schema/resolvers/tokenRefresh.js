@@ -26,7 +26,7 @@ function getAccessToken(resolve, token, key) {
             if (result.err || result.res.length == 0) return resolve(getGraphQLOutput(null, null, "token", "User not found", "JWT_INVALID_TOKEN", null));
             let accountUser = result.res[0];
             jwt.verify(payload.data, accountUser.jwt_token_key, (err, user) => {
-                if (err) return resolve(getGraphQLOutput(null, false, null, "token", "Invalid user token", "JWT_DECODE_ERROR", user));
+                if (err) return resolve(getGraphQLOutput(null, false, "token", "Invalid user token", "JWT_DECODE_ERROR", user));
                 let jwt_token_key = authenticator.generateSecret().substring(0, 12);
                 let values = [
                     accountUser.id,
