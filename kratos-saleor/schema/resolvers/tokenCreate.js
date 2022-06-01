@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
             if (!bcrypt.compareSync(password, accountUser.password)) return resolve(getError("password", "Password mismatch", "INVALID_PASSWORD"));
 
             let user = {
-                id: accountUser.id,
+                user_id: accountUser.id,
                 email: accountUser.email
             };
 
@@ -61,7 +61,17 @@ function getResult(token, refreshToken, csrfToken, user) {
         refreshToken,
         csrfToken,
         user,
-        errors: [{}],
-        accountErrors: [{}]
+        errors: [{
+            field: "",
+            message: "",
+            code: "",
+            addressType: ""
+        }],
+        accountErrors: [{
+            field: "",
+            message: "",
+            code: "",
+            addressType: ""
+        }]
     };
 }
