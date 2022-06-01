@@ -5,9 +5,9 @@ const { isEmailValid } = require("../../libs/util");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
-        let redirectUrl = args.input.redirectUrl;
-        let email = args.input.email.toLowerCase();
-        let channel = args.input.channel;
+        let redirectUrl = args.redirectUrl;
+        let email = args.email.toLowerCase();
+        let channel = args.channel;
 
         if (!isEmailValid(email)) return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS", null));
 
