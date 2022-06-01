@@ -1,4 +1,5 @@
 const { Pool, Client } = require('pg');
+const { db } = require('../lib/consts');
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER,
@@ -9,9 +10,9 @@ const pool = new Pool({
 });
 
 pool.query('SELECT NOW()', (err, res) => {
-    if(err){
+    if (err) {
         console.log(`${process.env.POSTGRES_DB} databse (ticket queries) initialization failed!!!`);
-    }else{
+    } else {
         console.log(`${process.env.POSTGRES_DB} databse (ticket queries) initialized successfully!!!`);
     }
 });
@@ -25,35 +26,35 @@ const client = new Client({
 });
 client.connect();
 
-const getTickets = (res_, response) => {
-    pool.query("SELECT * from tickets", (err, res) => {
-        if(err){
-            response(res_, {
-                err: err,
-                res: null,
-                test: 1
-            });
-        }else{
-            response(res_, {
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const createTicket = (res_, values, response) => {
-    client.query('INSERT INTO tickets (group_id, priority_id, state_id, organization_id, number, title, owner_id, customer_id, note, first_response_at, first_response_escalation_at, first_response_in_min, first_response_diff_in_min, close_at, close_escalation_at, close_in_min, close_diff_in_min, update_escalation_at, update_in_min, update_diff_in_min, last_contact_at, last_contact_agent_at, last_contact_customer_at, last_owner_update_at, create_article_article_type_id, create_article_sender_id, article_count, escalation_at, pending_time, type, time_unit, preferences, updated_by_id, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36) RETURNING *', values, (err, res) => {
+const createAuthGroup = (values, response) => {
+    client.query(`INSERT INTO ${db.auth_group} (name) VALUES($1) RETURNING *`, values, (err, res) => {
         if (err) {
-            response(res_, {
+            response({
                 err: err.stack,
                 res: null,
                 test: 2
             });
         } else {
-            response(res_, {
+            response({
                 err: null,
                 res: res.rows[0]
+            });
+        }
+    });
+};
+
+const getAuthPermissionsByCodename = (whereClause, values, response) => {
+    pool.query(`SELECT * from ${db.auth_permissions} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 4
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
             });
         }
     });
@@ -93,23 +94,6 @@ const deleteTicket = (values, response) => {
     });
 };
 
-
-const getTicketTimeAccountings = (res_, response) => {
-    pool.query("SELECT * from ticket_time_accountings", (err, res) => {
-        if(err){
-            response(res_, {
-                err: err,
-                res: null,
-                test: 4
-            });
-        }else{
-            response(res_, {
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
 
 const createTicketTimeAccounting = (res_, values, response) => {
     client.query('INSERT INTO ticket_time_accountings (ticket_id, ticket_article_id, time_unit, created_by_id, created_at, updated_at) VALUES($1, $2, $3, $4, $5, $6) RETURNING *', values, (err, res) => {
@@ -165,13 +149,13 @@ const deleteTicketTimeAccounting = (values, response) => {
 
 const getTicketStateById = (id, response) => {
     pool.query(`SELECT * from ticket_states WHERE id=${id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 88
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -182,13 +166,13 @@ const getTicketStateById = (id, response) => {
 
 const getTicketStateByName = (name, response) => {
     pool.query(`SELECT * from ticket_states WHERE name ILIKE '%${name}%'`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 88
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -199,13 +183,13 @@ const getTicketStateByName = (name, response) => {
 
 const getTicketStates = (res_, response) => {
     pool.query("SELECT * from ticket_states", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 8
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -268,13 +252,13 @@ const deleteTicketState = (values, response) => {
 
 const getTicketStateTypes = (res_, response) => {
     pool.query("SELECT * from ticket_state_types", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 12
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -339,13 +323,13 @@ const deleteTicketStateType = (values, response) => {
 
 const getTicketPrioritiesById = (id, response) => {
     pool.query(`SELECT * from ticket_priorities WHERE id=${id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 40
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -356,13 +340,13 @@ const getTicketPrioritiesById = (id, response) => {
 
 const getTicketPriorityByName = (name, response) => {
     pool.query(`SELECT * from ticket_priorities WHERE name ILIKE '%${name}%'`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 40
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -373,13 +357,13 @@ const getTicketPriorityByName = (name, response) => {
 
 const getTicketPriorities = (res_, response) => {
     pool.query("SELECT * from ticket_priorities", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 15
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -441,13 +425,13 @@ const deleteTicketPriorities = (values, response) => {
 
 const getTicketFlags = (res_, response) => {
     pool.query("SELECT * from ticket_flags", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 18
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -510,13 +494,13 @@ const deleteTicketFlag = (values, response) => {
 
 const getTicketCounters = (res_, response) => {
     pool.query("SELECT * from ticket_counters", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 23
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -578,13 +562,13 @@ const deleteTicketCounter = (values, response) => {
 
 const getTicketArticlesByTicketId = (ticket_id, response) => {
     pool.query(`SELECT * from ticket_articles WHERE ticket_id=${ticket_id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 37
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -595,13 +579,13 @@ const getTicketArticlesByTicketId = (ticket_id, response) => {
 
 const getTicketArticlesByArticleId = (article_id, response) => {
     pool.query(`SELECT * from ticket_articles WHERE id=${article_id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 37
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -612,13 +596,13 @@ const getTicketArticlesByArticleId = (article_id, response) => {
 
 const getTicketArticles = (res_, response) => {
     pool.query("SELECT * from ticket_articles", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 30
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -698,13 +682,13 @@ const deleteTicketArticleByTicketId = (values, response) => {
 
 const getTicketArticleTypes = (res_, response) => {
     pool.query("SELECT * from ticket_article_types", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 32
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -767,13 +751,13 @@ const deleteTicketArticleType = (values, response) => {
 
 const getTicketArticleSenders = (res_, response) => {
     pool.query("SELECT * from ticket_article_senders", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 40
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -836,13 +820,13 @@ const deleteTicketArticleSender = (values, response) => {
 
 const getTicketArticleFlags = (res_, response) => {
     pool.query("SELECT * from ticket_article_flags", (err, res) => {
-        if(err){
+        if (err) {
             response(res_, {
                 err: err,
                 res: null,
                 test: 43
             });
-        }else{
+        } else {
             response(res_, {
                 err: null,
                 res: res.rows
@@ -905,13 +889,13 @@ const deleteTicketArticleFlag = (values, response) => {
 
 const searchTickets = (query, response) => {
     pool.query(`SELECT * from tickets WHERE title LIKE '%${query}%'`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 28
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -922,13 +906,13 @@ const searchTickets = (query, response) => {
 
 const getTicketById = (ticket_id, response) => {
     pool.query(`SELECT * from tickets WHERE id=${ticket_id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 43
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -941,13 +925,13 @@ const getTicketById = (ticket_id, response) => {
 
 const getMentionsById = (id, response) => {
     pool.query(`SELECT * from mentions WHERE id=${id}`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 422
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -958,13 +942,13 @@ const getMentionsById = (id, response) => {
 
 const getMentions = response => {
     pool.query("SELECT * from mentions", (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 421
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1010,13 +994,13 @@ const deleteMention = (values, response) => {
 
 const getTagObjectsByName = (values, response) => {
     pool.query("SELECT * from tag_objects WHERE name=$1", values, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 201
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1027,13 +1011,13 @@ const getTagObjectsByName = (values, response) => {
 
 const getTagItemById = (values, response) => {
     pool.query("SELECT * from tag_items WHERE id=$1", values, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 202
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1044,13 +1028,13 @@ const getTagItemById = (values, response) => {
 
 const getTagItemByName = (values, response) => {
     pool.query("SELECT * from tag_items WHERE name_downcase=$1", values, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 202
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1095,13 +1079,13 @@ const createTagObject = (values, response) => {
 
 const searchTagItems = (query, response) => {
     pool.query(`SELECT * from tag_items WHERE LIKE '%${query}%'`, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 121
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1112,13 +1096,13 @@ const searchTagItems = (query, response) => {
 
 const getTagsByO_id = (values, response) => {
     pool.query("SELECT * from tags WHERE tag_item_id=$1, tag_object_id=$2, o_id=$3", values, (err, res) => {
-        if(err){
+        if (err) {
             response({
                 err: err,
                 res: null,
                 test: 75
             });
-        }else{
+        } else {
             response({
                 err: null,
                 res: res.rows
@@ -1146,82 +1130,6 @@ const deleteTagsByO_id = (values, response) => {
 
 
 module.exports = {
-    getTickets,
-    createTicket,
-    updateTicket,
-    deleteTicket,
-
-    getTicketTimeAccountings,
-    createTicketTimeAccounting,
-    updateTicketTimeAccounting,
-    deleteTicketTimeAccounting,
-
-    getTicketStateById,
-    getTicketStateByName,
-    getTicketStates,
-    createTicketState,
-    updateTicketState,
-    deleteTicketState,
-
-    getTicketStateTypes,
-    createTicketStateType,
-    updateTicketStateType,
-    deleteTicketStateType,
-
-    getTicketPrioritiesById,
-    getTicketPriorityByName,
-    getTicketPriorities,
-    createTicketPriorities,
-    updateTicketPriorities,
-    deleteTicketPriorities,
-
-    getTicketFlags,
-    createTicketFlag,
-    updateTicketFlag,
-    deleteTicketFlag,
-
-    getTicketCounters,
-    createTicketCounter,
-    updateTicketCounter,
-    deleteTicketCounter,
-
-    getTicketArticlesByTicketId,
-    getTicketArticlesByArticleId,
-    getTicketArticles,
-    createTicketArticle,
-    updateTicketArticle,
-    deleteTicketArticle,
-    deleteTicketArticleByTicketId,
-
-    getTicketArticleTypes,
-    createTicketArticleType,
-    updateTicketArticleType,
-    deleteTicketArticleType,
-
-    getTicketArticleSenders,
-    createTicketArticleSender,
-    updateTicketArticleSender,
-    deleteTicketArticleSender,
-
-    getTicketArticleFlags,
-    createTicketArticleFlag,
-    updateTicketArticleFlag,
-    deleteTicketArticleFlag,
-
-    getTicketById,
-
-    getMentionsById,
-    getMentions,
-    createMentions,
-    deleteMention,
-
-    getTagObjectsByName,
-    getTagItemById,
-    searchTagItems,
-    getTagItemByName,
-    createTagItem,
-    createTagObject,
-
-    getTagsByO_id,
-    deleteTagsByO_id
+    createAuthGroup,
+    getAuthPermissionsByCodename
 }
