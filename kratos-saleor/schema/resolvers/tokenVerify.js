@@ -13,7 +13,6 @@ module.exports = async(parent, args, context) => {
                 let accountUser = result.res[0];
                 jwt.verify(payload.data, accountUser.jwt_token_key, async(err, user) => {
                     if (err) return resolve(getGraphQLOutput(null, false, null, "token", "Invalid user token", "JWT_DECODE_ERROR", user));
-                    if (!(user.user_id == accountUser.id && user.email == email)) return resolve(getGraphQLOutput(null, false, null, "token", "Invalid user token", "OUT_OF_SCOPE_USER", user));
                     let graphQLUser = await getGraphQLUserById(accountUser.id);
                     resolve(getGraphQLOutput(graphQLUser, true, null, null, "", "", ""));
                 });
