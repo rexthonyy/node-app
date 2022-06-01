@@ -68,7 +68,7 @@ async function sendEmailConfirmation(email, redirectUrl) {
             };
 
             let token = jwt.sign(confirmationData, process.env.AUTHORIZATION_TOKEN_SECRET, { subject: user_id + "", expiresIn: process.env.JWT_TTL_REQUEST_EMAIL_CHANGE });
-
+            console.log(token);
             let payload = {
                 requestType,
                 redirectUrl,
@@ -90,9 +90,9 @@ async function sendEmailConfirmation(email, redirectUrl) {
 
                 let json = res.json();
 
-                console.log(json);
+                //console.log(json);
             } catch (err) {
-                console.log(err);
+                //console.log(err);
             }
 
             resolve();

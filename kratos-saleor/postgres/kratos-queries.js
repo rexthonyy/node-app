@@ -197,6 +197,23 @@ const updateAccountUserJWTTokenKey = (values, response) => {
     });
 };
 
+const updateAccountUserPassword = (values, response) => {
+    client.query(`UPDATE ${db.account_user} SET password=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getUserByEmail,
     getUserById,
@@ -210,4 +227,5 @@ module.exports = {
 
     updateAccountUserActive,
     updateAccountUserJWTTokenKey,
+    updateAccountUserPassword,
 }
