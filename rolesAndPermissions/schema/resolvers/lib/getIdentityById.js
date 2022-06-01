@@ -9,7 +9,7 @@ let getIdentityById = (identityId, cb) => {
         let identity = result.res[0];
 
         cb({
-            traits: JSON.stringify(identity.traits)
+            traits: identity.traits
         });
     });
 };

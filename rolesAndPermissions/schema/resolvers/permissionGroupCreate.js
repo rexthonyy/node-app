@@ -133,7 +133,6 @@ function generateWhereClause(permissions) {
 }
 
 function getGroups(resolve, group) {
-    console.log("get groups");
     getPermissions(group.id, permissions => {
         getUsers(group.id, users => {
             let userCanManage = false;
