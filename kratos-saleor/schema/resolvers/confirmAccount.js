@@ -17,7 +17,8 @@ module.exports = async(parent, args, context) => {
                 if (result.err) return resolve(getError("token", "Email format not supported", "JWT_INVALID_TOKEN", null));
                 let accountUser = result.res[0];
                 jwt.verify(payload.data, accountUser.jwt_token_key, (err, user) => {
-                    if (result.err) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
+                    if (err) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
+                    console.log(user);
                     if (!(user.id == user_id && user.email == email)) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
                     let values = [
                         user_id,
