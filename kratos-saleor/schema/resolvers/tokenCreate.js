@@ -24,7 +24,8 @@ module.exports = async(parent, args, context) => {
 
             let userToken = jwt.sign(user, accountUser.jwt_token_key);
             let confirmationData = {
-                data: userToken
+                data: userToken,
+                key: accountUser.jwt_token_key
             };
 
             let accessToken = jwt.sign(confirmationData, process.env.ACCESS_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_ACCESS });
