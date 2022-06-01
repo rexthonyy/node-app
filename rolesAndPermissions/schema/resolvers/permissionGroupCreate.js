@@ -2,10 +2,9 @@
 const { hasPermission } = require('./lib');
 
 module.exports = async(parent, args, context) => {
-    console.log(args);
-    let permissions = args.addPermissions;
-    let users = args.addUsers;
-    let groupName = args.name;
+    let permissions = args.input.addPermissions;
+    let users = args.input.addUsers;
+    let groupName = args.input.name;
 
     console.log(permissions);
     console.log(users);
