@@ -1,8 +1,11 @@
 const jwt = require('jsonwebtoken');
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        let email = args.input.email;
-        let token = args.input.token;
+        let email = args.email;
+        let token = args.token;
+
+        console.log(email);
+        console.log(token);
 
         if (!isEmailValid(email)) return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS", null));
 
