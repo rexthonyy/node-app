@@ -128,7 +128,7 @@ function generateWhereClause(permissions) {
     let whereClause = "";
     for (let i = 0, j = permissions.length; i < j; i++) {
         if (i != 0) {
-            whereClause += " AND ";
+            whereClause += " OR ";
         }
         whereClause += `codename=$${i+1}`;
     }
