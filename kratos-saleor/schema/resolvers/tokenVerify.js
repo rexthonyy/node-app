@@ -9,7 +9,7 @@ module.exports = async(parent, args, context) => {
             if (err) return resolve(getGraphQLOutput(null, false, null, "token", "Invalid json token", "JWT_INVALID_TOKEN", null));
             let user_id = payload.sub;
             pgKratosQueries.getUserById([user_id], result => {
-                if (result.err) return resolve(getGraphQLOutput(null, true, null, "token", "User not found", "JWT_INVALID_TOKEN", null));
+                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput(null, true, null, "token", "User not found", "JWT_INVALID_TOKEN", null));
                 let accountUser = result.res[0];
                 jwt.verify(payload.data, accountUser.jwt_token_key, async(err, user) => {
                     if (err) return resolve(getGraphQLOutput(null, false, null, "token", "Invalid user token", "JWT_DECODE_ERROR", user));
