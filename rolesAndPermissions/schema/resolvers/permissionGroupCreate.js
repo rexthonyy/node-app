@@ -89,6 +89,7 @@ module.exports = async(parent, args, context) => {
                     function checkComplete() {
                         count++;
                         if (count == numPermissions) {
+                            console.log("get groups2");
                             getGroups(resolve, authGroup);
                         }
                     }
@@ -131,6 +132,7 @@ function generateWhereClause(permissions) {
 }
 
 function getGroups(resolve, group) {
+    console.log("get groups");
     getPermissions(group.id, permissions => {
         getUsers(group.id, users => {
             let userCanManage = false;
@@ -152,7 +154,14 @@ function getGroups(resolve, group) {
                     users,
                     permissions,
                     userCanManage
-                }
+                },
+                permissionGroupErrors: [{
+                    field: null,
+                    message: "Group created successfully",
+                    code: "REQUIRED",
+                    permissions: null,
+                    users: null
+                }]
             };
 
             console.log(res);
