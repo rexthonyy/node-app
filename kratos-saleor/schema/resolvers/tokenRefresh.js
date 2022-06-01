@@ -25,7 +25,7 @@ function getAccessToken(resolve, token, key) {
         pgKratosQueries.getUserById([user_id], result => {
             if (result.err || result.res.length == 0) return resolve(getGraphQLOutput(null, null, "token", "User not found", "JWT_INVALID_TOKEN", null));
             let accountUser = result.res[0];
-            jwt.verify(payload.data, accountUser.jwt_token_key, (err, user) => {
+            jwt.verify(payload.data, accountUser.jwt_token_key, async(err, user) => {
                 if (err) return resolve(getGraphQLOutput(null, false, "token", "Invalid user token", "JWT_DECODE_ERROR", user));
 
                 let newUser = {
