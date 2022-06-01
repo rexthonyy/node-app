@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const { isEmailValid } = require("../../libs/util");
+
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         let email = args.email;
