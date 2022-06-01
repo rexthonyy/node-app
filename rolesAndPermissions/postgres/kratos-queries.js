@@ -1,5 +1,4 @@
 const { Pool, Client } = require('pg');
-const { db } = require('../libs/consts');
 
 const pool = new Pool({
     user: process.env.KRATOS_POSTGRES_USER,
