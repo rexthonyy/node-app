@@ -102,7 +102,7 @@ async function sendEmailConfirmation(redirectUrl, result) {
             if (result.err) return reject(getError("Account user", "User not found", "GRAPHQL_ERROR", result.user));
             let accountUser = result.res[0];
             let jwtTokenKey = accountUser.jwt_token_key;
-
+            let requestType = "email-confirmation";
             let user = {
                 user_id,
                 email
@@ -113,8 +113,8 @@ async function sendEmailConfirmation(redirectUrl, result) {
             };
 
             let token = jwt.sign(confirmationData, process.env.AUTHORIZATION_TOKEN_SECRET, { subject: user_id + "", expiresIn: process.env.JWT_TTL_CONFIRM_EMAIL });
-            console.log(token);
             let payload = {
+                requestType,
                 redirectUrl,
                 email,
                 token
