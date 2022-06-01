@@ -4,7 +4,7 @@ const pgKratosQueries = require("../../postgres/kratos-queries");
 const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         let email = args.email;
         let token = args.token;
 
@@ -19,7 +19,7 @@ module.exports = async(parent, args, context) => {
                 jwt.verify(payload.data, accountUser.jwt_token_key, (err, user) => {
                     if (err) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
                     console.log(user);
-                    if (!(user.id == user_id && user.email == email)) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
+                    if (!(user.user_id == accountUser.id && user.email == email)) return resolve(getError("token", "Email format not supported", "JWT_DECODE_ERROR", user));
                     let values = [
                         user_id,
                         true
