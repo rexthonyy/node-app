@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         try {
             await getUserByEmail(email);
             await sendEmailConfirmation(email, redirectUrl);
-            return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS", null));
+            return resolve(getError("success", "Email confirmation sent. Check your inbox", "DONE", null));
         } catch (err) {
             return resolve(err);
         }
