@@ -41,6 +41,9 @@ module.exports = async(parent, args, context) => {
 
                     let authPermissions = result.res;
 
+                    console.log(authPermissions);
+                    console.log(permissions);
+
                     if (authPermissions.length != permissions.length) {
                         return resolve(getError(
                             "addPermissions",
