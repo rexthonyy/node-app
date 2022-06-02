@@ -3,6 +3,8 @@ const getIdentityById = require('./getIdentityById');
 
 let getAuthenticatedUser = (context, cb) => {
     const authToken = context.header["Authorization"];
+    console.log(context.header);
+    console.log(context.head);
     console.log(authToken);
     if (!authToken) return cb(null);
     const token = authToken && authToken.split(' ')[1];
