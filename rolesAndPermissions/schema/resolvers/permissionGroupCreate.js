@@ -98,7 +98,9 @@ module.exports = async(parent, args, context) => {
                                 function checkComplete() {
                                     count++;
                                     if (count == numPermissions) {
+                                        console.log("updating...");
                                         updateUserPermission(authUser, users, () => {
+                                            console.log("updated");
                                             getGroups(resolve, authUser, authGroup);
                                         });
                                     }
@@ -186,6 +188,7 @@ function updateUserPermission(authUser, users, cb) {
 function getGroups(resolve, authUser, group) {
     getAuthGroupPermissionsByGroupId(group.id, permissions => {
         getUsersInGroupId(group.id, users => {
+            console.log(users);
             let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
             let userCanManage = false;
 
