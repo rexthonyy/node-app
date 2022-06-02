@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
             let users = args.input.addUsers;
             let groupName = args.input.name;
 
-            if (hasAllPermissions(context.variables, ["PERMISSION_MANAGE_STAFF"])) {
+            if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
 
                 for (let i = 0, j = permissions.length; i < j; i++) {
                     permissions[i] = permissions[i].toLowerCase();

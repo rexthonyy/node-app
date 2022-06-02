@@ -17,7 +17,7 @@ require('./postgres/initialize_dbs').init()
             graphqlHTTP(req => ({
                 schema,
                 graphiql: true,
-                context: req.body
+                context: req
             })));
 
         let port = process.env.PORT || 1000;
