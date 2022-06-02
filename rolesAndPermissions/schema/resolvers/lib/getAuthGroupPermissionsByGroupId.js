@@ -15,6 +15,7 @@ let getAuthGroupPermissionsByGroupId = (groupId, cb) => {
                 if (result.res && result.res.length > 0) {
                     let authPermissionRow = result.res[0];
                     permissions.push({
+                        id: authPermissionRow.id,
                         code: authPermissionRow.codename.toUpperCase(),
                         name: authPermissionRow.name
                     });

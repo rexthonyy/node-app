@@ -95,6 +95,23 @@ const createAuthGroupPermission = (values, response) => {
     });
 };
 
+const createAccountUserPermission = (values, response) => {
+    client.query(`INSERT INTO ${db.account_user_user_permissions} (user_id, permission_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 5
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const createAccountUserGroup = (values, response) => {
     client.query(`INSERT INTO ${db.account_user_groups} (user_id, group_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -197,26 +214,8 @@ const getAccountUserPermissionsByUserId = (values, response) => {
     });
 };
 
-
-const updateTicket = (values, response) => {
-    client.query('UPDATE tickets SET group_id=$2, priority_id=$3, state_id=$4, organization_id=$5, number=$6, title=$7, owner_id=$8, customer_id=$9, note=$10, first_response_at=$11, first_response_escalation_at=$12, first_response_in_min=$13, first_response_diff_in_min=$14, close_at=$15, close_escalation_at=$16, close_in_min=$17, close_diff_in_min=$18, update_escalation_at=$19, update_in_min=$20, update_diff_in_min=$21, last_contact_at=$22, last_contact_agent_at=$23, last_contact_customer_at=$24, last_owner_update_at=$25, create_article_article_type_id=$26, create_article_sender_id=$27, article_count=$28, escalation_at=$29, pending_time=$30, type=$31, time_unit=$32, preferences=$33, updated_by_id=$34, created_by_id=$35, created_at=$36, updated_at=$37 WHERE id=$1', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 3
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
-
-const deleteTicket = (values, response) => {
-    client.query('DELETE FROM tickets WHERE id=$1', values, (err, res) => {
+const deleteAccountUserPermissionsByUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.account_user_user_permissions} WHERE user_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1079,22 +1078,6 @@ const createMentions = (res_, values, response) => {
     });
 };
 
-const deleteMention = (values, response) => {
-    client.query('DELETE FROM mentions WHERE id=$1', values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 470
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows[0]
-            });
-        }
-    });
-};
 
 
 const getTagObjectsByName = (values, response) => {
@@ -1239,10 +1222,12 @@ module.exports = {
     createAuthGroup,
     getAuthPermissionsByCodename,
     createAuthGroupPermission,
+    createAccountUserPermission,
     createAccountUserGroup,
     getAuthGroupPermissionsByGroupId,
     getAuthPermissionById,
     getAccountUserGroupsByGroupId,
     getAccountUserGroupsByUserId,
     getAccountUserPermissionsByUserId,
+    deleteAccountUserPermissionsByUserId,
 }

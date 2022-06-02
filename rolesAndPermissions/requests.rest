@@ -1,0 +1,29 @@
+POST http://88.208.199.175:2300/graphql
+Content-Type: application/json
+X-Request-Type: GraphQL
+Authorization: Bearer 329fcbcd-3cc8-43e1-aad7-b3e604
+
+query ($name: String!, $owner: String!) {
+  repository(name: $name, owner: $owner) {
+    name
+    fullName: nameWithOwner
+    description
+    diskUsage
+    forkCount
+    stargazers(first: 5) {
+        totalCount
+        nodes {
+            login
+            name
+        }
+    }
+    watchers {
+        totalCount
+    }
+  }
+}
+
+{
+    "name": "vscode-restclient",
+    "owner": "Huachao"
+}

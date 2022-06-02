@@ -2,9 +2,9 @@ const pgKratosQueries = require('../../../postgres/kratos-queries');
 const getIdentityById = require('./getIdentityById');
 
 let getAuthenticatedUser = (context, cb) => {
-    console.log(context);
-    const token = context.header["token"];
-    if (!token) return cb(null);
+    const authToken = context.header["Authorization"];
+    if (!authToken) return cb(null);
+    const token = authToken && authToken.split(' ')[1];
     pgKratosQueries.getSessionByToken([token], result => {
         if (result.err || result.res.length == 0) {
             return cb(null);

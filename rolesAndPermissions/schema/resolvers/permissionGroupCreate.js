@@ -3,6 +3,7 @@ const { hasAllPermissions } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const getUserPermissions = require('./lib/getUserPermissions');
+const updateUserPermissions = require('./lib/updateUserPermissions');
 const getUserPermissionGroups = require('./lib/getUserPermissionGroups');
 const getUserEditableGroups = require('./lib/getUserEditableGroups');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
@@ -13,7 +14,6 @@ const getIdentityById = require('./lib/getIdentityById');
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
         getAuthenticatedUser(context, authUser => {
-            console.log(authUser);
             let permissions = args.input.addPermissions;
             let users = args.input.addUsers;
             let groupName = args.input.name;
@@ -98,7 +98,7 @@ module.exports = async(parent, args, context) => {
                                 function checkComplete() {
                                     count++;
                                     if (count == numPermissions) {
-                                        updateUserPermissions(authUser, users, () => {
+                                        updateUserPermission(authUser, users, () => {
                                             getGroups(resolve, authUser, authGroup);
                                         });
                                     }
@@ -144,27 +144,29 @@ function generateWhereClause(permissions) {
     return whereClause;
 }
 
-function updateUserPermissions(authUser, users, cb) {
+function updateUserPermission(authUser, users, cb) {
     const numUsers = users.length;
     let countUsers = -1;
 
     users.forEach(user => {
-        getUserPermissions(user, userPermissions => {
-            getUserPermissionGroups(authUser, user, userPermissionGroups => {
-                getUserEditableGroups(authUser, user, userEditableGroups => {
-                    getIdentityById(user, identity => {
-                        if (typeof identity != "string") {
-                            let traits = identity.traits;
-                            traits.userPermissions = userPermissions;
-                            traits.permissionGroups = userPermissionGroups;
-                            traits.editableGroups = userEditableGroups;
+        getUserPermissionGroups(authUser, user, userPermissionGroups => {
+            updateUserPermissions(user, userPermissionGroups, () => {
+                getUserPermissions(user, userPermissions => {
+                    getUserEditableGroups(authUser, user, userEditableGroups => {
+                        getIdentityById(user, identity => {
+                            if (typeof identity != "string") {
+                                let traits = identity.traits;
+                                traits.userPermissions = userPermissions;
+                                traits.permissionGroups = userPermissionGroups;
+                                traits.editableGroups = userEditableGroups;
 
-                            pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
+                                pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
+                                    checkUserComplete();
+                                });
+                            } else {
                                 checkUserComplete();
-                            });
-                        } else {
-                            checkUserComplete();
-                        }
+                            }
+                        });
                     });
                 });
             });
