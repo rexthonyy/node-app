@@ -27,6 +27,23 @@ const client = new Client({
 client.connect();
 
 
+const getAuthGroups = (response) => {
+    pool.query(`SELECT * from ${db.auth_group}`, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAuthGroupById = (values, response) => {
     pool.query(`SELECT * from ${db.auth_group} WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -1218,6 +1235,7 @@ const deleteTagsByO_id = (values, response) => {
 
 
 module.exports = {
+    getAuthGroups,
     getAuthGroupById,
     createAuthGroup,
     getAuthPermissionsByCodename,

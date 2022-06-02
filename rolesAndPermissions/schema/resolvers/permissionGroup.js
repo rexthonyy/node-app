@@ -2,14 +2,9 @@
 // Look up permission group by ID. Requires one of the following permissions: MANAGE_STAFF.
 const { hasAllPermissions } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
-const pgKratosQueries = require('../../postgres/kratos-queries');
-const getUserPermissions = require('./lib/getUserPermissions');
-const getUserPermissionGroups = require('./lib/getUserPermissionGroups');
-const getUserEditableGroups = require('./lib/getUserEditableGroups');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
 const getAuthenticatedUser = require('./lib/getAuthenticatedUser');
 const getUsersInGroupId = require('./lib/getUsersInGroupId');
-const getIdentityById = require('./lib/getIdentityById');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
