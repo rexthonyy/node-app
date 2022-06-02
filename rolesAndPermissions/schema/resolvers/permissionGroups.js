@@ -40,11 +40,14 @@ module.exports = async(parent, args, context) => {
                                 }
 
                                 edges.push({
-                                    id: authGroup.id,
-                                    name: authGroup.name,
-                                    users,
-                                    permissions,
-                                    userCanManage
+                                    cursor: "",
+                                    node: {
+                                        id: authGroup.id,
+                                        name: authGroup.name,
+                                        users,
+                                        permissions,
+                                        userCanManage
+                                    }
                                 });
 
                                 checkAuthGroupComplete();
@@ -98,5 +101,14 @@ function filterAndSortPermissions(resolve, args, data) {
     let first = args.first;
     let last = args.last;
 
-    resolve(data);
+    resolve({
+        pageInfo: {
+            hasNextPage: false,
+            hasPreviousPage: false,
+            startCursor: "",
+            endCursor: ""
+        },
+        edges,
+        totalCount: edges.length
+    });
 }
