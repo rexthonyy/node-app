@@ -152,10 +152,15 @@ function updateUserPermission(authUser, users, cb) {
 
     users.forEach(user => {
         getUserPermissionGroups(authUser, user, userPermissionGroups => {
+            console.log("g u p g");
             updateUserPermissions(user, userPermissionGroups, () => {
+                console.log("u u p");
                 getUserPermissions(user, userPermissions => {
+                    console.log("g u p");
                     getUserEditableGroups(authUser, user, userEditableGroups => {
+                        console.log("g u e g");
                         getIdentityById(user, identity => {
+                            console.log("g i");
                             if (typeof identity != "string") {
                                 let traits = identity.traits;
                                 traits.userPermissions = userPermissions;
