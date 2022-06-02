@@ -520,6 +520,23 @@ const updateIdentity = (values, response) => {
     });
 };
 
+const updateIdentityTraitsById = (values, response) => {
+    client.query('UPDATE identities SET traits=$2 WHERE id=$1 RETURNING *', values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const updateIdentityCredentials = (values, response) => {
     client.query('UPDATE identity_credentials SET config=$2, updated_at=$3 WHERE id=$1 RETURNING *', values, (err, res) => {
         if (err) {
@@ -603,6 +620,7 @@ module.exports = {
     createIdentityRecoveryToken,
 
     updateIdentity,
+    updateIdentityTraitsById,
     updateIdentityCredentials,
 
     createSessionToken,

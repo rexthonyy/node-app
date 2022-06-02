@@ -26,6 +26,24 @@ const client = new Client({
 });
 client.connect();
 
+
+const getAuthGroupById = (values, response) => {
+    pool.query(`SELECT * from ${db.auth_group} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createAuthGroup = (values, response) => {
     client.query(`INSERT INTO ${db.auth_group} (name) VALUES($1) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -130,6 +148,40 @@ const getAuthPermissionById = (values, response) => {
 
 const getAccountUserGroupsByGroupId = (values, response) => {
     pool.query(`SELECT * from ${db.account_user_groups} WHERE group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAccountUserGroupsByUserId = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user_groups} WHERE user_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                test: 88
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAccountUserPermissionsByUserId = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user_user_permissions} WHERE user_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
@@ -1183,11 +1235,14 @@ const deleteTagsByO_id = (values, response) => {
 
 
 module.exports = {
+    getAuthGroupById,
     createAuthGroup,
     getAuthPermissionsByCodename,
     createAuthGroupPermission,
     createAccountUserGroup,
     getAuthGroupPermissionsByGroupId,
     getAuthPermissionById,
-    getAccountUserGroupsByGroupId
+    getAccountUserGroupsByGroupId,
+    getAccountUserGroupsByUserId,
+    getAccountUserPermissionsByUserId,
 }
