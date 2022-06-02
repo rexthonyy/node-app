@@ -46,6 +46,8 @@ module.exports = async(parent, args, context) => {
                                     permissions,
                                     userCanManage
                                 });
+
+                                checkAuthGroupComplete();
                             });
                         });
                     });
