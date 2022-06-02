@@ -13,6 +13,7 @@ const getIdentityById = require('./lib/getIdentityById');
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
         getAuthenticatedUser(context, authUser => {
+            console.log(authUser);
             let permissions = args.input.addPermissions;
             let users = args.input.addUsers;
             let groupName = args.input.name;
