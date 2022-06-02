@@ -98,9 +98,7 @@ module.exports = async(parent, args, context) => {
                                 function checkComplete() {
                                     count++;
                                     if (count == numPermissions) {
-                                        console.log("updating...");
                                         updateUserPermission(authUser, users, () => {
-                                            console.log("updated");
                                             getGroups(resolve, authUser, authGroup);
                                         });
                                     }
@@ -152,15 +150,10 @@ function updateUserPermission(authUser, users, cb) {
 
     users.forEach(user => {
         getUserPermissionGroups(authUser, user, userPermissionGroups => {
-            console.log("g u p g");
             updateUserPermissions(user, userPermissionGroups, () => {
-                console.log("u u p");
                 getUserPermissions(user, userPermissions => {
-                    console.log("g u p");
                     getUserEditableGroups(authUser, user, userEditableGroups => {
-                        console.log("g u e g");
                         getIdentityById(user, identity => {
-                            console.log("g i");
                             if (typeof identity != "string") {
                                 let traits = identity.traits;
                                 traits.userPermissions = userPermissions;
@@ -193,7 +186,6 @@ function updateUserPermission(authUser, users, cb) {
 function getGroups(resolve, authUser, group) {
     getAuthGroupPermissionsByGroupId(group.id, permissions => {
         getUsersInGroupId(group.id, users => {
-            console.log(users);
             let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
             let userCanManage = false;
 
