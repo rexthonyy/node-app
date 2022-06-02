@@ -220,6 +220,7 @@ function getUsers(groupId, cb) {
             getIdentityById(user_id, identity => {
                 if (typeof identity != "string") {
                     let traits = identity.traits;
+                    console.log(traits);
                     users.push(traits);
                 }
 
