@@ -91,7 +91,7 @@ function getError(field, message, code, permissions, users, group) {
     };
 }
 
-function filterAndSortPermissions(resolve, args, data) {
+function filterAndSortPermissions(resolve, args, edges) {
     let filterSearch = args.filter.search;
     let filterIds = args.filter.ids;
     let sortByDirection = args.sortBy.direction;
