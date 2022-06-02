@@ -37,13 +37,13 @@ let updateUserPermissions = (userId, permissionGroups, cb) => {
 
                 userPermissionIds.forEach(permissionId => {
                     permissionsdbQueries.createAccountUserPermission([userId, permissionId], result => {
-                        checkPermissionGroupUpdateComplete();
+                        checkPermissionIdUpdateComplete();
                     });
                 });
 
-                checkPermissionIdsComplete();
+                checkPermissionIdUpdateComplete();
 
-                function checkPermissionIdsComplete() {
+                function checkPermissionIdUpdateComplete() {
                     countUserPermissionIds++;
                     if (countUserPermissionIds == numUserPermissionIds) {
                         cb();
