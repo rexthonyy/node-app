@@ -3,26 +3,27 @@ Content-Type: application/json
 X-Request-Type: GraphQL
 Authorization: Bearer 329fcbcd-3cc8-43e1-aad7-b3e604
 
-query ($name: String!, $owner: String!) {
-  repository(name: $name, owner: $owner) {
+query {
+  permissionGroup(id: "45") {
+    id
     name
-    fullName: nameWithOwner
-    description
-    diskUsage
-    forkCount
-    stargazers(first: 5) {
-        totalCount
-        nodes {
-            login
-            name
-        }
+    users {
+      email
+      firstName
+      lastName
+      userPermissions{
+        code
+      }
     }
-    watchers {
-        totalCount
+    permissions {
+      code
+      name
     }
+    userCanManage
   }
 }
 
+###
 {
     "name": "vscode-restclient",
     "owner": "Huachao"

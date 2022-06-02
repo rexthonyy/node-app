@@ -3,8 +3,10 @@ const getIdentityById = require('./getIdentityById');
 
 let getAuthenticatedUser = (context, cb) => {
     const authToken = context.header["Authorization"];
+    console.log(authToken);
     if (!authToken) return cb(null);
     const token = authToken && authToken.split(' ')[1];
+
     pgKratosQueries.getSessionByToken([token], result => {
         if (result.err || result.res.length == 0) {
             return cb(null);
