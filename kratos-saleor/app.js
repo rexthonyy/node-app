@@ -1,9 +1,4 @@
 require("dotenv").config();
-const getLoginFlowResolver = require("./libs/getLoginFlowResolver");
-const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
-const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
-const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
-
 require('./postgres/initialize_dbs').init()
     .then(async() => {
         const Sentry = require("@sentry/node");
@@ -16,6 +11,9 @@ require('./postgres/initialize_dbs').init()
         //const schema1 = require('./schema/index');
         const { loadSchemaSync } = require('@graphql-tools/load');
         const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+        const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
+        const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
+        const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
         const schema = loadSchemaSync("schema.graphql", {
             loaders: [new GraphQLFileLoader()]
@@ -56,13 +54,19 @@ require('./postgres/initialize_dbs').init()
                 return res.send("Please provide a callbackUrl");
             }
 
-            getLoginFlowResolver(true, loginFlow => {
-                if (loginFlow == null) return res.send("Error: failed to create login flow");
-                req.session.loginFlow = loginFlow;
-                console.log(req.session.loginFlow.id);
+            getLoginFlowResolver(null, { refresh: true })
+                .then(loginflow => {
+                    if (loginflow == null) return res.send("Error: failed to create login flow");
+                    req.session.loginflow = loginflow;
+                    console.log(req.session.loginflow);
+                    //console.log(req.session.loginflow.id);
 
-                res.render('login');
-            });
+                    res.render('login');
+                }).catch(err => {
+                    console.error(err);
+                    res.send("Error: failed to create login flow");
+                });
+
         });
 
         app.post('/login', utils.isAuthenticated, (req, res) => {
@@ -75,9 +79,9 @@ require('./postgres/initialize_dbs').init()
                     password: password
                 },
                 flow: req.session.loginFlow.id
-            }).then(appSession => {
-                if (appSession == null) return res.send("Error: failed to create session");
-                let sessionToken = appSession.sessionToken;
+            }).then(session => {
+                if (session == null) return res.send("Error: failed to create session");
+                let sessionToken = session.sessionToken;
                 res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
             }).catch(err => {
                 res.send("Error: failed to create session");
