@@ -11,6 +11,9 @@ require('./postgres/initialize_dbs').init()
         //const schema1 = require('./schema/index');
         const { loadSchemaSync } = require('@graphql-tools/load');
         const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+        const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
+        const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
+        const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
         const schema = loadSchemaSync("schema.graphql", {
             loaders: [new GraphQLFileLoader()]
@@ -46,35 +49,80 @@ require('./postgres/initialize_dbs').init()
         });
 
         app.get('/login', utils.isAuthenticated, (req, res) => {
-            let callbackUrl = req.query.callbackUrl;
-            if (req.kratosSession != null) {
-
+            req.session.callbackUrl = req.query.callbackUrl;
+            if (!req.session.callbackUrl) {
+                return res.send("Please provide a callback url");
             }
-            res.render('login');
+
+            getLoginFlowResolver(null, { refresh: true })
+                .then(loginflow => {
+                    console.log(loginflow);
+                    if (loginflow == null) return res.send("Error: failed to create login flow");
+                    req.session.loginflow = loginflow;
+                    res.render('login');
+                }).catch(err => {
+                    res.send("Error: failed to create login flow");
+                });
+
         });
 
         app.post('/login', utils.isAuthenticated, (req, res) => {
             let email = req.body.email;
             let password = req.body.password;
 
-            console.log(email);
-            console.log(password);
+            executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver(null, {
+                completeSelfServiceLoginFlowWithPasswordMethodInput: {
+                    identifier: email,
+                    password: password
+                },
+                flow: req.session.loginFlow.id
+            }).then(session => {
+                if (session == null) return res.send("Error: failed to create session");
+                let sessionToken = session.sessionToken;
+                res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
+            }).catch(err => {
+                res.send("Error: failed to create session");
+            });
         });
 
         app.get('/signup', utils.isAuthenticated, (req, res) => {
-            let callbackUrl = req.query.callbackUrl;
-            if (req.kratosSession != null) {
-
+            if (!req.session.callbackUrl) {
+                return res.send("Please provide a callback url");
             }
-            res.render('signup');
+
+            getRegistrationFlowResolver()
+                .then(registrationFlow => {
+                    if (registrationFlow == null) return res.send("Error: failed to create registration flow");
+                    req.session.registrationFlow = registrationFlow;
+                    res.render('signup');
+                }).catch(err => {
+                    console.log(err);
+                    res.send("Error: failed to create registration flow");
+                });
         });
 
         app.post('/signup', utils.isAuthenticated, (req, res) => {
+            let firstName = req.body.firstName;
+            let lastName = req.body.lastName;
             let email = req.body.email;
             let password = req.body.password;
 
-            console.log(email);
-            console.log(password);
+            executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver(null, {
+                flow: req.session.registrationFlow.id,
+                selfServiceRegistrationMethodsPasswordInput: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email,
+                    password
+                })
+            }).then(session => {
+                if (session == null) return res.send("Error: failed to create session");
+                let sessionToken = session.sessionToken;
+                res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
+            }).catch(err => {
+                console.log(err);
+                res.send("Error: failed to create session");
+            });
         });
 
         app.use(Sentry.Handlers.errorHandler());
