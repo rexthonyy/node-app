@@ -165,6 +165,7 @@ function addGroupPermissions(groupId, permissions) {
 
 function addNewUsersToGroupPermissions(groupId, users) {
     return new Promise((resolve) => {
+        console.log(users);
         if (!users) return resolve();
         permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
             if (result.err || result.res.length == 0) {
