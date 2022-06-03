@@ -74,7 +74,7 @@ module.exports = async(parent, args, context) => {
 
 
 function getError(field, message, code, permissions, users, group) {
-    return {
+    return JSON.stringify({
         errors: [{
             field,
             message,
@@ -83,5 +83,5 @@ function getError(field, message, code, permissions, users, group) {
             users
         }],
         group
-    };
+    });
 }
