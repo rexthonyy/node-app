@@ -27,9 +27,9 @@ module.exports = async(parent, args, context) => {
                     if (result.res.length == 0) {
                         return resolve(getError(
                             "id",
-                            result.err,
-                            "Invalid group id", [],
-                            users,
+                            "Invalid group id",
+                            400, [],
+                            null,
                             null
                         ));
                     }
