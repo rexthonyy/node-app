@@ -53,7 +53,7 @@ module.exports = async(parent, args, context) => {
                                         .then(() => {
                                             removeGroupPermissions(groupId, removePermissions)
                                                 .then(() => {
-                                                    removeGroupUsers(groupId, removeUsers)
+                                                    removeGroupUsers(authUser, groupId, removeUsers)
                                                         .then(() => {
                                                             permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
                                                                 let usersInGroup = [];
@@ -247,7 +247,7 @@ function removeGroupPermissions(groupId, removePermissions) {
     });
 }
 
-function removeGroupUsers(groupId, removeUsers) {
+function removeGroupUsers(authUser, groupId, removeUsers) {
     return new Promise((resolve) => {
         if (removeUsers == null) return resolve();
         const numUsers = removeUsers.length;
@@ -255,7 +255,7 @@ function removeGroupUsers(groupId, removeUsers) {
 
         removeUsers.forEach(userId => {
             permissionsdbQueries.deleteAccountUserGroupsByUserId([userId, groupId], result => {
-                updateUser(userId, () => {
+                updateUser(authUser, userId, () => {
                     checkUsersToRemoveComplete();
                 });
             });
@@ -273,7 +273,7 @@ function removeGroupUsers(groupId, removeUsers) {
 }
 
 
-function updateUser(user, cb) {
+function updateUser(authUser, user, cb) {
     getUserPermissionGroups(authUser, user, userPermissionGroups => {
         updateUserPermissions(user, userPermissionGroups, () => {
             getUserPermissions(user, userPermissions => {
@@ -303,7 +303,7 @@ function updateUserPermission(authUser, users, cb) {
     let countUsers = -1;
 
     users.forEach(user => {
-        updateUser(user, () => {
+        updateUser(authUser, user, () => {
             checkUserComplete();
         });
     });
