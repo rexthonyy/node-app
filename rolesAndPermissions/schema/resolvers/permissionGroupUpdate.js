@@ -27,7 +27,7 @@ module.exports = async(parent, args, context) => {
                         return resolve(getError(
                             "name",
                             result.err,
-                            null, [],
+                            "ERROR", [],
                             users,
                             null
                         ));
@@ -37,7 +37,7 @@ module.exports = async(parent, args, context) => {
                         return resolve(getError(
                             "name",
                             "Permission Group not found",
-                            null, [],
+                            "REQUIRED", [],
                             users,
                             null
                         ));
@@ -101,7 +101,7 @@ function updateGroupName(groupId, groupName) {
                 return resolve(getError(
                     "name",
                     result.err,
-                    null, [],
+                    "REQUIRED", [],
                     users,
                     null
                 ));
