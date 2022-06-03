@@ -32,7 +32,6 @@ require('./postgres/initialize_dbs').init()
             saveUninitialized: false
         }));
         app.use(Sentry.Handlers.requestHandler());
-        app.use(router);
 
         app.use('/graphql',
             graphqlHTTP({
