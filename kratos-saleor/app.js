@@ -49,19 +49,26 @@ require('./postgres/initialize_dbs').init()
             console.log("Listening on port %s...", lesServer.address().port);
         });
 
-        app.get('/login', utils.isAuthenticated, async(req, res) => {
+        app.get('/login', utils.isAuthenticated, (req, res) => {
             req.session.callbackUrl = req.query.callbackUrl;
             if (!req.session.callbackUrl) {
                 return res.send("Please provide a callbackUrl");
             }
 
-            let loginFlow = await getLoginFlowResolver(null, { refresh: true })
-            console.log(loginFlow);
-            if (loginflow == null) return res.send("Error: failed to create login flow");
-            //req.session.loginflow = loginflow;
-            //console.log(req.session.loginFlow.id);
+            getLoginFlowResolver(null, { refresh: true })
+                .then(loginflow => {
+                    console.log(loginFlow)
+                    if (loginflow == null) return res.send("Error: failed to create login flow");
+                    //req.session.loginflow = loginflow;
+                    //console.log(req.session.loginFlow);
+                    //console.log(req.session.loginFlow.id);
 
-            res.render('login');
+                    res.render('login');
+                }).catch(err => {
+                    console.error(err);
+                    res.send("Error: failed to create login flow");
+                });
+
         });
 
         app.post('/login', utils.isAuthenticated, (req, res) => {

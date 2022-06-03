@@ -2,7 +2,8 @@ let { uuid } = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
-const getData = ({ refresh }) => {
+
+module.exports = (parent, { refresh }) => {
     return new Promise((resolve, reject) => {
         if (!refresh) {
             refresh = false;
@@ -58,8 +59,4 @@ const getData = ({ refresh }) => {
             resolve(appSession);
         });
     });
-}
-
-module.exports = async(parent, args) => {
-    return getData(args);
 }
