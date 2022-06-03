@@ -119,7 +119,7 @@ require('./postgres/initialize_dbs').init()
             }).then(appSession => {
                 if (appSession == null) return res.send("Error: failed to create session");
                 let sessionToken = appSession.sessionToken;
-                res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
+                res.redirect(`${req.session.callbackUrl}?sessionToken=${sessionToken}`);
             }).catch(err => {
                 console.log(err);
                 res.send("Error: failed to create session");
