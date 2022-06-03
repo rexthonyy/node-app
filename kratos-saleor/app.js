@@ -14,6 +14,7 @@ require('./postgres/initialize_dbs').init()
         const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
         const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
         const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
+        const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
         const schema = loadSchemaSync("schema.graphql", {
             loaders: [new GraphQLFileLoader()]
@@ -56,7 +57,6 @@ require('./postgres/initialize_dbs').init()
 
             getLoginFlowResolver(null, { refresh: true })
                 .then(loginflow => {
-                    console.log(loginFlow);
                     if (loginflow == null) return res.send("Error: failed to create login flow");
                     req.session.loginflow = loginflow;
                     console.log(req.session.loginFlow);
@@ -80,9 +80,9 @@ require('./postgres/initialize_dbs').init()
                     password: password
                 },
                 flow: req.session.loginFlow.id
-            }).then(session => {
-                if (session == null) return res.send("Error: failed to create session");
-                let sessionToken = session.sessionToken;
+            }).then(appSession => {
+                if (appSession == null) return res.send("Error: failed to create session");
+                let sessionToken = appSession.sessionToken;
                 res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
             }).catch(err => {
                 res.send("Error: failed to create session");
