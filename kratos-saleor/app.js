@@ -8,7 +8,6 @@ require('./postgres/initialize_dbs').init()
         const cookieParser = require('cookie-parser');
         const passport = require('passport');
         const { graphqlHTTP } = require('express-graphql');
-        const router = require('./routes');
         //const schema1 = require('./schema/index');
         const { loadSchemaSync } = require('@graphql-tools/load');
         const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
