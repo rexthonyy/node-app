@@ -24,6 +24,16 @@ module.exports = async(parent, args, context) => {
                         ));
                     }
 
+                    if (result.res.length == 0) {
+                        return resolve(getError(
+                            "id",
+                            result.err,
+                            "Invalid group id", [],
+                            users,
+                            null
+                        ));
+                    }
+
                     let authGroup = result.res[0];
 
                     console.log(authGroup);
