@@ -42,9 +42,7 @@ const getData = ({ refresh }) => {
             let type = selfServiceLoginFlow.type;
             let ui = selfServiceLoginFlow.ui;
 
-            console.log("fetching session");
-
-            resolve({
+            let appSession = {
                 active,
                 expiresAt,
                 forced,
@@ -53,7 +51,11 @@ const getData = ({ refresh }) => {
                 requestUrl,
                 type,
                 ui
-            });
+            };
+
+            console.log(appSession);
+
+            resolve(appSession);
         });
     });
 }
