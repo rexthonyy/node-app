@@ -3,7 +3,7 @@ const pgKratosQueries = require('../postgres/kratos-queries');
 const loginFlowHandler = require('../flows/loginFlowHandler');
 const consts = require('./consts');
 
-module.exports = ({ refresh }, cb) => {
+module.exports = (refresh, cb) => {
     if (!refresh) {
         refresh = false;
     }
@@ -53,6 +53,7 @@ module.exports = ({ refresh }, cb) => {
             ui
         };
 
+        console.log(appSession);
         return cb(appSession);
     });
 }
