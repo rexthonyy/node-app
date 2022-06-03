@@ -17,6 +17,7 @@ const UpdateIdentityInput = require("./UpdateIdentityInput");
 const SettingsViaApiResponse = require("./SettingsViaApiResponse");
 const CompleteSelfServiceSettingsFlowWithPasswordMethodInput = require("./CompleteSelfServiceSettingsFlowWithPasswordMethodInput");
 const SettingsFlow = require("./SettingsFlow");
+const Session = require("./Session");
 
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
@@ -26,6 +27,7 @@ const executeCreateRecoveryLinkResolver = require("../resolvers/executeCreateRec
 const executeUpdateIdentityResolver = require("../resolvers/executeUpdateIdentityResolver");
 const executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver");
+const executeCompleteSelfServiceLogoutResolver = require("./executeCompleteSelfServiceLogoutResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -95,6 +97,14 @@ module.exports = new GraphQLObjectType({
                 selfServiceSettingsMethodsProfileInput: { type: GraphQLString }
             },
             resolve: executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver
-        }
+        },
+        completeSelfServiceLogout_: {
+            type: Session,
+            description: "Use this endpoint to logout of a session",
+            args: {
+                logoutToken: { type: GraphQLString }
+            },
+            resolve: executeCompleteSelfServiceLogoutResolver
+        },
     })
 });

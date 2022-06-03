@@ -265,6 +265,23 @@ const deleteAuthGroupPermissionsByPermissionsId = (values, response) => {
     });
 };
 
+const deleteAccountUserGroupsByUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.account_user_groups} WHERE user_id=$1 AND group_id=$2`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
+
 const updateAuthGroupById = (values, response) => {
     client.query(`UPDATE ${db.auth_group} SET name=$2 WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -1263,5 +1280,6 @@ module.exports = {
     getAccountUserPermissionsByUserId,
     deleteAccountUserPermissionsByUserId,
     deleteAuthGroupPermissionsByPermissionsId,
+    deleteAccountUserGroupsByUserId,
     updateAuthGroupById,
 }

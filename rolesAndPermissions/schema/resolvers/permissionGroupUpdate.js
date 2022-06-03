@@ -136,7 +136,35 @@ module.exports = async(parent, args, context) => {
                                             function checkIdsOfPermissionsToRemoveComplete() {
                                                 countIdsOfPermissionsToRemove++;
                                                 if (countIdsOfPermissionsToRemove == numIdsOfPermissionsToRemove) {
-                                                    console.log(countIdsOfPermissionsToRemove);
+                                                    const numUsers = removeUsers.length;
+                                                    let countUsersToRemove = -1;
+
+                                                    removeUsers.forEach(userId => {
+                                                        permissionsdbQueries.deleteAccountUserGroupsByUserId([userId, groupId], result => {
+                                                            checkUsersToRemoveComplete();
+                                                        });
+                                                    });
+
+                                                    checkUsersToRemoveComplete();
+
+                                                    function checkUsersToRemoveComplete() {
+                                                        countUsersToRemove++;
+                                                        if (countUsersToRemove == numUsers) {
+                                                            permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
+                                                                let usersInGroup = [];
+                                                                if (!(result.err || result.res.length == 0)) {
+                                                                    let accountUserRow = result.res;
+                                                                    for (let i = 0, j = accountUserRow.length; i < j; i++) {
+                                                                        usersInGroup.push(accountUserRow[i].user_id);
+                                                                    }
+                                                                }
+
+                                                                updateUserPermission(authUser, usersInGroup, () => {
+                                                                    //getResult();
+                                                                });
+                                                            });
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -163,4 +191,43 @@ function getError(field, message, code, permissions, users, group) {
         }],
         group
     };
+}
+
+function updateUserPermission(authUser, users, cb) {
+    const numUsers = users.length;
+    let countUsers = -1;
+
+    users.forEach(user => {
+        getUserPermissionGroups(authUser, user, userPermissionGroups => {
+            updateUserPermissions(user, userPermissionGroups, () => {
+                getUserPermissions(user, userPermissions => {
+                    getUserEditableGroups(authUser, user, userEditableGroups => {
+                        getIdentityById(user, identity => {
+                            if (typeof identity != "string") {
+                                let traits = identity.traits;
+                                traits.userPermissions = userPermissions;
+                                traits.permissionGroups = userPermissionGroups;
+                                traits.editableGroups = userEditableGroups;
+
+                                pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
+                                    checkUserComplete();
+                                });
+                            } else {
+                                checkUserComplete();
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    });
+
+    checkUserComplete();
+
+    function checkUserComplete() {
+        countUsers++;
+        if (countUsers == numUsers) {
+            cb();
+        }
+    }
 }
