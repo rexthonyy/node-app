@@ -287,7 +287,7 @@ function updateUserPermission(authUser, users, cb) {
                                 traits.userPermissions = userPermissions;
                                 traits.permissionGroups = userPermissionGroups;
                                 traits.editableGroups = userEditableGroups;
-
+                                console.log(traits);
                                 pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
                                     checkUserComplete();
                                 });
