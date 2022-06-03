@@ -34,8 +34,6 @@ require('./postgres/initialize_dbs').init()
         }));
         app.use(Sentry.Handlers.requestHandler());
         app.use(router);
-        // app.use("/oauth2", oauthRouter);
-        // app.use("/auth", authGoogleRouter);
 
         app.use('/graphql',
             graphqlHTTP({
