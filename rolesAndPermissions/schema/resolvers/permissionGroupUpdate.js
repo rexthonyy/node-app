@@ -115,7 +115,7 @@ function updateGroupName(groupId, groupName) {
 
 function addGroupPermissions(groupId, permissions) {
     return new Promise((resolve) => {
-        if (!permissions) return resolve();
+        if (permissions == null) return resolve();
         getAuthGroupPermissionsByGroupId(groupId, authGroupPermissions => {
             for (let i = 0, j = permissions.length; i < j; i++) {
                 permissions[i] = permissions[i].toLowerCase();
@@ -165,9 +165,9 @@ function addGroupPermissions(groupId, permissions) {
 
 function addNewUsersToGroupPermissions(groupId, users) {
     return new Promise((resolve) => {
-        if (!users) return resolve();
+        if (users == null) return resolve();
         permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
-            if (result.err || result.res.length == 0) {
+            if (result.err) {
                 return resolve();
             }
 
@@ -190,10 +190,8 @@ function addNewUsersToGroupPermissions(groupId, users) {
             const numNewGroupUsers = newGroupUsers.length;
             let countNewGroupUsers = -1;
 
-            console.log(newGroupUsers);
             newGroupUsers.forEach(newGroupUser => {
                 permissionsdbQueries.createAccountUserGroup([newGroupUser, groupId], result => {
-                    console.log(result);
                     checkNewGroupUsersComplete();
                 });
             });
@@ -212,7 +210,7 @@ function addNewUsersToGroupPermissions(groupId, users) {
 
 function removeGroupPermissions(groupId, removePermissions) {
     return new Promise((resolve) => {
-        if (!removePermissions) return resolve();
+        if (removePermissions == null) return resolve();
         getAuthGroupPermissionsByGroupId(groupId, authGroupPermissions => {
             for (let i = 0, j = removePermissions.length; i < j; i++) {
                 removePermissions[i] = removePermissions[i].toLowerCase();
@@ -251,7 +249,7 @@ function removeGroupPermissions(groupId, removePermissions) {
 
 function removeGroupUsers(groupId, removeUsers) {
     return new Promise((resolve) => {
-        if (!removeUsers) return resolve();
+        if (removeUsers == null) return resolve();
         const numUsers = removeUsers.length;
         let countUsersToRemove = -1;
 
