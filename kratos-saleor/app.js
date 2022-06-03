@@ -59,7 +59,7 @@ require('./postgres/initialize_dbs').init()
                     console.log(loginflow);
                     if (loginflow == null) return res.send("Error: failed to create login flow");
                     req.session.loginflow = loginflow;
-                    console.log(req.session);
+                    console.log(req.session.loginFlow.id);
 
                     res.render('login');
                 }).catch(err => {
