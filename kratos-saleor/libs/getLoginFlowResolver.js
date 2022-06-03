@@ -53,7 +53,6 @@ module.exports = (refresh, cb) => {
             ui
         };
 
-        console.log(appSession);
         return cb(appSession);
     });
 }
