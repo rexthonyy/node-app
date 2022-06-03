@@ -1,4 +1,9 @@
 require("dotenv").config();
+const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
+const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
+const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
+const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
+
 require('./postgres/initialize_dbs').init()
     .then(async() => {
         const Sentry = require("@sentry/node");
@@ -11,10 +16,6 @@ require('./postgres/initialize_dbs').init()
         //const schema1 = require('./schema/index');
         const { loadSchemaSync } = require('@graphql-tools/load');
         const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
-        const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
-        const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
-        const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
-        const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
         const schema = loadSchemaSync("schema.graphql", {
             loaders: [new GraphQLFileLoader()]
@@ -57,6 +58,7 @@ require('./postgres/initialize_dbs').init()
 
             getLoginFlowResolver(null, { refresh: true }, loginFlow => {
                 console.log(loginFlow)
+                return;
                 if (loginflow == null) return res.send("Error: failed to create login flow");
                 //req.session.loginflow = loginflow;
                 //console.log(req.session.loginFlow);
