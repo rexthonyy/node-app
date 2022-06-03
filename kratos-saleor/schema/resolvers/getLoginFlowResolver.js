@@ -1,10 +1,10 @@
-let {uuid} = require("uuidv4");
+let { uuid } = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
-const getData = ({refresh}) => {
+const getData = ({ refresh }) => {
     return new Promise((resolve, reject) => {
-        if(!refresh){
+        if (!refresh) {
             refresh = false;
         }
 
@@ -26,7 +26,7 @@ const getData = ({refresh}) => {
             JSON.stringify(loginFlowHandler.getInternalContext())
         ];
         pgKratosQueries.createLoginFlow(values, result => {
-            if(result.err){
+            if (result.err) {
                 console.error(result.err);
                 return reject("Failed to create Login flow");
             }
@@ -42,6 +42,8 @@ const getData = ({refresh}) => {
             let type = selfServiceLoginFlow.type;
             let ui = selfServiceLoginFlow.ui;
 
+            console.log("fetching session");
+
             resolve({
                 active,
                 expiresAt,
@@ -56,6 +58,6 @@ const getData = ({refresh}) => {
     });
 }
 
-module.exports = async (parent, args) => {
+module.exports = async(parent, args) => {
     return getData(args);
 }
