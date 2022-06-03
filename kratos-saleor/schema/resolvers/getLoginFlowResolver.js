@@ -2,9 +2,7 @@ let { uuid } = require("uuidv4");
 const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
-
-module.exports = (parent, { refresh }, cb) => {
-    return cb({ a: 'one' });
+const getData = ({ refresh }) => {
     return new Promise((resolve, reject) => {
         if (!refresh) {
             refresh = false;
@@ -44,7 +42,7 @@ module.exports = (parent, { refresh }, cb) => {
             let type = selfServiceLoginFlow.type;
             let ui = selfServiceLoginFlow.ui;
 
-            let appSession = {
+            resolve({
                 active,
                 expiresAt,
                 forced,
@@ -53,11 +51,11 @@ module.exports = (parent, { refresh }, cb) => {
                 requestUrl,
                 type,
                 ui
-            };
-
-            return cb(appSession);
-
-            //resolve(appSession);
+            });
         });
     });
+}
+
+module.exports = async(parent, args) => {
+    return getData(args);
 }
