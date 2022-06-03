@@ -255,7 +255,9 @@ function removeGroupUsers(groupId, removeUsers) {
 
         removeUsers.forEach(userId => {
             permissionsdbQueries.deleteAccountUserGroupsByUserId([userId, groupId], result => {
-                checkUsersToRemoveComplete();
+                updateUser(userId, () => {
+                    checkUsersToRemoveComplete();
+                });
             });
         });
 
@@ -271,33 +273,38 @@ function removeGroupUsers(groupId, removeUsers) {
 }
 
 
+function updateUser(user, cb) {
+    getUserPermissionGroups(authUser, user, userPermissionGroups => {
+        updateUserPermissions(user, userPermissionGroups, () => {
+            getUserPermissions(user, userPermissions => {
+                getUserEditableGroups(authUser, user, userEditableGroups => {
+                    getIdentityById(user, identity => {
+                        if (typeof identity != "string") {
+                            let traits = identity.traits;
+                            traits.userPermissions = userPermissions;
+                            traits.permissionGroups = userPermissionGroups;
+                            traits.editableGroups = userEditableGroups;
+
+                            pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
+                                cb();
+                            });
+                        } else {
+                            cb();
+                        }
+                    });
+                });
+            });
+        });
+    });
+}
 
 function updateUserPermission(authUser, users, cb) {
     const numUsers = users.length;
     let countUsers = -1;
 
     users.forEach(user => {
-        getUserPermissionGroups(authUser, user, userPermissionGroups => {
-            updateUserPermissions(user, userPermissionGroups, () => {
-                getUserPermissions(user, userPermissions => {
-                    getUserEditableGroups(authUser, user, userEditableGroups => {
-                        getIdentityById(user, identity => {
-                            if (typeof identity != "string") {
-                                let traits = identity.traits;
-                                traits.userPermissions = userPermissions;
-                                traits.permissionGroups = userPermissionGroups;
-                                traits.editableGroups = userEditableGroups;
-                                console.log(traits);
-                                pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
-                                    checkUserComplete();
-                                });
-                            } else {
-                                checkUserComplete();
-                            }
-                        });
-                    });
-                });
-            });
+        updateUser(user, () => {
+            checkUserComplete();
         });
     });
 
