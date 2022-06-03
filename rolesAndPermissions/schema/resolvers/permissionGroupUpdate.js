@@ -64,6 +64,7 @@ module.exports = async(parent, args, context) => {
                                                                     }
                                                                 }
 
+                                                                if (groupName) authGroup.name = groupName;
                                                                 updateUserPermission(authUser, usersInGroup, () => {
                                                                     getGroups(resolve, authUser, authGroup);
                                                                 });
