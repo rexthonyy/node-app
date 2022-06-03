@@ -24,7 +24,7 @@ module.exports = async(parent, args, context) => {
                             "name",
                             result.err,
                             "ERROR", [],
-                            users,
+                            null,
                             null
                         ));
                     }
@@ -34,7 +34,7 @@ module.exports = async(parent, args, context) => {
                             "name",
                             "Permission Group not found",
                             "REQUIRED", [],
-                            users,
+                            null,
                             null
                         ));
                     }
