@@ -1,5 +1,5 @@
 require("dotenv").config();
-const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
+const getLoginFlowResolver = require("./libs/getLoginFlowResolver");
 const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
@@ -56,13 +56,11 @@ require('./postgres/initialize_dbs').init()
                 return res.send("Please provide a callbackUrl");
             }
 
-            getLoginFlowResolver(null, { refresh: true }, loginFlow => {
+            getLoginFlowResolver({ refresh: true }, loginFlow => {
                 console.log(loginFlow)
-                return;
                 if (loginflow == null) return res.send("Error: failed to create login flow");
-                //req.session.loginflow = loginflow;
-                //console.log(req.session.loginFlow);
-                //console.log(req.session.loginFlow.id);
+                // req.session.loginflow = loginflow;
+                // console.log(req.session.loginFlow.id);
 
                 res.render('login');
             });

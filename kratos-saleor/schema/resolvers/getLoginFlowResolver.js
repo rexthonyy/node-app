@@ -57,7 +57,7 @@ module.exports = (parent, { refresh }, cb) => {
 
             return cb(appSession);
 
-            resolve(appSession);
+            //resolve(appSession);
         });
     });
 }
