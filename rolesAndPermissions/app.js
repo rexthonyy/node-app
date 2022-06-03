@@ -14,11 +14,14 @@ require('./postgres/initialize_dbs').init()
         app.use(Sentry.Handlers.requestHandler());
 
         app.use('/graphql',
-            graphqlHTTP(req => ({
-                schema,
-                graphiql: true,
-                context: req
-            })));
+            graphqlHTTP(req => {
+                console.log(req.headers);
+                return {
+                    schema,
+                    graphiql: true,
+                    context: req
+                }
+            }));
 
         let port = process.env.PORT || 1000;
         var lesServer = app.listen(port, function() {
