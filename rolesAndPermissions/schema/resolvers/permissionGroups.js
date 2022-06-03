@@ -60,7 +60,7 @@ module.exports = async(parent, args, context) => {
                     function checkAuthGroupComplete() {
                         countAuthGroups++;
                         if (countAuthGroups == numAuthGroups) {
-                            filterAndSortPermissions(resolve, args, edges);
+                            filterAndSortPermissions(resolve, reject, args, edges);
                         }
                     }
                 });
@@ -91,7 +91,7 @@ function getError(field, message, code, permissions, users, group) {
     };
 }
 
-function filterAndSortPermissions(resolve, args, edges) {
+function filterAndSortPermissions(resolve, reject, args, edges) {
     let filterSearch = args.filter.search;
     let filterIds = args.filter.ids;
     let sortByDirection = args.sortBy.direction;
@@ -100,6 +100,28 @@ function filterAndSortPermissions(resolve, args, edges) {
     let after = args.after;
     let first = args.first;
     let last = args.last;
+
+    if (!(first || last)) {
+        return reject(getError(
+            "first|last",
+            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+            "REQUIRED",
+            null,
+            null,
+            null
+        ));
+    }
+
+    if (!(first || last)) {
+        return reject(getError(
+            "first|last",
+            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+            "REQUIRED",
+            null,
+            null,
+            null
+        ));
+    }
 
     resolve({
         pageInfo: {
