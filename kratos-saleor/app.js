@@ -51,7 +51,7 @@ require('./postgres/initialize_dbs').init()
         app.get('/login', utils.isAuthenticated, (req, res) => {
             req.session.callbackUrl = req.query.callbackUrl;
             if (!req.session.callbackUrl) {
-                return res.send("Please provide a callback url");
+                return res.send("Please provide a callbackUrl");
             }
 
             getLoginFlowResolver(null, { refresh: true })
@@ -59,6 +59,8 @@ require('./postgres/initialize_dbs').init()
                     console.log(loginflow);
                     if (loginflow == null) return res.send("Error: failed to create login flow");
                     req.session.loginflow = loginflow;
+                    console.log(req.session);
+
                     res.render('login');
                 }).catch(err => {
                     res.send("Error: failed to create login flow");
@@ -69,7 +71,7 @@ require('./postgres/initialize_dbs').init()
         app.post('/login', utils.isAuthenticated, (req, res) => {
             let email = req.body.email;
             let password = req.body.password;
-
+            console.log(req.session);
             executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver(null, {
                 completeSelfServiceLoginFlowWithPasswordMethodInput: {
                     identifier: email,
