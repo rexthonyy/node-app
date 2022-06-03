@@ -4,7 +4,7 @@ const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
 
 module.exports = (parent, { refresh }, cb) => {
-    return cb("a");
+    return cb({ a: 'one' });
     return new Promise((resolve, reject) => {
         if (!refresh) {
             refresh = false;
