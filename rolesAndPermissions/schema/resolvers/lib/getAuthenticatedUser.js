@@ -5,7 +5,6 @@ let getAuthenticatedUser = (context, cb) => {
     const authToken = context.headers["authorization"];
     if (!authToken) return cb(null);
     const token = authToken && authToken.split(' ')[1];
-    console.log(authToken);
     pgKratosQueries.getSessionByToken([token], result => {
         if (result.err || result.res.length == 0) {
             return cb(null);
