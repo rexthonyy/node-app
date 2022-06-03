@@ -14,7 +14,7 @@ require('./postgres/initialize_dbs').init()
         const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
         const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
         const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
-        const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
+        const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
         const schema = loadSchemaSync("schema.graphql", {
             loaders: [new GraphQLFileLoader()]
