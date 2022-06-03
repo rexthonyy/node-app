@@ -58,9 +58,6 @@ require('./postgres/initialize_dbs').init()
                 .then(loginflow => {
                     if (loginflow == null) return res.send("Error: failed to create login flow");
                     req.session.loginflow = loginflow;
-                    console.log(req.session.loginflow);
-                    //console.log(req.session.loginflow.id);
-
                     res.render('login');
                 }).catch(err => {
                     console.error(err);
@@ -72,13 +69,12 @@ require('./postgres/initialize_dbs').init()
         app.post('/login', utils.isAuthenticated, (req, res) => {
             let email = req.body.email;
             let password = req.body.password;
-            console.log(req.session);
             executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver(null, {
                 completeSelfServiceLoginFlowWithPasswordMethodInput: {
                     identifier: email,
                     password: password
                 },
-                flow: req.session.loginFlow.id
+                flow: req.session.loginflow.id
             }).then(session => {
                 if (session == null) return res.send("Error: failed to create session");
                 let sessionToken = session.sessionToken;
