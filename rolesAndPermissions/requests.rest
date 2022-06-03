@@ -24,7 +24,7 @@ query ($id: ID!){
 }
 
 {
-    "id": 43,
+    "id": 1,
     "PERMISSION_MANAGE_USERS": true,
   "PERMISSION_MANAGE_STAFF": true,
   "PERMISSION_IMPERSONATE_USER": true,

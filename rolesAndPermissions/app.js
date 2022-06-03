@@ -15,7 +15,6 @@ require('./postgres/initialize_dbs').init()
 
         app.use('/graphql',
             graphqlHTTP(req => {
-                console.log(req.headers);
                 return {
                     schema,
                     graphiql: true,
