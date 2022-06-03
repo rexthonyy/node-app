@@ -283,7 +283,6 @@ function updateUserPermission(authUser, users, cb) {
                         getIdentityById(user, identity => {
                             if (typeof identity != "string") {
                                 let traits = identity.traits;
-                                console.log(traits);
                                 traits.userPermissions = userPermissions;
                                 traits.permissionGroups = userPermissionGroups;
                                 traits.editableGroups = userEditableGroups;
