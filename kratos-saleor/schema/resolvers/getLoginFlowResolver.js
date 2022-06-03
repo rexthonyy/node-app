@@ -3,7 +3,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const loginFlowHandler = require('../../flows/loginFlowHandler');
 const consts = require('../../libs/consts');
 
-module.exports = (parent, { refresh }) => {
+module.exports = (parent, { refresh }, cb) => {
     return new Promise((resolve, reject) => {
         if (!refresh) {
             refresh = false;
@@ -54,7 +54,7 @@ module.exports = (parent, { refresh }) => {
                 ui
             };
 
-            console.log(appSession);
+            cb(appSession);
 
             resolve(appSession);
         });
