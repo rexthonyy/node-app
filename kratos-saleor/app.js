@@ -75,11 +75,12 @@ require('./postgres/initialize_dbs').init()
                     password: password
                 },
                 flow: req.session.loginflow.id
-            }).then(session => {
-                if (session == null) return res.send("Error: failed to create session");
-                let sessionToken = session.sessionToken;
+            }).then(appSession => {
+                if (appSession == null) return res.send("Error: failed to create session");
+                let sessionToken = appSession.sessionToken;
                 res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
             }).catch(err => {
+                console.log(err);
                 res.send("Error: failed to create session");
             });
         });
@@ -114,9 +115,9 @@ require('./postgres/initialize_dbs').init()
                     email,
                     password
                 })
-            }).then(session => {
-                if (session == null) return res.send("Error: failed to create session");
-                let sessionToken = session.sessionToken;
+            }).then(appSession => {
+                if (appSession == null) return res.send("Error: failed to create session");
+                let sessionToken = appSession.sessionToken;
                 res.redirect(`${process.env.callbackUrl}?sessionToken=${sessionToken}`);
             }).catch(err => {
                 console.log(err);
