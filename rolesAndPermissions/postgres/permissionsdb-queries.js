@@ -248,11 +248,25 @@ const deleteAccountUserPermissionsByUserId = (values, response) => {
     });
 };
 
+const deleteAuthGroupPermissionsByPermissionsId = (values, response) => {
+    client.query(`DELETE FROM ${db.auth_group_permissions} WHERE group_id=$1 AND permission_id=$2`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows[0]
+            });
+        }
+    });
+};
 
-
-
-const updateTicketTimeAccounting = (values, response) => {
-    client.query('UPDATE ticket_time_accountings SET ticket_id=$2, ticket_article_id=$3, time_unit=$4, created_by_id=$5, created_at=$6, updated_at=$7 WHERE id=$1', values, (err, res) => {
+const updateAuthGroupById = (values, response) => {
+    client.query(`UPDATE ${db.auth_group} SET name=$2 WHERE id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1248,4 +1262,6 @@ module.exports = {
     getAccountUserGroupsByUserId,
     getAccountUserPermissionsByUserId,
     deleteAccountUserPermissionsByUserId,
+    deleteAuthGroupPermissionsByPermissionsId,
+    updateAuthGroupById,
 }
