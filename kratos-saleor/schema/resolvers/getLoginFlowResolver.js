@@ -54,7 +54,7 @@ module.exports = (parent, { refresh }, cb) => {
                 ui
             };
 
-            cb(appSession);
+            return cb(appSession);
 
             resolve(appSession);
         });
