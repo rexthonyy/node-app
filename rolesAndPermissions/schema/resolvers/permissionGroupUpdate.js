@@ -136,7 +136,7 @@ module.exports = async(parent, args, context) => {
                                             function checkIdsOfPermissionsToRemoveComplete() {
                                                 countIdsOfPermissionsToRemove++;
                                                 if (countIdsOfPermissionsToRemove == numIdsOfPermissionsToRemove) {
-
+                                                    console.log(countIdsOfPermissionsToRemove);
                                                 }
                                             }
                                         }
