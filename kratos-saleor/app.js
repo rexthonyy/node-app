@@ -57,10 +57,9 @@ require('./postgres/initialize_dbs').init()
             }
 
             getLoginFlowResolver(true, loginFlow => {
-                console.log(loginFlow);
-                if (loginFlow) return res.send("Error: failed to create login flow");
-                // req.session.loginflow = loginflow;
-                // console.log(req.session.loginFlow.id);
+                if (loginFlow == null) return res.send("Error: failed to create login flow");
+                req.session.loginflow = loginflow;
+                console.log(req.session.loginFlow.id);
 
                 res.render('login');
             });
