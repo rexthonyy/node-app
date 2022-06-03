@@ -45,7 +45,7 @@ require('./postgres/initialize_dbs').init()
             console.log("Listening on port %s...", lesServer.address().port);
         });
 
-        app.get('/login', utils.isAuthenticatd, (req, res) => {
+        app.get('/login', utils.isAuthenticated, (req, res) => {
             let callbackUrl = req.query.callbackUrl;
             if (req.kratosSession != null) {
 
@@ -61,7 +61,7 @@ require('./postgres/initialize_dbs').init()
             console.log(password);
         });
 
-        app.get('/signup', utils.isAuthenticatd, (req, res) => {
+        app.get('/signup', utils.isAuthenticated, (req, res) => {
             let callbackUrl = req.query.callbackUrl;
             if (req.kratosSession != null) {
 
