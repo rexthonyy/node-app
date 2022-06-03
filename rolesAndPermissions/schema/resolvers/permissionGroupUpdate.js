@@ -45,7 +45,7 @@ module.exports = async(parent, args, context) => {
                         for (let k = 0, l = permissions.length; k < l; k++) {
                             let isFound = false;
                             for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
-                                if (permissions[k] == authGroupPermissions[i].code) {
+                                if (permissions[k] == authGroupPermissions[i].code.toLowerCase()) {
                                     isFound = true;
                                     break;
                                 }
@@ -115,7 +115,7 @@ module.exports = async(parent, args, context) => {
                                             let idsOfPermissionsToRemove = [];
                                             for (let k = 0, l = removePermissions.length; k < l; k++) {
                                                 for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
-                                                    if (removePermissions[k] == authGroupPermissions[i].code) {
+                                                    if (removePermissions[k] == authGroupPermissions[i].code.toLowerCase()) {
                                                         idsOfPermissionsToRemove.push(authGroupPermissions[i].id);
                                                         break;
                                                     }
@@ -160,7 +160,7 @@ module.exports = async(parent, args, context) => {
                                                                 }
 
                                                                 updateUserPermission(authUser, usersInGroup, () => {
-                                                                    //getResult();
+                                                                    getGroups(resolve, authUser, groupId, groupName);
                                                                 });
                                                             });
                                                         }
@@ -205,6 +205,7 @@ function updateUserPermission(authUser, users, cb) {
                         getIdentityById(user, identity => {
                             if (typeof identity != "string") {
                                 let traits = identity.traits;
+                                console.log(traits);
                                 traits.userPermissions = userPermissions;
                                 traits.permissionGroups = userPermissionGroups;
                                 traits.editableGroups = userEditableGroups;
@@ -230,4 +231,47 @@ function updateUserPermission(authUser, users, cb) {
             cb();
         }
     }
+}
+
+
+function getGroups(resolve, authUser, groupId, groupName) {
+    getAuthGroupPermissionsByGroupId(groupId, permissions => {
+        getUsersInGroupId(groupId, users => {
+            let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+            let userCanManage = false;
+
+            for (let i = 0, j = authUserPermissions.length; i < j; i++) {
+                if (authUserPermissions[i].code == "MANAGE_USERS") {
+                    userCanManage = true;
+                    break;
+                }
+            }
+
+            let res = {
+                errors: [{
+                    field: null,
+                    message: "Group updated successfully",
+                    code: "REQUIRED",
+                    permissions: null,
+                    users: null
+                }],
+                group: {
+                    id: groupId,
+                    name: groupName,
+                    users,
+                    permissions,
+                    userCanManage
+                },
+                permissionGroupErrors: [{
+                    field: null,
+                    message: "Group updated successfully",
+                    code: "REQUIRED",
+                    permissions: null,
+                    users: null
+                }]
+            };
+
+            resolve(res);
+        });
+    });
 }
