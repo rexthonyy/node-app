@@ -2,14 +2,15 @@
 
 <body>
     <form method="post" action="/login">
-        Email<br>
+        <h1>Login</h1><br> Email
+        <br>
         <input type="email" name="email" /><br><br> Password
         <br>
         <input type="password" name="password" /><br><br>
 
         <input type="submit" value="LOGIN" />
         <br><br>
-        <a href="/signup">Signup</a>
+        <a href="/signup?callbackUrl=<%= callbackUrl %>">Signup</a>
     </form>
 </body>
 

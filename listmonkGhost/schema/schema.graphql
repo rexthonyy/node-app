@@ -1,0 +1,214 @@
+type Query {
+  """
+  Fetch all lists.
+  """
+  getAllLists(
+    """Filtering options for lists."""
+    filter: ListFilterInput
+
+    """Sort lists."""
+    sortBy: ListSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ListCountableConnection
+
+  """
+  Look up list by ID
+  """
+  getListById(
+    """ID of the list."""
+    id: ID!
+  ): List
+}
+
+
+type Mutation {
+  """
+  Create new list.
+  """
+  listCreate(
+    """Input fields to create a list."""
+    input: ListCreateInput!
+  ): ListCreate
+
+  """
+  Update a list
+  """
+  listUpdate(
+    """The id of the list to be modified."""
+    id: ID!
+
+    """Input fields to create list."""
+    input: ListUpdateInput!
+  ): ListUpdate
+
+  """
+  Delete list.
+  """
+  listDelete(
+    """The id of the list to be deleted."""
+    id: ID!
+  ): ListDelete
+}
+
+
+
+input ListFilterInput {
+  search: String
+  ids: [ID!]
+}
+
+
+input ListSortingInput {
+  """Specifies the direction in which to sort lists."""
+  direction: OrderDirection!
+
+  """Sort list by the selected field."""
+  field: ListSortField!
+}
+
+
+enum OrderDirection {
+  """Specifies an ascending sort order."""
+  ASC
+
+  """Specifies a descending sort order."""
+  DESC
+}
+
+enum ListSortField {
+  """Sort lists by name."""
+  NAME
+}
+
+
+type ListCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [ListCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+
+
+type ListCountableEdge {
+  """The item at the end of the edge."""
+  node: List!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+
+"""
+The Relay compliant `PageInfo` type, containing data necessary to paginate this connection.
+"""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+
+"""Represents list data."""
+type List implements Node {
+  id: ID!
+  uuid: String!
+  """The name of the list"""
+  name: String!
+  type: String!
+  optin: String!
+  tags: [String]
+  created_at: DateTime!
+  updated_at: DateTime!
+  subscriber_count: Int
+}
+
+"""
+Create new list
+"""
+type ListCreate {
+  errors: [ListError!]!
+  list: List
+}
+
+
+type ListError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: ListErrorCode!
+}
+
+"""An enumeration."""
+enum ListErrorCode {
+  REQUIRED
+  UNIQUE
+}
+
+
+input ListCreateInput {
+  """The new list name."""
+  name: String!
+
+  """List type, can be set to Private or Public."""
+  type: String!
+
+  """`single` or `double` optin."""
+  optin: String!
+}
+
+
+input ListUpdateInput {
+  """The name which the old name will be modified to."""
+  name: String
+
+  """List type, can be set to Private or Public."""
+  type: String
+
+  """`single` or `double` optin."""
+  optin: String
+}
+
+
+"""
+Modifies a list.
+"""
+type ListUpdate {
+  errors: [ListError!]!
+  list: List
+}
+
+"""
+Deletes a list.
+"""
+type ListDelete {
+  errors: [ListError!]!
+  list: List
+}

@@ -50,16 +50,17 @@ require('./postgres/initialize_dbs').init()
         });
 
         app.get('/login', utils.isAuthenticated, (req, res) => {
-            req.session.callbackUrl = req.query.callbackUrl;
-            if (!req.session.callbackUrl) {
+            let callbackUrl = req.query.callbackUrl;
+            if (!callbackUrl) {
                 return res.send("Please provide a callbackUrl");
             }
+            req.session.callbackUrl = callbackUrl;
 
             getLoginFlowResolver(null, { refresh: true })
                 .then(loginflow => {
                     if (loginflow == null) return res.send("Error: failed to create login flow");
                     req.session.loginflow = loginflow;
-                    res.render('login');
+                    res.render('login', { callbackUrl });
                 }).catch(err => {
                     console.error(err);
                     res.send("Error: failed to create login flow");
@@ -87,15 +88,17 @@ require('./postgres/initialize_dbs').init()
         });
 
         app.get('/signup', utils.isAuthenticated, (req, res) => {
-            if (!req.session.callbackUrl) {
-                return res.send("Please provide a callback url");
+            let callbackUrl = req.query.callbackUrl;
+            if (!callbackUrl) {
+                return res.send("Please provide a callbackUrl");
             }
+            req.session.callbackUrl = callbackUrl;
 
             getRegistrationFlowResolver()
                 .then(registrationFlow => {
                     if (registrationFlow == null) return res.send("Error: failed to create registration flow");
                     req.session.registrationFlow = registrationFlow;
-                    res.render('signup');
+                    res.render('signup', { callbackUrl });
                 }).catch(err => {
                     console.log(err);
                     res.send("Error: failed to create registration flow");

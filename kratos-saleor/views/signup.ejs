@@ -2,11 +2,9 @@
 
 <body>
     <form method="post" action="/signup">
-        First name<br>
-        <input type="text" name="firstName" /><br><br>
-        <br> Last name<br>
-        <input type="text" name="lastName" /><br><br>
-        <br> Email
+        <h1>Sign up</h1><br> First name<br>
+        <input type="text" name="firstName" /><br><br> Last name<br>
+        <input type="text" name="lastName" /><br><br> Email
         <br>
         <input type="email" name="email" /><br><br> Password
         <br>
@@ -15,7 +13,7 @@
         <input type="submit" value="SIGNUP" />
         <br><br>
 
-        <a href="/login">Login</a>
+        <a href="/login?callbackUrl=<%= callbackUrl %>">Login</a>
     </form>
 </body>
 
