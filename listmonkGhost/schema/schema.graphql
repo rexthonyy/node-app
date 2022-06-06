@@ -44,6 +44,46 @@ type Query {
     """ID of the list."""
     id: ID!
   ): List
+
+  """
+  Gets all campaigns.
+  """
+  getAllCampaigns(
+    """Filtering options for campaigns."""
+    filter: CampaignFilterInput
+
+    """Campaign lists."""
+    sortBy: CampaignSortingInput
+
+    """Return the elements in the campaign that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the campgian that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the campaign."""
+    first: Int
+
+    """Return the last n elements from the campaign."""
+    last: Int
+  ): CampaignCountableConnection
+
+  """
+  Gets a single campaign.
+  """
+  getCampaignById(
+    """ID of the campaign."""
+    id: ID!
+  ): Campaign
+
+  """
+  Gets the HTML preview of a campaign body.
+  """
+  getCampaignHTMLPreview(
+    """ID of the campaign."""
+    id: ID!
+  ): CampaignPreview
+
 }
 
 
@@ -74,11 +114,43 @@ type Mutation {
     """The id of the list to be deleted."""
     id: ID!
   ): ListDelete
+
+  """
+  Creates a new campaign.
+  """
+  campaignCreate(
+    """Input fields to create a campaign."""
+    input: CampaignCreateInput!
+  ): CampaignCreate
+
+  """
+  Modifies a campaign status to start, pause, cancel, or schedule a campaign.
+  """
+  campaignModifyStatus(
+    """The id value of the campaign whose status is to be modified."""
+    id: ID!
+
+    """`scheduled`, `running`, `paused`, `cancelled`."""
+    status: String!
+  ): CampaignModifyStatus
+
+  """
+  Deletes a campaign, only scheduled campaigns that have not yet been started can be deleted.
+  """
+  campaignDelete(
+    """The id value of the campaign you want to delete."""
+    id: ID!
+  ): CampaignDelete
 }
 
 
 
 input ListFilterInput {
+  search: String
+  ids: [ID!]
+}
+
+input CampaignFilterInput {
   search: String
   ids: [ID!]
 }
@@ -90,6 +162,14 @@ input ListSortingInput {
 
   """Sort list by the selected field."""
   field: ListSortField!
+}
+
+input CampaignSortingInput {
+  """Specifies the direction in which to sort campaigns."""
+  direction: OrderDirection!
+
+  """Sort campaigns by the selected field."""
+  field: CampaignSortField!
 }
 
 
@@ -106,6 +186,11 @@ enum ListSortField {
   NAME
 }
 
+enum CampaignSortField {
+  """Sort campaigns by name."""
+  NAME
+}
+
 
 type ListCountableConnection {
   """Pagination data for this connection."""
@@ -116,11 +201,28 @@ type ListCountableConnection {
   totalCount: Int
 }
 
+type CampaignCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [CampaignCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
 
 
 type ListCountableEdge {
   """The item at the end of the edge."""
   node: List!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type CampaignCountableEdge {
+  """The item at the end of the edge."""
+  node: Campaign!
 
   """A cursor for use in pagination."""
   cursor: String!
@@ -159,12 +261,72 @@ type List implements Node {
   subscriber_count: Int
 }
 
+"""Represents campaign data."""
+type Campaign implements Node {
+  id: ID!
+  created_at: DateTime!
+  updated_at: DateTime!
+  campaignID: Int
+  views: Int
+  clicks: Int
+  lists: ListData
+  started_at: DateTime
+  to_send: Int
+  sent: Int!
+  uuid: UUID!
+  type: String
+  name: String!
+  subject: String!
+  from_email: String!
+  body: String!
+  send_at: DateTime
+  status: String!
+  content_type: String!
+  tags: [String]
+  template_id: Int
+  messenger: String!
+}
+
+"""Represents campaign data."""
+type ListData implements Node {
+  id: ID!
+  name: String!
+}
+
 """
 Create new list
 """
 type ListCreate {
   errors: [ListError!]!
   list: List
+}
+
+"""
+Create new campaign
+"""
+type CampaignCreate {
+  errors: [CampaignError!]!
+  campaign: Campaign
+}
+
+"""
+Modify a campaign status
+"""
+type CampaignModifyStatus {
+  errors: [CampaignError!]!
+  campaign: Campaign
+}
+
+
+type CampaignPreview {
+  errors: [CampaignError!]!
+  preview: String
+}
+
+"""Delete a campaign"""
+type CampaignDelete {
+  errors: [CampaignError!]!
+  data: Boolean
 }
 
 
@@ -187,6 +349,25 @@ enum ListErrorCode {
   UNIQUE
 }
 
+type CampaignError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: CampaignErrorCode!
+}
+
+"""An enumeration."""
+enum CampaignErrorCode {
+  REQUIRED
+  UNIQUE
+}
+
 
 input ListCreateInput {
   """The new list name."""
@@ -197,6 +378,44 @@ input ListCreateInput {
 
   """`single` or `double` optin."""
   optin: String!
+}
+
+input CampaignCreateInput {
+  """Name of the campaign."""
+  name: String!
+
+  """(E-mail) subject of the campaign."""
+  subject: String!
+
+  """Array of list IDs to send the campaign to."""
+  lists: [ID]!
+
+  """From e-mail to show on the campaign e-mails. If left empty, the default value from settings is used."""
+  from_email: String
+
+  """`regular` or `optin` campaign."""
+  type: String!
+
+  """`richtext`, `html`, `markdown`, `plain`"""
+  content_type: String!
+
+  """Campaign content body."""
+  body: String!
+
+  """Alternate plain text body for HTML (and richtext) e-mails."""
+  altbody: String
+
+  """A timestamp to schedule the campaign at. Eg: `2021-12-25T06:00:00` (YYYY-MM-DDTHH:MM:SS)"""
+  send_at: String
+
+  """`email` or a custom messenger defined in the settings. If left empty, `email` is used."""
+  messenger: String
+
+  """ID of the template to use. If left empty, the default template is used."""
+  template_id: String
+
+  """Array of string tags to mark the campaign."""
+  tags: [String]
 }
 
 
