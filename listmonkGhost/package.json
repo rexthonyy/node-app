@@ -4,7 +4,7 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "start": "npx kill-port 2300 < start.sh && node app.js"
+        "start": "npx kill-port 2500 < start.sh && node app.js"
     },
     "keywords": [],
     "author": "",
