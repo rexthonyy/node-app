@@ -5,6 +5,14 @@ value as specified by
 """
 scalar DateTime
 
+scalar UUID
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
 type Query {
   """
   Fetch all lists.
@@ -140,7 +148,7 @@ type PageInfo {
 """Represents list data."""
 type List implements Node {
   id: ID!
-  uuid: String!
+  uuid: UUID!
   """The name of the list"""
   name: String!
   type: String!
