@@ -84,6 +84,22 @@ type Query {
     id: ID!
   ): CampaignPreview
 
+  """
+  Fetch all settings.
+  """
+  getSettings(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): SettingsCountableConnection
 }
 
 
@@ -141,6 +157,33 @@ type Mutation {
     """The id value of the campaign you want to delete."""
     id: ID!
   ): CampaignDelete
+
+  """
+  Creates a new setting.
+  """
+  settingCreate(
+    """Input fields to create a setting."""
+    input: SettingCreateInput!
+  ): SettingCreate
+
+   """
+  Update a setting
+  """
+  settingUpdate(
+    """The id of the list to be modified."""
+    key: String!
+
+    """Input fields to update."""
+    value: String!
+  ): SettingUpdate
+
+ """
+  Deletes a setting.
+  """
+  settingDelete(
+    """The key value of the setting to delete"""
+    key: String!
+  ): SettingDelete
 }
 
 
@@ -210,6 +253,15 @@ type CampaignCountableConnection {
   totalCount: Int
 }
 
+type SettingsCountableConnection {
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [SettingsCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
 
 
 type ListCountableEdge {
@@ -223,6 +275,14 @@ type ListCountableEdge {
 type CampaignCountableEdge {
   """The item at the end of the edge."""
   node: Campaign!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type SettingsCountableEdge {
+  """The item at the end of the edge."""
+  node: Setting!
 
   """A cursor for use in pagination."""
   cursor: String!
@@ -293,6 +353,13 @@ type ListData implements Node {
   name: String!
 }
 
+"""Represents a setting"""
+type Setting {
+  key: String!
+  value: String!
+  updated_at: DateTime
+}
+
 """
 Create new list
 """
@@ -326,6 +393,22 @@ type CampaignPreview {
 """Delete a campaign"""
 type CampaignDelete {
   errors: [CampaignError!]!
+  data: Boolean
+}
+
+"""Creates a setting"""
+type SettingCreate {
+  errors: [SettingError!]!
+  data: Boolean
+}
+"""Updates a setting"""
+type SettingUpdate {
+  errors: [SettingError!]!
+  data: Boolean
+}
+"""Deletes a setting"""
+type SettingDelete {
+  errors: [SettingError!]!
   data: Boolean
 }
 
@@ -364,6 +447,25 @@ type CampaignError {
 
 """An enumeration."""
 enum CampaignErrorCode {
+  REQUIRED
+  UNIQUE
+}
+
+type SettingError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
+  message: String
+
+  """The error code."""
+  code: SettingErrorCode!
+}
+
+"""An enumeration."""
+enum SettingErrorCode {
   REQUIRED
   UNIQUE
 }
@@ -428,6 +530,14 @@ input ListUpdateInput {
 
   """`single` or `double` optin."""
   optin: String
+}
+
+input SettingCreateInput {
+  """The name of the setting"""
+  key: String!
+
+  """The value of the setting"""
+  value: String!
 }
 
 

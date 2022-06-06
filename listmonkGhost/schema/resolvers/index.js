@@ -1,8 +1,12 @@
+const getSettings = require("./getSettings");
 const getAllLists = require("./getAllLists");
 const getListById = require("./getListById");
 const getAllCampaigns = require("./getAllCampaigns");
 const getCampaignById = require("./getCampaignById");
 const getCampaignHTMLPreview = require("./getCampaignHTMLPreview");
+const settingCreate = require("./settingCreate");
+const settingUpdate = require("./settingUpdate");
+const settingDelete = require("./settingDelete");
 const listCreate = require("./listCreate");
 const listUpdate = require("./listUpdate");
 const listDelete = require("./listDelete");
@@ -16,7 +20,8 @@ module.exports = {
         getListById,
         getAllCampaigns,
         getCampaignById,
-        getCampaignHTMLPreview
+        getCampaignHTMLPreview,
+        getSettings
     },
     Mutation: {
         listCreate,
@@ -24,6 +29,9 @@ module.exports = {
         listDelete,
         campaignCreate,
         campaignModifyStatus,
-        campaignDelete
+        campaignDelete,
+        settingCreate,
+        settingUpdate,
+        settingDelete
     }
 };
