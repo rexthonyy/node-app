@@ -32,25 +32,6 @@ const {
     GraphQLInt
 } = require("graphql");
 
-
-// data types
-const TaxedMoney = require("./TaxedMoney");
-
-module.exports = new GraphQLInputObjectType({
-    name: "VariantPricingInfo",
-    description: "Represents availability of a variant in the storefront.",
-    args: {
-        addressInput: { type: GraphQLNonNull(GraphQLString), description: "The Flow ID" }
-    },
-    fields: () => ({
-        onSale: { type: GraphQLBoolean },
-        discount: { type: TaxedMoney },
-        discountLocalCurrency: { type: TaxedMoney },
-        price: { type: TaxedMoney },
-        priceUndiscounted: { type: TaxedMoney },
-        priceLocalCurrency: { type: TaxedMoney }
-    })
-});
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
