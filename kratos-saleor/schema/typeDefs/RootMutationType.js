@@ -32,7 +32,7 @@ const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require(
 const executeComplete2FAResolver = require("../resolvers/executeComplete2FAResolver");
 const executeTokenCreateResolver = require("../resolvers/executeTokenCreateResolver");
 //const executeAccountRegisterResolver = require("../resolvers/executeAccountRegisterResolver");
-const executeCompleteSelfServiceLogoutResolver = require("./executeCompleteSelfServiceLogoutResolver");
+const executeCompleteSelfServiceLogoutResolver = require("../resolvers/executeCompleteSelfServiceLogoutResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
