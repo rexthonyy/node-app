@@ -8,7 +8,7 @@ require('./postgres/initialize_dbs').init()
         const cookieParser = require('cookie-parser');
         const passport = require('passport');
         const { graphqlHTTP } = require('express-graphql');
-        //const schema1 = require('./schema/index');
+        const schema1 = require('./schema/index');
         const { loadSchemaSync } = require('@graphql-tools/load');
         const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
         const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
@@ -16,9 +16,9 @@ require('./postgres/initialize_dbs').init()
         const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
         const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
-        const schema = loadSchemaSync("schema.graphql", {
-            loaders: [new GraphQLFileLoader()]
-        });
+        // const schema = loadSchemaSync("schema.graphql", {
+        //     loaders: [new GraphQLFileLoader()]
+        // });
 
         const app = express();
 
@@ -40,7 +40,7 @@ require('./postgres/initialize_dbs').init()
 
         app.use('/graphql',
             graphqlHTTP({
-                schema,
+                schema1,
                 graphiql: true,
             }));
 

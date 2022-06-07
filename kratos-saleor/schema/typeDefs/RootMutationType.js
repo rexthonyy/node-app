@@ -62,6 +62,7 @@ const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require(
 const executeComplete2FAResolver = require("../resolvers/executeComplete2FAResolver");
 const executeTokenCreateResolver = require("../resolvers/executeTokenCreateResolver");
 const executeAccountRegisterResolver = require("../resolvers/executeAccountRegisterResolver");
+const executeCompleteSelfServiceLogoutResolver = require("./executeCompleteSelfServiceLogoutResolver");
 
 module.exports = new GraphQLObjectType({
     name: "Mutation",
@@ -154,6 +155,14 @@ module.exports = new GraphQLObjectType({
                 input: { type: GraphQLNonNull(AccountRegisterInputType) }
             },
             resolve: executeAccountRegisterResolver
+        },
+        completeSelfServiceLogout_: {
+            type: Session,
+            description: "Use this endpoint to logout of a session",
+            args: {
+                logoutToken: { type: GraphQLString }
+            },
+            resolve: executeCompleteSelfServiceLogoutResolver
         },
     })
 });
