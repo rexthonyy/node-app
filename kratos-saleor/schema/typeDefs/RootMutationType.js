@@ -18,8 +18,8 @@ const SettingsViaApiResponse = require("./SettingsViaApiResponse");
 const CompleteSelfServiceSettingsFlowWithPasswordMethodInput = require("./CompleteSelfServiceSettingsFlowWithPasswordMethodInput");
 const SettingsFlow = require("./SettingsFlow");
 const tokenCreate = require("./TokenCreate");
-const accountRegister = require("./AccountRegister");
-const AccountRegisterInputType = require("./AccountRegisterInputType");
+// const accountRegister = require("./AccountRegister");
+// const AccountRegisterInputType = require("./AccountRegisterInputType");
 
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
@@ -31,7 +31,7 @@ const executeCompleteSelfServiceSettingsFlowWithPasswordMethodResolver = require
 const executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver = require("../resolvers/executeCompleteSelfServiceSettingsFlowWithProfileMethodResolver");
 const executeComplete2FAResolver = require("../resolvers/executeComplete2FAResolver");
 const executeTokenCreateResolver = require("../resolvers/executeTokenCreateResolver");
-const executeAccountRegisterResolver = require("../resolvers/executeAccountRegisterResolver");
+//const executeAccountRegisterResolver = require("../resolvers/executeAccountRegisterResolver");
 const executeCompleteSelfServiceLogoutResolver = require("./executeCompleteSelfServiceLogoutResolver");
 
 module.exports = new GraphQLObjectType({
@@ -118,14 +118,14 @@ module.exports = new GraphQLObjectType({
             },
             resolve: executeTokenCreateResolver
         },
-        accountRegister: {
-            type: accountRegister,
-            description: "Register a new user.",
-            args: {
-                input: { type: GraphQLNonNull(AccountRegisterInputType) }
-            },
-            resolve: executeAccountRegisterResolver
-        },
+        // accountRegister: {
+        //     type: accountRegister,
+        //     description: "Register a new user.",
+        //     args: {
+        //         input: { type: GraphQLNonNull(AccountRegisterInputType) }
+        //     },
+        //     resolve: executeAccountRegisterResolver
+        // },
         completeSelfServiceLogout_: {
             type: Session,
             description: "Use this endpoint to logout of a session",
