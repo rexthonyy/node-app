@@ -35,8 +35,6 @@ type Query {
     """Email address of the user."""
     email: String
   ): User
-  _entities(representations: [_Any]): [_Entity]
-  _service: _Service
 }
 
 type Mutation {
