@@ -113,8 +113,8 @@ module.exports = new GraphQLObjectType({
         tokenCreate: {
             type: tokenCreate,
             args: {
-                email: { type: GraphQLNonNulll(GraphQLString) },
-                password: { type: GraphQLNonNulll(GraphQLString) }
+                email: { type: GraphQLNonNull(GraphQLString) },
+                password: { type: GraphQLNonNull(GraphQLString) }
             },
             resolve: executeTokenCreateResolver
         },
