@@ -21,17 +21,6 @@ const tokenCreate = require("./TokenCreate");
 const accountRegister = require("./AccountRegister");
 const AccountRegisterInputType = require("./AccountRegisterInputType");
 
-const {
-    GraphQLInputObjectType,
-    GraphQLString,
-    GraphQLNonNull,
-    GraphQLList,
-    GraphQLBoolean,
-    GraphQLFloat,
-    GraphQLID,
-    GraphQLInt
-} = require("graphql");
-
 // resolvers
 const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver");
 const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require("../resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver");
