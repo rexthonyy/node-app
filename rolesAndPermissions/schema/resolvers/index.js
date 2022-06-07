@@ -1,8 +1,8 @@
-const permissionGroup = require("../resolvers/permissionGroup");
-const permissionGroups = require("../resolvers/permissionGroups");
-const permissionGroupCreate = require("../resolvers/permissionGroupCreate");
-const permissionGroupUpdate = require("../resolvers/permissionGroupUpdate");
-const permissionGroupDelete = require("../resolvers/permissionGroupDelete");
+const permissionGroup = require("./permissionGroup");
+const permissionGroups = require("./permissionGroups");
+const permissionGroupCreate = require("./permissionGroupCreate");
+const permissionGroupUpdate = require("./permissionGroupUpdate");
+const permissionGroupDelete = require("./permissionGroupDelete");
 
 module.exports = {
     Query: {
