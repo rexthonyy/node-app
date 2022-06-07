@@ -5,7 +5,6 @@ require('./postgres/initialize_dbs').init()
         Sentry.init({ dsn: "http://d78601a2198e422d8855c8be53f57061@88.208.212.249:8000/2" });
         const express = require('express');
         const { graphqlHTTP } = require('express-graphql');
-        const permissions = require('./permissions');
         const schema = require('./schema');
 
         const app = express();

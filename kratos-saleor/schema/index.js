@@ -1,11 +1,14 @@
-const {
-    GraphQLSchema
-} = require("graphql");
+const { join } = require('path');
+const { loadSchemaSync } = require('@graphql-tools/load');
+const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
+const { addResolversToSchema } = require('@graphql-tools/schema');
+const resolvers = require("./resolvers");
 
-const RootQueryType = require("./typeDefs/RootQueryType");
-const RootMutationType = require("./typeDefs/RootMutationType");
+const schema = loadSchemaSync(join(__dirname, './schema.graphql'), {
+    loaders: [new GraphQLFileLoader()]
+});
 
-module.exports = new GraphQLSchema({
-    query: RootQueryType,
-    mutation: RootMutationType
+module.exports = addResolversToSchema({
+    schema,
+    resolvers
 });

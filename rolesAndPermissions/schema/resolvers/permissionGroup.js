@@ -10,7 +10,6 @@ module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         getAuthenticatedUser(context, authUser => {
             let group_id = args.id;
-            console.log(authUser);
             if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
                 permissionsdbQueries.getAuthGroupById([group_id], result => {
                     if (result.err) {
