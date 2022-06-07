@@ -18,6 +18,7 @@ const SettingsViaApiResponse = require("./SettingsViaApiResponse");
 const CompleteSelfServiceSettingsFlowWithPasswordMethodInput = require("./CompleteSelfServiceSettingsFlowWithPasswordMethodInput");
 const SettingsFlow = require("./SettingsFlow");
 const tokenCreate = require("./TokenCreate");
+const Session = require("./Session");
 // const accountRegister = require("./AccountRegister");
 // const AccountRegisterInputType = require("./AccountRegisterInputType");
 
