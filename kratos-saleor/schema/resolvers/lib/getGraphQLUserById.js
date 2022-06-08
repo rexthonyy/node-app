@@ -15,14 +15,14 @@ let getGraphQLUserById = (user_id) => {
             let userType = {
                 id: accountUser.id,
                 privateMetadata: [{
-                    key: accountUser.private_metadata.key ? ? null,
-                    value: accountUser.private_metadata.value ? ? null
+                    key: accountUser.private_metadata.key ? accountUser.private_metadata.key : null,
+                    value: accountUser.private_metadata.value ? accountUser.private_metadata.value : null
                 }],
                 privateMetafield: JSON.stringify(accountUser.private_metadata),
                 privateMetafields: accountUser.private_metadata,
                 metadata: [{
-                    key: accountUser.metadata.key ? ? null,
-                    value: accountUser.metadata.value ? ? null
+                    key: accountUser.metadata.key ? accountUser.metadata.key : null,
+                    value: accountUser.metadata.value ? accountUser.metadata.value : null
                 }],
                 metadatafield: JSON.stringify(accountUser.metadata),
                 metadatafields: accountUser.metadata,
