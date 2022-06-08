@@ -54,18 +54,8 @@ function getError(field, message, code, addressType, user) {
 function getResult(requiresConfirmation, user) {
     return {
         requiresConfirmation,
-        errors: [{
-            field: "",
-            message: "",
-            code: "",
-            addressType: ""
-        }],
-        accountErrors: [{
-            field: "",
-            message: "",
-            code: "",
-            addressType: ""
-        }],
+        errors: [{}],
+        accountErrors: [{}],
         user
     };
 }
@@ -83,9 +73,7 @@ async function getUserByEmail(email) {
 async function registerUser(user) {
     return new Promise((resolve, reject) => {
         let userValues = getUserValues(user);
-        console.log(userValues);
         pgKratosQueries.createAccountUser(userValues, result => {
-            console.log(result.err);
             if (result.err) return reject(getError("Account user", "Failed to create account user", "GRAPHQL_ERROR", user));
             let accountUser = result.res[0];
             let userAddressValues = getUserAddressValues(user);
@@ -121,7 +109,7 @@ function getUserValues(user) {
         user.firstName,
         user.lastName,
         null,
-        null,
+        getJSONB(user.metadata),
         getJSONB(user.metadata),
         jwt_token_key,
         user.languageCode,
