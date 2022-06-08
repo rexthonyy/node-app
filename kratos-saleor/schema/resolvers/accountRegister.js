@@ -21,6 +21,7 @@ module.exports = async(parent, args, context) => {
             await getUserByEmail(email);
             if (redirectUrl == null) {
                 let result = await registerUser({ firstName, lastName, languageCode, metadata, email, password });
+                console.log(result);
                 return resolve(result);
             } else {
 
