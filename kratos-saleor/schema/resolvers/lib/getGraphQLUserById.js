@@ -52,7 +52,7 @@ function getAccountUserAddresses(user_id) {
         pgKratosQueries.getAccountUserAddressesByUserId([user_id], result => {
             if (result.err) return resolve([]);
             let accountUserAddresses = result.res;
-            const numAddresses = accountUserAddress.length;
+            const numAddresses = accountUserAddresses.length;
             let countAddress = -1;
             let addresses = [];
 
