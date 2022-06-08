@@ -10,7 +10,6 @@ let getGraphQLUserById = (user_id) => {
 
             let accountUser = result.res[0];
             let addresses = await getAccountUserAddresses(user_id);
-            console.log(addresses);
             let userType = {
                 id: accountUser.id,
                 privateMetadata: accountUser.private_metadata,
@@ -61,7 +60,7 @@ function getAccountUserAddresses(user_id) {
             let addresses = [];
 
             accountUserAddresses.forEach(userAddress => {
-                pgKratosQueries.getAccountAddressById([userAddress.id], result => {
+                pgKratosQueries.getAccountAddressById([userAddress.address_id], result => {
                     if (!(result.err || result.res.length == 0)) {
                         let accountAddress = result.res[0];
                         addresses.push({
