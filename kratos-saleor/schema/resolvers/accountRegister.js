@@ -74,7 +74,7 @@ async function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getUserByEmail([email], result => {
             if (result.err) return reject(getError("email", "Failed to connect to DB", "INACTIVE", null));
-            if (result.res.length != 0) return reject(getError("email", "Failed to connect to DB", "DUPLICATED_INPUT_ITEM", null));
+            if (result.res.length != 0) return reject(getError("email", "Email is already registered", "DUPLICATED_INPUT_ITEM", null));
             resolve();
         });
     });
