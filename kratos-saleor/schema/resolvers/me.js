@@ -1,5 +1,10 @@
+const { getAuthenticatedUser } = require('./lib');
+
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        resolve(null);
+        getAuthenticatedUser(context, authUser => {
+            if (authUser == null) return "user not found";
+            resolve(authUser);
+        });
     });
 }

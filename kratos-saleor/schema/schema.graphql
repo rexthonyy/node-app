@@ -71,51 +71,6 @@ type Mutation {
   """
   tokensDeactivateAll: DeactivateAllUserTokens
 
-  """Prepare external authentication url for user by custom plugin."""
-  externalAuthenticationUrl(
-    """The data required by plugin to create external authentication url."""
-    input: JSONString!
-
-    """The ID of the authentication plugin."""
-    pluginId: String!
-  ): ExternalAuthenticationUrl
-
-  """Obtain external access tokens for user by custom plugin."""
-  externalObtainAccessTokens(
-    """The data required by plugin to create authentication data."""
-    input: JSONString!
-
-    """The ID of the authentication plugin."""
-    pluginId: String!
-  ): ExternalObtainAccessTokens
-
-  """Refresh user's access by custom plugin."""
-  externalRefresh(
-    """The data required by plugin to proceed the refresh process."""
-    input: JSONString!
-
-    """The ID of the authentication plugin."""
-    pluginId: String!
-  ): ExternalRefresh
-
-  """Logout user by custom plugin."""
-  externalLogout(
-    """The data required by plugin to proceed the logout process."""
-    input: JSONString!
-
-    """The ID of the authentication plugin."""
-    pluginId: String!
-  ): ExternalLogout
-
-  """Verify external authentication data by plugin."""
-  externalVerify(
-    """The data required by plugin to proceed the verification."""
-    input: JSONString!
-
-    """The ID of the authentication plugin."""
-    pluginId: String!
-  ): ExternalVerify
-
   """Sends an email with the account password modification link."""
   requestPasswordReset(
     """

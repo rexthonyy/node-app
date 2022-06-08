@@ -5,11 +5,6 @@ const tokenCreate = require("./tokenCreate");
 const tokenRefresh = require("./tokenRefresh");
 const tokenVerify = require("./tokenVerify");
 const tokensDeactivateAll = require("./tokensDeactivateAll");
-const externalAuthenticationUrl = require("./externalAuthenticationUrl");
-const externalObtainAccessTokens = require("./externalObtainAccessTokens");
-const externalRefresh = require("./externalRefresh");
-const externalLogout = require("./externalLogout");
-const externalVerify = require("./externalVerify");
 const requestPasswordReset = require("./requestPasswordReset");
 const confirmAccount = require("./confirmAccount");
 const setPassword = require("./setPassword");
@@ -51,11 +46,6 @@ module.exports = {
         tokenRefresh,
         tokenVerify,
         tokensDeactivateAll,
-        externalAuthenticationUrl,
-        externalObtainAccessTokens,
-        externalRefresh,
-        externalLogout,
-        externalVerify,
         requestPasswordReset,
         confirmAccount,
         setPassword,

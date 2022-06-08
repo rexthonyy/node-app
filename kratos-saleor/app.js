@@ -8,13 +8,15 @@ require('./postgres/initialize_dbs').init()
         const cookieParser = require('cookie-parser');
         const passport = require('passport');
         const { graphqlHTTP } = require('express-graphql');
+        const { applyMiddleware } = require('graphql-middleware');
         const getLoginFlowResolver = require("./schema/resolvers/getLoginFlowResolver");
         const getRegistrationFlowResolver = require("./schema/resolvers/getRegistrationFlowResolver");
         const executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver');
         const executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver = require('./schema/resolvers/executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver');
         const utils = require('./libs/util');
+        const middleware = require('./libs/middleware');
         const schema = require('./schema');
-
+        const schemaWithMiddleware = applyMiddleware(schema, middleware)
         const app = express();
 
         app.set('view engine', 'ejs');
@@ -34,10 +36,11 @@ require('./postgres/initialize_dbs').init()
         app.use(Sentry.Handlers.requestHandler());
 
         app.use('/graphql',
-            graphqlHTTP({
-                schema,
+            graphqlHTTP(req => ({
+                schemaWithMiddleware,
                 graphiql: true,
-            }));
+                context: req
+            })));
 
         let port = process.env.PORT || 1000;
         var lesServer = app.listen(port, function() {
