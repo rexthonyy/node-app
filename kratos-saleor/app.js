@@ -37,7 +37,7 @@ require('./postgres/initialize_dbs').init()
 
         app.use('/graphql',
             graphqlHTTP(req => ({
-                schemaWithMiddleware,
+                schema: schemaWithMiddleware,
                 graphiql: true,
                 context: req
             })));
