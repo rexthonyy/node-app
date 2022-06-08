@@ -10,11 +10,22 @@ let getGraphQLUserById = (user_id) => {
 
             let accountUser = result.res[0];
             let addresses = await getAccountUserAddresses(user_id);
-
+            console.log(accounUser.private_metadata);
+            console.log(accounUser.private_metadata.key);
             let userType = {
                 id: accountUser.id,
-                privateMetadata: [accountUser.private_metadata],
-                privateMetafield: accountUser.private_metadata,
+                privateMetadata: [{
+                    key: accountUser.private_metadata.key ? ? null,
+                    value: accountUser.private_metadata.value ? ? null
+                }],
+                privateMetafield: JSON.stringify(accountUser.private_metadata),
+                privateMetafields: accountUser.private_metadata,
+                metadata: [{
+                    key: accountUser.metadata.key ? ? null,
+                    value: accountUser.metadata.value ? ? null
+                }],
+                metadatafield: JSON.stringify(accountUser.metadata),
+                metadatafields: accountUser.metadata,
                 email: accountUser.email,
                 firstName: accountUser.first_name,
                 lastName: accountUser.last_name,
