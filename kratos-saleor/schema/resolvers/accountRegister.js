@@ -83,6 +83,7 @@ async function getUserByEmail(email) {
 async function registerUser(user) {
     return new Promise((resolve, reject) => {
         let userValues = getUserValues(user);
+        console.log(userValues);
         pgKratosQueries.createAccountUser(userValues, result => {
             console.log(result.err);
             if (result.err) return reject(getError("Account user", "Failed to create account user", "GRAPHQL_ERROR", user));
