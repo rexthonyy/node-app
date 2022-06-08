@@ -1,5 +1,4 @@
 const pgKratosQueries = require('../../../postgres/kratos-queries');
-const schemaHandler = require('../../../identities/schemaHandler');
 
 let getGraphQLUserById = (user_id) => {
     return new Promise((resolve, reject) => {

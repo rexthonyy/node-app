@@ -1,4 +1,6 @@
+const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
+const fetch = require("node-fetch");
 const { authenticator } = require('otplib');
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { isEmailValid } = require("../../libs/util");
@@ -19,11 +21,14 @@ module.exports = async(parent, args, context) => {
 
         try {
             await getUserByEmail(email);
-            if (redirectUrl == null) {
-                let result = await registerUser({ firstName, lastName, languageCode, metadata, email, password });
+            let active = redirectUrl == null;
+            let result = await registerUser({ firstName, lastName, languageCode, metadata, email, password, active });
+
+            if (active) {
                 return resolve(result);
             } else {
-
+                await sendEmailConfirmation(redirectUrl, result);
+                return resolve(result);
             }
         } catch (err) {
             return resolve(err);
@@ -89,6 +94,53 @@ async function registerUser(user) {
     });
 }
 
+async function sendEmailConfirmation(redirectUrl, result) {
+    return new Promise((resolve, reject) => {
+        let user_id = result.user.id;
+        let email = result.user.email;
+        pgKratosQueries.getUserById([user_id], result => {
+            if (result.err) return reject(getError("Account user", "User not found", "GRAPHQL_ERROR", result.user));
+            let accountUser = result.res[0];
+            let jwtTokenKey = accountUser.jwt_token_key;
+
+            let user = {
+                user_id,
+                email
+            };
+            let userToken = jwt.sign(user, jwtTokenKey);
+            let confirmationData = {
+                data: userToken
+            };
+
+            let token = jwt.sign(confirmationData, process.env.AUTHORIZATION_TOKEN_SECRET, { subject: user_id, expiresIn: process.env.JWT_TTL_CONFIRM_EMAIL });
+
+            let payload = {
+                redirectUrl,
+                email,
+                token
+            };
+
+            fetch(process.env.LISTMONK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: ``,
+                        variables: payload
+                    })
+                })
+                .then((res) => res.json())
+                .then(result => {
+                    console.log(result);
+                    resolve();
+                }).catch(err => {
+                    resolve();
+                });
+        });
+    });
+}
+
 function getUserValues(user) {
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(user.password, salt);
@@ -99,7 +151,7 @@ function getUserValues(user) {
         false,
         user.email,
         false,
-        true,
+        user.active,
         hash,
         now,
         null,
