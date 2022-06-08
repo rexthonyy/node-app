@@ -98,7 +98,7 @@ async function sendEmailConfirmation(redirectUrl, result) {
     return new Promise((resolve, reject) => {
         let user_id = result.user.id;
         let email = result.user.email;
-        pgKratosQueries.getUserById([user_id], result => {
+        pgKratosQueries.getUserById([user_id], async result => {
             if (result.err) return reject(getError("Account user", "User not found", "GRAPHQL_ERROR", result.user));
             let accountUser = result.res[0];
             let jwtTokenKey = accountUser.jwt_token_key;
@@ -113,14 +113,16 @@ async function sendEmailConfirmation(redirectUrl, result) {
             };
 
             let token = jwt.sign(confirmationData, process.env.AUTHORIZATION_TOKEN_SECRET, { subject: user_id + "", expiresIn: process.env.JWT_TTL_CONFIRM_EMAIL });
-
+            console.log(token);
             let payload = {
                 redirectUrl,
                 email,
                 token
             };
 
-            fetch(process.env.LISTMONK_URL, {
+            console.log(process.env.LISTMONK_URL);
+            try {
+                let res = await fetch(process.env.LISTMONK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -129,14 +131,16 @@ async function sendEmailConfirmation(redirectUrl, result) {
                         query: ``,
                         variables: payload
                     })
-                })
-                .then((res) => res.json())
-                .then(result => {
-                    console.log(result);
-                    resolve();
-                }).catch(err => {
-                    resolve();
                 });
+
+                let json = res.json();
+
+                console.log(json);
+            } catch (err) {
+                console.log(err);
+            }
+
+            resolve();
         });
     });
 }
