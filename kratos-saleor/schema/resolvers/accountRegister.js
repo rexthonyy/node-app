@@ -21,7 +21,6 @@ module.exports = async(parent, args, context) => {
             await getUserByEmail(email);
             if (redirectUrl == null) {
                 let result = await registerUser({ firstName, lastName, languageCode, metadata, email, password });
-                console.log(result);
                 return resolve(result);
             } else {
 
@@ -37,6 +36,12 @@ function getError(field, message, code, addressType, user) {
     return {
         requiresConfirmation: false,
         errors: [{
+            field,
+            message,
+            code,
+            addressType
+        }],
+        accountErrors: [{
             field,
             message,
             code,
