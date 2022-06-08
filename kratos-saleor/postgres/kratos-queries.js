@@ -26,6 +26,24 @@ const client = new Client({
 });
 client.connect();
 
+
+const getUserByEmail = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user} WHERE email=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getUserById = (values, response) => {
     pool.query(`SELECT * from ${db.account_user} WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -60,13 +78,13 @@ const getUserByIsStaff = (values, response) => {
     });
 };
 
-const getSelfServiceLoginFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_login_flows WHERE id=$1", values, (err, res) => {
+const getAccountUserAddressesByUserId = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user_addresses} WHERE user_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
                 res: null,
-                code: 202
+                code: 201
             });
         } else {
             response({
@@ -77,13 +95,13 @@ const getSelfServiceLoginFlowById = (values, response) => {
     });
 };
 
-const getSelfServiceRecoveryFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_recovery_flows WHERE id=$1", values, (err, res) => {
+const getAccountAddressById = (values, response) => {
+    pool.query(`SELECT * from ${db.account_address} WHERE id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
                 res: null,
-                code: 203
+                code: 201
             });
         } else {
             response({
@@ -94,246 +112,8 @@ const getSelfServiceRecoveryFlowById = (values, response) => {
     });
 };
 
-const getSelfServiceRegistrationFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_registration_flows WHERE id=$1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 204
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getSelfServiceVerificationFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_verification_flows WHERE id=$1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 205
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getSelfServiceSettingsFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_settings_flows WHERE id=$1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 206
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getSessionByToken = (values, response) => {
-    pool.query("SELECT * from sessions WHERE token=$1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 207
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getNetworks = (response) => {
-    pool.query("SELECT * from networks", (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 208
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getIdentities = (values, response) => {
-    pool.query("SELECT * from identities LIMIT $1 OFFSET $2", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 209
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getIdentityById = (values, response) => {
-    pool.query("SELECT * from identities WHERE id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 210
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getRecoveryAddressesByIdentityId = (values, response) => {
-    pool.query("SELECT * from identity_recovery_addresses WHERE identity_id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 211
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getVerifiableAddressesByIdentityId = (values, response) => {
-    pool.query("SELECT * from identity_verifiable_addresses WHERE identity_id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 212
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getLoginFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_login_flows WHERE id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 213
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getRegistrationFlowById = (values, response) => {
-    pool.query("SELECT * from selfservice_registration_flows WHERE id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 214
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getIdentityCredentialsByIdentityCredentialTypeId = (values, response) => {
-    pool.query("SELECT * from identity_credentials WHERE identity_credential_type_id = $1", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 215
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId = (values, response) => {
-    pool.query("SELECT * from identity_credential_identifiers WHERE identity_credential_id=$1 AND identity_credential_type_id = $2", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 216
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId = (values, response) => {
-    pool.query("SELECT * from identity_credentials WHERE identity_credential_type_id=$1 AND identity_id = $2", values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 217
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const createLoginFlow = (values, response) => {
-    client.query('INSERT INTO selfservice_login_flows (id, request_url, issued_at, expires_at, active_method, csrf_token, created_at, updated_at, forced, type, ui, nid, requested_aal, internal_context) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *', values, (err, res) => {
+const createAccountUser = (values, response) => {
+    client.query(`INSERT INTO ${db.account_user} (is_superuser, email, is_staff, is_active, password, date_joined, last_login, default_billing_address_id, default_shipping_address_id, note, first_name, last_name, avatar, private_metadata, metadata, jwt_token_key, language_code, search_document, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $17, $18, $19) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -343,7 +123,41 @@ const createLoginFlow = (values, response) => {
         } else {
             response({
                 err: null,
-                res: res.rows[0]
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAccountAddress = (values, response) => {
+    client.query(`INSERT INTO ${db.account_address} (first_name, last_name, company_name, street_address_1, street_address_2, city, postal_code, country, country_area, phone, city_area) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAccountUserAddress = (values, response) => {
+    client.query(`INSERT INTO ${db.account_user_addresses} (user_id, address_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
             });
         }
     });
@@ -590,27 +404,16 @@ const getSessionToken = (values, response) => {
     });
 };
 module.exports = {
+    getUserByEmail,
     getUserById,
     getUserByIsStaff,
+    getAccountUserAddressesByUserId,
+    getAccountAddressById,
 
-    getSelfServiceLoginFlowById,
-    getSelfServiceRecoveryFlowById,
-    getSelfServiceRegistrationFlowById,
-    getSelfServiceVerificationFlowById,
-    getSelfServiceSettingsFlowById,
-    getNetworks,
-    getIdentities,
-    getIdentityById,
-    getRecoveryAddressesByIdentityId,
-    getVerifiableAddressesByIdentityId,
-    getSessionByToken,
-    getLoginFlowById,
-    getRegistrationFlowById,
-    getIdentityCredentialsByIdentityCredentialTypeId,
-    getIdentityCredentialIdentifierByIdentityCredentialIdAndIdentityCredentialTypeId,
-    getIdentityCredentialsByIdentityCredentialTypeIdAndIdentityId,
+    createAccountUser,
+    createAccountAddress,
+    createAccountUserAddress,
 
-    createLoginFlow,
     createRecoveryFlow,
     createRegistrationFlow,
     createSettingsFlow,

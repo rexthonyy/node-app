@@ -1,7 +1,5 @@
-const getAuthenticatedUser = require('./getAuthenticatedUser');
-const getUserById = require('./getUserById');
+const getGraphQLUserById = require('./getGraphQLUserById');
 
 module.exports = {
-    getAuthenticatedUser,
-    getUserById
+    getGraphQLUserById
 };
