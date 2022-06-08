@@ -46,10 +46,21 @@ function getError(field, message, code, addressType, user) {
     };
 }
 
-function getResult(requiresConfirmation, errors, user) {
+function getResult(requiresConfirmation, user) {
     return {
         requiresConfirmation,
-        errors,
+        errors: [{
+            field: "",
+            message: "",
+            code: "",
+            addressType: ""
+        }],
+        accountErrors: [{
+            field: "",
+            message: "",
+            code: "",
+            addressType: ""
+        }],
         user
     };
 }
@@ -76,7 +87,7 @@ async function registerUser(user) {
                 let accountUserAddressValues = [accountUser.id, accountUserAddress.id];
                 pgKratosQueries.createAccountUserAddress(accountUserAddressValues, async result => {
                     let graphQLUser = await getGraphQLUserById(accountUser.id);
-                    resolve(getResult(graphQLUser));
+                    resolve(getResult(false, graphQLUser));
                 });
             });
         });
