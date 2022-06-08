@@ -6,9 +6,9 @@ const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
-        let firstName = args.input.firstName;
-        let lastName = args.input.lastName;
-        let languageCode = args.input.languageCode;
+        let firstName = args.input.firstName || "";
+        let lastName = args.input.lastName || "";
+        let languageCode = args.input.languageCode || "";
         let redirectUrl = args.input.redirectUrl;
         let metadata = args.input.metadata;
         let email = args.input.email.toLowerCase();
@@ -122,7 +122,7 @@ function getUserValues(user) {
         user.lastName,
         null,
         null,
-        user.metadata,
+        getJSONB(user.metadata),
         jwt_token_key,
         user.languageCode,
         "",
@@ -144,4 +144,8 @@ function getUserAddressValues(user) {
         "",
         ""
     ];
+}
+
+function getJSONB(json) {
+    return JSON.stringify(json);
 }
