@@ -10,7 +10,7 @@ module.exports = async(parent, args, context) => {
         let lastName = args.input.lastName || "";
         let languageCode = args.input.languageCode || "";
         let redirectUrl = args.input.redirectUrl;
-        let metadata = args.input.metadata;
+        let metadata = args.input.metadata || {};
         let email = args.input.email.toLowerCase();
         let password = args.input.password;
         let channel = args.input.channel;
@@ -105,7 +105,7 @@ function getUserValues(user) {
     let salt = bcrypt.genSaltSync(10);
     let hash = bcrypt.hashSync(user.password, salt);
     let now = new Date().toUTCString();
-    let jwt_token_key = authenticator.generateSecret();
+    let jwt_token_key = authenticator.generateSecret().substring(0, 12);
 
     return [
         false,
