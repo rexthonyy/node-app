@@ -231,6 +231,41 @@ const updateAccountUserEmail = (values, response) => {
     });
 };
 
+
+const deleteAccountAddressById = (values, response) => {
+    client.query(`DELETE FROM ${db.account_address} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAccountUserAddressesByUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.account_user_addresses} WHERE user_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getUserByEmail,
     getUserById,
@@ -246,4 +281,7 @@ module.exports = {
     updateAccountUserJWTTokenKey,
     updateAccountUserPassword,
     updateAccountUserEmail,
+
+    deleteAccountAddressById,
+    deleteAccountUserAddressesByUserId
 }
