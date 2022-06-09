@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 const bcrypt = require("bcryptjs");
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { isEmailValid } = require("../../libs/util");
+const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve) => {
@@ -17,8 +18,8 @@ module.exports = async(parent, args, context) => {
 
         try {
             await verifyEmailChangeRequest(authUser.id, password);
-            await sendEmailChangeConfirmation(authUser.email, newEmail, redirectUrl);
-            return resolve(getError("success", "Email confirmation sent. Check your inbox", "ACTIVATE_OWN_ACCOUNT", null));
+            let graphQLUser = await sendEmailChangeConfirmation(authUser.email, newEmail, redirectUrl);
+            return resolve(getResult(graphQLUser));
         } catch (err) {
             return resolve(err);
         }
@@ -122,7 +123,8 @@ async function sendEmailChangeConfirmation(email, newEmail, redirectUrl) {
                 //console.log(err);
             }
 
-            resolve();
+            let graphQLUser = await getGraphQLUserById(accountUser.id);
+            return resolve(graphQLUser);
         });
     });
 }
