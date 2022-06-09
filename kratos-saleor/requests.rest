@@ -57,7 +57,7 @@ mutation{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3pNVGs1ZlEuXzN6Wk1mT1pLRnh5ajZuUk9zQ2Nva3EycU82R2Nick9yUm5yT0xjQXNfcyIsImlhdCI6MTY1NDc5MzE5OSwiZXhwIjoxNjU0NzkzNDk5LCJzdWIiOiIxMDA5In0.3ghznrLFfhJQ0mn2W2Dsdkx3q2bagfA20XhUJbRAgS8
 X-Request-Type: GraphQL
 
 mutation ChangeEmail($newEmail: String!, $password: String!, $redirectUrl: String!){
@@ -103,10 +103,28 @@ mutation ConfirmEmail($token: String!){
 }
 
 {
-  "token": "rexthonyy@gmail.com"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXF1ZXN0VHlwZSI6InJlcXVlc3QtZW1haWwtY2hhbmdlIiwiZGF0YSI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUoxYzJWeVgybGtJam94TURBNUxDSmxiV0ZwYkNJNkltOXZlVUIyTG1Odklpd2libVYzUlcxaGFXd2lPaUp5WlhoMGFHOXVlWGxBWjIxaGFXd3VZMjl0SWl3aWFXRjBJam94TmpVME56a3pNakV6ZlEuVENYNmNDb0tSQ3JFLUs5VXRwZmJZZGxXaFBlUkxoSUstLTJXNmpDZG9ENCIsImlhdCI6MTY1NDc5MzIxMywiZXhwIjoxNjU0Nzk2ODEzLCJzdWIiOiIxMDA5In0._TQP0rc-XEeZZ29W8xyz-qJYkzEK6s-h_skCcbV-mmA"
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
+X-Request-Type: GraphQL
 
+mutation RequestAccountDelete($redirectUrl: String!){
+  accountRequestDeletion(redirectUrl: $redirectUrl) {
+    accountErrors {
+      field
+      message
+      code
+    }
+  }
+}
+
+{
+  "redirectUrl": "https://google.com"
+}
 
 
 ###
