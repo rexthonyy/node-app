@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fetch = require("node-fetch");
+const bcrypt = require("bcryptjs");
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { isEmailValid } = require("../../libs/util");
 
@@ -11,7 +12,6 @@ module.exports = async(parent, args, context) => {
         let redirectUrl = args.redirectUrl;
         let newEmail = args.newEmail.toLowerCase();
         let password = args.password;
-        let channel = args.channel;
 
         if (!isEmailValid(newEmail)) return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS", null));
 

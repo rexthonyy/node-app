@@ -13,11 +13,75 @@ mutation{
 }
 
 
+###
+
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56ZzJNemt6ZlEuYnA1cy1ORWZodEtxV3U1eDBKcHpZTUphWVVOc1NoeTgyY2x6cGE0SlE5WSIsImlhdCI6MTY1NDc4NjM5MywiZXhwIjoxNjU0Nzg2NjkzLCJzdWIiOiIxMDA5In0.F7lp3ICuaVoYVDv9D_26FC2n7olQgWa-GO8DGWffyTc
+X-Request-Type: GraphQL
+
+query {
+  me{
+    id
+    email
+    firstName
+    lastName
+    isStaff
+    isActive
+  }
+}
 
 
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56ZzVPRE0yZlEuaVZNVkd4WlVZMm40bEdvU3dIUFZpdmxXUTJUbjB1ZlFEbWRPTnBpV1ZnRSIsImlhdCI6MTY1NDc4OTgzNiwiZXhwIjoxNjU0NzkwMTM2LCJzdWIiOiIxMDA5In0.ubiA7Py0od4mYNnR_uw0qVhEJMRoWvpwPB-er-PK8Cs
+X-Request-Type: GraphQL
 
+mutation{
+  passwordChange(newPassword: "secret", oldPassword: "password"){
+    user{
+      id
+      email
+      firstName
+      lastName
+    }
+    errors{
+      field
+      message
+    }
+  }
+}
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3dPREUzZlEuMkRDa3lBeFpIWnEtUGwzRGRMRGNmWDVJd1UyU21zMWxZbzFZeHlZVXFTQSIsImlhdCI6MTY1NDc5MDgxNywiZXhwIjoxNjU0NzkxMTE3LCJzdWIiOiIxMDA5In0.HGWlb7Klp8xGVFD68piQEjTQhePK56t7pXs28I2skn4
+X-Request-Type: GraphQL
+
+mutation ChangeEmail($newEmail: String!, $password: String!, $redirectUrl: String!){
+  requestEmailChange(
+    newEmail: $newEmail
+    password: $password
+    redirectUrl: $redirectUrl
+  ) {
+    accountErrors {
+      field
+      message
+      code
+    }
+    user {
+      email
+    }
+  }
+}
+
+{
+  "newEmail": "rexthonyy@gmail.com",
+  "password": "secret",
+  "redirectUrl": "https://google.com"
+}
 
 
 
