@@ -51,13 +51,13 @@ function getResult(user) {
         errors: [{
             field: "",
             message: "",
-            code: "",
+            code: "INACTIVE",
             addressType: null
         }],
         accountErrors: [{
             field: "",
             message: "",
-            code: "",
+            code: "INACTIVE",
             addressType: null
         }]
     };

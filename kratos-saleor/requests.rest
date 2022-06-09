@@ -57,7 +57,7 @@ mutation{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3hOVFE1ZlEuRzNmeUgzYzVjcGhSbXZhMUhGMWlhaTRsQW5xRWhTRVJyTGFwSzFFMmtDOCIsImlhdCI6MTY1NDc5MTU0OSwiZXhwIjoxNjU0NzkxODQ5LCJzdWIiOiIxMDA5In0.C96HpeqDBHo1Ly6GzeYfX5FA1ZJU6Z00wH0GCJ_t8Xs
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
 X-Request-Type: GraphQL
 
 mutation ChangeEmail($newEmail: String!, $password: String!, $redirectUrl: String!){
@@ -69,7 +69,6 @@ mutation ChangeEmail($newEmail: String!, $password: String!, $redirectUrl: Strin
     accountErrors {
       field
       message
-      code
     }
     user {
       email
@@ -81,6 +80,30 @@ mutation ChangeEmail($newEmail: String!, $password: String!, $redirectUrl: Strin
   "newEmail": "rexthonyy@gmail.com",
   "password": "secret",
   "redirectUrl": "https://google.com"
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
+X-Request-Type: GraphQL
+
+mutation ConfirmEmail($token: String!){
+  confirmEmailChange(
+    token: $token
+  ) {
+    accountErrors {
+      field
+      code
+    }
+    user {
+      email
+    }
+  }
+}
+
+{
+  "token": "rexthonyy@gmail.com"
 }
 
 
