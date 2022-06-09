@@ -120,7 +120,6 @@ async function sendEmailConfirmation(redirectUrl, result) {
                 token
             };
 
-            console.log(process.env.LISTMONK_URL);
             try {
                 let res = await fetch(process.env.LISTMONK_URL, {
                     method: 'POST',

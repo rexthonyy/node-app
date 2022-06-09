@@ -21,6 +21,14 @@ function isAuthenticated(req, res, next) {
     });
 }
 
+function getRandom(min, max) {
+    return myMap(Math.random(), 0, 1, min, max);
+}
+
+function myMap(val, minF, maxF, minT, maxT) {
+    return minT + (((val - minF) / (maxF - minF)) * (maxT - minT));
+}
+
 module.exports = {
     isEmailValid,
     isAuthenticated
