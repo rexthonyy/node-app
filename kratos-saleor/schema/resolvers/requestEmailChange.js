@@ -104,24 +104,24 @@ async function sendEmailChangeConfirmation(email, newEmail, redirectUrl) {
                 token
             };
 
-            try {
-                let res = await fetch(process.env.LISTMONK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        query: ``,
-                        variables: payload
-                    })
-                });
+            // try {
+            //     let res = await fetch(process.env.LISTMONK_URL, {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify({
+            //             query: ``,
+            //             variables: payload
+            //         })
+            //     });
 
-                let json = res.json();
+            //     let json = res.json();
 
-                console.log(json);
-            } catch (err) {
-                console.log(err);
-            }
+            //     console.log(json);
+            // } catch (err) {
+            //     console.log(err);
+            // }
 
             let graphQLUser = await getGraphQLUserById(accountUser.id);
             return resolve(graphQLUser);
