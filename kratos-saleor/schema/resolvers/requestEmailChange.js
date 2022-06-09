@@ -118,9 +118,9 @@ async function sendEmailChangeConfirmation(email, newEmail, redirectUrl) {
 
                 let json = res.json();
 
-                //console.log(json);
+                console.log(json);
             } catch (err) {
-                //console.log(err);
+                console.log(err);
             }
 
             let graphQLUser = await getGraphQLUserById(accountUser.id);
