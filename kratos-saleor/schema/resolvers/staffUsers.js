@@ -2,7 +2,7 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         if (!context.user) return reject("Please enter a valid authorization header");
         const authUser = context.user;
 
