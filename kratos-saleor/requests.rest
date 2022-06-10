@@ -30,6 +30,65 @@ query {
   }
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzJORE00TjMwLmt2dDBzcEpVVm95OWZmN1hqUkc0N0hfU25mdlJuT2VXRzBUOFNTRUgteVEiLCJpYXQiOjE2NTQ4NjQzODcsImV4cCI6MTY1NDg2NDY4Nywic3ViIjoiMTAxMSJ9.gRYR9w_XwATvD04Rx6HfFkPQGO04Yrm9WZv6WFUO33A
+X-Request-Type: GraphQL
+
+query{
+  staffUsers{
+    edges{
+      node{
+        email
+      }
+    }
+  }
+}
+
+
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
+X-Request-Type: GraphQL
+
+mutation RequestAccountDelete{
+  accountAddressCreate(input: {
+    firstName: "sam",
+    lastName: "withw",
+    companyName: "facebook",
+    streetAddress1: "1 street abc",
+    streetAddress2: "2 street abc",
+    city: "cali",
+    cityArea: "cali",
+    postalCode: "90023",
+    country: US,
+    countryArea: "lx",
+    phone: "0901"
+  }) {
+    user{
+      id
+      email
+    }
+    address{
+      id
+      firstName
+      city
+    }
+    accountErrors {
+      field
+      message
+      code
+    }
+  }
+}
+
+{
+  "redirectUrl": "https://google.com"
+}
+
 
 ###
 POST http://88.208.199.175:1410/graphql
@@ -148,7 +207,7 @@ mutation RequestAccountDelete($redirectUrl: String!){
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakkyTURsOS5xS3M3b1V3YWF6UTlra1BLclE0RmVsWk4zcFkxZ2pBd3M4bHFuTXd0NTBNIiwiaWF0IjoxNjU0ODYyNjA5LCJleHAiOjE2NTQ4NjI5MDksInN1YiI6IjEwMTAifQ.8s1iaFQIOrJFJBbX_4nbwOUkJ3pDlX_uViSwJGMQNNg
 X-Request-Type: GraphQL
 
 mutation AccountDelete($token: String!){
