@@ -11,6 +11,7 @@ module.exports = async(parent, args, context) => {
             if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
             let accountAddress = result.res[0];
             pgKratosQueries.deleteAccountAddressById([id], result => {
+                if (result.err) return console.log(result.err);
                 pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
                     let address = {
                         id: accountAddress.id,
