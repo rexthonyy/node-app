@@ -62,7 +62,7 @@ function getResult(user) {
 function deleteUserFromAccountUserAddresses(user_id) {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getAccountUserAddressesByUserId([user_id], result => {
-            if (result.err || result.res.length == 0) return resolve();
+            if (result.err || result.res.length == 0) { console.log(result.err); return resolve(); }
             let userAddresses = result.res;
             const numAddresses = userAddresses.length;
             let countAddress = -1;

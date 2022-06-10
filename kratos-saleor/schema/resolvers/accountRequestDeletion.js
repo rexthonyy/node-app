@@ -38,7 +38,7 @@ function getError(field, message, code, addressType) {
     };
 }
 
-async function sendConfirmation(email, redirectUrl) {
+function sendConfirmation(email, redirectUrl) {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getUserByEmail([email], result => {
             if (result.err || result.res.length == 0) return reject(getError("Account user", "User not found", "GRAPHQL_ERROR", null));

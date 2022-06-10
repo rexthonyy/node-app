@@ -16,7 +16,7 @@ mutation{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROVGsyT1RKOS4tSHQ1dTViNjV4NktpM3V4ckllQXBDZkZ5dTg1NzRVMzhxUW9RYWJEb1RNIiwiaWF0IjoxNjU0ODU5NjkyLCJleHAiOjE2NTQ4NTk5OTIsInN1YiI6IjEwMTAifQ.tYkJoptaVbEjassnItpQ7K1k0MftRfd1zFiN24RKiek
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakF5TWpWOS5pdVd2MUY5cnpYMXhta1l5ZWlqZFpBRWx4eWFMaTZJZnBpZjMzUGFZMkdnIiwiaWF0IjoxNjU0ODYwMjI1LCJleHAiOjE2NTQ4NjA1MjUsInN1YiI6IjEwMTAifQ.zbHHK0Goe7xltkyfO74S9qdd7ifuB_AzaiwOmvxMYvs
 X-Request-Type: GraphQL
 
 query {
@@ -31,6 +31,26 @@ query {
 }
 
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakV3T1RKOS5DeE9OTk5YbTFCVzhXNFhQZFB5dmxoQ3k4dDdsVEljUENiNWxXakl0cEJRIiwiaWF0IjoxNjU0ODYxMDkyLCJleHAiOjE2NTQ4NjEzOTIsInN1YiI6IjEwMTAifQ.zJ8kVYuEhA4e4v2I-T2jjw08HSQBgzkfafIqjU83z4U
+X-Request-Type: GraphQL
+
+query GetUser($id: ID, $email: String){
+  user(id:$id, email: $email){
+    id
+    email
+    firstName
+    lastName
+    isStaff
+    isActive
+  }
+}
+
+{
+  "email": "rexthonyy@gmail.com"
+}
 
 ###
 POST http://88.208.199.175:1410/graphql
