@@ -14,7 +14,6 @@ module.exports = async(parent, args, context) => {
         } else if (email) {
             pgKratosQueries.getUserByEmail([email], async result => {
                 if (result.err || result.res.length == 0) return resolve(null);
-                console.log("await");
                 resolve(await getUserById(result.res[0].id));
             });
         }
@@ -26,6 +25,7 @@ module.exports = async(parent, args, context) => {
 function getUserById(id) {
     return new Promise(async(resolve) => {
         let graphQLUser = await getGraphQLUserById(id);
+        console.log(graphQLUser);
         resolve(graphQLUser);
     });
 }
