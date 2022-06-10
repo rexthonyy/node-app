@@ -24,7 +24,7 @@ module.exports = async(parent, args, context) => {
 
 function getUserById(id) {
     return new Promise(async(resolve) => {
-        let graphQLUser = await getGraphQLUserById(accountUser.id);
+        let graphQLUser = await getGraphQLUserById(id);
         resolve(getResult(graphQLUser));
     });
 }
