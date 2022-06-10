@@ -45,14 +45,14 @@ function processOutput(resolve, args, staffUsers) {
 }
 
 function filterAndSortStaffUsers(resolve, args, edges) {
-    let filterSearch = args.filter.search;
-    let filterIds = args.filter.ids;
-    let sortByDirection = args.sortBy.direction;
-    let sortByField = args.sortBy.field;
-    let before = args.before;
-    let after = args.after;
-    let first = args.first;
-    let last = args.last;
+    let filterSearch = args.filter.search || "";
+    let filterIds = args.filter.ids || "";
+    let sortByDirection = args.sortBy.direction || "";
+    let sortByField = args.sortBy.field || "";
+    let before = args.before || "";
+    let after = args.after || "";
+    let first = args.first || "";
+    let last = args.last || "";
 
     // if (!(first || last)) {
     //     return reject(getError(
