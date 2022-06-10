@@ -1,31 +1,30 @@
-const { getAuthenticatedUser, getUserById } = require('./lib');
 const pgKratosQueries = require('../../postgres/kratos-queries');
+const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        getAuthenticatedUser(context, authUser => {
-            if (authUser == null) return "user not found";
-            let outputStaffUsers = [];
-            pgKratosQueries.getUserByIsStaff([true], result => {
-                if (result.err == null) return processOutput(resolve, args, outputStaffUsers);
-                let staffUsers = result.res;
-                const numStaffUsers = staffUsers.length;
-                let countStaffUsers = -1;
-                for (let i = 0, j = staffUsers.length; i < j; i++) {
-                    getUserById(staffUsers[i].id, user => {
-                        outputStaffUsers.push(user);
-                        checkStaffUsersComplete();
-                    });
-                }
-                checkStaffUsersComplete();
+        if (!context.user) return resolve(getError("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null));
+        const authUser = context.user;
 
-                function checkStaffUsersComplete() {
-                    countStaffUsers++;
-                    if (numStaffUsers == countStaffUsers) {
-                        processOutput(resolve, args, outputStaffUsers);
-                    }
-                }
+        let outputStaffUsers = [];
+        pgKratosQueries.getUserByIsStaff([true], result => {
+            if (result.err == null) return processOutput(resolve, args, outputStaffUsers);
+            let staffUsers = result.res;
+            const numStaffUsers = staffUsers.length;
+            let countStaffUsers = -1;
+            staffUsers.forEach(async staffUser => {
+                let graphQLUser = await getGraphQLUserById(staffUser.id);
+                outputStaffUsers.push(graphQLUser);
+                checkStaffUsersComplete();
             });
+            checkStaffUsersComplete();
+
+            function checkStaffUsersComplete() {
+                countStaffUsers++;
+                if (numStaffUsers == countStaffUsers) {
+                    processOutput(resolve, args, outputStaffUsers);
+                }
+            }
         });
     });
 }
@@ -55,27 +54,27 @@ function filterAndSortStaffUsers(resolve, args, edges) {
     let first = args.first;
     let last = args.last;
 
-    if (!(first || last)) {
-        return reject(getError(
-            "first|last",
-            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
-            "REQUIRED",
-            null,
-            null,
-            null
-        ));
-    }
+    // if (!(first || last)) {
+    //     return reject(getError(
+    //         "first|last",
+    //         "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+    //         "REQUIRED",
+    //         null,
+    //         null,
+    //         null
+    //     ));
+    // }
 
-    if (!(first || last)) {
-        return reject(getError(
-            "first|last",
-            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
-            "REQUIRED",
-            null,
-            null,
-            null
-        ));
-    }
+    // if (!(first || last)) {
+    //     return reject(getError(
+    //         "first|last",
+    //         "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+    //         "REQUIRED",
+    //         null,
+    //         null,
+    //         null
+    //     ));
+    // }
 
     resolve({
         pageInfo: {

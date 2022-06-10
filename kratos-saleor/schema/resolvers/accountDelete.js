@@ -20,9 +20,9 @@ module.exports = async(parent, args, context) => {
                     if (err) return resolve(getError("token", "Invalid token", "JWT_DECODE_ERROR", null));
 
                     try {
+                        let graphQLUser = await getGraphQLUserById(Number(user_id));
                         await deleteUserFromAccountUserAddresses(Number(user_id));
                         await deleteUserFromAccountUser(Number(user_id));
-                        let graphQLUser = await getGraphQLUserById(accountUser.id);
                         resolve(getResult(graphQLUser));
                     } catch (err) {
                         return resolve(getError("error", err, "DELETE_OWN_ACCOUNT", null));
