@@ -22,6 +22,7 @@ module.exports = async(parent, args, context) => {
             function checkStaffUsersComplete() {
                 countStaffUsers++;
                 if (numStaffUsers == countStaffUsers) {
+                    console.log(outputStaffUsers.length);
                     processOutput(resolve, args, outputStaffUsers);
                 }
             }
