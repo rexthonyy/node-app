@@ -6,15 +6,15 @@ module.exports = async(parent, args, context) => {
         if (!context.user) return resolve(null);
         const authUser = context.user;
 
-        let id = args.id;
-        let email = args.email.toLowerCase();
-        console.log(email);
+        let id = args.id ? args.id : null;
+        let email = args.email ? args.email.toLowerCase() : null;
+
         if (id) {
             resolve(await getUserById(id));
         } else if (email) {
-            console.log(email);
             pgKratosQueries.getUserByEmail([email], async result => {
                 if (result.err || result.res.length == 0) return resolve(null);
+                console.log("await");
                 resolve(await getUserById(result.res[0].id));
             });
         }
