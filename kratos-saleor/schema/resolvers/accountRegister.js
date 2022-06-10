@@ -78,18 +78,11 @@ async function getUserByEmail(email) {
 async function registerUser(user) {
     return new Promise((resolve, reject) => {
         let userValues = getUserValues(user);
-        pgKratosQueries.createAccountUser(userValues, result => {
+        pgKratosQueries.createAccountUser(userValues, async result => {
             if (result.err) return reject(getError("Account user", "Failed to create account user", "GRAPHQL_ERROR", user));
             let accountUser = result.res[0];
-            let userAddressValues = getUserAddressValues(user);
-            pgKratosQueries.createAccountAddress(userAddressValues, result => {
-                let accountUserAddress = result.res[0];
-                let accountUserAddressValues = [accountUser.id, accountUserAddress.id];
-                pgKratosQueries.createAccountUserAddress(accountUserAddressValues, async result => {
-                    let graphQLUser = await getGraphQLUserById(accountUser.id);
-                    resolve(getResult(false, graphQLUser));
-                });
-            });
+            let graphQLUser = await getGraphQLUserById(accountUser.id);
+            resolve(getResult(false, graphQLUser));
         });
     });
 }
@@ -171,22 +164,6 @@ function getUserValues(user) {
         user.languageCode,
         "",
         now
-    ];
-}
-
-function getUserAddressValues(user) {
-    return [
-        user.firstName,
-        user.lastName,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        ""
     ];
 }
 
