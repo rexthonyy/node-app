@@ -8,7 +8,7 @@ module.exports = async(parent, args, context) => {
 
         let outputStaffUsers = [];
         pgKratosQueries.getUserByIsStaff([true], result => {
-            if (result.err == null) return processOutput(resolve, args, outputStaffUsers);
+            if (result.err) return processOutput(resolve, args, outputStaffUsers);
             let staffUsers = result.res;
             const numStaffUsers = staffUsers.length;
             let countStaffUsers = -1;
