@@ -164,9 +164,7 @@ const createAccountUserAddress = (values, response) => {
 };
 
 const updateAccountAddressById = (values, whereClause, response) => {
-    let query = `UPDATE ${db.account_address} SET ${whereClause} WHERE id=$1 RETURNING *`;
-    console.log(query);
-    client.query(query, values, (err, res) => {
+    client.query(`UPDATE ${db.account_address} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,

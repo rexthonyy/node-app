@@ -12,9 +12,6 @@ module.exports = async(parent, args, context) => {
         let inputValue = [id];
         let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input);
 
-        console.log(values);
-        console.log(whereClause);
-
         pgKratosQueries.getAccountAddressById([id], async result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
@@ -72,47 +69,58 @@ function getValuesForAccountAddressUpdateFromInput(values, input) {
 
     if (input.firstName) {
         values.push(input.firstName);
-        whereClause += `first_name=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `first_name=$${values.length}`;
     }
     if (input.lastName) {
         values.push(input.lastName);
-        whereClause += `last_name=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `last_name=$${values.length}`;
     }
     if (input.companyName) {
         values.push(input.companyName);
-        whereClause += `company_name=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `company_name=$${values.length}`;
     }
     if (input.streetAddress1) {
         values.push(input.streetAddress1);
-        whereClause += `street_address_1=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `street_address_1=$${values.length}`;
     }
     if (input.streetAddress2) {
         values.push(input.streetAddress2);
-        whereClause += `street_address_2=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `street_address_2=$${values.length}`;
     }
     if (input.city) {
         values.push(input.city);
-        whereClause += `city=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `city=$${values.length}`;
     }
     if (input.postalCode) {
         values.push(input.postalCode);
-        whereClause += `postal_code=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `postal_code=$${values.length}`;
     }
     if (input.country) {
         values.push(input.country);
-        whereClause += `country=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `country=$${values.length}`;
     }
     if (input.countryArea) {
         values.push(input.countryArea);
-        whereClause += `country_area=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `country_area=$${values.length}`;
     }
     if (input.phone) {
         values.push(input.phone);
-        whereClause += `phone=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `phone=$${values.length}`;
     }
     if (input.cityArea) {
         values.push(input.cityArea);
-        whereClause += `city_area=$${values.length} `;
+        if (whereClause) whereClause += ", ";
+        whereClause += `city_area=$${values.length}`;
     }
 
     return { values, whereClause };
