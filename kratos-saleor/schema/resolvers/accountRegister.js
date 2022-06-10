@@ -113,6 +113,7 @@ async function sendEmailConfirmation(redirectUrl, result) {
             };
 
             let token = jwt.sign(confirmationData, process.env.AUTHORIZATION_TOKEN_SECRET, { subject: user_id + "", expiresIn: process.env.JWT_TTL_CONFIRM_EMAIL });
+            console.log(token);
             let payload = {
                 requestType,
                 redirectUrl,
