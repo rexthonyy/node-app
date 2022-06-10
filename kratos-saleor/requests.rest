@@ -51,7 +51,7 @@ query{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzJOekExTUgwLjNFOEtVNTJHU1FCSGxPampSNm9fUzdPMDVTZmxrZzBzR0lTeWg2ZEN1dnMiLCJpYXQiOjE2NTQ4NjcwNTAsImV4cCI6MTY1NDg2NzM1MCwic3ViIjoiMTAxMSJ9.ubO36CobU8lTRZFmQuWJRcX50Qp-3QUafbKoMlGidQg
 X-Request-Type: GraphQL
 
 mutation RequestAccountDelete{
@@ -64,9 +64,9 @@ mutation RequestAccountDelete{
     city: "cali",
     cityArea: "cali",
     postalCode: "90023",
-    country: US,
-    countryArea: "lx",
-    phone: "0901"
+    country: "",
+    countryArea: "",
+    phone: ""
   }) {
     user{
       id
