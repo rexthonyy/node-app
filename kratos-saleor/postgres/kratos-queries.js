@@ -300,6 +300,23 @@ const deleteAccountUserAddressesByUserId = (values, response) => {
     });
 };
 
+const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
+    client.query(`DELETE FROM ${db.account_user_addresses} WHERE user_id=$1 AND address_id=$2`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getUserByEmail,
     getUserById,
@@ -319,5 +336,6 @@ module.exports = {
 
     deleteAccountUserById,
     deleteAccountAddressById,
-    deleteAccountUserAddressesByUserId
+    deleteAccountUserAddressesByUserId,
+    deleteAccountUserAddressesByUserIdAndAddressId
 }
