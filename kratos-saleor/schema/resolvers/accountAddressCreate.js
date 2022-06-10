@@ -9,6 +9,9 @@ module.exports = async(parent, args, context) => {
         let input = args.input;
         let type = args.type;
 
+        console.log(input);
+        console.log(type);
+
         let values = [
             input.firstName,
             input.lastName,
@@ -26,8 +29,10 @@ module.exports = async(parent, args, context) => {
         pgKratosQueries.createAccountAddress(values, result => {
             if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null, null));
             let accountAddress = result.res[0];
+            console.log("create address");
             pgKratosQueries.createAccountUserAddress([authUser.id, accountAddress.id], async result => {
                 if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address to user", "GRAPHQL_ERROR", null, null, null));
+                console.log("create user address");
                 let address = {
                     id: accountAddress.id,
                     firstName: accountAddress.first_name,
