@@ -2,8 +2,8 @@ const pgKratosQueries = require('../../postgres/kratos-queries');
 const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
-    return new Promise((resolve, reject) => {
-        if (!context.user) return resolve(getError("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null));
+    return new Promise((resolve) => {
+        if (!context.user) return reject("Please enter a valid authorization header");
         const authUser = context.user;
 
         let outputStaffUsers = [];
