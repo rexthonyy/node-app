@@ -67,47 +67,47 @@ function getValuesForAccountAddressUpdateFromInput(values, input) {
 
     if (input.firstName) {
         values.push(input.firstName);
-        whereClause += `first_name=${values.length} `;
+        whereClause += `first_name=$${values.length} `;
     }
     if (input.lastName) {
         values.push(input.lastName);
-        whereClause += `last_name=${values.length} `;
+        whereClause += `last_name=$${values.length} `;
     }
     if (input.companyName) {
         values.push(input.companyName);
-        whereClause += `company_name=${values.length} `;
+        whereClause += `company_name=$${values.length} `;
     }
     if (input.streetAddress1) {
         values.push(input.streetAddress1);
-        whereClause += `street_address_1=${values.length} `;
+        whereClause += `street_address_1=$${values.length} `;
     }
     if (input.streetAddress2) {
         values.push(input.streetAddress2);
-        whereClause += `street_address_2=${values.length} `;
+        whereClause += `street_address_2=$${values.length} `;
     }
     if (input.city) {
         values.push(input.city);
-        whereClause += `city=${values.length} `;
+        whereClause += `city=$${values.length} `;
     }
     if (input.postalCode) {
         values.push(input.postalCode);
-        whereClause += `postal_code=${values.length} `;
+        whereClause += `postal_code=$${values.length} `;
     }
     if (input.country) {
         values.push(input.country);
-        whereClause += `country=${values.length} `;
+        whereClause += `country=$${values.length} `;
     }
     if (input.countryArea) {
         values.push(input.countryArea);
-        whereClause += `country_area=${values.length} `;
+        whereClause += `country_area=$${values.length} `;
     }
     if (input.phone) {
         values.push(input.phone);
-        whereClause += `phone=${values.length} `;
+        whereClause += `phone=$${values.length} `;
     }
     if (input.cityArea) {
         values.push(input.cityArea);
-        whereClause += `city_area=${values.length} `;
+        whereClause += `city_area=$${values.length} `;
     }
 
     return { values, whereClause };
