@@ -128,7 +128,7 @@ mutation ConfirmEmail($token: String!){
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTNPVE00T0RWOS5RVzUtM3V3RmktY2V5V1pzc3lTZGZJejNJNGg5Y0ZzeVZhVndfZWdiSHRRIiwiaWF0IjoxNjU0NzkzODg1LCJleHAiOjE2NTQ3OTQxODUsInN1YiI6IjEwMDkifQ.fIhw63naD-uXzQlw39lUfd-MapKQ1j9iK9sd1W-6-A4
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
 X-Request-Type: GraphQL
 
 mutation RequestAccountDelete($redirectUrl: String!){
@@ -143,6 +143,31 @@ mutation RequestAccountDelete($redirectUrl: String!){
 
 {
   "redirectUrl": "https://google.com"
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
+X-Request-Type: GraphQL
+
+mutation AccountDelete($token: String!){
+  accountDelete(token: $token) {
+    accountErrors {
+      field
+      message
+    }
+    user{
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXF1ZXN0VHlwZSI6InJlcXVlc3QtYWNjb3VudC1kZWxldGUiLCJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTlRkOS40RzQ1a2V6QmdUREdVMEc2SUpoUDRtendpOW1uekQ3dE13eXY1c0RwRmpvIiwiaWF0IjoxNjU0ODYxNjU3LCJleHAiOjE2NTQ4NjUyNTcsInN1YiI6IjEwMTAifQ.tNDMmNmiDKPL77-MKYSAgRqYN8ieTUOi1DFPCq7M4cM"
 }
 
 

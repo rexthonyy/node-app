@@ -232,6 +232,23 @@ const updateAccountUserEmail = (values, response) => {
 };
 
 
+const deleteAccountUserById = (values, response) => {
+    client.query(`DELETE FROM ${db.account_user} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteAccountAddressById = (values, response) => {
     client.query(`DELETE FROM ${db.account_address} WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -282,6 +299,7 @@ module.exports = {
     updateAccountUserPassword,
     updateAccountUserEmail,
 
+    deleteAccountUserById,
     deleteAccountAddressById,
     deleteAccountUserAddressesByUserId
 }

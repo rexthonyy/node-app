@@ -53,16 +53,20 @@ function getError(field, message, code, addressType, user) {
 
 function getResult(user) {
     return {
-        errors: [{}],
-        accountErrors: [{}],
+        errors: [{
+            code: "INVALID"
+        }],
+        accountErrors: [{
+            code: "INVALID"
+        }],
         user
     };
 }
 
 function deleteUserFromAccountUserAddresses(user_id) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         pgKratosQueries.getAccountUserAddressesByUserId([user_id], result => {
-            if (result.err || result.res.length == 0) { console.log(result.err); return resolve(); }
+            if (result.err || result.res.length == 0) return resolve();
             let userAddresses = result.res;
             const numAddresses = userAddresses.length;
             let countAddress = -1;
@@ -91,7 +95,7 @@ function deleteUserFromAccountUserAddresses(user_id) {
 
 function deleteUserFromAccountUser(user_id) {
     return new Promise((resolve) => {
-        pgKratosQueries.deleteAccountUserAddressesByUserId([user_id], result => {
+        pgKratosQueries.deleteAccountUserById([user_id], result => {
             if (result.err) console.log(result.err);
             resolve();
         });
