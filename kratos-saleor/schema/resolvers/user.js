@@ -8,10 +8,11 @@ module.exports = async(parent, args, context) => {
 
         let id = args.id;
         let email = args.email.toLowerCase();
-
+        console.log(email);
         if (id) {
             resolve(await getUserById(id));
         } else if (email) {
+            console.log(email);
             pgKratosQueries.getUserByEmail([email], async result => {
                 if (result.err || result.res.length == 0) return resolve(null);
                 resolve(await getUserById(result.res[0].id));
