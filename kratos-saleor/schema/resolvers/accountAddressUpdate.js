@@ -12,32 +12,34 @@ module.exports = async(parent, args, context) => {
         let inputValue = [id];
         let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input);
 
-        console.log(values);
-        console.log(whereClause);
+        pgKratosQueries.getAccountAddressById([id], async result => {
+            if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
 
-        pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
-            if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account address", "GRAPHQL_ERROR", null, null, null)); }
-            pgKratosQueries.getAccountAddressById([id], async result => {
-                if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
-                let accountAddress = result.res[0];
-                let address = {
-                    id: accountAddress.id,
-                    firstName: accountAddress.first_name,
-                    lastName: accountAddress.last_name,
-                    companyName: accountAddress.company_name,
-                    streetAddress1: accountAddress.street_address_1,
-                    streetAddress2: accountAddress.street_address_2,
-                    city: accountAddress.city,
-                    cityArea: accountAddress.city_area,
-                    postalCode: accountAddress.postal_code,
-                    country: accountAddress.country,
-                    countryArea: accountAddress.country_area,
-                    phone: accountAddress.phone,
-                    isDefaultShippingAddress: false,
-                    isDefaultBillingAddress: false
-                };
-                return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
+            pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
+                if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account address", "GRAPHQL_ERROR", null, null, null)); }
+
+                pgKratosQueries.getAccountAddressById([id], async result => {
+                    if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
+                    let accountAddress = result.res[0];
+                    let address = {
+                        id: accountAddress.id,
+                        firstName: accountAddress.first_name,
+                        lastName: accountAddress.last_name,
+                        companyName: accountAddress.company_name,
+                        streetAddress1: accountAddress.street_address_1,
+                        streetAddress2: accountAddress.street_address_2,
+                        city: accountAddress.city,
+                        cityArea: accountAddress.city_area,
+                        postalCode: accountAddress.postal_code,
+                        country: accountAddress.country,
+                        countryArea: accountAddress.country_area,
+                        phone: accountAddress.phone,
+                        isDefaultShippingAddress: false,
+                        isDefaultBillingAddress: false
+                    };
+                    return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
+                });
             });
         });
     });
