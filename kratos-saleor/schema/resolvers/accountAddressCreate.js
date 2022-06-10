@@ -9,9 +9,6 @@ module.exports = async(parent, args, context) => {
         let input = args.input;
         let type = args.type;
 
-        console.log(input);
-        console.log(type);
-
         let values = [
             input.firstName,
             input.lastName,
@@ -25,6 +22,8 @@ module.exports = async(parent, args, context) => {
             input.countryArea,
             input.phone
         ];
+
+        console.log(values);
 
         pgKratosQueries.createAccountAddress(values, result => {
             console.log("create address");
