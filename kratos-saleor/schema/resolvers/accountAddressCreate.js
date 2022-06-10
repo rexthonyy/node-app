@@ -16,18 +16,17 @@ module.exports = async(parent, args, context) => {
             input.streetAddress1,
             input.streetAddress2,
             input.city,
-            input.cityArea,
             input.postalCode,
             input.country,
             input.countryArea,
-            input.phone
+            input.phone,
+            input.cityArea
         ];
 
         console.log(values);
 
         pgKratosQueries.createAccountAddress(values, result => {
             console.log(result.err);
-            console.log(result.res);
             if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null, null));
             let accountAddress = result.res[0];
             pgKratosQueries.createAccountUserAddress([authUser.id, accountAddress.id], async result => {
