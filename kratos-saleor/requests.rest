@@ -54,7 +54,7 @@ Content-Type: application/json
 authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzNOek14T1gwLlh1NTBNdXByb2d5Q3o1RFAzZEVJaWZTSkZNYUlMQzFkYXFVRE1ldERyd00iLCJpYXQiOjE2NTQ4NzczMTksImV4cCI6MTY1NDg3NzYxOSwic3ViIjoiMTAxMSJ9.tgL1ouJr6nHCWB0F3adpubHNh_X_tIC18w3ZFgJUhek
 X-Request-Type: GraphQL
 
-mutation RequestAccountDelete{
+mutation AddressCreate{
   accountAddressCreate(input: {
     firstName: "sam",
     lastName: "withw",
@@ -85,8 +85,39 @@ mutation RequestAccountDelete{
   }
 }
 
-{
-  "redirectUrl": "https://google.com"
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzNOek14T1gwLlh1NTBNdXByb2d5Q3o1RFAzZEVJaWZTSkZNYUlMQzFkYXFVRE1ldERyd00iLCJpYXQiOjE2NTQ4NzczMTksImV4cCI6MTY1NDg3NzYxOSwic3ViIjoiMTAxMSJ9.tgL1ouJr6nHCWB0F3adpubHNh_X_tIC18w3ZFgJUhek
+X-Request-Type: GraphQL
+
+mutation AddressUpdate{
+  accountAddressUpdate(id: 1, input: {
+    firstName: "sam",
+    lastName: "withw",
+    companyName: "facebook",
+    streetAddress1: "1 street abc",
+    streetAddress2: "2 street abc",
+    city: "cali",
+    cityArea: "cali",
+    postalCode: "90023",
+    country: BN,
+    countryArea: "",
+    phone: ""
+  }) {
+    user{
+      id
+      email
+    }
+    address{
+      id
+      firstName
+      city
+    }
+    accountErrors {
+      message
+    }
+  }
 }
 
 

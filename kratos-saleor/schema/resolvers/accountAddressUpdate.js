@@ -16,9 +16,10 @@ module.exports = async(parent, args, context) => {
         console.log(whereClause);
 
         pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
-            if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null, null));
+            if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to update account address", "GRAPHQL_ERROR", null, null, null));
             pgKratosQueries.getAccountAddressById([id], async result => {
-                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address to user", "GRAPHQL_ERROR", null, null, null));
+                if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
                 let accountAddress = result.res[0];
                 let address = {
                     id: accountAddress.id,
