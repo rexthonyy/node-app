@@ -10,9 +10,9 @@ module.exports = async(parent, args, context) => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
             let accountAddress = result.res[0];
-            pgKratosQueries.deleteAccountAddressById([id], result => {
-                if (result.err) return console.log(result.err);
-                pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
+            pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
+                pgKratosQueries.deleteAccountAddressById([id], result => {
+                    if (result.err) return console.log(result.err);
                     let address = {
                         id: accountAddress.id,
                         firstName: accountAddress.first_name,
