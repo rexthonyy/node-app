@@ -1,5 +1,4 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
-const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
@@ -23,10 +22,7 @@ module.exports = async(parent, args, context) => {
             input.cityArea
         ];
 
-        console.log(values);
-
         pgKratosQueries.createAccountAddress(values, result => {
-            console.log(result.err);
             if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null, null));
             let accountAddress = result.res[0];
             pgKratosQueries.createAccountUserAddress([authUser.id, accountAddress.id], async result => {
