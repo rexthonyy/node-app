@@ -9,6 +9,8 @@ let getGraphQLUserById = (user_id) => {
 
             let accountUser = result.res[0];
             let addresses = await getAccountUserAddresses(user_id);
+            let defaultShippingAddress = getDefaultAddress(accountUser.default_shipping_address_id, addresses);
+            let defaultBillingAddress = getDefaultAddress(accountUser.default_billing_address_id, addresses);
             let userType = {
                 id: accountUser.id,
                 privateMetadata: accountUser.private_metadata,
@@ -37,8 +39,8 @@ let getGraphQLUserById = (user_id) => {
                 events: null,
                 storedPaymentSources: null,
                 languageCode: accountUser.language_code,
-                defaultShippingAddress: null,
-                defaultBillingAddress: null,
+                defaultShippingAddress,
+                defaultBillingAddress,
                 lastLogin: accountUser.last_login,
                 dateJoined: accountUser.date_joined,
                 updatedAt: accountUser.updated_at
@@ -97,4 +99,17 @@ function getAccountUserAddresses(user_id) {
         });
     });
 }
+
+function getDefaultAddress(address_id, addresses) {
+    let defaultAddress = null;
+    for (let i = 0, j = addresses.length; i < j; i++) {
+        let address = addresses[i];
+        if (address_id == address.id) {
+            defaultAddress = address;
+            break;
+        }
+    }
+    return defaultAddress;
+}
+
 module.exports = getGraphQLUserById;

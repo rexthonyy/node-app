@@ -143,6 +143,28 @@ mutation AddressDelete{
   }
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzRNREUzTjMwLlc2RncyTFFGSEYtOGJSVlhUVWM3QVo5dHJfT1NCZXp5TXNFVDRrSXI1SVEiLCJpYXQiOjE2NTQ4ODAxNzcsImV4cCI6MTY1NDg4MDQ3Nywic3ViIjoiMTAxMSJ9.hdU8ci8mdXnQ_gmjdpmw064fH2swcbDVRBMbP-PL-Z8
+X-Request-Type: GraphQL
+
+mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
+  accountSetDefaultAddress(id: $id, type: $type) {
+    user{
+      id
+      email
+    }
+    accountErrors {
+      message
+    }
+  }
+}
+
+{
+  "id": 1,
+  "type": "BILLING"
+}
 
 ###
 POST http://88.208.199.175:1410/graphql
