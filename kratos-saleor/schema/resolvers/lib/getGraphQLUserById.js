@@ -16,7 +16,7 @@ let getGraphQLUserById = (user_id) => {
                 privateMetadata: accountUser.private_metadata,
                 privateMetafield: JSON.stringify(accountUser.private_metadata),
                 privateMetafields: null,
-                metadata: accountUser.metadata,
+                metadata: [accountUser.metadata],
                 metadatafield: JSON.stringify(accountUser.metadata),
                 metadatafields: null,
                 email: accountUser.email,
