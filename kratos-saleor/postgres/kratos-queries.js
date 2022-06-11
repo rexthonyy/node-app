@@ -163,6 +163,23 @@ const createAccountUserAddress = (values, response) => {
     });
 };
 
+const updateAccountUserById = (values, whereClause, response) => {
+    client.query(`UPDATE ${db.account_user} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateAccountAddressById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.account_address} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -328,6 +345,7 @@ module.exports = {
     createAccountAddress,
     createAccountUserAddress,
 
+    updateAccountUserById,
     updateAccountUserActive,
     updateAccountUserJWTTokenKey,
     updateAccountUserPassword,
