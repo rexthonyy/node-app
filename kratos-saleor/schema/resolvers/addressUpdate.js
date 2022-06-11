@@ -1,4 +1,5 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
+const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
