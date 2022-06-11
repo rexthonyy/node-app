@@ -21,8 +21,8 @@ module.exports = (parent, args, context) => {
 
         pgKratosQueries.updateAccountUserById(values, whereClause, async result => {
             if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update staff", "GRAPHQL_ERROR", null, null)); }
-            let result = await updateStaffGroup(userId, groupsToAdd, groupsToRemove);
-            return resolve(result);
+            let res = await updateStaffGroup(userId, groupsToAdd, groupsToRemove);
+            return resolve(res);
         });
     });
 }
@@ -81,7 +81,6 @@ function getValuesForStaffUpdateFromInput(values, input) {
 
 function updateStaffGroup(staffId, groupsToAdd, groupsToRemove) {
     return new Promise(async(resolve) => {
-
         try {
             let payload = {
                 staffId,
