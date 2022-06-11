@@ -90,6 +90,31 @@ mutation AddressCreate($userId: ID!){
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazBPVFV3TW4wLjU4TjZUaGlnTTBaNVJPcDNJWmlyMVNhWmd5OHdzajE5Y3YyNEtWaXhMUzQiLCJpYXQiOjE2NTQ5NDk1MDIsImV4cCI6MTY1NDk0OTgwMiwic3ViIjoiMTAxMSJ9.NI1oHJ8lQIBJcOQUgmK8GCxniIXbv9MvuNEh-pA152c
+X-Request-Type: GraphQL
+
+mutation AddressUpdate{
+  addressUpdate(id: 167, input: {
+    lastName: "william"
+  }) {
+    user{
+      id
+      email
+    }
+    address{
+      id
+      firstName
+      city
+    }
+    accountErrors {
+      message
+    }
+  }
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
 authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzNOek14T1gwLlh1NTBNdXByb2d5Q3o1RFAzZEVJaWZTSkZNYUlMQzFkYXFVRE1ldERyd00iLCJpYXQiOjE2NTQ4NzczMTksImV4cCI6MTY1NDg3NzYxOSwic3ViIjoiMTAxMSJ9.tgL1ouJr6nHCWB0F3adpubHNh_X_tIC18w3ZFgJUhek
 X-Request-Type: GraphQL
 
