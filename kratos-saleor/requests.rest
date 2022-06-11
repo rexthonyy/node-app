@@ -510,6 +510,52 @@ mutation {
   }
 }
 
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJOREkyTlgwLkVYTnFyaklPTDZjWXRiOWFrNThnVkoxZXZTUzByMWtGZnpSMEpSNlA5STAiLCJpYXQiOjE2NTQ5NjQyNjUsImV4cCI6MTY1NDk2NjA2NSwic3ViIjoiMTAxMSJ9.igd5kMwfiUcGtZ9q4ip9ZowD_ot_26UPNnLu-bdZjuk
+X-Request-Type: GraphQL
+
+mutation {
+  staffCreate(
+    input: { 
+      firstName: "Kevin",
+      lastName: "West",
+      email: "john@aa.yo",
+      redirectUrl: "http://google.com",
+      isActive: true,
+      note: "default-channel",
+      addGroups: [1, 2, 3]
+    }
+  ) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      metadata{
+        key
+        value
+      }
+      email
+      firstName
+      lastName
+      isStaff
+      isActive
+      addresses{
+        firstName
+        lastName
+        companyName
+        streetAddress1
+        city
+      }
+    }
+  }
+}
+
+
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
