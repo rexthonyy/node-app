@@ -46,7 +46,46 @@ query{
   }
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazBPRGMxT0gwLmZIUGh3VFhLc0hldUlRVFpXUk14RkZCeDdHaWlTWjNRcFltVVprNzlJZE0iLCJpYXQiOjE2NTQ5NDg3NTgsImV4cCI6MTY1NDk0OTA1OCwic3ViIjoiMTAxMSJ9.OqqZywwv0VG7MuIITTSJHX9lp9aiTs6knx46XnSSogI
+X-Request-Type: GraphQL
 
+mutation AddressCreate($userId: ID!){
+  addressCreate(userId: $userId, input: {
+    firstName: "sam",
+    lastName: "withw",
+    companyName: "facebook",
+    streetAddress1: "1 street abc",
+    streetAddress2: "2 street abc",
+    city: "cali",
+    cityArea: "cali",
+    postalCode: "90023",
+    country: BN,
+    countryArea: "",
+    phone: ""
+  }) {
+    user{
+      id
+      email
+    }
+    address{
+      id
+      firstName
+      city
+    }
+    accountErrors {
+      field
+      message
+      code
+    }
+  }
+}
+
+{
+  "userId": 1011
+}
 
 ###
 POST http://88.208.199.175:1410/graphql

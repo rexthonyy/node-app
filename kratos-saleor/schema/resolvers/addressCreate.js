@@ -50,7 +50,7 @@ module.exports = async(parent, args, context) => {
                     isDefaultBillingAddress
                 };
 
-                return resolve(getGraphQLOutput("", "", "INVALID", type, graphQLUser, address));
+                return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser, address));
             });
         });
     });
