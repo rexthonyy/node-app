@@ -207,6 +207,30 @@ mutation AddressDelete{
   }
 }
 
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFNelF3T1gwLkpLd0pDTmRsbVJXNVBMeU4xdFN0TW14d05xRGZENmxYSl9ZdVZqcmtoamMiLCJpYXQiOjE2NTQ5NTM0MDksImV4cCI6MTY1NDk1MzcwOSwic3ViIjoiMTAxMSJ9.HlfW634DqJSkXj443s2gYVbd7Z8Gkt2yTkyY9fp8YlY
+X-Request-Type: GraphQL
+
+mutation AddressDelete{
+  addressDelete(id: 164) {
+    user{
+      id
+      email
+    }
+    address{
+      id
+      firstName
+      city
+    }
+    accountErrors {
+      message
+    }
+  }
+}
+
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
@@ -332,6 +356,7 @@ mutation AccountUpdate{
     }
   }
 }
+
 
 
 ###
