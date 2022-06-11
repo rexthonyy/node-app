@@ -10,7 +10,9 @@ module.exports = (parent, args, context) => {
         let userId = args.id;
         let input = args.input;
 
-        if (!isEmailValid(args.input.email)) return resolve(getGraphQLOutput("email", "Email format not supported", "INVALID_CREDENTIALS", null, null));
+        if (args.input.email)
+            if (!isEmailValid(args.input.email)) return resolve(getGraphQLOutput("email", "Email format not supported", "INVALID_CREDENTIALS", null, null));
+
 
         let inputValue = [userId];
         let { values, whereClause } = getValuesForCustomerUpdateFromInput(inputValue, input);
