@@ -146,7 +146,7 @@ mutation AddressDelete{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EZzRNREUzTjMwLlc2RncyTFFGSEYtOGJSVlhUVWM3QVo5dHJfT1NCZXp5TXNFVDRrSXI1SVEiLCJpYXQiOjE2NTQ4ODAxNzcsImV4cCI6MTY1NDg4MDQ3Nywic3ViIjoiMTAxMSJ9.hdU8ci8mdXnQ_gmjdpmw064fH2swcbDVRBMbP-PL-Z8
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazBOell5TkgwLkpVM05lLWpKT0FZUUpBci1BVEtXdmtyZ1p3Z1FmZUg3TVN5UEFid2g5V2MiLCJpYXQiOjE2NTQ5NDc2MjQsImV4cCI6MTY1NDk0NzkyNCwic3ViIjoiMTAxMSJ9.3VY67XWTLwx3kwsD3XznRWhDA1V7GyINHWM8SZUTnU4
 X-Request-Type: GraphQL
 
 mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
@@ -154,6 +154,12 @@ mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
     user{
       id
       email
+      defaultShippingAddress{
+        id
+      }
+      defaultBillingAddress{
+        id
+      }
     }
     accountErrors {
       message
@@ -162,8 +168,8 @@ mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
 }
 
 {
-  "id": 1,
-  "type": "BILLING"
+  "id": 164,
+  "type": "SHIPPING"
 }
 
 ###
