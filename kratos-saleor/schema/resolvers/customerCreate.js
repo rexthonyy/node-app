@@ -25,8 +25,8 @@ module.exports = async(parent, args, context) => {
         try {
             await getUserByEmail(email);
             let result = await registerUser({ firstName, lastName, languageCode, email, password, isActive, note });
-            await createBillingAddress(result, input.defaultBillingAddress);
-            await createShippingAddress(result, input.defaultShippingAddress);
+            await createBillingAddress(result, args.input.defaultBillingAddress);
+            await createShippingAddress(result, args.input.defaultShippingAddress);
             if (redirectUrl) {
                 await sendEmailConfirmation(redirectUrl, result);
             }
