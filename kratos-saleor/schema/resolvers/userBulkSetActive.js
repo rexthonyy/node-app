@@ -11,7 +11,7 @@ module.exports = async(parent, args, context) => {
         let idCursor = -1;
 
         userIds.forEach(userId => {
-            pgKratosQueries.updateAccountUserById([userId, isActive], "is_active", result => {
+            pgKratosQueries.updateAccountUserById([userId, isActive], "is_active=$2", result => {
                 checkComplete();
             });
         });
