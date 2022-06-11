@@ -411,6 +411,49 @@ mutation ConfirmEmail($token: String!){
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
+X-Request-Type: GraphQL
+
+mutation {
+  accountRegister(
+    input: { 
+      firstName: "Daniel",
+      lastName: "West",
+      languageCode: EN,
+      email: "daa@v.co"
+      password: "secret"
+      channel: "default-channel"
+    }
+  ) {
+    accountErrors {
+      field
+      message
+    }
+    user {
+      id
+      metadata{
+        key
+        value
+      }
+      email
+      firstName
+      lastName
+      isStaff
+      isActive
+      addresses{
+        firstName
+        lastName
+        companyName
+        streetAddress1
+        city
+      }
+    }
+  }
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
 authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTWpWOS43WHBVWGJ1VHh6Y0h5bWxJWXlzS1BpMEFrVkh0b1JmN0pQZVRCSm00R1NVIiwiaWF0IjoxNjU0ODYxNjI1LCJleHAiOjE2NTQ4NjE5MjUsInN1YiI6IjEwMTAifQ.dRb8i91JiGrHG9vN7osiQ8QqfqFCn7Hxi27UpnHo81M
 X-Request-Type: GraphQL
 

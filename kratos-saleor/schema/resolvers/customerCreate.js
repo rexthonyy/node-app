@@ -26,7 +26,9 @@ module.exports = async(parent, args, context) => {
             await getUserByEmail(email);
             isActive = redirectUrl == null;
             let result = await registerUser(authUser, { firstName, lastName, languageCode, email, password, isActive, note });
-            if (!active) {
+            await createBillingAddress(result, input);
+            await createShippingAddress(result, input);
+            if (!isActive) {
                 await sendEmailConfirmation(redirectUrl, result);
             }
             return resolve(result);
@@ -54,7 +56,6 @@ function getGraphQLOutput(field, message, code, addressType, user) {
     };
 }
 
-
 async function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getUserByEmail([email], result => {
@@ -64,7 +65,6 @@ async function getUserByEmail(email) {
         });
     });
 }
-
 
 async function registerUser(authUser, customer) {
     return new Promise((resolve, reject) => {
@@ -111,6 +111,63 @@ function getJSONB(json) {
     return JSON.stringify(json);
 }
 
+function createBillingAddress(result, input) {
+    return new Promise((resolve) => {
+        let userId = result.user.id;
+        let values = [
+            input.firstName,
+            input.lastName,
+            input.companyName,
+            input.streetAddress1,
+            input.streetAddress2,
+            input.city,
+            input.postalCode,
+            input.country,
+            input.countryArea,
+            input.phone,
+            input.cityArea
+        ];
+        pgKratosQueries.createAccountAddress(values, result => {
+            if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null));
+            let accountAddress = result.res[0];
+            pgKratosQueries.createAccountUserAddress([userId, accountAddress.id], async result => {
+                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address to user", "GRAPHQL_ERROR", null, null));
+                pgKratosQueries.updateAccountUserById([userId, accountAddress.id], "default_billing_address_id=$2", result => {
+                    resolve();
+                });
+            });
+        });
+    });
+}
+
+function createShippingAddress(result, input) {
+    return new Promise((resolve) => {
+        let userId = result.user.id;
+        let values = [
+            input.firstName,
+            input.lastName,
+            input.companyName,
+            input.streetAddress1,
+            input.streetAddress2,
+            input.city,
+            input.postalCode,
+            input.country,
+            input.countryArea,
+            input.phone,
+            input.cityArea
+        ];
+        pgKratosQueries.createAccountAddress(values, result => {
+            if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address", "GRAPHQL_ERROR", null, null));
+            let accountAddress = result.res[0];
+            pgKratosQueries.createAccountUserAddress([userId, accountAddress.id], async result => {
+                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address to user", "GRAPHQL_ERROR", null, null));
+                pgKratosQueries.updateAccountUserById([userId, accountAddress.id], "default_shipping_address_id=$2", result => {
+                    resolve();
+                });
+            });
+        });
+    });
+}
 
 async function sendEmailConfirmation(redirectUrl, result) {
     return new Promise((resolve, reject) => {
