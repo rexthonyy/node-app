@@ -20,6 +20,8 @@ module.exports = (parent, args, context) => {
         pgKratosQueries.updateAccountUserById(values, whereClause, async result => {
             if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account user", "GRAPHQL_ERROR", null, null)); }
             let graphQLUser = getGraphQLUserById(userId);
+            console.log(graphQLUser.defaultBillingAddress);
+            console.log(graphQLUser.defaultShippingAddress);
             await updateDefaultBillingAddress(graphQLUser, input);
             await updateDefaultShippingAddress(graphQLUser, input);
             return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser));
