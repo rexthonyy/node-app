@@ -9,7 +9,7 @@ module.exports = async(parent, args, context) => {
 
         let userId = args.id;
 
-        pgKratosQueries.getUserById([userId], result => {
+        pgKratosQueries.getUserById([userId], async result => {
             if (result.err) return resolve(getGraphQLOutput("id", "User not found", "NOT_FOUND", null, null));
             let accountUser = result.res[0];
             try {
