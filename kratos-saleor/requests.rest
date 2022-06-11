@@ -555,6 +555,47 @@ mutation {
   }
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJOREkyTlgwLkVYTnFyaklPTDZjWXRiOWFrNThnVkoxZXZTUzByMWtGZnpSMEpSNlA5STAiLCJpYXQiOjE2NTQ5NjQyNjUsImV4cCI6MTY1NDk2NjA2NSwic3ViIjoiMTAxMSJ9.igd5kMwfiUcGtZ9q4ip9ZowD_ot_26UPNnLu-bdZjuk
+X-Request-Type: GraphQL
+
+mutation {
+  staffUpdate(
+    id: 1011,
+    input: { 
+      firstName: "Kevin",
+      lastName: "West",
+      email: "rex@me.co",
+      isActive: true,
+      note: "default-channel",
+      addGroups: [1, 2, 3],
+      removeGroups: [1, 2, 3]
+    }
+  ) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      email
+      firstName
+      lastName
+      isStaff
+      isActive
+      addresses{
+        firstName
+        lastName
+        companyName
+        streetAddress1
+        city
+      }
+    }
+  }
+}
+
 
 ###
 POST http://88.208.199.175:1410/graphql
@@ -624,6 +665,31 @@ mutation CustomerDelete($id: ID!){
 
 {
   "id": 1014
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVFQnRaUzVqYnlJc0ltbGhkQ0k2TVRZMU5EazJOVGsyT0gwLlFDc29SYmFzNW5iOUpGbV9jdmw1NkRVaGhmTnp6YnA5UlFuaGxxRnJPNEkiLCJpYXQiOjE2NTQ5NjU5NjgsImV4cCI6MTY1NDk2Nzc2OCwic3ViIjoiMTAxMSJ9.m0fAnCkiUcRZUw36d_mzeXjbD_IxhpJ8oc4yK7LIlak
+X-Request-Type: GraphQL
+
+mutation StaffDelete($id: ID!){
+  staffDelete(id: $id) {
+    errors {
+      field
+      message
+    }
+    user{
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+{
+  "id": 1020
 }
 
 ###
