@@ -211,11 +211,11 @@ mutation AddressDelete{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFNelF3T1gwLkpLd0pDTmRsbVJXNVBMeU4xdFN0TW14d05xRGZENmxYSl9ZdVZqcmtoamMiLCJpYXQiOjE2NTQ5NTM0MDksImV4cCI6MTY1NDk1MzcwOSwic3ViIjoiMTAxMSJ9.HlfW634DqJSkXj443s2gYVbd7Z8Gkt2yTkyY9fp8YlY
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFORFkwTkgwLncwRmlWc3RHNUw1bGc2NXJ4dEQ0Z0xTUl9mdlBNNW1CMEF4OXY2bmY2cG8iLCJpYXQiOjE2NTQ5NTQ2NDQsImV4cCI6MTY1NDk1NDk0NCwic3ViIjoiMTAxMSJ9.uwfcxRbjLDOhISZ5jeSB5X6rpUU58JxcrwN4kXiCBdA
 X-Request-Type: GraphQL
 
 mutation AddressDelete{
-  addressDelete(id: 164) {
+  addressDelete(id: 166) {
     user{
       id
       email
@@ -231,10 +231,35 @@ mutation AddressDelete{
   }
 }
 
+
+
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazBOell5TkgwLkpVM05lLWpKT0FZUUpBci1BVEtXdmtyZ1p3Z1FmZUg3TVN5UEFid2g5V2MiLCJpYXQiOjE2NTQ5NDc2MjQsImV4cCI6MTY1NDk0NzkyNCwic3ViIjoiMTAxMSJ9.3VY67XWTLwx3kwsD3XznRWhDA1V7GyINHWM8SZUTnU4
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFOVFV5Tm4wLkdjZFB0dUxnRzNSNkFDaDAtQVluZW1fWVJMOEtiU3lTaVlUVGVVUDhnZWMiLCJpYXQiOjE2NTQ5NTU1MjYsImV4cCI6MTY1NDk1NTgyNiwic3ViIjoiMTAxMSJ9.oN-eAW2TjSaw_1FqnGdHp87nhYbGRqPZbno7EymGqQk
+X-Request-Type: GraphQL
+
+mutation AddressSetDefault($addressId: ID!, $type: AddressTypeEnum!, $userId: ID!){
+  addressSetDefault(addressId: $addressId, type: $type, userId: $userId) {
+    user{
+      id
+      email
+    }
+    accountErrors {
+      message
+    }
+  }
+}
+
+{
+  "addressId": 167,
+  "type": "BILLING",
+  "userId": 1008
+}
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFORFkwTkgwLncwRmlWc3RHNUw1bGc2NXJ4dEQ0Z0xTUl9mdlBNNW1CMEF4OXY2bmY2cG8iLCJpYXQiOjE2NTQ5NTQ2NDQsImV4cCI6MTY1NDk1NDk0NCwic3ViIjoiMTAxMSJ9.uwfcxRbjLDOhISZ5jeSB5X6rpUU58JxcrwN4kXiCBdA
 X-Request-Type: GraphQL
 
 mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
@@ -256,7 +281,7 @@ mutation SetDefaultAddress($id: ID!, $type: AddressTypeEnum!){
 }
 
 {
-  "id": 164,
+  "id": 166,
   "type": "SHIPPING"
 }
 

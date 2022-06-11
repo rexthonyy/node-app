@@ -24,12 +24,10 @@ module.exports = async(parent, args, context) => {
             let active = redirectUrl == null;
             let result = await registerUser({ firstName, lastName, languageCode, metadata, email, password, active });
 
-            if (active) {
-                return resolve(result);
-            } else {
+            if (!active) {
                 await sendEmailConfirmation(redirectUrl, result);
-                return resolve(result);
             }
+            return resolve(result);
         } catch (err) {
             return resolve(err);
         }

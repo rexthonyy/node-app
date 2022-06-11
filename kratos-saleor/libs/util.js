@@ -31,5 +31,6 @@ function myMap(val, minF, maxF, minT, maxT) {
 
 module.exports = {
     isEmailValid,
-    isAuthenticated
+    isAuthenticated,
+    getRandom
 }
