@@ -385,7 +385,7 @@ mutation AccountUpdate{
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJNVEF6T0gwLk5EMkdZVDFQZDRqek96UkZEOE5MSEF5RnJoMjI4SVRJdFZITmR1bTNyQ3ciLCJpYXQiOjE2NTQ5NjEwMzgsImV4cCI6MTY1NDk2MTMzOCwic3ViIjoiMTAxMSJ9.Yut80huerAokzvUsWa1RqnVmdJigE5jRbS4aiVJ0vQw
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJNVGd3TVgwLkprUF9SZ0dUaXlLVXQwTC1ZR256U0hZZFh6WVl1SjlRbEpMLTdoZXluQnciLCJpYXQiOjE2NTQ5NjE4MDEsImV4cCI6MTY1NDk2MzYwMSwic3ViIjoiMTAxMSJ9.5H5wAligtuiLYSjIXNjP98ji9oRH0ccsSJPTNfR5n-8
 X-Request-Type: GraphQL
 
 mutation CustomerUpdate{
@@ -398,7 +398,7 @@ mutation CustomerUpdate{
       note: "new customer",
       defaultBillingAddress: {
         firstName: "new",
-        lastName: "jersey",
+        lastName: "figi",
         country: NG
       }
     }
@@ -408,6 +408,10 @@ mutation CustomerUpdate{
     }
     user {
       email
+      defaultBillingAddress{
+        firstName
+        lastName
+      }
     }
   }
 }
