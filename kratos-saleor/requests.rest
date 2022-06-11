@@ -382,7 +382,35 @@ mutation AccountUpdate{
   }
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJNVEF6T0gwLk5EMkdZVDFQZDRqek96UkZEOE5MSEF5RnJoMjI4SVRJdFZITmR1bTNyQ3ciLCJpYXQiOjE2NTQ5NjEwMzgsImV4cCI6MTY1NDk2MTMzOCwic3ViIjoiMTAxMSJ9.Yut80huerAokzvUsWa1RqnVmdJigE5jRbS4aiVJ0vQw
+X-Request-Type: GraphQL
 
+mutation CustomerUpdate{
+  customerUpdate(
+    id: 1018,
+    input: {
+      firstName: "Leo",
+      lastName: "Szillard",
+      languageCode: EN,
+      note: "new customer",
+      defaultBillingAddress: {
+        firstName: "new",
+        lastName: "jersey",
+        country: NG
+      }
+    }
+  ) {
+    accountErrors {
+      message
+    }
+    user {
+      email
+    }
+  }
+}
 
 ###
 POST http://88.208.199.175:1410/graphql
@@ -411,18 +439,45 @@ mutation ConfirmEmail($token: String!){
 ###
 POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56a3lNekF4ZlEuQWNSZUJmQ2htU2pUeUcxZGtnei1BYlJsd2N4SUY5eG5RZzU0X0dhcTROayIsImlhdCI6MTY1NDc5MjMwMSwiZXhwIjoxNjU0NzkyNjAxLCJzdWIiOiIxMDA5In0.H4mRCm5ATnfbKGAS7oUky-zt0tcM1G8mNinI4IjyV80
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazFPVEl4TVgwLnpZWU50c295WjU2OVpwVFUtMHhQSzNKMExwNDVWQmpPc2paT1FYRmFSWWMiLCJpYXQiOjE2NTQ5NTkyMTEsImV4cCI6MTY1NDk1OTUxMSwic3ViIjoiMTAxMSJ9.WIvtHxDhd4KYlGe-ae-e8zuq0PAyrg-zhLyMgMgzbJA
 X-Request-Type: GraphQL
 
 mutation {
   customerCreate(
     input: { 
-      firstName: "Daniel",
+      firstName: "Kevin",
       lastName: "West",
       languageCode: EN,
-      email: "daniel@west"
-      password: "secret"
-      note: "default-channel"
+      email: "ke@wee.co",
+      redirectUrl: "http://google.com",
+      isActive: true,
+      note: "default-channel",
+      defaultShippingAddress: {
+        firstName: "sam",
+        lastName: "withw",
+        companyName: "facebook",
+        streetAddress1: "1 street abc",
+        streetAddress2: "2 street abc",
+        city: "cali",
+        cityArea: "cali",
+        postalCode: "90023",
+        country: BN,
+        countryArea: "",
+        phone: ""
+      },
+      defaultBillingAddress: {
+        firstName: "sam",
+        lastName: "withw",
+        companyName: "facebook",
+        streetAddress1: "1 street abc",
+        streetAddress2: "2 street abc",
+        city: "cali",
+        cityArea: "cali",
+        postalCode: "90023",
+        country: BN,
+        countryArea: "",
+        phone: ""
+      }
     }
   ) {
     accountErrors {

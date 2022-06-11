@@ -85,11 +85,14 @@ function getValuesForCustomerUpdateFromInput(values, input) {
 
 function updateDefaultBillingAddress(authUser, input) {
     return new Promise((resolve) => {
+        console.log("default billin");
         if (!input.defaultBillingAddress) return resolve();
         if (!authUser.defaultBillingAddress) return resolve();
+        console.log("default billing address avaialble");
         let addressId = authUser.defaultBillingAddress.id;
         pgKratosQueries.getAccountAddressById([addressId], result => {
             if (result.err || result.res.length == 0) return resolve();
+            console.log("default billing address");
             let inputValue = [addressId];
             let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input.defaultBillingAddress);
             pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
