@@ -716,6 +716,49 @@ mutation CustomerBulkDelete($ids: [ID!]!){
   ]
 }
 
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVFQnRaUzVqYnlJc0ltbGhkQ0k2TVRZMU5EazJOakl3TTMwLm9vd2NkamJnaVZlY01oUm44SmpLSjRoTUVhdzZFb254RkdJdklPc3dsREEiLCJpYXQiOjE2NTQ5NjYyMDMsImV4cCI6MTY1NDk2ODAwMywic3ViIjoiMTAxMSJ9.hsewYcKQ6vhNAJukNa76ohKptFF7BCtHAEons_5Wmpw
+X-Request-Type: GraphQL
+
+mutation {
+  userAvatarDelete {
+    user{
+      firstName
+      email
+    }
+    errors {
+      field
+      message
+    }
+  }
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVFQnRaUzVqYnlJc0ltbGhkQ0k2TVRZMU5EazJOakl3TTMwLm9vd2NkamJnaVZlY01oUm44SmpLSjRoTUVhdzZFb254RkdJdklPc3dsREEiLCJpYXQiOjE2NTQ5NjYyMDMsImV4cCI6MTY1NDk2ODAwMywic3ViIjoiMTAxMSJ9.hsewYcKQ6vhNAJukNa76ohKptFF7BCtHAEons_5Wmpw
+X-Request-Type: GraphQL
+
+mutation StaffBulkDelete($ids: [ID!]!){
+  staffBulkDelete(ids: $ids) {
+    count
+    errors {
+      field
+      message
+    }
+  }
+}
+
+{
+  "ids": [
+    1021,
+    1008
+  ]
+}
+
 ###
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
