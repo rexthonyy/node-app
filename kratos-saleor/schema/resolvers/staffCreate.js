@@ -46,7 +46,7 @@ function getGraphQLOutput(field, message, code, addressType, user) {
             code,
             addressType
         }],
-        accountErrors: [{
+        staffErrors: [{
             field,
             message,
             code,
@@ -69,7 +69,7 @@ async function registerUser(customer) {
     return new Promise((resolve, reject) => {
         let userValues = getUserValues(customer);
         pgKratosQueries.createAccountUser(userValues, async result => {
-            if (result.err) return reject(getGraphQLOutput("Account user", "Failed to create account user", "GRAPHQL_ERROR", null, null));
+            if (result.err) return reject(getGraphQLOutput("Staff", "Failed to create staff", "GRAPHQL_ERROR", null, null));
             let accountUser = result.res[0];
             resolve(accountUser);
         });
@@ -99,7 +99,7 @@ function getUserValues(user) {
         getJSONB({ key: "", value: "" }),
         getJSONB({ key: "", value: "" }),
         jwt_token_key,
-        user.languageCode,
+        "EN",
         "",
         now
     ];
