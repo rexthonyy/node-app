@@ -555,6 +555,30 @@ mutation AccountDelete($token: String!){
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXF1ZXN0VHlwZSI6InJlcXVlc3QtYWNjb3VudC1kZWxldGUiLCJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakUyTlRkOS40RzQ1a2V6QmdUREdVMEc2SUpoUDRtendpOW1uekQ3dE13eXY1c0RwRmpvIiwiaWF0IjoxNjU0ODYxNjU3LCJleHAiOjE2NTQ4NjUyNTcsInN1YiI6IjEwMTAifQ.tNDMmNmiDKPL77-MKYSAgRqYN8ieTUOi1DFPCq7M4cM"
 }
 
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV4TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1UUdkdFlXbHNMbU52YlNJc0ltbGhkQ0k2TVRZMU5EazJNak0zTm4wLkpIbE5TcktxNEMxNXJuU1pFRW44LTVnT0taaG8zYktvMkhtTzRZWUx3SGMiLCJpYXQiOjE2NTQ5NjIzNzYsImV4cCI6MTY1NDk2NDE3Niwic3ViIjoiMTAxMSJ9.7ifY0JREfNnCC8xj1ePoRMx70aASNRL7N4Sq9hRjptM
+X-Request-Type: GraphQL
+
+mutation CustomerDelete($id: ID!){
+  customerDelete(id: $id) {
+    accountErrors {
+      field
+      message
+    }
+    user{
+      id
+      email
+      firstName
+      lastName
+    }
+  }
+}
+
+{
+  "id": 1014
+}
 
 ###
 POST http://88.208.199.175:2300/graphql

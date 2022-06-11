@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { getGraphQLUserById } = require("./lib");
 
