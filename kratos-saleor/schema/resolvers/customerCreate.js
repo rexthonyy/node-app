@@ -72,6 +72,7 @@ async function registerUser(customer) {
             if (result.err) return reject(getGraphQLOutput("Account user", "Failed to create account user", "GRAPHQL_ERROR", null, null));
             let accountUser = result.res[0];
             let graphQLUser = await getGraphQLUserById(accountUser.id);
+            console.log(graphQLUser);
             resolve(getGraphQLOutput("", "", "INVALID", null, graphQLUser));
         });
     });
