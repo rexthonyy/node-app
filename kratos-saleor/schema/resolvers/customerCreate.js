@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const fetch = require("node-fetch");
 const { authenticator } = require('otplib');
 const pgKratosQueries = require("../../postgres/kratos-queries");
-const { isEmailValid } = require("../../libs/util");
+const { isEmailValid, getRandom } = require("../../libs/util");
 const { getGraphQLUserById } = require("./lib");
 
 module.exports = async(parent, args, context) => {
@@ -16,7 +16,7 @@ module.exports = async(parent, args, context) => {
         let languageCode = args.input.languageCode || "";
         let redirectUrl = args.input.redirectUrl;
         let email = args.input.email.toLowerCase();
-        let password = util.getRandom(100000, 999999);
+        let password = getRandom(100000, 999999);
         let isActive = false;
         let note = args.input.note;
 

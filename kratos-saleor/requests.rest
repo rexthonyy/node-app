@@ -415,14 +415,14 @@ authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY
 X-Request-Type: GraphQL
 
 mutation {
-  accountRegister(
+  customerCreate(
     input: { 
       firstName: "Daniel",
       lastName: "West",
       languageCode: EN,
-      email: "daa@v.co"
+      email: "daniel@west"
       password: "secret"
-      channel: "default-channel"
+      note: "default-channel"
     }
   ) {
     accountErrors {
