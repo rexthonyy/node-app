@@ -13,6 +13,10 @@ module.exports = async(parent, args, context) => {
             pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
                 pgKratosQueries.deleteAccountAddressById([id], result => {
                     if (result.err) return console.log(result.err);
+                    let defaultBillingAddress = authUser.defaultBillingAddress;
+                    let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
+                    let defaultShippingAddress = authUser.defaultShippingAddress;
+                    let isDefaultShippingAddress = defaultShippingAddress ? (defaultShippingAddress.id == accountAddress.id) : false;
                     let address = {
                         id: accountAddress.id,
                         firstName: accountAddress.first_name,
@@ -26,8 +30,8 @@ module.exports = async(parent, args, context) => {
                         country: accountAddress.country,
                         countryArea: accountAddress.country_area,
                         phone: accountAddress.phone,
-                        isDefaultShippingAddress: false,
-                        isDefaultBillingAddress: false
+                        isDefaultShippingAddress,
+                        isDefaultBillingAddress
                     };
                     return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
                 });

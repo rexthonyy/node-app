@@ -27,6 +27,10 @@ module.exports = async(parent, args, context) => {
             let accountAddress = result.res[0];
             pgKratosQueries.createAccountUserAddress([authUser.id, accountAddress.id], async result => {
                 if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Failed to add account address to user", "GRAPHQL_ERROR", null, null, null));
+                let defaultBillingAddress = authUser.defaultBillingAddress;
+                let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
+                let defaultShippingAddress = authUser.defaultShippingAddress;
+                let isDefaultShippingAddress = defaultShippingAddress ? (defaultShippingAddress.id == accountAddress.id) : false;
                 let address = {
                     id: accountAddress.id,
                     firstName: accountAddress.first_name,
@@ -40,8 +44,8 @@ module.exports = async(parent, args, context) => {
                     country: accountAddress.country,
                     countryArea: accountAddress.country_area,
                     phone: accountAddress.phone,
-                    isDefaultShippingAddress: false,
-                    isDefaultBillingAddress: false
+                    isDefaultShippingAddress,
+                    isDefaultBillingAddress
                 };
                 return resolve(getGraphQLOutput("", "", "INVALID", type, authUser, address));
             });

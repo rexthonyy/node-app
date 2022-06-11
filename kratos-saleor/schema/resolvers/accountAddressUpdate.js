@@ -22,6 +22,10 @@ module.exports = async(parent, args, context) => {
                 pgKratosQueries.getAccountAddressById([id], async result => {
                     if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
                     let accountAddress = result.res[0];
+                    let defaultBillingAddress = authUser.defaultBillingAddress;
+                    let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
+                    let defaultShippingAddress = authUser.defaultShippingAddress;
+                    let isDefaultShippingAddress = defaultShippingAddress ? (defaultShippingAddress.id == accountAddress.id) : false;
                     let address = {
                         id: accountAddress.id,
                         firstName: accountAddress.first_name,
@@ -35,8 +39,8 @@ module.exports = async(parent, args, context) => {
                         country: accountAddress.country,
                         countryArea: accountAddress.country_area,
                         phone: accountAddress.phone,
-                        isDefaultShippingAddress: false,
-                        isDefaultBillingAddress: false
+                        isDefaultShippingAddress,
+                        isDefaultBillingAddress
                     };
                     return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
                 });
