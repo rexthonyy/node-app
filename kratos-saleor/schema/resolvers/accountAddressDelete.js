@@ -1,4 +1,5 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
+const { updateAccountUserDefaultAddressesByUserId } = require("./lib");
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
@@ -13,6 +14,7 @@ module.exports = async(parent, args, context) => {
             pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
                 pgKratosQueries.deleteAccountAddressById([id], result => {
                     if (result.err) return console.log(result.err);
+                    await updateAccountUserDefaultAddressesByUserId(authUser.id);
                     let defaultBillingAddress = authUser.defaultBillingAddress;
                     let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
                     let defaultShippingAddress = authUser.defaultShippingAddress;
