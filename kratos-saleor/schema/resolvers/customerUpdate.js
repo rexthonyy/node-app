@@ -13,15 +13,12 @@ module.exports = (parent, args, context) => {
         if (args.input.email)
             if (!isEmailValid(args.input.email)) return resolve(getGraphQLOutput("email", "Email format not supported", "INVALID_CREDENTIALS", null, null));
 
-
         let inputValue = [userId];
         let { values, whereClause } = getValuesForCustomerUpdateFromInput(inputValue, input);
 
         pgKratosQueries.updateAccountUserById(values, whereClause, async result => {
             if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account user", "GRAPHQL_ERROR", null, null)); }
-            let graphQLUser = getGraphQLUserById(userId);
-            console.log(graphQLUser.defaultBillingAddress);
-            console.log(graphQLUser.defaultShippingAddress);
+            let graphQLUser = await getGraphQLUserById(userId);
             await updateDefaultBillingAddress(graphQLUser, input);
             await updateDefaultShippingAddress(graphQLUser, input);
             return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser));
@@ -87,14 +84,11 @@ function getValuesForCustomerUpdateFromInput(values, input) {
 
 function updateDefaultBillingAddress(authUser, input) {
     return new Promise((resolve) => {
-        console.log("default billin");
         if (!input.defaultBillingAddress) return resolve();
         if (!authUser.defaultBillingAddress) return resolve();
-        console.log("default billing address avaialble");
         let addressId = authUser.defaultBillingAddress.id;
         pgKratosQueries.getAccountAddressById([addressId], result => {
             if (result.err || result.res.length == 0) return resolve();
-            console.log("default billing address");
             let inputValue = [addressId];
             let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input.defaultBillingAddress);
             pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
