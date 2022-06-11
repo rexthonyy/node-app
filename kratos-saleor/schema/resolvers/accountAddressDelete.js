@@ -1,18 +1,18 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { updateAccountUserDefaultAddressesByUserId } = require("./lib");
 
-module.exports = async(parent, args, context) => {
+module.exports = (parent, args, context) => {
     return new Promise((resolve) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null, null));
         const authUser = context.user;
 
         let id = args.id;
-        pgKratosQueries.getAccountAddressById([id], async result => {
+        pgKratosQueries.getAccountAddressById([id], result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
             let accountAddress = result.res[0];
             pgKratosQueries.deleteAccountUserAddressesByUserIdAndAddressId([authUser.id, id], result => {
-                pgKratosQueries.deleteAccountAddressById([id], result => {
+                pgKratosQueries.deleteAccountAddressById([id], async result => {
                     if (result.err) return console.log(result.err);
                     await updateAccountUserDefaultAddressesByUserId(authUser.id);
                     let defaultBillingAddress = authUser.defaultBillingAddress;
