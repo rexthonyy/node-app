@@ -21,6 +21,7 @@ module.exports = (parent, args, context) => {
             let graphQLUser = await getGraphQLUserById(userId);
             await updateDefaultBillingAddress(graphQLUser, input);
             await updateDefaultShippingAddress(graphQLUser, input);
+            graphQLUser = await getGraphQLUserById(userId);
             return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser));
         });
     });
