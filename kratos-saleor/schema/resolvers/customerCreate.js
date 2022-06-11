@@ -11,24 +11,23 @@ module.exports = async(parent, args, context) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
         const authUser = context.user;
 
-        let firstName = args.input.firstName || "";
-        let lastName = args.input.lastName || "";
-        let languageCode = args.input.languageCode || "";
+        let firstName = args.input.firstName;
+        let lastName = args.input.lastName;
+        let languageCode = args.input.languageCode;
         let redirectUrl = args.input.redirectUrl;
         let email = args.input.email.toLowerCase();
-        let password = getRandom(100000, 999999);
-        let isActive = false;
+        let password = getRandom(100000, 999999) + "";
+        let isActive = args.input.isActive;
         let note = args.input.note;
 
         if (!isEmailValid(email)) return resolve(getGraphQLOutput("email", "Email format not supported", "INVALID_CREDENTIALS", null, null));
 
         try {
             await getUserByEmail(email);
-            isActive = redirectUrl == null;
-            let result = await registerUser(authUser, { firstName, lastName, languageCode, email, password, isActive, note });
+            let result = await registerUser({ firstName, lastName, languageCode, email, password, isActive, note });
             await createBillingAddress(result, input.defaultBillingAddress);
             await createShippingAddress(result, input.defaultShippingAddress);
-            if (!isActive) {
+            if (redirectUrl) {
                 await sendEmailConfirmation(redirectUrl, result);
             }
             return resolve(result);
@@ -66,7 +65,7 @@ async function getUserByEmail(email) {
     });
 }
 
-async function registerUser(authUser, customer) {
+async function registerUser(customer) {
     return new Promise((resolve, reject) => {
         let userValues = getUserValues(customer);
         pgKratosQueries.createAccountUser(userValues, async result => {
