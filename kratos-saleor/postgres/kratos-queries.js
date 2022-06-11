@@ -95,6 +95,23 @@ const getAccountUserAddressesByUserId = (values, response) => {
     });
 };
 
+const getAccountUserAddressesByAddressId = (values, response) => {
+    pool.query(`SELECT * from ${db.account_user_addresses} WHERE address_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAccountAddressById = (values, response) => {
     pool.query(`SELECT * from ${db.account_address} WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -339,6 +356,7 @@ module.exports = {
     getUserById,
     getUserByIsStaff,
     getAccountUserAddressesByUserId,
+    getAccountUserAddressesByAddressId,
     getAccountAddressById,
 
     createAccountUser,
