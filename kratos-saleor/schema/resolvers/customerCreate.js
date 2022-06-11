@@ -26,8 +26,8 @@ module.exports = async(parent, args, context) => {
             await getUserByEmail(email);
             isActive = redirectUrl == null;
             let result = await registerUser(authUser, { firstName, lastName, languageCode, email, password, isActive, note });
-            await createBillingAddress(result, input);
-            await createShippingAddress(result, input);
+            await createBillingAddress(result, input.defaultBillingAddress);
+            await createShippingAddress(result, input.defaultShippingAddress);
             if (!isActive) {
                 await sendEmailConfirmation(redirectUrl, result);
             }
@@ -113,6 +113,7 @@ function getJSONB(json) {
 
 function createBillingAddress(result, input) {
     return new Promise((resolve) => {
+        if (!input) return resolve();
         let userId = result.user.id;
         let values = [
             input.firstName,
@@ -142,6 +143,7 @@ function createBillingAddress(result, input) {
 
 function createShippingAddress(result, input) {
     return new Promise((resolve) => {
+        if (!input) return resolve();
         let userId = result.user.id;
         let values = [
             input.firstName,
