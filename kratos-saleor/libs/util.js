@@ -12,6 +12,7 @@ function isEmailValid(email) {
 function isAuthenticated(req, res, next) {
     const accessToken = req.cookies[process.env.COOKIE_ID];
     if (accessToken == undefined) return next();
+    console.log(accessToken);
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
         if (err) return next();
         let user_id = payload.sub;
