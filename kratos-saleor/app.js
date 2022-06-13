@@ -12,6 +12,7 @@ require('./postgres/initialize_dbs').init()
         const { applyMiddleware } = require('graphql-middleware');
         const utils = require('./libs/util');
         const middleware = require('./libs/middleware');
+        const userAvatarUpdate = require('./schema/resolvers/userAvatarUpdate');
         const schema = require('./schema');
         const schemaWithMiddleware = applyMiddleware(schema, middleware)
         const app = express();
@@ -24,7 +25,7 @@ require('./postgres/initialize_dbs').init()
         app.use(passport.session());
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
-        app.use(cors());
+        //app.use(cors());
 
         app.use(cookieParser());
         app.use(session({
@@ -44,6 +45,12 @@ require('./postgres/initialize_dbs').init()
         let port = process.env.PORT || 1000;
         var lesServer = app.listen(port, function() {
             console.log("Listening on port %s...", lesServer.address().port);
+        });
+
+        //use by upload form
+        app.post('/uploadUserAvatar', s3Handler.upload.array('upload', 25), function(req, res, next) {
+            let result = middleware(userAvatarUpdate, null, null, req, null);
+            res.send(result);
         });
 
         app.get('/login', utils.isAuthenticated, (req, res) => {
