@@ -9,6 +9,7 @@ module.exports = async(parent, args, context) => {
         let id = args.id;
         let input = args.input;
 
+        console.log(authUser.permissionGroups);
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
             resolve(await updateAccountAddress(id, input));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {

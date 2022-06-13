@@ -31,9 +31,7 @@ module.exports = async(parent, args, context) => {
             let refreshToken = jwt.sign(confirmationData, process.env.REFRESH_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_REFRESH });
             let csrfToken = jwt.sign(confirmationData, process.env.CSRF_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_REFRESH });
 
-            console.log("getting user...");
             let graphQLUser = await getGraphQLUserById(accountUser.id);
-            console.log("getting user..");
             resolve(getResult(accessToken, refreshToken, csrfToken, graphQLUser));
         });
     });
