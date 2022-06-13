@@ -84,7 +84,7 @@ function getGraphQLOutput(field, message, code, addressType, user, address) {
 }
 
 function getValuesForAccountAddressUpdateFromInput(values, input) {
-    let whereClause = "" + "";
+    let whereClause = "";
 
     if (input.firstName) {
         values.push(input.firstName);
