@@ -65,14 +65,14 @@ require('./postgres/initialize_dbs').init()
 
             req.session.callbackUrl = callbackUrl;
 
-            if (req.session.isAuthenticated) return generateOutput(req);
+            if (req.session.isAuthenticated) return generateOutput(req, res);
 
             res.render('login', { callbackUrl });
         });
 
         app.post('/login', utils.isAuthenticated, async(req, res) => {
             if (!req.session.callbackUrl) return res.redirect("login");
-            if (req.session.isAuthenticated) return generateOutput(req);
+            if (req.session.isAuthenticated) return generateOutput(req, res);
 
             let email = req.body.email;
             let password = req.body.password;
