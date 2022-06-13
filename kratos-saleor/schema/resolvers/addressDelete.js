@@ -1,11 +1,24 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { getGraphQLUserById, updateAccountUserDefaultAddressesByUserId } = require("./lib");
+const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
 
 module.exports = async(parent, args, context) => {
-    return new Promise((resolve) => {
+    return new Promise(async resolve => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null, null));
         const authUser = context.user;
 
+        if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
+            resolve(await addressDelete(args));
+        } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
+            resolve(await addressDelete(args));
+        } else {
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
+        }
+    });
+}
+
+function addressDelete(args) {
+    return new Promise(resolve => {
         let id = args.id;
         pgKratosQueries.getAccountAddressById([id], async result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
@@ -54,7 +67,6 @@ module.exports = async(parent, args, context) => {
                     });
                 });
             });
-
         });
     });
 }
