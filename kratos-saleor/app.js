@@ -125,7 +125,7 @@ require('./postgres/initialize_dbs').init()
 
         async function generateOutput(req, res) {
             const inputToken = req.cookies[process.env.COOKIE_ID];
-            let result = await tokenVerify(null, { inputToken }, null);
+            let result = await tokenVerify(null, { token: inputToken }, null);
             if (!result.isValid) return res.send("Token is invalid");
             let { accessToken, refreshToken, csrfToken } = await getUserTokens(result.user);
             res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
