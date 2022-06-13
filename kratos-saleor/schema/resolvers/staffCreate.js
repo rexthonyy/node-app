@@ -5,12 +5,25 @@ const { authenticator } = require('otplib');
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { isEmailValid, getRandom } = require("../../libs/util");
 const { getGraphQLUserById } = require("./lib");
+const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
         const authUser = context.user;
 
+        if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
+            resolve(await staffCreate(args));
+        } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
+            resolve(await staffCreate(args));
+        } else {
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation. MANAGE_STAFF", "OUT_OF_SCOPE_PERMISSION", null, null, null));
+        }
+    });
+}
+
+function staffCreate(args) {
+    return new Promise(async resolve => {
         let firstName = args.input.firstName;
         let lastName = args.input.lastName;
         let languageCode = args.input.languageCode;
