@@ -10,21 +10,14 @@ module.exports = async(parent, args, context) => {
         let input = args.input;
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
-            console.log("no acce");
             resolve(await updateAccountAddress(id, input));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
-            console.log("no acces");
             resolve(await updateAccountAddress(id, input));
         } else {
-            console.log("no access.");
             let addressOwnerId = await getAddressOwnerId(id);
-            console.log(addressOwnerId);
-            console.log(authUser.id);
             if (authUser.id == addressOwnerId) {
-                console.log("no access..");
                 resolve(await updateAccountAddress(id, input));
             } else {
-                console.log("no access");
                 resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
             }
         }
@@ -157,7 +150,7 @@ function getValuesForAccountAddressUpdateFromInput(values, input) {
 function getAddressOwnerId(id) {
     return new Promise(resolve => {
         pgKratosQueries.getAccountUserAddressesByAddressId([id], result => {
-            if (result.err || result.res.length == 0) return -1;
+            if (result.err || result.res.length == 0) resolve(-1);
             resolve(result.res[0].user_id);
         });
     });
