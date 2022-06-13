@@ -80,7 +80,7 @@ require('./postgres/initialize_dbs').init()
             let result = await tokenCreate(null, { email, password }, null);
             if (result.token == null) return res.send(result.errors);
 
-            res.cookie(process.env.COOKIE_ID, accessToken, { maxAge: 1000 * 60 * 60 * 5, httponly: true });
+            res.cookie(process.env.COOKIE_ID, result.token, { maxAge: 1000 * 60 * 60 * 5, httponly: true });
 
             res.redirect(`${req.session.callbackUrl}?accessToken=${result.token}&refreshToken=${result.refreshToken}&csrfToken=${result.csrfToken}`);
         });
