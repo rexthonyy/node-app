@@ -2,7 +2,7 @@ const pgKratosQueries = require("../../postgres/kratos-queries");
 const userPermissionGroupHasAccess = require("./userPermissionGroupHasAccess");
 
 module.exports = async(parent, args, context) => {
-    return new Promise((resolve) => {
+    return new Promise(async resolve => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null, null));
         const authUser = context.user;
 
