@@ -18,12 +18,14 @@ module.exports = async(parent, args, context) => {
         } else {
             console.log("no access.");
             let addressOwnerId = await getAddressOwnerId(id);
+            console.log(addressOwnerId);
+            console.log(authUser.id);
             if (authUser.id == addressOwnerId) {
                 console.log("no access..");
                 resolve(await updateAccountAddress(id, input));
             } else {
                 console.log("no access");
-                return resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
+                resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
             }
         }
     });
