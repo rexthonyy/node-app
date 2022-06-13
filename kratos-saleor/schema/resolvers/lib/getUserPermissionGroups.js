@@ -39,6 +39,8 @@ let getUserPermissionGroups = (userId) => {
                             permissions,
                             userCanManage
                         });
+
+                        checkPermissionGroupComplete();
                     }
                 });
             });
