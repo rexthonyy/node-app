@@ -102,7 +102,8 @@ require('./postgres/initialize_dbs').init()
             let password = req.body.password;
             let languageCode = "EN";
 
-            let result = accountRegister(null, {
+
+            let result = await accountRegister(null, {
                 input: {
                     firstName,
                     lastName,
@@ -112,9 +113,11 @@ require('./postgres/initialize_dbs').init()
                 }
             }, null);
 
-            if (!result.user) return res.send(res.errors);
+            if (!result.user) return res.send(result.errors);
 
             let { token, refreshToken, csrfToken } = await getUserTokens(result.user);
+
+            res.cookie(process.env.COOKIE_ID, token, { maxAge: 1000 * 60 * 60 * 1, httponly: true });
 
             res.redirect(`${req.session.callbackUrl}?accessToken=${token}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         });
