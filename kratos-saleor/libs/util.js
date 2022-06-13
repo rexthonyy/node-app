@@ -12,13 +12,15 @@ function isEmailValid(email) {
 function isAuthenticated(req, res, next) {
     const accessToken = req.cookies[process.env.COOKIE_ID];
     if (accessToken == undefined) return next();
-    pgQueries.getSessionByToken([accessToken], result => {
-        if (result.err || result.res.length == 0) return next();
-        let session = result.res[0];
-        if (!session.active) return next();
-        req.kratosSession = session;
-        next();
-    });
+    next();
+    //decode accessToken
+    // pgQueries.getSessionByToken([accessToken], result => {
+    //     if (result.err || result.res.length == 0) return next();
+    //     let session = result.res[0];
+    //     if (!session.active) return next();
+    //     req.kratosSession = session;
+    //     next();
+    // });
 }
 
 function getRandom(min, max) {
