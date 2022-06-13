@@ -12,7 +12,6 @@ let userPermissionGroupHasAccess = (permissionGroups, permissions) => {
         }
     }
 
-    console.log(hasAccess);
     return hasAccess;
 };
 

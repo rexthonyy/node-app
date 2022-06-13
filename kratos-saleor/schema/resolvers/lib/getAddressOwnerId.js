@@ -1,4 +1,4 @@
-const pgKratosQueries = require("../../postgres/kratos-queries");
+const pgKratosQueries = require('../../../postgres/kratos-queries');
 
 const getAddressOwnerId = id => {
     return new Promise(resolve => {
