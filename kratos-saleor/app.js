@@ -10,10 +10,15 @@ require('./postgres/initialize_dbs').init()
         const passport = require('passport');
         const { graphqlHTTP } = require('express-graphql');
         const { applyMiddleware } = require('graphql-middleware');
+        const jwt = require('jsonwebtoken');
+        const pgKratosQueries = require('./postgres/kratos-queries');
         const utils = require('./libs/util');
         const s3Handler = require('./libs/s3Handler');
         const middleware = require('./libs/middleware');
         const userAvatarUpdate = require('./schema/resolvers/userAvatarUpdate');
+        const tokenCreate = require('./schema/resolvers/tokenCreate');
+        const tokenVerify = require('./schema/resolvers/tokenVerify');
+        const accountRegister = require('./schema/resolvers/accountRegister');
         const schema = require('./schema');
         const schemaWithMiddleware = applyMiddleware(schema, middleware)
         const app = express();
@@ -56,93 +61,93 @@ require('./postgres/initialize_dbs').init()
 
         app.get('/login', utils.isAuthenticated, (req, res) => {
             let callbackUrl = req.query.callbackUrl;
-            if (!callbackUrl) {
-                return res.send("Please provide a callbackUrl");
-            }
+            if (!callbackUrl) return res.send("Please provide a callbackUrl");
+
             req.session.callbackUrl = callbackUrl;
 
+            if (req.session.isAuthenticated) return generateOutput(req);
+
             res.render('login', { callbackUrl });
-            /*
-            getLoginFlowResolver(null, { refresh: true })
-                .then(loginflow => {
-                    if (loginflow == null) return res.send("Error: failed to create login flow");
-                    req.session.loginflow = loginflow;
-                    res.render('login', { callbackUrl });
-                }).catch(err => {
-                    console.error(err);
-                    res.send("Error: failed to create login flow");
-                });
-                */
         });
 
-        app.post('/login', utils.isAuthenticated, (req, res) => {
+        app.post('/login', utils.isAuthenticated, async(req, res) => {
+            if (!req.session.callbackUrl) return res.redirect("login");
+            if (req.session.isAuthenticated) return generateOutput(req);
+
             let email = req.body.email;
             let password = req.body.password;
-            res.redirect(`${req.session.callbackUrl}?accessToken=${1}&refreshToken=${2}`);
-            /*
-            executeCompleteSelfServiceLoginFlowWithPasswordMethodResolver(null, {
-                completeSelfServiceLoginFlowWithPasswordMethodInput: {
-                    identifier: email,
-                    password: password
-                },
-                flow: req.session.loginflow.id
-            }).then(appSession => {
-                if (appSession == null) return res.send("Error: failed to create session");
-                let sessionToken = appSession.sessionToken;
-                res.redirect(`${req.session.callbackUrl}?sessionToken=${sessionToken}`);
-            }).catch(err => {
-                console.log(err);
-                res.send("Error: failed to create session");
-            });
-            */
+
+            let result = await tokenCreate(null, { email, password }, null);
+            if (result.token == null) return res.send(result.errors);
+
+            res.redirect(`${req.session.callbackUrl}?accessToken=${result.token}&refreshToken=${result.refreshToken}&csrfToken=${result.csrfToken}`);
         });
 
         app.get('/signup', utils.isAuthenticated, (req, res) => {
             let callbackUrl = req.query.callbackUrl;
-            if (!callbackUrl) {
-                return res.send("Please provide a callbackUrl");
-            }
+            if (!callbackUrl) return res.send("Please provide a callbackUrl");
             req.session.callbackUrl = callbackUrl;
+            if (req.session.isAuthenticated) return generateOutput(req);
+
             res.render('signup', { callbackUrl });
-            /*
-                        getRegistrationFlowResolver()
-                            .then(registrationFlow => {
-                                if (registrationFlow == null) return res.send("Error: failed to create registration flow");
-                                req.session.registrationFlow = registrationFlow;
-                                res.render('signup', { callbackUrl });
-                            }).catch(err => {
-                                console.log(err);
-                                res.send("Error: failed to create registration flow");
-                            });
-                            */
         });
 
-        app.post('/signup', utils.isAuthenticated, (req, res) => {
+        app.post('/signup', utils.isAuthenticated, async(req, res) => {
+            if (!req.session.callbackUrl) return res.redirect("signup");
+            if (req.session.isAuthenticated) return generateOutput(req);
+
             let firstName = req.body.firstName;
             let lastName = req.body.lastName;
             let email = req.body.email;
             let password = req.body.password;
+            let languageCode = "EN";
 
-            res.redirect(`${req.session.callbackUrl}?accessToken=${1}&refreshToken=${2}`);
-            /*
-            executeCompleteSelfServiceRegistrationFlowWithPasswordMethodResolver(null, {
-                flow: req.session.registrationFlow.id,
-                selfServiceRegistrationMethodsPasswordInput: JSON.stringify({
+            let result = accountRegister(null, {
+                input: {
                     firstName,
                     lastName,
                     email,
-                    password
-                })
-            }).then(appSession => {
-                if (appSession == null) return res.send("Error: failed to create session");
-                let sessionToken = appSession.sessionToken;
-                res.redirect(`${req.session.callbackUrl}?sessionToken=${sessionToken}`);
-            }).catch(err => {
-                console.log(err);
-                res.send("Error: failed to create session");
-            });
-            */
+                    password,
+                    languageCode
+                }
+            }, null);
+
+            if (!result.user) return res.send(res.errors);
+
+            let { token, refreshToken, csrfToken } = await getUserTokens(result.user);
+
+            res.redirect(`${req.session.callbackUrl}?accessToken=${token}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         });
 
+        async function generateOutput(req) {
+            const inputToken = req.cookies[process.env.COOKIE_ID];
+            let result = await tokenVerify(null, { inputToken }, null);
+            if (!result.isValid) return req.send("Token is invalid");
+            let { token, refreshToken, csrfToken } = await getUserTokens(result.user);
+            res.redirect(`${req.session.callbackUrl}?accessToken=${token}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
+        }
+
+        function getUserTokens(user) {
+            return new Promise(resolve => {
+                pgKratosQueries.getUserByEmail([user.email], async result => {
+                    let accountUser = result.res[0];
+                    user = {
+                        user_id: accountUser.id,
+                        email: accountUser.email
+                    };
+
+                    let userToken = jwt.sign(user, accountUser.jwt_token_key);
+                    let confirmationData = {
+                        data: userToken
+                    };
+
+                    let accessToken = jwt.sign(confirmationData, process.env.ACCESS_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_ACCESS });
+                    let refreshToken = jwt.sign(confirmationData, process.env.REFRESH_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_REFRESH });
+                    let csrfToken = jwt.sign(confirmationData, process.env.CSRF_TOKEN_SECRET, { subject: accountUser.id + "", expiresIn: process.env.JWT_TTL_REFRESH });
+
+                    resolve({ accessToken, refreshToken, csrfToken });
+                });
+            });
+        }
         app.use(Sentry.Handlers.errorHandler());
     });

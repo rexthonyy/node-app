@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const pgQueries = require('../postgres/kratos-queries');
+const pgKratosQueries = require('../postgres/kratos-queries');
 
 function isEmailValid(email) {
     return String(email)
@@ -12,15 +12,15 @@ function isEmailValid(email) {
 function isAuthenticated(req, res, next) {
     const accessToken = req.cookies[process.env.COOKIE_ID];
     if (accessToken == undefined) return next();
-    next();
-    //decode accessToken
-    // pgQueries.getSessionByToken([accessToken], result => {
-    //     if (result.err || result.res.length == 0) return next();
-    //     let session = result.res[0];
-    //     if (!session.active) return next();
-    //     req.kratosSession = session;
-    //     next();
-    // });
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+        if (err) return next();
+        let user_id = payload.sub;
+        pgKratosQueries.getUserById([user_id], result => {
+            if (result.err) return next();
+            req.session.isAuthenticated = true;
+            next();
+        });
+    });
 }
 
 function getRandom(min, max) {
