@@ -24,7 +24,7 @@ require('./postgres/initialize_dbs').init()
         app.use(passport.session());
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
-        app.use(express.cors());
+        app.use(cors());
 
         app.use(cookieParser());
         app.use(session({
