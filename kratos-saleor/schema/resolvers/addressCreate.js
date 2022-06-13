@@ -13,12 +13,7 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
             resolve(await addressCreate(args));
         } else {
-            let addressOwnerId = await getAddressOwnerId(id);
-            if (authUser.id == addressOwnerId) {
-                resolve(await addressCreate(args));
-            } else {
-                resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
-            }
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
         }
     });
 }
