@@ -1,5 +1,6 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
+const getAddressOwnerId = require("./lib/getAddressOwnerId");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -145,13 +146,4 @@ function getValuesForAccountAddressUpdateFromInput(values, input) {
     }
 
     return { values, whereClause };
-}
-
-function getAddressOwnerId(id) {
-    return new Promise(resolve => {
-        pgKratosQueries.getAccountUserAddressesByAddressId([id], result => {
-            if (result.err || result.res.length == 0) return resolve(-1);
-            resolve(result.res[0].user_id);
-        });
-    });
 }

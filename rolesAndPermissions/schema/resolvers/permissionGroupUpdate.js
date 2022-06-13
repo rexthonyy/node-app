@@ -334,7 +334,7 @@ function getGroups(resolve, authUser, group) {
             let res = {
                 errors: [{
                     field: null,
-                    message: "Group created successfully",
+                    message: "Group updated successfully",
                     code: "REQUIRED",
                     permissions: null,
                     users: null
@@ -348,7 +348,7 @@ function getGroups(resolve, authUser, group) {
                 },
                 permissionGroupErrors: [{
                     field: null,
-                    message: "Group created successfully",
+                    message: "Group updated successfully",
                     code: "REQUIRED",
                     permissions: null,
                     users: null

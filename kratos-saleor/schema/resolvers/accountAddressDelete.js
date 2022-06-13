@@ -1,5 +1,7 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
 const { updateAccountUserDefaultAddressesByUserId } = require("./lib");
+const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
+const getAddressOwnerId = require("./lib/getAddressOwnerId");
 
 module.exports = (parent, args, context) => {
     return new Promise((resolve) => {
@@ -7,6 +9,24 @@ module.exports = (parent, args, context) => {
         const authUser = context.user;
 
         let id = args.id;
+
+        if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
+            resolve(await deleteAccountAddress(id));
+        } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
+            resolve(await deleteAccountAddress(id));
+        } else {
+            let addressOwnerId = await getAddressOwnerId(id);
+            if (authUser.id == addressOwnerId) {
+                resolve(await deleteAccountAddress(id));
+            } else {
+                resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
+            }
+        }
+    });
+}
+
+function deleteAccountAddress(id) {
+    return new Promise(resolve => {
         pgKratosQueries.getAccountAddressById([id], async result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
