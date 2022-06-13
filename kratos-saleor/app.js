@@ -11,6 +11,7 @@ require('./postgres/initialize_dbs').init()
         const { graphqlHTTP } = require('express-graphql');
         const { applyMiddleware } = require('graphql-middleware');
         const utils = require('./libs/util');
+        const s3Handler = require('./libs/s3Handler');
         const middleware = require('./libs/middleware');
         const userAvatarUpdate = require('./schema/resolvers/userAvatarUpdate');
         const schema = require('./schema');
