@@ -10,12 +10,16 @@ module.exports = async(parent, args, context) => {
         let input = args.input;
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
+            console.log("no acce");
             resolve(await updateAccountAddress(id, input));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
+            console.log("no acces");
             resolve(await updateAccountAddress(id, input));
         } else {
+            console.log("no access.");
             let addressOwnerId = await getAddressOwnerId(id);
             if (authUser.id == addressOwnerId) {
+                console.log("no access..");
                 resolve(await updateAccountAddress(id, input));
             } else {
                 console.log("no access");
