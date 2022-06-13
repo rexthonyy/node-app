@@ -4,7 +4,7 @@ const { getGraphQLUserById } = require("./lib");
 const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
 
 module.exports = (parent, args, context) => {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
         const authUser = context.user;
 
