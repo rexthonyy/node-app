@@ -89,14 +89,14 @@ require('./postgres/initialize_dbs').init()
             let callbackUrl = req.query.callbackUrl;
             if (!callbackUrl) return res.send("Please provide a callbackUrl");
             req.session.callbackUrl = callbackUrl;
-            if (req.session.isAuthenticated) return generateOutput(req);
+            if (req.session.isAuthenticated) return generateOutput(req, res);
 
             res.render('signup', { callbackUrl });
         });
 
         app.post('/signup', utils.isAuthenticated, async(req, res) => {
             if (!req.session.callbackUrl) return res.redirect("signup");
-            if (req.session.isAuthenticated) return generateOutput(req);
+            if (req.session.isAuthenticated) return generateOutput(req, res);
 
             let firstName = req.body.firstName;
             let lastName = req.body.lastName;
@@ -123,10 +123,10 @@ require('./postgres/initialize_dbs').init()
             res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         });
 
-        async function generateOutput(req) {
+        async function generateOutput(req, res) {
             const inputToken = req.cookies[process.env.COOKIE_ID];
             let result = await tokenVerify(null, { inputToken }, null);
-            if (!result.isValid) return req.send("Token is invalid");
+            if (!result.isValid) return res.send("Token is invalid");
             let { accessToken, refreshToken, csrfToken } = await getUserTokens(result.user);
             res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         }
