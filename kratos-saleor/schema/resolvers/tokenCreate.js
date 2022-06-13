@@ -9,6 +9,8 @@ module.exports = async(parent, args, context) => {
         let email = args.email.toLowerCase();
         let password = args.password;
 
+        console.log(email);
+        console.log(password);
         if (!isEmailValid(email)) return resolve(getError("email", "Email format not supported", "INVALID_CREDENTIALS"));
 
         pgKratosQueries.getUserByEmail([email], async result => {
