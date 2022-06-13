@@ -1,4 +1,6 @@
 const pgKratosQueries = require('../../../postgres/kratos-queries');
+const getUserPermissions = require('./getUserPermissions');
+const getUserPermissionGroups = require('./getUserPermissionGroups');
 
 let getGraphQLUserById = (user_id) => {
     return new Promise((resolve, reject) => {
@@ -11,6 +13,8 @@ let getGraphQLUserById = (user_id) => {
             let addresses = await getAccountUserAddresses(user_id);
             let defaultShippingAddress = getDefaultAddress(accountUser.default_shipping_address_id, addresses);
             let defaultBillingAddress = getDefaultAddress(accountUser.default_billing_address_id, addresses);
+            let userPermissions = await getUserPermissions(accountUser.id);
+            let permissionGroups = await getUserPermissionGroups(accountUser.id);
             let userType = {
                 id: accountUser.id,
                 privateMetadata: accountUser.private_metadata,
@@ -29,8 +33,8 @@ let getGraphQLUserById = (user_id) => {
                 giftCards: null,
                 note: accountUser.note,
                 orders: null,
-                userPermissions: null,
-                permissionGroups: null,
+                userPermissions,
+                permissionGroups,
                 editableGroups: null,
                 avatar: {
                     url: accountUser.avatar,

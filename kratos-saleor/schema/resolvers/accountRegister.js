@@ -124,7 +124,7 @@ async function sendEmailConfirmation(redirectUrl, result) {
                     })
                 });
 
-                let json = res.json();
+                let json = await res.json();
 
                 console.log(json);
             } catch (err) {
