@@ -50,9 +50,6 @@ let getGraphQLUserById = (user_id) => {
                 updatedAt: accountUser.updated_at
             };
 
-            console.log(userType);
-            console.log(userType.permissionGroups);
-            console.log(userType.userPermissions);
             resolve(userType);
         });
     });

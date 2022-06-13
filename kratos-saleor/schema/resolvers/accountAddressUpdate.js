@@ -10,55 +10,58 @@ module.exports = async(parent, args, context) => {
         let input = args.input;
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_USERS")) {
-            return updateAccountAddress(resolve, id, input);
+            resolve(await updateAccountAddress(id, input));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_USERS"])) {
-            return updateAccountAddress(resolve, id, input);
+            resolve(await updateAccountAddress(id, input));
         } else {
             let addressOwnerId = await getAddressOwnerId(id);
             if (authUser.id == addressOwnerId) {
-                return updateAccountAddress(resolve, id, input);
+                resolve(await updateAccountAddress(id, input));
             } else {
+                console.log("no access");
                 return resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "OUT_OF_SCOPE_PERMISSION", null, null, null));
             }
         }
     });
 }
 
-function updateAccountAddress(resolve, id, input) {
-    let inputValue = [id];
-    let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input);
+function updateAccountAddress(id, input) {
+    return new Promise(resolve => {
+        let inputValue = [id];
+        let { values, whereClause } = getValuesForAccountAddressUpdateFromInput(inputValue, input);
 
-    pgKratosQueries.getAccountAddressById([id], async result => {
-        if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
-        if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
+        pgKratosQueries.getAccountAddressById([id], async result => {
+            if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("graphql error", "Address not found", "NOT_FOUND", null, null, null));
 
-        pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
-            if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account address", "GRAPHQL_ERROR", null, null, null)); }
+            pgKratosQueries.updateAccountAddressById(values, whereClause, result => {
+                if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("graphql error", "Failed to update account address", "GRAPHQL_ERROR", null, null, null)); }
 
-            pgKratosQueries.getAccountAddressById([id], async result => {
-                if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
-                let accountAddress = result.res[0];
-                let defaultBillingAddress = authUser.defaultBillingAddress;
-                let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
-                let defaultShippingAddress = authUser.defaultShippingAddress;
-                let isDefaultShippingAddress = defaultShippingAddress ? (defaultShippingAddress.id == accountAddress.id) : false;
-                let address = {
-                    id: accountAddress.id,
-                    firstName: accountAddress.first_name,
-                    lastName: accountAddress.last_name,
-                    companyName: accountAddress.company_name,
-                    streetAddress1: accountAddress.street_address_1,
-                    streetAddress2: accountAddress.street_address_2,
-                    city: accountAddress.city,
-                    cityArea: accountAddress.city_area,
-                    postalCode: accountAddress.postal_code,
-                    country: accountAddress.country,
-                    countryArea: accountAddress.country_area,
-                    phone: accountAddress.phone,
-                    isDefaultShippingAddress,
-                    isDefaultBillingAddress
-                };
-                return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
+                pgKratosQueries.getAccountAddressById([id], result => {
+                    if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to fetch address", "GRAPHQL_ERROR", null, null, null));
+                    let accountAddress = result.res[0];
+                    let defaultBillingAddress = authUser.defaultBillingAddress;
+                    let isDefaultBillingAddress = defaultBillingAddress ? (defaultBillingAddress.id == accountAddress.id) : false;
+                    let defaultShippingAddress = authUser.defaultShippingAddress;
+                    let isDefaultShippingAddress = defaultShippingAddress ? (defaultShippingAddress.id == accountAddress.id) : false;
+                    let address = {
+                        id: accountAddress.id,
+                        firstName: accountAddress.first_name,
+                        lastName: accountAddress.last_name,
+                        companyName: accountAddress.company_name,
+                        streetAddress1: accountAddress.street_address_1,
+                        streetAddress2: accountAddress.street_address_2,
+                        city: accountAddress.city,
+                        cityArea: accountAddress.city_area,
+                        postalCode: accountAddress.postal_code,
+                        country: accountAddress.country,
+                        countryArea: accountAddress.country_area,
+                        phone: accountAddress.phone,
+                        isDefaultShippingAddress,
+                        isDefaultBillingAddress
+                    };
+                    return resolve(getGraphQLOutput("", "", "INVALID", "", authUser, address));
+                });
             });
         });
     });
