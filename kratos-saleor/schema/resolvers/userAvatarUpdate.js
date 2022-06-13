@@ -1,6 +1,6 @@
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        console.log(args.file);
+        console.log(args.image);
         resolve(null);
     });
 }

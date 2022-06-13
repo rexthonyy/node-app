@@ -3,6 +3,7 @@ require('./postgres/initialize_dbs').init()
     .then(() => {
         const Sentry = require("@sentry/node");
         Sentry.init({ dsn: "http://d78601a2198e422d8855c8be53f57061@88.208.212.249:8000/2" });
+        const cors = require('cors');
         const express = require('express');
         const session = require('express-session');
         const cookieParser = require('cookie-parser');
@@ -23,6 +24,8 @@ require('./postgres/initialize_dbs').init()
         app.use(passport.session());
         app.use(express.urlencoded({ extended: true }));
         app.use(express.json());
+        app.use(express.cors());
+
         app.use(cookieParser());
         app.use(session({
             secret: process.env.SESSION_SECRET,
