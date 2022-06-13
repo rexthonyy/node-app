@@ -102,7 +102,6 @@ require('./postgres/initialize_dbs').init()
             let password = req.body.password;
             let languageCode = "EN";
 
-
             let result = await accountRegister(null, {
                 input: {
                     firstName,
@@ -115,19 +114,19 @@ require('./postgres/initialize_dbs').init()
 
             if (!result.user) return res.send(result.errors);
 
-            let { token, refreshToken, csrfToken } = await getUserTokens(result.user);
+            let { accessToken, refreshToken, csrfToken } = await getUserTokens(result.user);
 
-            res.cookie(process.env.COOKIE_ID, token, { maxAge: 1000 * 60 * 60 * 1, httponly: true });
+            res.cookie(process.env.COOKIE_ID, token, { maxAge: 1000 * 60 * 60 * 5, httponly: true });
 
-            res.redirect(`${req.session.callbackUrl}?accessToken=${token}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
+            res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         });
 
         async function generateOutput(req) {
             const inputToken = req.cookies[process.env.COOKIE_ID];
             let result = await tokenVerify(null, { inputToken }, null);
             if (!result.isValid) return req.send("Token is invalid");
-            let { token, refreshToken, csrfToken } = await getUserTokens(result.user);
-            res.redirect(`${req.session.callbackUrl}?accessToken=${token}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
+            let { accessToken, refreshToken, csrfToken } = await getUserTokens(result.user);
+            res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         }
 
         function getUserTokens(user) {
