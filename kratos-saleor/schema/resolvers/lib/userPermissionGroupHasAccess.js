@@ -3,7 +3,10 @@ let userPermissionGroupHasAccess = (permissionGroups, permissions) => {
     for (let group of permissionGroups) {
         if (group.permissions.find(permission => {
                 for (let requiredPermission of permissions) {
+                    console.log(requiredPermission);
+                    console.log(permission.code);
                     if (requiredPermission == permission.code) {
+                        console.log("...");
                         return true;
                     }
                 }
@@ -11,6 +14,8 @@ let userPermissionGroupHasAccess = (permissionGroups, permissions) => {
             hasAccess = true;
         }
     }
+
+    console.log(hasAccess);
     return hasAccess;
 };
 
