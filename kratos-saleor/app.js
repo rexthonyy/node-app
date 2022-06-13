@@ -116,7 +116,7 @@ require('./postgres/initialize_dbs').init()
 
             let { accessToken, refreshToken, csrfToken } = await getUserTokens(result.user);
 
-            res.cookie(process.env.COOKIE_ID, token, { maxAge: 1000 * 60 * 60 * 5, httponly: true });
+            res.cookie(process.env.COOKIE_ID, accessToken, { maxAge: 1000 * 60 * 60 * 5, httponly: true });
 
             res.redirect(`${req.session.callbackUrl}?accessToken=${accessToken}&refreshToken=${refreshToken}&csrfToken=${csrfToken}`);
         });
