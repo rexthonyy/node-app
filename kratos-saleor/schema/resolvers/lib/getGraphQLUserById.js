@@ -13,10 +13,8 @@ let getGraphQLUserById = (user_id) => {
             let addresses = await getAccountUserAddresses(user_id);
             let defaultShippingAddress = getDefaultAddress(accountUser.default_shipping_address_id, addresses);
             let defaultBillingAddress = getDefaultAddress(accountUser.default_billing_address_id, addresses);
-            console.log("get permissions ...");
             let userPermissions = await getUserPermissions(accountUser.id);
             let permissionGroups = await getUserPermissionGroups(accountUser.id);
-            console.log("get permissions ..");
             let userType = {
                 id: accountUser.id,
                 privateMetadata: accountUser.private_metadata,
@@ -52,6 +50,9 @@ let getGraphQLUserById = (user_id) => {
                 updatedAt: accountUser.updated_at
             };
 
+            console.log(userType);
+            console.log(userType.permissionGroups);
+            console.log(userType.userPermissions);
             resolve(userType);
         });
     });
