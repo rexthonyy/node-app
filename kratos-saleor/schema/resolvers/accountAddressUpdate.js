@@ -1,5 +1,5 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
-const userPermissionGroupHasAccess = require("./userPermissionGroupHasAccess");
+const userPermissionGroupHasAccess = require("./lib/userPermissionGroupHasAccess");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
