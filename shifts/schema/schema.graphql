@@ -481,7 +481,7 @@ type OpenShiftInfo {
 }
 
 """Shift templates for the app"""
-type ShiftTemplate implements Shift{
+type ShiftTemplate{
   id: ID!
   label: String
   note: String
@@ -495,7 +495,7 @@ type ShiftTemplate implements Shift{
 }
 
 """Open shifts for a group"""
-type OpenShift implements Shift{
+type OpenShift{
   id: ID!
   label: String
   note: String
@@ -517,7 +517,7 @@ type UserAssignedShifts {
   shifts: [AssignedShift]
 }
 
-type AssignedShift implements Shift {
+type AssignedShift {
   id: ID!
   type: String!
   label: String
@@ -543,19 +543,6 @@ type SubShift {
   isPaid: Boolean!
 }
 
-
-"""A shift interface"""
-interface Shift {
-  id: ID!
-  label: String
-  note: String
-  color: String
-  startTime: String
-  endTime: String
-  break: Int
-  is24Hours: Boolean!
-  subshifts: [SubShift]
-}
 
 """Webhook."""
 type Webhook implements Node {
