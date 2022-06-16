@@ -416,42 +416,6 @@ type Mutation {
     """A date""""
     date: String!
   ): ResponseStatus
-
-  """Create a time off request to an admin"""
-  requestCreateTimeOff(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """Is this an all day request"""
-    isAllDay: Boolean
-
-    """When does the timeoff start"""
-    startTime: String
-
-    """When does the timeoff end"""
-    endTime: String
-
-    """Reason for the request"""
-    reason: String!
-
-    """A note"""
-    note: String
-  ): ResponseStatus
-
-  """Create a swap request to a group member"""
-  requestCreateSwap(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """The shift that you want to swap. It should be yours"""
-    assignedShiftId: ID!
-
-    """The team members shift that you want to swap with"""
-    groupMemberShiftId: ID!
-
-    """A note"""
-    note: String
-  ): ResponseStatus
 }
 
 enum ShiftTypeEnum {
