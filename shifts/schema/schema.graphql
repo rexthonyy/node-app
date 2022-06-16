@@ -482,11 +482,29 @@ type OpenShiftInfo {
 
 """Shift templates for the app"""
 type ShiftTemplate implements Shift{
+  id: ID!
+  label: String
+  note: String
+  color: String
+  startTime: String
+  endTime: String
+  break: Int
+  is24Hours: Boolean!
+  subshifts: [SubShift]
   slots: Int
 }
 
 """Open shifts for a group"""
 type OpenShift implements Shift{
+  id: ID!
+  label: String
+  note: String
+  color: String
+  startTime: String
+  endTime: String
+  break: Int
+  is24Hours: Boolean!
+  subshifts: [SubShift]
   slots: Int
 }
 
@@ -500,7 +518,16 @@ type UserAssignedShifts {
 }
 
 type AssignedShift implements Shift {
+  id: ID!
   type: String!
+  label: String
+  note: String
+  color: String
+  startTime: String
+  endTime: String
+  break: Int
+  is24Hours: Boolean!
+  subshifts: [SubShift]
   shiftToOffer: AssignedShift
   shiftToSwap: AssignedShift
   toSwapWith: AssignedShift
