@@ -1,11 +1,11 @@
-const me = require("./me");
-const me2 = require("./me2");
+const getShiftGroupMembers = require("./getShiftGroupMembers");
+const shiftGroupCreate = require("./shiftGroupCreate");
 
 module.exports = {
     Query: {
-        me,
+        getShiftGroupMembers,
     },
     Mutation: {
-        me2,
+        shiftGroupCreate,
     }
 };
