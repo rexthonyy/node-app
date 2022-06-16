@@ -70,7 +70,7 @@ type Mutation {
   """Create shift group."""
   shiftGroupCreate(
     """id of a channel or branch_id"""
-    channel_id: ID!
+    channelId: ID!
 
     """Name of the group. Defaults to `Unnamed group` if nothing is provided"""
     name: String
@@ -80,7 +80,7 @@ type Mutation {
    """Change the position of a Shift group"""
   shiftGroupReorder(
     """id of a channel or branch_id"""
-    channel_id: ID!
+    channelId: ID!
 
     """The IDs of the group to whose order is to be rearranged"""
     ids: [ID!]!
@@ -89,7 +89,7 @@ type Mutation {
    """Rename a Shift group"""
   shiftGroupRename(
     """id of a channel or branch_id"""
-    channel_id: ID!
+    channelId: ID!
 
     """The ID of the group to rename"""
     id: ID!
@@ -101,7 +101,7 @@ type Mutation {
    """Delete a shift group"""
   shiftGroupDelete(
     """id of a channel or branch_id"""
-    channel_id: ID!
+    channelId: ID!
 
     """The ID of the shift group to delete"""
     id: ID!
@@ -110,343 +110,433 @@ type Mutation {
   """Add a user as a member of a shift group"""
   shiftGroupMemberAdd(
     """id of a channel or branch_id"""
-    channel_id: ID!
+    channelId: ID!
+
+    """The ID of the shift group that you want to add a user into"""
+    id: ID!
 
      """The ID of the user to add"""
-     id: ID!
+     userId: ID!
   ): ResponseStatus
 
-  """
-  Refresh JWT token. Mutation tries to take refreshToken from the input.If it fails it will try to take refreshToken from the http-only cookie -refreshToken. csrfToken is required when refreshToken is provided as a cookie.
-  """
-  tokenRefresh(
-    """
-    CSRF token required to refresh token. This argument is required when refreshToken is provided as a cookie.
-    """
-    csrfToken: String
+  """Change the position of Shift group members in a group"""
+  shiftGroupMembersReorder(
+    """id of a channel or branch_id"""
+    channelId: ID!
 
-    """Refresh token."""
-    refreshToken: String
-  ): RefreshToken
-
-  """Verify JWT token."""
-  tokenVerify(
-    """JWT token to validate."""
-    token: String!
-  ): VerifyToken
-
-  """
-  Deactivate all JWT tokens of the currently authenticated user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  tokensDeactivateAll: DeactivateAllUserTokens
-
-  """Sends an email with the account password modification link."""
-  requestPasswordReset(
-    """
-    Slug of a channel which will be used for notify user. Optional when only one channel exists.
-    """
-    channel: String
-
-    """Email of the user that will be used for password recovery."""
-    email: String!
-
-    """
-    URL of a view where users should be redirected to reset the password. URL in RFC 1808 format.
-    """
-    redirectUrl: String!
-  ): RequestPasswordReset
-
-  """Confirm user account with token sent by email during registration."""
-  confirmAccount(
-    """E-mail of the user performing account confirmation."""
-    email: String!
-
-    """A one-time token required to confirm the account."""
-    token: String!
-  ): ConfirmAccount
-
-  """
-  Sets the user's password from the token sent by email using the RequestPasswordReset mutation.
-  """
-  setPassword(
-    """Email of a user."""
-    email: String!
-
-    """Password of a user."""
-    password: String!
-
-    """A one-time token required to set the password."""
-    token: String!
-  ): SetPassword
-
-  """
-  Change the password of the logged in user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  passwordChange(
-    """New user password."""
-    newPassword: String!
-
-    """Current user password."""
-    oldPassword: String!
-  ): PasswordChange
-
-  """
-  Request email change of the logged in user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  requestEmailChange(
-    """
-    Slug of a channel which will be used to notify users. Optional when only one channel exists.
-    """
-    channel: String
-
-    """New user email."""
-    newEmail: String!
-
-    """User password."""
-    password: String!
-
-    """
-    URL of a view where users should be redirected to update the email address. URL in RFC 1808 format.
-    """
-    redirectUrl: String!
-  ): RequestEmailChange
-
-  """
-  Confirm the email change of the logged-in user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  confirmEmailChange(
-    """
-    Slug of a channel which will be used to notify users. Optional when only one channel exists.
-    """
-    channel: String
-
-    """A one-time token required to change the email."""
-    token: String!
-  ): ConfirmEmailChange
-
-  """
-  Create a new address for the customer. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  accountAddressCreate(
-    """Fields required to create address."""
-    input: AddressInput!
-
-    """
-    A type of address. If provided, the new address will be automatically assigned as the customer's default address of that type.
-    """
-    type: AddressTypeEnum
-  ): AccountAddressCreate
-
-  """
-  Updates an address of the logged-in user. Requires one of the following permissions: MANAGE_USERS, IS_OWNER.
-  """
-  accountAddressUpdate(
-    """ID of the address to update."""
+     """The ID of the shift group whose members you want to reorder"""
     id: ID!
 
-    """Fields required to update the address."""
-    input: AddressInput!
-  ): AccountAddressUpdate
+    """The IDs of the group members whose order is to be rearranged"""
+    userIds: [ID!]!
+  ): ResponseStatus
 
-  """
-  Delete an address of the logged-in user. Requires one of the following permissions: MANAGE_USERS, IS_OWNER.
-  """
-  accountAddressDelete(
-    """ID of the address to delete."""
-    id: ID!
-  ): AccountAddressDelete
+  """Removes a user as a member of a shift group"""
+  shiftGroupMemberRemove(
+    """id of a channel or branch_id"""
+    channelId: ID!
 
-  """
-  Sets a default address for the authenticated user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  accountSetDefaultAddress(
-    """ID of the address to set as default."""
+    """The ID of the shift group where the member resides"""
     id: ID!
 
-    """The type of address."""
-    type: AddressTypeEnum!
-  ): AccountSetDefaultAddress
-
-  """Register a new user."""
-  accountRegister(
-    """Fields required to create a user."""
-    input: AccountRegisterInput!
-  ): AccountRegister
-
-  """
-  Updates the account of the logged-in user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  accountUpdate(
-    """Fields required to update the account of the logged-in user."""
-    input: AccountInput!
-  ): AccountUpdate
-
-  """
-  Sends an email with the account removal link for the logged-in user. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  accountRequestDeletion(
-    """
-    Slug of a channel which will be used to notify users. Optional when only one channel exists.
-    """
-    channel: String
-
-    """
-    URL of a view where users should be redirected to delete their account. URL in RFC 1808 format.
-    """
-    redirectUrl: String!
-  ): AccountRequestDeletion
-
-  """
-  Remove user account. Requires one of the following permissions: AUTHENTICATED_USER.
-  """
-  accountDelete(
-    """
-    A one-time token required to remove account. Sent by email using AccountRequestDeletion mutation.
-    """
-    token: String!
-  ): AccountDelete
-
-  """
-  Creates user address. Requires one of the following permissions: MANAGE_USERS.
-  """
-  addressCreate(
-    """Fields required to create address."""
-    input: AddressInput!
-
-    """ID of a user to create address for."""
+   """The ID of the group members to remove"""
     userId: ID!
-  ): AddressCreate
+  ): ResponseStatus
 
-  """
-  Updates an address. Requires one of the following permissions: MANAGE_USERS.
-  """
-  addressUpdate(
-    """ID of the address to update."""
+
+
+  """Adds a new assigned shift"""
+  assignedShiftAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
     id: ID!
 
-    """Fields required to update the address."""
-    input: AddressInput!
-  ): AddressUpdate
+    """If this is an assigned shift you need to provide the userId"""
+    userId: ID
 
-  """
-  Deletes an address. Requires one of the following permissions: MANAGE_USERS.
-  """
-  addressDelete(
-    """ID of the address to delete."""
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Edits an assigned shift"""
+  assignedShiftEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
     id: ID!
-  ): AddressDelete
 
-  """
-  Sets a default address for the given user. Requires one of the following permissions: MANAGE_USERS.
-  """
-  addressSetDefault(
-    """ID of the address."""
-    addressId: ID!
+    """The id of the shift that you want to update"""
+    shiftId: ID!
 
-    """The type of address."""
-    type: AddressTypeEnum!
+    """The color"""
+    color: ShiftColorEnum
 
-    """ID of the user to change the address for."""
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Deletes an assigned shift"""
+  assignedShiftDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being deleted"""
+    id: ID!
+
+    """The id of the shift that you want to delete"""
+    shiftId: ID!
+  ): ResponseStatus
+
+  """Moves an assigned shift to open"""
+  assignedShiftMoveToOpen(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being deleted"""
+    id: ID!
+
+    """The id of the shift that you want to move"""
+    shiftId: ID!
+  ): ResponseStatus
+
+
+
+
+
+  """Adds a new open shift"""
+  openShiftAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
+    id: ID!
+
+    """An open shift will require the number of slots to be specified"""
+    slots: Int
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Edits an open shift"""
+  openShiftEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
+    id: ID!
+
+    """The id of the shift that you want to update"""
+    shiftId: ID!
+
+    """Number of slots"""
+    slots: Int
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Deletes an open shift"""
+  openShiftDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being deleted"""
+    id: ID!
+
+    """The id of the open shift that you want to delete"""
+    shiftId: ID!
+  ): ResponseStatus
+
+  """Assign an open shift to a group member"""
+  openShiftAssign(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    id: ID!
+
+    """The id of the shift that you want to assign"""
+    shiftId: ID!
+
+     """The id of the group member that the shift should be assigned"""
     userId: ID!
-  ): AddressSetDefault
+  ): ResponseStatus
 
-  """
-  Creates a new customer. Requires one of the following permissions: MANAGE_USERS.
-  """
-  customerCreate(
-    """Fields required to create a customer."""
-    input: UserCreateInput!
-  ): CustomerCreate
 
-  """
-  Updates an existing customer. Requires one of the following permissions: MANAGE_USERS.
-  """
-  customerUpdate(
-    """ID of a customer to update."""
+  """Adds a timeoff for a group member"""
+  timeOffAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
     id: ID!
 
-    """Fields required to update a customer."""
-    input: CustomerInput!
-  ): CustomerUpdate
+    """The color"""
+    color: ShiftColorEnum
 
-  """
-  Deletes a customer. Requires one of the following permissions: MANAGE_USERS.
-  """
-  customerDelete(
-    """ID of a customer to delete."""
-    id: ID!
-  ): CustomerDelete
+    """The label"""
+    label: String
 
-  """
-  Deletes customers. Requires one of the following permissions: MANAGE_USERS.
-  """
-  customerBulkDelete(
-    """List of user IDs to delete."""
-    ids: [ID!]!
-  ): CustomerBulkDelete
+    """A note"""
+    note: String
 
-  """
-  Creates a new staff user. Requires one of the following permissions: MANAGE_STAFF.
-  """
-  staffCreate(
-    """Fields required to create a staff user."""
-    input: StaffCreateInput!
-  ): StaffCreate
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
 
-  """
-  Updates an existing staff user. Requires one of the following permissions: MANAGE_STAFF.
-  """
-  staffUpdate(
-    """ID of a staff user to update."""
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
+  """Removes timeoff for a group member"""
+  timeOffEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
     id: ID!
 
-    """Fields required to update a staff user."""
-    input: StaffUpdateInput!
-  ): StaffUpdate
+    """The color"""
+    color: ShiftColorEnum
 
-  """
-  Deletes a staff user. Requires one of the following permissions: MANAGE_STAFF.
-  """
-  staffDelete(
-    """ID of a staff user to delete."""
-    id: ID!
-  ): StaffDelete
+    """The label"""
+    label: String
 
-  """
-  Deletes staff users. Requires one of the following permissions: MANAGE_STAFF.
-  """
-  staffBulkDelete(
-    """List of user IDs to delete."""
-    ids: [ID!]!
-  ): StaffBulkDelete
+    """A note"""
+    note: String
 
-  """
-  Create a user avatar. Only for staff members. This mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https://github.com/jaydenseric/graphql-multipart-request-spec Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-  """
-  userAvatarUpdate(
-    """Represents an image file in a multipart request."""
-    image: Upload!
-  ): UserAvatarUpdate
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
 
-  """
-  Deletes a user avatar. Only for staff members. Requires one of the following permissions: AUTHENTICATED_STAFF_USER.
-  """
-  userAvatarDelete: UserAvatarDelete
+    """When does the shift start"""
+    startTime: String
 
-  """
-  Activate or deactivate users. Requires one of the following permissions: MANAGE_USERS.
-  """
-  userBulkSetActive(
-    """List of user IDs to (de)activate)."""
-    ids: [ID!]!
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
 
-    """Determine if users will be set active or not."""
-    isActive: Boolean!
-  ): UserBulkSetActive
+  """Deletes a user time off"""
+  timeOffDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!  
+  ): ResponseStatus
+
+  """Updates a daily note"""
+  dayNoteUpdate(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """A note"""
+    note: String
+
+    """A date""""
+    date: String!
+  ): ResponseStatus
+
+
+  """Create a time off request to an admin"""
+  requestCreateTimeOff(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """Is this an all day request"""
+    isAllDay: Boolean
+
+    """When does the timeoff start"""
+    startTime: String
+
+    """When does the timeoff end"""
+    endTime: String
+
+    """Reason for the request"""
+    reason: String!
+
+    """A note"""
+    note: String
+  ): ResponseStatus
+
+  """Create a swap request to a group member"""
+  requestCreateSwap(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The shift that you want to swap. It should be yours"""
+    assignedShiftId: ID!
+
+    """The team members shift that you want to swap with"""
+    groupMemberShiftId: ID!
+
+    """A note"""
+    note: String
+  ): ResponseStatus
+
+  """Create a swap request to a group member"""
+  requestCreateOffer(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The shift that you want to offer. It should be yours"""
+    assignedShiftId: ID!
+
+    """The team members that you want to offer the shift to"""
+    groupMemberId: ID!
+
+    """A note"""
+    note: String
+  ): ResponseStatus
+
+  cancelRequestSwap(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The id of the swap request that you want to cancel"""
+    requestId: ID!
+  ): ResponseStatus
+
+  cancelRequestOffer(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The id of the offer request that you want to cancel"""
+    requestId: ID!
+  ): ResponseStatus
+
+  updateSettings(
+    """The settings slug"""
+    key: String!
+
+    """The value"""
+    value: String!
+  ): ResponseStatus
+}
+
+enum ShiftTypeEnum {
+  """An open shift"""
+  OPEN_SHIFT
+
+  """An assigned shift"""
+  ASSIGNED_SHIFT
+}
+
+enum ShiftColorEnum {
+  WHITE
+  BLUE
+  GREEN
+  PURPLE
+  PINK
+  YELLOW
+  GRAY
+  DARK_BLUE
+  DARK_GREEN
+  DARK_PURPLE
+  DARK_PINK
+  DARK_YELLOW
+}
+
+enum UnpaidBreakEnum {
+  0_MIN
+  15_MIN
+  30_MIN
+  45_MIN
+  60_MIN
+  75_MIN
+  90_MIN
 }
 
 type ResponseStatus {
-   """The status of the request"""
+   """The status of the request. `success` or `failed`"""
     status: String
 
    """Information about the status"""
@@ -538,6 +628,15 @@ type SubShift {
   name: String!
   code: String
   color: String!
+  startTime: String!
+  endTime: String!
+  isPaid: Boolean!
+}
+
+input SubShiftInput {
+  name: String!
+  code: String
+  color: ShiftColorEnum
   startTime: String!
   endTime: String!
   isPaid: Boolean!
