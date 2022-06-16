@@ -85,63 +85,6 @@ type Mutation {
     """The IDs of the group to whose order is to be rearranged"""
     ids: [ID!]!
   ): ResponseStatus
-
-   """Rename a Shift group"""
-  shiftGroupRename(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """The ID of the group to rename"""
-    id: ID!
-
-    """The new name of the group"""
-    name: String!
-  ): ResponseStatus
-
-   """Delete a shift group"""
-  shiftGroupDelete(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """The ID of the shift group to delete"""
-    id: ID!
-  ): ResponseStatus
-
-  """Add a user as a member of a shift group"""
-  shiftGroupMemberAdd(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """The ID of the shift group that you want to add a user into"""
-    id: ID!
-
-     """The ID of the user to add"""
-     userId: ID!
-  ): ResponseStatus
-
-  """Change the position of Shift group members in a group"""
-  shiftGroupMembersReorder(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-     """The ID of the shift group whose members you want to reorder"""
-    id: ID!
-
-    """The IDs of the group members whose order is to be rearranged"""
-    userIds: [ID!]!
-  ): ResponseStatus
-
-  """Removes a user as a member of a shift group"""
-  shiftGroupMemberRemove(
-    """id of a channel or branch_id"""
-    channelId: ID!
-
-    """The ID of the shift group where the member resides"""
-    id: ID!
-
-   """The ID of the group members to remove"""
-    userId: ID!
-  ): ResponseStatus
 }
 
 enum ShiftTypeEnum {
