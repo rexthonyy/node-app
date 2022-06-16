@@ -453,7 +453,7 @@ type ResponseStatus {
     message: String
 }
 
-type getShiftsFilter {
+input getShiftsFilter {
    """Lookup shifts"""
     includeShifts: Boolean
 
