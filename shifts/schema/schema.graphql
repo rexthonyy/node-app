@@ -334,6 +334,124 @@ type Mutation {
      """The id of the group member that the shift should be assigned"""
     userId: ID!
   ): ResponseStatus
+
+
+  """Adds a timeoff for a group member"""
+  timeOffAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    id: ID!
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
+  """Removes timeoff for a group member"""
+  timeOffEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
+  """Deletes a user time off"""
+  timeOffDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!  
+  ): ResponseStatus
+
+  """Updates a daily note"""
+  dayNoteUpdate(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """A note"""
+    note: String
+
+    """A date""""
+    date: String!
+  ): ResponseStatus
+
+  """Create a time off request to an admin"""
+  requestCreateTimeOff(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """Is this an all day request"""
+    isAllDay: Boolean
+
+    """When does the timeoff start"""
+    startTime: String
+
+    """When does the timeoff end"""
+    endTime: String
+
+    """Reason for the request"""
+    reason: String!
+
+    """A note"""
+    note: String
+  ): ResponseStatus
+
+  """Create a swap request to a group member"""
+  requestCreateSwap(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The shift that you want to swap. It should be yours"""
+    assignedShiftId: ID!
+
+    """The team members shift that you want to swap with"""
+    groupMemberShiftId: ID!
+
+    """A note"""
+    note: String
+  ): ResponseStatus
 }
 
 enum ShiftTypeEnum {
