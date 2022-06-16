@@ -393,6 +393,29 @@ type Mutation {
     endTime: String
   ): ResponseStatus
 
+  """Deletes a user time off"""
+  timeOffDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!  
+  ): ResponseStatus
+
+  """Updates a daily note"""
+  dayNoteUpdate(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """A note"""
+    note: String
+
+    """A date""""
+    date: String!
+  ): ResponseStatus
 }
 
 enum ShiftTypeEnum {
