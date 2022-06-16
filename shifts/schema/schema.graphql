@@ -143,8 +143,6 @@ type Mutation {
     userId: ID!
   ): ResponseStatus
 
-
-
   """Adds a new assigned shift"""
   assignedShiftAdd(
     """id of a channel or branch_id"""
@@ -234,10 +232,191 @@ type Mutation {
 
     """The ID of the shift group where the shift is being deleted"""
     id: ID!
-
     """The id of the shift that you want to move"""
     shiftId: ID!
   ): ResponseStatus
+
+  """Adds a new open shift"""
+  openShiftAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
+    id: ID!
+
+    """An open shift will require the number of slots to be specified"""
+    slots: Int
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Edits an open shift"""
+  openShiftEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being created"""
+    id: ID!
+
+    """The id of the shift that you want to update"""
+    shiftId: ID!
+
+    """Number of slots"""
+    slots: Int
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+
+    """How much time for an unpaid break"""
+    break: UnpaidBreakEnum
+
+    shiftActivities: [SubShiftInput]
+  ): ResponseStatus
+
+  """Deletes an open shift"""
+  openShiftDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being deleted"""
+    id: ID!
+    """The id of the open shift that you want to delete"""
+    shiftId: ID!
+  ): ResponseStatus
+
+  """Assign an open shift to a group member"""
+  openShiftAssign(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    id: ID!
+
+    """The id of the shift that you want to assign"""
+    shiftId: ID!
+
+     """The id of the group member that the shift should be assigned"""
+    userId: ID!
+  ): ResponseStatus
+
+
+  """Adds a timeoff for a group member"""
+  timeOffAdd(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    id: ID!
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
+  """Removes timeoff for a group member"""
+  timeOffEdit(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!
+
+    """The color"""
+    color: ShiftColorEnum
+
+    """The label"""
+    label: String
+
+    """A note"""
+    note: String
+
+    """Is this a 24 hour shift"""
+    is24Hours: Boolean
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
+  """Deletes a user time off"""
+  timeOffDelete(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group"""
+    shiftGroupId: ID!
+
+    """The ID of the user time off"""
+    id: ID!  
+  ): ResponseStatus
+
+  """Updates a daily note"""
+  dayNoteUpdate(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """A note"""
+    note: String
+
+    """A date""""
+    date: String!
+  ): ResponseStatus
+
 
   """Create a time off request to an admin"""
   requestCreateTimeOff(
