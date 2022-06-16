@@ -111,13 +111,13 @@ enum ShiftColorEnum {
 }
 
 enum UnpaidBreakEnum {
-  0_MIN
-  15_MIN
-  30_MIN
-  45_MIN
-  60_MIN
-  75_MIN
-  90_MIN
+  MIN_0
+  MIN_15
+  MIN_30
+  MIN_45
+  MIN_60
+  MIN_75
+  MIN_90
 }
 
 type ResponseStatus {
