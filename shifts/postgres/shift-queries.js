@@ -130,7 +130,7 @@ const getAccountAddressById = (values, response) => {
 };
 
 const createShiftGroup = (values, response) => {
-    client.query(`INSERT INTO ${db.shift_groups} (channel_id, name) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,

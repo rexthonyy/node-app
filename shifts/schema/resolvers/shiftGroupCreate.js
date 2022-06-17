@@ -29,7 +29,7 @@ function getGraphQLOutput(status, message, result) {
 
 function shiftGroupCreate(channelId, name) {
     return new Promise(resolve => {
-        shiftQueries.createShiftGroup([channelId, name], result => {
+        shiftQueries.createShiftGroup([channelId, name, -1], result => {
             if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create shift groups", null)) };
             let shiftGroup = result.res[0];
             let data = {
