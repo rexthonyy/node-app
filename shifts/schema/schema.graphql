@@ -93,7 +93,7 @@ type Query {
 }
 
 type Mutation {
-  """Create shift group."""
+  """Create shift group. Requires permission MANAGE_STAFF"""
   shiftGroupCreate(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -103,7 +103,7 @@ type Mutation {
   ): shiftGroupCreateResponse
 
 
-   """Change the position of a Shift group"""
+   """Change the position of a Shift group. Requires permission MANAGE_STAFF"""
   shiftGroupReorder(
     """id of a channel or branch_id"""
     channelId: ID!
