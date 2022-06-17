@@ -1,5 +1,13 @@
 type Query {
   """
+  List of shift groups in a channel
+  """
+  getShiftGroups(
+     """ID of the channel."""
+    channelId: ID!
+  ): [ShiftGroup]
+
+  """
   List of group members in a Shift group
   """
   getShiftGroupMembers(
@@ -101,7 +109,7 @@ type Mutation {
     channelId: ID!
 
     """The IDs of the group to whose order is to be rearranged"""
-    ids: [ID!]!
+    shiftGroupIds: [ID!]!
   ): ResponseStatus
 
    """Rename a Shift group"""
@@ -110,7 +118,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the group to rename"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The new name of the group"""
     name: String!
@@ -122,7 +130,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group to delete"""
-    id: ID!
+    shiftGroupId: ID!
   ): ResponseStatus
 
   """Add a user as a member of a shift group"""
@@ -131,7 +139,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group that you want to add a user into"""
-    id: ID!
+    shiftGroupId: ID!
 
      """The ID of the user to add"""
      userId: ID!
@@ -143,7 +151,7 @@ type Mutation {
     channelId: ID!
 
      """The ID of the shift group whose members you want to reorder"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The IDs of the group members whose order is to be rearranged"""
     userIds: [ID!]!
@@ -155,7 +163,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the member resides"""
-    id: ID!
+    shiftGroupId: ID!
 
    """The ID of the group members to remove"""
     userId: ID!
@@ -167,7 +175,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being created"""
-    id: ID!
+    shiftGroupId: ID!
 
     """If this is an assigned shift you need to provide the userId"""
     userId: ID
@@ -202,7 +210,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being created"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The id of the shift that you want to update"""
     shiftId: ID!
@@ -237,7 +245,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being deleted"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The id of the shift that you want to delete"""
     shiftId: ID!
@@ -249,7 +257,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being deleted"""
-    id: ID!
+    shiftGroupId: ID!
     """The id of the shift that you want to move"""
     shiftId: ID!
   ): ResponseStatus
@@ -260,7 +268,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being created"""
-    id: ID!
+    shiftGroupId: ID!
 
     """An open shift will require the number of slots to be specified"""
     slots: Int
@@ -295,7 +303,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being created"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The id of the shift that you want to update"""
     shiftId: ID!
@@ -333,7 +341,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group where the shift is being deleted"""
-    id: ID!
+    shiftGroupId: ID!
     """The id of the open shift that you want to delete"""
     shiftId: ID!
   ): ResponseStatus
@@ -344,7 +352,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The id of the shift that you want to assign"""
     shiftId: ID!
@@ -360,7 +368,7 @@ type Mutation {
     channelId: ID!
 
     """The ID of the shift group"""
-    id: ID!
+    shiftGroupId: ID!
 
     """The color"""
     color: ShiftColorEnum
@@ -510,6 +518,18 @@ type Mutation {
     """The value"""
     value: String!
   ): ResponseStatus
+}
+
+"""A channel can have multiple shift groups"""
+type ShiftGroup {
+  """The channel of the shift group"""
+  channelId: ID!
+
+  """The ID of the shift group"""
+  shiftGroupId: ID!
+
+  """The name of the shift group"""
+  name: String!
 }
 
 type DayNotes {
