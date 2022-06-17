@@ -78,6 +78,23 @@ const getShiftGroupMemberByUserId = (values, response) => {
     });
 };
 
+const getShiftGroupMembersByChannelId = (values, response) => {
+    pool.query(`SELECT * from ${db.shift_group_members} WHERE channel_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getShiftGroupMembersByChannelIdAndShiftGroupId = (values, response) => {
     pool.query(`SELECT * from ${db.shift_group_members} WHERE channel_id=$1 AND shift_group_id=$2`, values, (err, res) => {
         if (err) {
@@ -373,6 +390,7 @@ module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
     getShiftGroupMemberByUserId,
+    getShiftGroupMembersByChannelId,
     getShiftGroupMembersByChannelIdAndShiftGroupId,
     getAssignedShiftsByChannelIdShiftGroupIdAndUserId,
 

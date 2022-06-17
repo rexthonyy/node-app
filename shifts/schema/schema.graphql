@@ -30,7 +30,7 @@ type Query {
      """ID of the shift group."""
     shiftGroupId: ID!
 
-  ): [User]
+  ): getNonShiftGroupMembersResponse
 
 
   """
@@ -529,6 +529,13 @@ type getShiftGroupsResponse{
 
 """Return type for getShiftGroupMembers"""
 type getShiftGroupMembersResponse{
+  status: String
+  message: String
+  result: [User]
+}
+
+"""Return type for getShiftGroupMembers"""
+type getNonShiftGroupMembersResponse{
   status: String
   message: String
   result: [User]
