@@ -14,12 +14,7 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await shiftGroupCreate(channelId, name));
         } else {
-            let addressOwnerId = await getAddressOwnerId(id);
-            if (authUser.id == addressOwnerId) {
-                resolve(await deleteAccountAddress(id));
-            } else {
-                resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
-            }
+            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
         }
     });
 }
