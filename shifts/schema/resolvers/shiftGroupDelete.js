@@ -22,8 +22,7 @@ module.exports = async(parent, args, context) => {
 function getGraphQLOutput(status, message, result) {
     return {
         status,
-        message,
-        result
+        message
     };
 }
 

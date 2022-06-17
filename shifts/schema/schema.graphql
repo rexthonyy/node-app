@@ -133,7 +133,7 @@ type Mutation {
     shiftGroupId: ID!
   ): shiftGroupDeleteResponse
 
-  """Add a user as a member of a shift group"""
+  """Add a user as a member of a shift group. Requires permission MANAGE_STAFF"""
   shiftGroupMemberAdd(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -545,7 +545,6 @@ type shiftGroupRenameResponse{
 type shiftGroupDeleteResponse{
   status: String
   message: String
-  result: ShiftGroup
 }
 
 """A channel can have multiple shift groups"""
