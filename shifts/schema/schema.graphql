@@ -157,7 +157,7 @@ type Mutation {
     userIds: [ID!]!
   ): ResponseStatus
 
-  """Removes a user as a member of a shift group"""
+  """Removes a user as a member of a shift group. Requires permission MANAGE_STAFF"""
   shiftGroupMemberRemove(
     """id of a channel or branch_id"""
     channelId: ID!

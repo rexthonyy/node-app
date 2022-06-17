@@ -78,6 +78,23 @@ const getShiftGroupMemberByUserId = (values, response) => {
     });
 };
 
+const getAssignedShiftsByChannelIdShiftGroupIdAndUserId = (values, response) => {
+    pool.query(`SELECT * from ${db.assigned_shifts} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 const createShiftGroup = (values, response) => {
     client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
@@ -285,6 +302,23 @@ const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
     });
 };
 
+const deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteOpenShiftActivitiesByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.open_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
@@ -319,8 +353,42 @@ const deleteUserTimeOffsByShiftGroupId = (values, response) => {
     });
 };
 
+const deleteUserTimeOffsByChannelIdShiftGroupIdAndUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.user_time_offs} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteAssignedShiftsByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.assigned_shifts} WHERE shift_group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedShiftsByChannelIdShiftGroupIdAndUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.assigned_shifts} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -370,6 +438,23 @@ const deleteShiftGroupMembersByShiftGroupId = (values, response) => {
     });
 };
 
+const deleteShiftGroupMembersByChannelIdShiftGroupIdAndUserId = (values, response) => {
+    client.query(`DELETE FROM ${db.shift_group_members} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteShiftGroupById = (values, response) => {
     client.query(`DELETE FROM ${db.shift_groups} WHERE id=$1`, values, (err, res) => {
         if (err) {
@@ -391,6 +476,7 @@ module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
     getShiftGroupMemberByUserId,
+    getAssignedShiftsByChannelIdShiftGroupIdAndUserId,
 
     createShiftGroup,
     createShiftGroupMember,
@@ -409,10 +495,14 @@ module.exports = {
     updateAccountAddressById,
 
     deleteAssignedShiftActivitiesByShiftGroupId,
+    deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
     deleteOpenShiftActivitiesByShiftGroupId,
     deleteUserTimeOffsByShiftGroupId,
+    deleteUserTimeOffsByChannelIdShiftGroupIdAndUserId,
     deleteAssignedShiftsByShiftGroupId,
+    deleteAssignedShiftsByChannelIdShiftGroupIdAndUserId,
     deleteOpenShiftsByShiftGroupId,
     deleteShiftGroupMembersByShiftGroupId,
+    deleteShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
     deleteShiftGroupById
 }
