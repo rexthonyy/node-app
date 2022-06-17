@@ -61,8 +61,8 @@ const getShiftGroupsByChannelId = (values, response) => {
     });
 };
 
-const getUserById = (values, response) => {
-    pool.query(`SELECT * from ${db.account_user} WHERE id=$1`, values, (err, res) => {
+const getShiftGroupMemberByUserId = (values, response) => {
+    pool.query(`SELECT * from ${db.shift_group_members} WHERE user_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
@@ -78,73 +78,6 @@ const getUserById = (values, response) => {
     });
 };
 
-const getUserByIsStaff = (values, response) => {
-    pool.query(`SELECT * from ${db.account_user} WHERE is_staff=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 201
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getAccountUserAddressesByUserId = (values, response) => {
-    pool.query(`SELECT * from ${db.account_user_addresses} WHERE user_id=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 201
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getAccountUserAddressesByAddressId = (values, response) => {
-    pool.query(`SELECT * from ${db.account_user_addresses} WHERE address_id=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 201
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const getAccountAddressById = (values, response) => {
-    pool.query(`SELECT * from ${db.account_address} WHERE id=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err,
-                res: null,
-                code: 201
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
 
 const createShiftGroup = (values, response) => {
     client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
@@ -440,6 +373,7 @@ const deleteShiftGroupById = (values, response) => {
 module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
+    getShiftGroupMemberByUserId,
 
     createShiftGroup,
     createShiftGroupMember,
@@ -447,11 +381,6 @@ module.exports = {
     updateShiftGroupById,
 
 
-    getUserById,
-    getUserByIsStaff,
-    getAccountUserAddressesByUserId,
-    getAccountUserAddressesByAddressId,
-    getAccountAddressById,
 
     createAccountAddress,
     createAccountUserAddress,
