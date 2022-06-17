@@ -27,6 +27,23 @@ const client = new Client({
 client.connect();
 
 
+const getShiftGroupById = (values, response) => {
+    pool.query(`SELECT * from ${db.shift_groups} WHERE id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getShiftGroupsByChannelId = (values, response) => {
     pool.query(`SELECT * from ${db.shift_groups} WHERE channel_id=$1`, values, (err, res) => {
         if (err) {
@@ -404,6 +421,7 @@ const deleteShiftGroupById = (values, response) => {
 };
 
 module.exports = {
+    getShiftGroupById,
     getShiftGroupsByChannelId,
 
     createShiftGroup,

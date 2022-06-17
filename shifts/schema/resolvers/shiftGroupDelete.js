@@ -4,7 +4,7 @@ const { checkAuthorization, userPermissionGroupHasAccess } = require('./lib');
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message));
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
@@ -14,12 +14,12 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await shiftGroupDelete(channelId, shiftGroupId));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation"));
         }
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(status, message) {
     return {
         status,
         message
@@ -34,13 +34,8 @@ function shiftGroupDelete(channelId, shiftGroupId) {
         await deleteAssignedShiftsInShiftGroup(shiftGroupId);
         await deleteOpenShiftsInShiftGroup(shiftGroupId);
         await deleteShiftGroupMembersInShiftGroup(shiftGroupId);
-        let shiftGroup = deleteShiftGroup(shiftGroupId);
-        let data = {
-            channelId: shiftGroup.channel_id,
-            shiftGroupId: shiftGroup.id,
-            name: shiftGroup.name
-        };
-        resolve(getGraphQLOutput("success", "Shift group deleted", data));
+        await deleteShiftGroup(shiftGroupId);
+        resolve(getGraphQLOutput("success", "Shift group deleted"));
     });
 }
 
