@@ -33,7 +33,7 @@ function getShiftGroups(channelId) {
                     name: shiftGroup.name
                 });
             }
-            resolve(getGraphQLOutput("success", `${data.length} results`, data));
+            resolve(getGraphQLOutput("success", `${data.length} shift groups`, data));
         });
     });
 }

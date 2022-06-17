@@ -100,7 +100,7 @@ type Mutation {
 
     """Name of the group. Defaults to `Unnamed group` if nothing is provided"""
     name: String
-  ): ResponseStatus
+  ): shiftGroupCreateResponse
 
 
    """Change the position of a Shift group"""
@@ -525,6 +525,13 @@ type getShiftGroupsResponse{
   status: String
   message: String
   result: [ShiftGroup]
+}
+
+"""Return type for shiftGroupCreate"""
+type shiftGroupCreateResponse{
+  status: String
+  message: String
+  result: ShiftGroup
 }
 
 """A channel can have multiple shift groups"""
