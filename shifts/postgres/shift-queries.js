@@ -180,8 +180,9 @@ const createAccountUserAddress = (values, response) => {
     });
 };
 
-const updateShiftGroupPositionById = (values, response) => {
-    client.query(`UPDATE ${db.shift_groups} SET position=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
+
+const updateShiftGroupById = (values, whereClause, response) => {
+    client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -356,7 +357,7 @@ module.exports = {
 
     createShiftGroup,
 
-    updateShiftGroupPositionById,
+    updateShiftGroupById,
 
 
     getUserById,

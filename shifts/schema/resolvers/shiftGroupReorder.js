@@ -46,7 +46,7 @@ function shiftGroupReorder(channelId, shiftGroupIds) {
                 order.position
             ];
 
-            shiftQueries.updateShiftGroupPositionById(values, result => {
+            shiftQueries.updateShiftGroupById(values, "position=$2", result => {
                 checkComplete();
             });
         });
