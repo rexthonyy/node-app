@@ -7,7 +7,7 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
         let channelId = args.channelId;
-        let name = args.name;
+        let name = args.name || "Unnamed group";
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
             resolve(await shiftGroupCreate(channelId, name));
@@ -30,7 +30,7 @@ function getGraphQLOutput(status, message, result) {
 function shiftGroupCreate(channelId, name) {
     return new Promise(resolve => {
         shiftQueries.createShiftGroup([channelId, name], result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", "Failed to create shift groups", null));
+            if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create shift groups", null)) };
             let shiftGroup = result.res[0];
             let data = {
                 channelId: shiftGroup.channel_id,
