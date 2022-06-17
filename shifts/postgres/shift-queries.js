@@ -165,6 +165,23 @@ const updateShiftGroupById = (values, whereClause, response) => {
     });
 };
 
+const updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId = (values, whereClause, response) => {
+    client.query(`UPDATE ${db.shift_group_members} SET ${whereClause} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3 RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateAccountAddressById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.account_address} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -379,7 +396,7 @@ module.exports = {
     createShiftGroupMember,
 
     updateShiftGroupById,
-
+    updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
 
 
     createAccountAddress,

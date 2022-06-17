@@ -145,7 +145,7 @@ type Mutation {
      userId: ID!
   ): ResponseStatus
 
-  """Change the position of Shift group members in a group"""
+  """Change the position of Shift group members in a group. Requires permission MANAGE_STAFF"""
   shiftGroupMembersReorder(
     """id of a channel or branch_id"""
     channelId: ID!
