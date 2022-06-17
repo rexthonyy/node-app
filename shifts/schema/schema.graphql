@@ -545,7 +545,7 @@ type getNonShiftGroupMembersResponse{
 type getShiftsResponse{
   status: String
   message: String
-  result: Shift
+  result: Shifts
 }
 
 """Return type for shiftGroupCreate"""
