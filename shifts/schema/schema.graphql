@@ -124,14 +124,14 @@ type Mutation {
     name: String!
   ): shiftGroupRenameResponse
 
-   """Delete a shift group"""
+   """Delete a shift group. Requires permission MANAGE_STAFF"""
   shiftGroupDelete(
     """id of a channel or branch_id"""
     channelId: ID!
 
     """The ID of the shift group to delete"""
     shiftGroupId: ID!
-  ): ResponseStatus
+  ): shiftGroupDeleteResponse
 
   """Add a user as a member of a shift group"""
   shiftGroupMemberAdd(
@@ -536,6 +536,13 @@ type shiftGroupCreateResponse{
 
 """Return type for shiftGroupRename"""
 type shiftGroupRenameResponse{
+  status: String
+  message: String
+  result: ShiftGroup
+}
+
+"""Return type for shiftGroupDelete"""
+type shiftGroupDeleteResponse{
   status: String
   message: String
   result: ShiftGroup

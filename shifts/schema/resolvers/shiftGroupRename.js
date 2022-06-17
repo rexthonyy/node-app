@@ -38,7 +38,7 @@ function shiftGroupRename(channelId, shiftGroupId, name) {
                 shiftGroupId: shiftGroup.id,
                 name: shiftGroup.name
             };
-            resolve(getGraphQLOutput("success", "Shift group created", data));
+            resolve(getGraphQLOutput("success", "Shift group renamed", data));
         });
     });
 }
