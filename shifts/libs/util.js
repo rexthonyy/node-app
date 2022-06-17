@@ -14,7 +14,12 @@ function myMap(val, minF, maxF, minT, maxT) {
     return minT + (((val - minF) / (maxF - minF)) * (maxT - minT));
 }
 
+function sortByPosition(a, b) {
+    return a.position - b.position;
+}
+
 module.exports = {
     isEmailValid,
-    getRandom
+    getRandom,
+    sortByPosition
 }

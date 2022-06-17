@@ -1,5 +1,6 @@
 const shiftQueries = require("../../postgres/shift-queries");
 const { checkAuthorization } = require('./lib');
+const { sortByPosition } = require("../../libs/util");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -25,6 +26,7 @@ function getShiftGroups(channelId) {
         shiftQueries.getShiftGroupsByChannelId([channelId], result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
             let shiftGroups = result.res;
+            shiftGroups.sort(sortByPosition);
             let data = [];
             for (let shiftGroup of shiftGroups) {
                 data.push({
