@@ -163,6 +163,23 @@ const createShiftGroup = (values, response) => {
     });
 };
 
+const createShiftGroupMember = (values, response) => {
+    client.query(`INSERT INTO ${db.shift_group_members} (channel_id, shift_group_id, user_id, position) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createAccountAddress = (values, response) => {
     client.query(`INSERT INTO ${db.account_address} (first_name, last_name, company_name, street_address_1, street_address_2, city, postal_code, country, country_area, phone, city_area) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -425,6 +442,7 @@ module.exports = {
     getShiftGroupsByChannelId,
 
     createShiftGroup,
+    createShiftGroupMember,
 
     updateShiftGroupById,
 
