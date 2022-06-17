@@ -29,7 +29,7 @@ function getGraphQLOutput(status, message) {
 
 function shiftGroupMemberRemove(channelId, shiftGroupId, userId) {
     return new Promise(resolve => {
-        shiftQueries.getAssignedShiftsByChannelIdShiftGroupIdAndUserId([userId], async result => {
+        shiftQueries.getAssignedShiftsByChannelIdShiftGroupIdAndUserId([channelId, shiftGroupId, userId], async result => {
             if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch user assigned shifts"));
             let assignedShifts = result.res;
             if (assignedShifts.length == 0) return resolve(await removeMemberFromShiftGroup(channelId, shiftGroupId, userId));
