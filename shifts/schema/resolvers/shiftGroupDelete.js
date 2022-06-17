@@ -56,7 +56,7 @@ function deleteAssignedShiftActivitiesInShiftGroup(shiftGroupId) {
 
 function deleteOpenShiftActivitiesInShiftGroup(shiftGroupId) {
     return new Promise(resolve => {
-        shiftQueries.deleteOpenedShiftActivitiesByShiftGroupId([shiftGroupId], result => {
+        shiftQueries.deleteOpenShiftActivitiesByShiftGroupId([shiftGroupId], result => {
             if (result.err) return resolve(false);
             resolve(result.res);
         });

@@ -284,8 +284,8 @@ const updateAccountUserEmail = (values, response) => {
 };
 
 
-const deleteAccountUserById = (values, response) => {
-    client.query(`DELETE FROM ${db.account_user} WHERE id=$1`, values, (err, res) => {
+const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -301,8 +301,8 @@ const deleteAccountUserById = (values, response) => {
     });
 };
 
-const deleteAccountAddressById = (values, response) => {
-    client.query(`DELETE FROM ${db.account_address} WHERE id=$1`, values, (err, res) => {
+const deleteOpenShiftActivitiesByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.open_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -318,8 +318,8 @@ const deleteAccountAddressById = (values, response) => {
     });
 };
 
-const deleteAccountUserAddressesByUserId = (values, response) => {
-    client.query(`DELETE FROM ${db.account_user_addresses} WHERE user_id=$1`, values, (err, res) => {
+const deleteUserTimeOffsByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.user_time_offs} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -335,8 +335,59 @@ const deleteAccountUserAddressesByUserId = (values, response) => {
     });
 };
 
-const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
-    client.query(`DELETE FROM ${db.account_user_addresses} WHERE user_id=$1 AND address_id=$2`, values, (err, res) => {
+const deleteAssignedShiftsByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.assigned_shifts} WHERE shift_group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteOpenShiftsByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.open_shifts} WHERE shift_group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShiftGroupMembersByShiftGroupId = (values, response) => {
+    client.query(`DELETE FROM ${db.shift_group_members} WHERE shift_group_id=$1`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShiftGroupById = (values, response) => {
+    client.query(`DELETE FROM ${db.shift_groups} WHERE id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -375,8 +426,11 @@ module.exports = {
     updateAccountUserEmail,
     updateAccountAddressById,
 
-    deleteAccountUserById,
-    deleteAccountAddressById,
-    deleteAccountUserAddressesByUserId,
-    deleteAccountUserAddressesByUserIdAndAddressId
+    deleteAssignedShiftActivitiesByShiftGroupId,
+    deleteOpenShiftActivitiesByShiftGroupId,
+    deleteUserTimeOffsByShiftGroupId,
+    deleteAssignedShiftsByShiftGroupId,
+    deleteOpenShiftsByShiftGroupId,
+    deleteShiftGroupMembersByShiftGroupId,
+    deleteShiftGroupById
 }

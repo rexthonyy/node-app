@@ -1,6 +1,9 @@
 const db = {
-    assigned_user_shifts: "assigned_user_shifts",
+    assigned_shift_activities: "assigned_shift_activities",
+    assigned_shifts: "assigned_shifts",
     day_notes: "day_notes",
+    open_shift_activities: "open_shift_activities",
+    open_shifts: "open_shifts",
     request_offer: "request_offer",
     request_swap: "request_swap",
     request_time_off: "request_time_off",
@@ -9,7 +12,6 @@ const db = {
     shift_activities: "shift_activities",
     shift_group_members: "shift_group_members",
     shift_groups: "shift_groups",
-    shifts: "shifts",
     user_time_offs: "user_time_offs",
 
     account_user: "account_user",
