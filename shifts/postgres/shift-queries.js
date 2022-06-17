@@ -78,6 +78,23 @@ const getShiftGroupMemberByUserId = (values, response) => {
     });
 };
 
+const getShiftGroupMembersByChannelIdAndShiftGroupId = (values, response) => {
+    pool.query(`SELECT * from ${db.shift_group_members} WHERE channel_id=$1 AND shift_group_id=$2`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAssignedShiftsByChannelIdShiftGroupIdAndUserId = (values, response) => {
     pool.query(`SELECT * from ${db.assigned_shifts} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
         if (err) {
@@ -130,40 +147,6 @@ const createShiftGroupMember = (values, response) => {
     });
 };
 
-const createAccountAddress = (values, response) => {
-    client.query(`INSERT INTO ${db.account_address} (first_name, last_name, company_name, street_address_1, street_address_2, city, postal_code, country, country_area, phone, city_area) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                code: 218
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const createAccountUserAddress = (values, response) => {
-    client.query(`INSERT INTO ${db.account_user_addresses} (user_id, address_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                code: 218
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
 
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
@@ -198,92 +181,6 @@ const updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId = (values, whereCl
         }
     });
 };
-
-const updateAccountAddressById = (values, whereClause, response) => {
-    client.query(`UPDATE ${db.account_address} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateAccountUserActive = (values, response) => {
-    client.query(`UPDATE ${db.account_user} SET is_active=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateAccountUserJWTTokenKey = (values, response) => {
-    client.query(`UPDATE ${db.account_user} SET jwt_token_key=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateAccountUserPassword = (values, response) => {
-    client.query(`UPDATE ${db.account_user} SET password=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateAccountUserEmail = (values, response) => {
-    client.query(`UPDATE ${db.account_user} SET email=$2 WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
 
 const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
@@ -476,6 +373,7 @@ module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
     getShiftGroupMemberByUserId,
+    getShiftGroupMembersByChannelIdAndShiftGroupId,
     getAssignedShiftsByChannelIdShiftGroupIdAndUserId,
 
     createShiftGroup,
@@ -483,16 +381,6 @@ module.exports = {
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
-
-
-    createAccountAddress,
-    createAccountUserAddress,
-
-    updateAccountUserActive,
-    updateAccountUserJWTTokenKey,
-    updateAccountUserPassword,
-    updateAccountUserEmail,
-    updateAccountAddressById,
 
     deleteAssignedShiftActivitiesByShiftGroupId,
     deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
