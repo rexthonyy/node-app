@@ -5,7 +5,7 @@ type Query {
   getShiftGroups(
      """ID of the channel."""
     channelId: ID!
-  ): [ShiftGroup]
+  ): getShiftGroupsResponse
 
   """
   List of group members in a Shift group
@@ -518,6 +518,13 @@ type Mutation {
     """The value"""
     value: String!
   ): ResponseStatus
+}
+
+"""Return type for getShiftGroups"""
+type getShiftGroupsResponse{
+  status: String
+  message: String
+  result: [ShiftGroup]
 }
 
 """A channel can have multiple shift groups"""
