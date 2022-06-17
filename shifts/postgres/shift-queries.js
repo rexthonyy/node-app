@@ -27,8 +27,8 @@ const client = new Client({
 client.connect();
 
 
-const getUserByEmail = (values, response) => {
-    pool.query(`SELECT * from ${db.account_user} WHERE email=$1`, values, (err, res) => {
+const getShiftGroupsByChannelId = (values, response) => {
+    pool.query(`SELECT * from ${db.shift_groups} WHERE channel_id=$1`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
@@ -352,7 +352,8 @@ const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
 };
 
 module.exports = {
-    getUserByEmail,
+    getShiftGroupsByChannelId,
+
     getUserById,
     getUserByIsStaff,
     getAccountUserAddressesByUserId,

@@ -1,20 +1,16 @@
+const shiftQueries = require("../../postgres/shift-queries");
+const { checkAuthorization } = require('./lib');
+
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
-        if (!context.user) return resolve(getGraphQLOutput("failed", "Please enter a valid authorization header", null));
-        const authUser = context.user;
+        let { isAuthorized, authUser, status, message } = checkAuthorization(context);
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
-        resolve({
-            status: "success",
-            message: "Fetch successful!",
-            result: [{
-                channelId: 1,
-                shiftGroupId: 2,
-                name: "abcd"
-            }]
-        });
+        let channelId = args.channelId;
+
+        resolve(await getShiftGroups(channelId));
     });
 }
-
 
 function getGraphQLOutput(status, message, result) {
     return {
@@ -22,4 +18,22 @@ function getGraphQLOutput(status, message, result) {
         message,
         result
     };
+}
+
+function getShiftGroups(channelId) {
+    return new Promise(resolve => {
+        shiftQueries.getShiftGroupsByChannelId([channelId], result => {
+            if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
+            let shiftGroups = result.res;
+            let data = [];
+            for (let shiftGroup of shiftGroups) {
+                data.push({
+                    channelId: shiftGroup.channel_id,
+                    shiftGroupId: shiftGroup.id,
+                    name: shiftGroup.name
+                });
+            }
+            resolve(getGraphQLOutput("success", `${data.length} results`, data));
+        });
+    });
 }
