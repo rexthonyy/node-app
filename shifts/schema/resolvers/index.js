@@ -1,3 +1,4 @@
+const getShiftGroups = require("./getShiftGroups");
 const getShiftGroupMembers = require("./getShiftGroupMembers");
 const getNonShiftGroupMembers = require("./getNonShiftGroupMembers");
 const getShifts = require("./getShifts");
@@ -32,6 +33,7 @@ const updateSettings = require("./updateSettings");
 
 module.exports = {
     Query: {
+        getShiftGroups,
         getShiftGroupMembers,
         getNonShiftGroupMembers,
         getShifts,

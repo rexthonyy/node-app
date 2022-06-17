@@ -1,7 +1,5 @@
-const me = require('./me');
-const lib = require('./lib');
+const getGraphQLUserById = require('./getGraphQLUserById');
 
 module.exports = {
-    me,
-    lib
+    getGraphQLUserById
 };

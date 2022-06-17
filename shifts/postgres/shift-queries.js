@@ -2,27 +2,27 @@ const { Pool, Client } = require('pg');
 const { db } = require('../libs/consts');
 
 const pool = new Pool({
-    user: process.env.POSTGRES_USER_USER,
-    host: process.env.POSTGRES_USER_HOST,
-    database: process.env.POSTGRES_USER_DB,
-    password: process.env.POSTGRES_USER_PASSWORD,
-    port: process.env.POSTGRES_USER_PORT
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 
 pool.query('SELECT NOW()', (err, res) => {
     if (err) {
-        console.log(`${process.env.POSTGRES_USER_DB} database initialization failed!!!`);
+        console.log("KratosSaleor database initialization failed!!!");
     } else {
-        console.log(`${process.env.POSTGRES_USER_DB} database initialized successfully!!!`);
+        console.log("KratosSaleor database initialized successfully!!!");
     }
 });
 
 const client = new Client({
-    user: process.env.POSTGRES_USER_USER,
-    host: process.env.POSTGRES_USER_HOST,
-    database: process.env.POSTGRES_USER_DB,
-    password: process.env.POSTGRES_USER_PASSWORD,
-    port: process.env.POSTGRES_USER_PORT
+    user: process.env.POSTGRES_USER,
+    host: process.env.POSTGRES_HOST,
+    database: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    port: process.env.POSTGRES_PORT
 });
 client.connect();
 
