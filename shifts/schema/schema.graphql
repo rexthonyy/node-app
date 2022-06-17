@@ -515,7 +515,7 @@ type Mutation {
 type DayNotes {
   """ID of the note"""
   id: ID!
-  """The note""""
+  """The note"""
   note: String
   """The date"""
   date: String!
