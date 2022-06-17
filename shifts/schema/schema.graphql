@@ -63,7 +63,25 @@ type Query {
   getRequests(
    """ID of the channel."""
     channelId: ID!
+
+
   ): ShiftTemplate
+
+  """
+  Look up the requests for a user in a channel
+  """
+  getDayNotes(
+   """ID of the channel."""
+    channelId: ID!
+
+    """Start time"""
+    startTime: String!
+
+    """End time"""
+    endTime: String!
+  ): [DayNotes]
+
+
 }
 
 type Mutation {
@@ -492,6 +510,15 @@ type Mutation {
     """The value"""
     value: String!
   ): ResponseStatus
+}
+
+type DayNotes {
+  """ID of the note"""
+  id: ID!
+  """The note""""
+  note: String
+  """The date"""
+  date: String!
 }
 
 enum ShiftTypeEnum {
