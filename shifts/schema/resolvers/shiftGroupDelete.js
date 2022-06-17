@@ -10,9 +10,9 @@ module.exports = async(parent, args, context) => {
         let shiftGroupId = args.shiftGroupId;
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
-            resolve(await shiftGroupDelete(channelId, shiftGroupIds));
+            resolve(await shiftGroupDelete(channelId, shiftGroupId));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
-            resolve(await shiftGroupDelete(channelId, shiftGroupIds));
+            resolve(await shiftGroupDelete(channelId, shiftGroupId));
         } else {
             resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
         }
