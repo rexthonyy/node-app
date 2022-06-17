@@ -51,7 +51,7 @@ type Query {
 
      """The end date of the shifts"""
     endDate: String!
-  ): Shifts
+  ): getShiftsResponse
 
   
   """
@@ -539,6 +539,13 @@ type getNonShiftGroupMembersResponse{
   status: String
   message: String
   result: [User]
+}
+
+"""Return type for getShiftGroupMembers"""
+type getShiftsResponse{
+  status: String
+  message: String
+  result: Shift
 }
 
 """Return type for shiftGroupCreate"""
