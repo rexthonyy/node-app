@@ -23,8 +23,7 @@ function getGraphQLOutput(status, message, result) {
 function getRequests(authUser, channelId) {
     return new Promise(async resolve => {
         shiftQueries.getRequests([channelId, authUser.id], "channel_id=$1 AND (user_id=$2 OR receipient_id=$2)", result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-
+            if (result.err) return resolve(getGraphQLOutput("failed", result.err, []));
             let requests = result.res;
             const numRequests = requests.length;
             let cursor = -1;
@@ -125,7 +124,7 @@ function getRequests(authUser, channelId) {
             function checkComplete() {
                 cursor++;
                 if (cursor == numRequests) {
-                    resolve({ status: "success", message: "Fetch successful", result: shifts });
+                    resolve({ status: "success", message: "Fetch successful", numberOfRequest: shifts.length, result: shifts });
                 }
             }
         });
