@@ -122,8 +122,8 @@ function getAssignedShifts(authUser, includeRequests, channelId, shiftGroupId, s
                 let groupMemberShifts = shifts.concat(timeOffs).concat(requests);
                 groupMemberShifts.sort(sortByStartTime);
 
-                let user_id = groupMember.user_id;
-                let graphQLUser = await getGraphQLUserById(user_id);
+                let userId = groupMember.user_id;
+                let graphQLUser = await getGraphQLUserById(userId);
                 let name = `${graphQLUser.firstName} ${graphQLUser.lastName}`;
                 let image = graphQLUser.avatar.url;
                 let numberOfHours = 0;
