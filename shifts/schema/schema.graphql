@@ -55,7 +55,7 @@ type Query {
 
   
   """
-  Look up the details of all shifts in a channel
+  Look up the details of all shifts in a channel. Requires permission MANAGE_STAFF
   """
   getAllUniqueShifts(
    """ID of the channel."""
@@ -63,7 +63,7 @@ type Query {
 
     """ID of the shift group."""
     shiftGroupId: ID!
-  ): Shifts
+  ): getAllUniqueShiftsResponse
 
   """
   Look up the requests for a user in a channel
@@ -546,6 +546,18 @@ type getShiftsResponse{
   status: String
   message: String
   result: Shifts
+}
+
+"""Return type for getAllUniqueShifts"""
+type getAllUniqueShiftsResponse{
+  status: String
+  message: String
+  result: UniqueShifts
+}
+
+type UniqueShifts{
+  openShifts: [OpenShift]
+  assignedShifts: [AssignedShift]
 }
 
 """Return type for shiftGroupCreate"""
