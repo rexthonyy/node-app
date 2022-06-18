@@ -60,19 +60,28 @@ function getRequests(authUser, channelId) {
                         checkComplete();
                     });
                 } else if (request.type == "requestSwap") {
-                    shiftQueries.getRequestSwap([channelId, request.id, "pending"], "channel_id=$1 AND request_id=$2 AND status=$3", async result => {
+                    shiftQueries.getRequestSwap([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
                         if (!result.err && result.res.length > 0) {
                             let swapRequests = result.res;
                             for (let swapRequest of swapRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
                                 let shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
                                 let toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
                                 shifts.push({
-                                    id: swapRequest.id,
-                                    type: "requestSwap",
-                                    color: color.gray,
-                                    note: swapRequest.request_note,
+                                    id: timeOffRequest.id,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "SWAP",
                                     shiftToSwap,
-                                    toSwapWith
+                                    toSwapWith,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
                                 });
                             }
                         }
@@ -83,13 +92,24 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let offerRequests = result.res;
                             for (let offerRequest of offerRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
                                 let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
+                                let shiftOfferedTo = await getGraphQLUserById(timeOffRequest.offered_to_user_id);
                                 shifts.push({
-                                    id: offerRequest.id,
-                                    type: "requestOffer",
-                                    color: color.gray,
-                                    note: offerRequest.request_note,
-                                    shiftToOffer
+                                    id: timeOffRequest.id,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "SWAP",
+                                    shiftToOffer,
+                                    shiftOfferedTo,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
                                 });
                             }
                         }
@@ -105,7 +125,7 @@ function getRequests(authUser, channelId) {
             function checkComplete() {
                 cursor++;
                 if (cursor == numRequests) {
-                    resolve(shifts);
+                    resolve({ status: "success", message: "Fetch successful", result: shifts });
                 }
             }
         });
