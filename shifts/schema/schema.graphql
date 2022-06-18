@@ -66,14 +66,22 @@ type Query {
   ): getAllUniqueShiftsResponse
 
   """
-  Look up the requests for a user in a channel
+  Look up the requests for the logged in user in a channel
   """
   getRequests(
    """ID of the channel."""
     channelId: ID!
 
+  ): getRequestsResponse
 
-  ): ShiftTemplate
+  """
+  Look up the requests for all users in a channel. Requires permission MANAGE_STAFF
+  """
+  getAllRequests(
+   """ID of the channel."""
+    channelId: ID!
+
+  ): getAllRequestsResponse
 
   """
   Look up the requests for a user in a channel
@@ -553,6 +561,20 @@ type getAllUniqueShiftsResponse{
   status: String
   message: String
   result: UniqueShifts
+}
+
+"""Return type for getRequests"""
+type getRequestsResponse{
+  status: String
+  message: String
+  result: AssignedShift
+}
+
+"""Return type for getAllRequests"""
+type getAllRequestsResponse{
+  status: String
+  message: String
+  result: AssignedShift
 }
 
 type UniqueShifts{
