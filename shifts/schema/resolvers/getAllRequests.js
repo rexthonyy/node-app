@@ -1,5 +1,5 @@
 const shiftQueries = require("../../postgres/shift-queries");
-const { checkAuthorization } = require('./lib');
+const { checkAuthorization, getGraphQLUserById } = require('./lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -7,9 +7,14 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
         let channelId = args.channelId;
-        let shiftGroupId = args.shiftGroupId;
 
-        resolve(await getRequests(channelId, shiftGroupId));
+        if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
+            resolve(await getRequests(channelId));
+        } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
+            resolve(await getRequests(channelId));
+        } else {
+            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+        }
     });
 }
 
@@ -21,66 +26,142 @@ function getGraphQLOutput(status, message, result) {
     };
 }
 
-function getAllUniqueShifts(channelId, shiftGroupId) {
+function getRequests(channelId) {
     return new Promise(async resolve => {
-        let openShifts = await getOpenShifts(channelId, shiftGroupId);
-        let assignedShifts = await getAssignedShifts(channelId, shiftGroupId);
-        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }));
-    });
-}
-
-function getOpenShifts(channelId, shiftGroupId) {
-    return new Promise(resolve => {
-        shiftQueries.getOpenShifts([channelId, shiftGroupId], "channel_id=$1 AND shift_group_id=$2", async result => {
+        shiftQueries.getRequests([channelId], "channel_id=$1", result => {
+            if (result.err) return resolve(getGraphQLOutput("failed", result.err, []));
+            let requests = result.res;
+            const numRequests = requests.length;
+            let cursor = -1;
             let shifts = [];
-            if (!result.err && result.res.length > 0) {
-                let openShifts = result.res;
-                const numberOfShifts = openShifts.length;
-                let cursor = -1;
 
-                openShifts.forEach(openShift => {
-                    shifts.push({
-                        id: openShift.id,
-                        label: openShift.label,
-                        note: openShift.note,
-                        color: openShift.color,
-                        startTime: openShift.start_time,
-                        endTime: openShift.end_time,
-                        break: openShift.unpaid_break_time,
-                        is24Hours: openShift.is24Hours,
-                        subshifts: null,
-                        slots: openShift.slots
+            requests.forEach(request => {
+                if (request.type == "requestTimeoff") {
+                    shiftQueries.getRequestTimeOff([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
+                        if (!result.err && result.res.length > 0) {
+                            let timeOffRequests = result.res;
+                            for (let timeOffRequest of timeOffRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                shifts.push({
+                                    id: timeOffRequest.id,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "TIMEOFF",
+                                    isAllDay: timeOffRequest.is_all_day,
+                                    startTime: timeOffRequest.start_time,
+                                    endTime: timeOffRequest.end_time,
+                                    reason: timeOffRequest.reason,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
+                                });
+                            }
+                        }
+                        checkComplete();
                     });
-
+                } else if (request.type == "requestSwap") {
+                    shiftQueries.getRequestSwap([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
+                        if (!result.err && result.res.length > 0) {
+                            let swapRequests = result.res;
+                            for (let swapRequest of swapRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                let shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
+                                let toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
+                                shifts.push({
+                                    id: timeOffRequest.id,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "SWAP",
+                                    shiftToSwap,
+                                    toSwapWith,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
+                                });
+                            }
+                        }
+                        checkComplete();
+                    });
+                } else if (request.type == "requestOffer") {
+                    shiftQueries.getRequestOffer([channelId, request.id, "pending"], "channel_id=$1 AND request_id=$2 AND status=$3", async result => {
+                        if (!result.err && result.res.length > 0) {
+                            let offerRequests = result.res;
+                            for (let offerRequest of offerRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
+                                let shiftOfferedTo = await getGraphQLUserById(timeOffRequest.offered_to_user_id);
+                                shifts.push({
+                                    id: timeOffRequest.id,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "SWAP",
+                                    shiftToOffer,
+                                    shiftOfferedTo,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
+                                });
+                            }
+                        }
+                        checkComplete();
+                    });
+                } else {
                     checkComplete();
-                });
-
-                checkComplete();
-
-                function checkComplete() {
-                    cursor++;
-                    if (cursor == numberOfShifts) {
-                        resolve(shifts);
-                    }
                 }
-            } else {
-                resolve(shifts);
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numRequests) {
+                    resolve({ status: "success", message: "Fetch successful", numberOfRequests: shifts.length, result: shifts });
+                }
             }
         });
     });
 }
 
-function getAssignedShifts(channelId, shiftGroupId) {
-    return new Promise(resolve => {
-        let shifts = [];
-        shiftQueries.getAssignedShifts([channelId, shiftGroupId], "channel_id=$1 AND shift_group_id=$2", result => {
-            if (result.err || result.res.length == 0) return resolve(shifts);
-            let assignedShifts = result.res;
-            const numShifts = assignedShifts.length;
-            let cursor = -1;
 
-            assignedShifts.forEach(assignedShift => {
-                shifts.push({
+function getGraphQLAssignedShift(assignedShiftId) {
+    return new Promise(resolve => {
+        shiftQueries.getAssignedShifts([assignedShiftId], "id=$1", result => {
+            if (result.err) return resolve([]);
+            let assignedShift = result.res[0];
+
+            shiftQueries.getAssignedShiftActivities([assignedShiftId], "assigned_shift_id=$1", result => {
+                let assignedShiftActivities = [];
+                if (!result.err && result.res.length > 0) {
+                    let activities = result.res;
+                    for (let activity of activities) {
+                        assignedShiftActivities.push({
+                            id: activity.id,
+                            name: activity.name,
+                            code: activity.code,
+                            color: activity.color,
+                            startTime: activity.start_time,
+                            endTime: activity.end_time,
+                            isPaid: activity.is_paid
+                        });
+                    }
+                }
+
+                resolve({
                     id: assignedShift.id,
                     type: "shift",
                     label: assignedShift.label,
@@ -90,19 +171,9 @@ function getAssignedShifts(channelId, shiftGroupId) {
                     endTime: assignedShift.end_time,
                     break: assignedShift.unpaid_break_time,
                     is24Hours: assignedShift.is24Hours,
-                    subshifts: null
+                    subshifts: assignedShiftActivities
                 });
-                checkComplete();
             });
-
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numShifts) {
-                    resolve(shifts);
-                }
-            }
         });
     });
 }
