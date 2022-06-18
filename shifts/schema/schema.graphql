@@ -567,7 +567,7 @@ type getAllUniqueShiftsResponse{
 type getRequestsResponse{
   status: String
   message: String
-  result: AssignedShift
+  result: RequestResponse
 }
 
 """Return type for getAllRequests"""
