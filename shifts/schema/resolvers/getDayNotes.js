@@ -34,6 +34,8 @@ function getDailyNotes(channelId, startDate, endDate) {
         shiftQueries.getDayNotes([channelId, formatDate(startDate), formatDate(endDate)], "channel_id=$1 AND date >= $2 AND date <= $3", result => {
             if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
             let notes = result.res;
+            const numNotes = notes.length;
+            notes.forEach(note => note.numberOfNotes = numNotes);
 
             resolve(notes);
         });

@@ -95,7 +95,7 @@ type Query {
 
     """End time"""
     endTime: String!
-  ): [DayNotes]
+  ): getDayNotesResponse
 
 
 }
@@ -577,6 +577,14 @@ type getAllRequestsResponse{
   message: String
   numberOfRequests: Int
   result: RequestResponse
+}
+
+"""Return type for getDayNotes"""
+type getDayNotesResponse{
+  status: String
+  message: String
+  numberOfNotes: Int
+  result: [DayNotes]
 }
 
 type RequestResponse {
