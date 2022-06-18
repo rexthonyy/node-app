@@ -52,7 +52,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
             let values = [
                 channelId,
                 shiftGroupId,
-                user.id,
+                userId,
                 label,
                 color,
                 note,
