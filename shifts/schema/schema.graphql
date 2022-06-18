@@ -574,7 +574,35 @@ type getRequestsResponse{
 type getAllRequestsResponse{
   status: String
   message: String
-  result: AssignedShift
+  result: RequestResponse
+}
+
+type RequestResponse {
+  id: ID!
+  channelId: ID!
+  requestId: ID!
+  userId: ID!
+  shiftToSwap: AssignedShift
+  toSwapWith: AssignedShift
+  shiftToOffer: AssignedShift
+  shiftOfferedTo: User
+  type: RequestType
+  isAllDay: Boolean
+  startTime: String
+  endTime: String
+  reason: String
+  requestNote: String
+  status: RequestStatus
+  responseNote: String
+  responseBy: User
+  responseAt: String
+  createdAt: String
+}
+
+enum RequestType{
+  TIMEOFF
+  SWAP
+  OFFER
 }
 
 type UniqueShifts{
@@ -621,6 +649,12 @@ type DayNotes {
   note: String
   """The date"""
   date: String!
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 enum ShiftTypeEnum {
