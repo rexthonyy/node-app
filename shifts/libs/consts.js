@@ -25,6 +25,18 @@ const db = {
     account_user_user_permissions: "account_user_user_permissions"
 };
 
+const color = {
+    gray: "#f3f2f1",
+    blue: "#cce4f7",
+    green: "#e8f2d1",
+    purple: "#e6e4f8",
+    pink: "#ffd9d9",
+    yellow: "#fbf3a0",
+    gray: "#00000",
+
+}
+
 module.exports = {
-    db
+    db,
+    color
 };

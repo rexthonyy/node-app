@@ -129,6 +129,125 @@ const getAssignedShiftsByChannelIdShiftGroupIdAndUserId = (values, response) => 
     });
 };
 
+const getOpenShifts = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.open_shifts} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAssignedShifts = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.assigned_shifts} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getUserTimeOffs = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.user_time_offs} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getRequests = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.requests} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getRequestTimeOff = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.request_time_off} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getRequestOffer = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.request_offer} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getRequestSwap = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.request_swap} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 const createShiftGroup = (values, response) => {
     client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
@@ -393,6 +512,13 @@ module.exports = {
     getShiftGroupMembersByChannelId,
     getShiftGroupMembersByChannelIdAndShiftGroupId,
     getAssignedShiftsByChannelIdShiftGroupIdAndUserId,
+    getOpenShifts,
+    getAssignedShifts,
+    getUserTimeOffs,
+    getRequests,
+    getRequestTimeOff,
+    getRequestSwap,
+    getRequestOffer,
 
     createShiftGroup,
     createShiftGroupMember,
