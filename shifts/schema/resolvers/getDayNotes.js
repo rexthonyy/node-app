@@ -37,7 +37,7 @@ function getDailyNotes(channelId, startDate, endDate) {
             const numNotes = notes.length;
             notes.forEach(note => note.numberOfNotes = numNotes);
 
-            resolve(notes);
+            resolve({ status: "success", message: "Fetch successful", result: notes });
         });
     });
 }
