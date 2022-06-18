@@ -231,6 +231,23 @@ const getRequestOffer = (values, whereClause, response) => {
     });
 };
 
+const getDayNotes = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.day_notes} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getRequestSwap = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.request_swap} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -519,6 +536,7 @@ module.exports = {
     getRequestTimeOff,
     getRequestSwap,
     getRequestOffer,
+    getDayNotes,
 
     createShiftGroup,
     createShiftGroupMember,
