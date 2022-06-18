@@ -90,7 +90,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
 
                 checkComplete();
 
-                function checkComplete() {
+                async function checkComplete() {
                     cursor++;
                     if (cursor == numAssignedShiftActivities) {
                         let shift = await getGraphQLAssignedShift(assignedShiftId);
