@@ -124,7 +124,7 @@ function getRequests(authUser, channelId) {
             function checkComplete() {
                 cursor++;
                 if (cursor == numRequests) {
-                    resolve({ status: "success", message: "Fetch successful", numberOfRequest: shifts.length, result: shifts });
+                    resolve({ status: "success", message: "Fetch successful", numberOfRequests: shifts.length, result: shifts });
                 }
             }
         });
