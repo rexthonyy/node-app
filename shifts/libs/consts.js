@@ -31,12 +31,21 @@ const color = {
     green: "#e8f2d1",
     purple: "#e6e4f8",
     pink: "#ffd9d9",
-    yellow: "#fbf3a0",
-    gray: "#00000",
+    yellow: "#fbf3a0"
+}
 
+const unpaidBreakValue = {
+    MIN_0: 0,
+    MIN_15: 15,
+    MIN_30: 30,
+    MIN_45: 45,
+    MIN_60: 60,
+    MIN_75: 75,
+    MIN_90: 90
 }
 
 module.exports = {
     db,
-    color
+    color,
+    unpaidBreakValue
 };

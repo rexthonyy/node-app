@@ -300,6 +300,40 @@ const createShiftGroupMember = (values, response) => {
     });
 };
 
+const createAssignedShift = (values, response) => {
+    client.query(`INSERT INTO ${db.assigned_shifts} (channel_id, shift_group_id, user_id, label, color, note, is_open, start_time, end_time, is24Hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedShiftActivity = (values, response) => {
+    client.query(`INSERT INTO ${db.assigned_shift_activities} (channel_id, shift_group_id, assigned_shift_id, user_id, name, code, color, start_time, end_time, is_paid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
@@ -540,6 +574,8 @@ module.exports = {
 
     createShiftGroup,
     createShiftGroupMember,
+    createAssignedShift,
+    createAssignedShiftActivity,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,

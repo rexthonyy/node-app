@@ -177,7 +177,7 @@ type Mutation {
     userId: ID!
   ): ResponseStatus
 
-  """Adds a new assigned shift"""
+  """Adds a new assigned shift. Requires permission MANAGE_STAFF"""
   assignedShiftAdd(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -210,7 +210,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): ResponseStatus
+  ): AssignedShiftAddResponse
 
   """Edits an assigned shift"""
   assignedShiftEdit(
@@ -224,10 +224,10 @@ type Mutation {
     shiftId: ID!
 
     """The color"""
-    color: ShiftColorEnum
+    color: ShiftColorEnum!
 
     """The label"""
-    label: String
+    label: String!
 
     """A note"""
     note: String
@@ -236,10 +236,10 @@ type Mutation {
     is24Hours: Boolean
 
     """When does the shift start"""
-    startTime: String
+    startTime: String!
 
     """When does the shift end"""
-    endTime: String
+    endTime: String!
 
     """How much time for an unpaid break"""
     break: UnpaidBreakEnum
@@ -625,6 +625,13 @@ type shiftGroupCreateResponse{
   status: String
   message: String
   result: ShiftGroup
+}
+
+"""Return type for shiftGroupCreate"""
+type AssignedShiftAddResponse{
+  status: String
+  message: String
+  result: AssignedShift
 }
 
 """Return type for shiftGroupRename"""
