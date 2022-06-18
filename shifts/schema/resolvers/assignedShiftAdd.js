@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
         let startTime = new Date(args.startTime);
         let endTime = new Date(args.endTime);
         let unpaidBreak = args.break;
-        let shiftActivities = args.shiftActivities;
+        let shiftActivities = args.shiftActivities || [];
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
             resolve(await assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities));
