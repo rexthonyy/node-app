@@ -1,5 +1,5 @@
 const shiftQueries = require("../../postgres/shift-queries");
-const { checkAuthorization } = require('./lib');
+const { checkAuthorization, getGraphQLUserById } = require('./lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -32,19 +32,28 @@ function getRequests(authUser, channelId) {
 
             requests.forEach(request => {
                 if (request.type == "requestTimeoff") {
-                    shiftQueries.getRequestTimeOff([channelId, request.id, formatDate(startDate), formatDate(endDate)], "channel_id=$1 AND request_id=$2 AND start_time >= $3 AND end_time <= $4", result => {
+                    shiftQueries.getRequestTimeOff([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
                         if (!result.err && result.res.length > 0) {
                             let timeOffRequests = result.res;
                             for (let timeOffRequest of timeOffRequests) {
+                                let user = await getGraphQLUserById(timeOffRequest.user_id);
+                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
                                 shifts.push({
                                     id: timeOffRequest.id,
-                                    type: "requestTimeOff",
-                                    label: timeOffRequest.reason,
-                                    note: timeOffRequest.note,
-                                    color: color.gray,
+                                    channelId: timeOffRequest.channel_id,
+                                    requestId: timeOffRequest.request_id,
+                                    user,
+                                    type: "TIMEOFF",
+                                    isAllDay: timeOffRequest.is_all_day,
                                     startTime: timeOffRequest.start_time,
                                     endTime: timeOffRequest.end_time,
-                                    is24Hours: timeOffRequest.is_all_day
+                                    reason: timeOffRequest.reason,
+                                    requestNote: timeOffRequest.request_note,
+                                    status: timeOffRequest.status,
+                                    responseNote: timeOffRequest.responseNote,
+                                    responseBy,
+                                    responseAt: timeOffRequest.response_at,
+                                    createdAt: timeOffRequest.created_at
                                 });
                             }
                         }
@@ -99,6 +108,47 @@ function getRequests(authUser, channelId) {
                     resolve(shifts);
                 }
             }
+        });
+    });
+}
+
+
+function getGraphQLAssignedShift(assignedShiftId) {
+    return new Promise(resolve => {
+        shiftQueries.getAssignedShifts([assignedShiftId], "id=$1", result => {
+            if (result.err) return resolve([]);
+            let assignedShift = result.res[0];
+
+            shiftQueries.getAssignedShiftActivities([assignedShiftId], "assigned_shift_id=$1", result => {
+                let assignedShiftActivities = [];
+                if (!result.err && result.res.length > 0) {
+                    let activities = result.res;
+                    for (let activity of activities) {
+                        assignedShiftActivities.push({
+                            id: activity.id,
+                            name: activity.name,
+                            code: activity.code,
+                            color: activity.color,
+                            startTime: activity.start_time,
+                            endTime: activity.end_time,
+                            isPaid: activity.is_paid
+                        });
+                    }
+                }
+
+                resolve({
+                    id: assignedShift.id,
+                    type: "shift",
+                    label: assignedShift.label,
+                    note: assignedShift.note,
+                    color: assignedShift.color,
+                    startTime: assignedShift.start_time,
+                    endTime: assignedShift.end_time,
+                    break: assignedShift.unpaid_break_time,
+                    is24Hours: assignedShift.is24Hours,
+                    subshifts: assignedShiftActivities
+                });
+            });
         });
     });
 }

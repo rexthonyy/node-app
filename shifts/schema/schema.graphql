@@ -581,7 +581,7 @@ type RequestResponse {
   id: ID!
   channelId: ID!
   requestId: ID!
-  userId: ID!
+  user: User!
   shiftToSwap: AssignedShift
   toSwapWith: AssignedShift
   shiftToOffer: AssignedShift
