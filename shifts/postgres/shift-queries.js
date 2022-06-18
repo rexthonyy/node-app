@@ -163,6 +163,23 @@ const getAssignedShifts = (values, whereClause, response) => {
     });
 };
 
+const getAssignedShiftActivities = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.assigned_shift_activities} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getUserTimeOffs = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.user_time_offs} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -565,6 +582,7 @@ module.exports = {
     getAssignedShiftsByChannelIdShiftGroupIdAndUserId,
     getOpenShifts,
     getAssignedShifts,
+    getAssignedShiftActivities,
     getUserTimeOffs,
     getRequests,
     getRequestTimeOff,
