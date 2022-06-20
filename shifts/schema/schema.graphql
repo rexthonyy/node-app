@@ -257,7 +257,7 @@ type Mutation {
 
     """The id of the shift that you want to delete"""
     shiftId: ID!
-  ): ResponseStatus
+  ): AssignedShiftAddResponse
 
   """Moves an assigned shift to open"""
   assignedShiftMoveToOpen(

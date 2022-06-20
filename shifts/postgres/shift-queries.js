@@ -607,6 +607,23 @@ const deleteAssignedShiftActivities = (values, whereClause, response) => {
     });
 };
 
+const deleteAssignedShift = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.assigned_shifts} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
@@ -644,5 +661,6 @@ module.exports = {
     deleteShiftGroupMembersByShiftGroupId,
     deleteShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
     deleteShiftGroupById,
-    deleteAssignedShiftActivities
+    deleteAssignedShiftActivities,
+    deleteAssignedShift
 }
