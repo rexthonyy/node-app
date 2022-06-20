@@ -379,6 +379,9 @@ type Mutation {
     """The ID of the shift group"""
     shiftGroupId: ID!
 
+    """The ID of the user"""
+    userId: ID!
+
     """The color"""
     color: ShiftColorEnum
 
@@ -396,7 +399,7 @@ type Mutation {
 
     """When does the shift end"""
     endTime: String
-  ): ResponseStatus
+  ): TimeOffResponse
 
   """Removes timeoff for a group member"""
   timeOffEdit(
@@ -562,6 +565,13 @@ type getAllUniqueShiftsResponse{
   status: String
   message: String
   result: UniqueShifts
+}
+
+"""Return type for timeOffAdd"""
+type TimeOffResponse{
+  status: String
+  message: String
+  result: AssignedShift
 }
 
 """Return type for getRequests"""
