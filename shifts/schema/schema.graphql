@@ -305,7 +305,7 @@ type Mutation {
     shiftActivities: [SubShiftInput]
   ): OpenShiftAddResponse
 
-  """Edits an open shift"""
+  """Edits an open shift. Requires permission MANAGE_STAFF"""
   openShiftEdit(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -314,7 +314,7 @@ type Mutation {
     shiftGroupId: ID!
 
     """The id of the shift that you want to update"""
-    shiftId: ID!
+    openShiftId: ID!
 
     """Number of slots"""
     slots: Int
@@ -341,7 +341,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): ResponseStatus
+  ): OpenShiftAddResponse
 
   """Deletes an open shift"""
   openShiftDelete(
