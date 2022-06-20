@@ -44,7 +44,7 @@ function formatDate(date) {
 }
 
 function getDayFromDate(date) {
-    return (
+    return new Date(
         [
             date.getFullYear(),
             padTo2Digits(date.getMonth() + 1),
