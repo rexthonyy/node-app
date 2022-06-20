@@ -470,6 +470,23 @@ const createRequestTimeOff = (values, response) => {
     });
 };
 
+const createRequestSwap = (values, response) => {
+    client.query(`INSERT INTO ${db.request_swap} (channel_id, request_id, user_id, assigned_user_shift_id, assigned_user_shift_id_to_swap, request_note, status, response_note, response_by_user_id, response_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -872,6 +889,7 @@ module.exports = {
     createDayNote,
     createRequest,
     createRequestTimeOff,
+    createRequestSwap,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,

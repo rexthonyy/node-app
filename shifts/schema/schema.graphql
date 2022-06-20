@@ -490,7 +490,7 @@ type Mutation {
 
     """A note"""
     note: String
-  ): ResponseStatus
+  ): RequestTypeResponseStatus
 
   """Create a swap request to a group member"""
   requestCreateOffer(
@@ -505,7 +505,7 @@ type Mutation {
 
     """A note"""
     note: String
-  ): ResponseStatus
+  ): RequestTypeResponseStatus
 
   cancelRequestSwap(
     """id of a channel or branch_id"""
