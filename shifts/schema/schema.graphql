@@ -355,7 +355,7 @@ type Mutation {
     openShiftId: ID!
   ): OpenShiftAddResponse
 
-  """Assign an open shift to a group member"""
+  """Assign an open shift to a group member. Requires permission MANAGE_STAFF"""
   openShiftAssign(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -364,11 +364,11 @@ type Mutation {
     shiftGroupId: ID!
 
     """The id of the shift that you want to assign"""
-    shiftId: ID!
+    openShiftId: ID!
 
      """The id of the group member that the shift should be assigned"""
     userId: ID!
-  ): ResponseStatus
+  ): AssignedShiftAddResponse
 
 
   """Adds a timeoff for a group member"""
