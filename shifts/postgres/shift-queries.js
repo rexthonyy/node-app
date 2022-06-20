@@ -623,6 +623,23 @@ const updateRequestSwap = (values, set, whereClause, response) => {
     });
 };
 
+const updateRequestOffer = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.request_offer} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
@@ -933,6 +950,7 @@ module.exports = {
     updateTimeOff,
     updateDayNote,
     updateRequestSwap,
+    updateRequestOffer,
 
     deleteAssignedShiftActivitiesByShiftGroupId,
     deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
