@@ -62,7 +62,7 @@ function getRequestOffer(channelId, requestId) {
                 let user = await getGraphQLUserById(offerRequest.user_id);
                 let responseBy = null;
                 let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
-                let shiftOfferedTo = await getGraphQLUserById(timeOffRequest.offered_to_user_id);
+                let shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
                 resolve({
                     id: offerRequest.id,
                     channelId: offerRequest.channel_id,
