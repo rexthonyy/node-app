@@ -410,7 +410,7 @@ type Mutation {
     shiftGroupId: ID!
 
     """The ID of the user time off"""
-    id: ID!
+    timeOffId: ID!
 
     """The color"""
     color: ShiftColorEnum
@@ -429,7 +429,7 @@ type Mutation {
 
     """When does the shift end"""
     endTime: String
-  ): ResponseStatus
+  ): TimeOffResponse
 
   """Deletes a user time off"""
   timeOffDelete(
