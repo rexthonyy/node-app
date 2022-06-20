@@ -53,7 +53,6 @@ function assignedShiftMoveToOpen(assignedShiftId, channelId, shiftGroupId) {
 
 function moveAssignedShiftToOpenShift(assignedShift) {
     return new Promise(resolve => {
-        console.log(assignedShift);
         let values = [
             assignedShift.channel_id,
             assignedShift.shift_group_id,
@@ -64,10 +63,9 @@ function moveAssignedShiftToOpenShift(assignedShift) {
             true,
             assignedShift.start_time,
             assignedShift.end_time,
-            assignedShift.is24Hours,
+            assignedShift.is24hours,
             assignedShift.unpaid_break_time
         ];
-        console.log(values);
 
         shiftQueries.createOpenShift(values, result => {
             if (result.err) { console.log(result.err); return resolve(-1) };
