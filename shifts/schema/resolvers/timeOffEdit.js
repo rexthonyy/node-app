@@ -55,7 +55,7 @@ function timeOffAdd(channelId, shiftGroupId, timeOffId, color, label, note, is24
                     is24Hours
                 ];
 
-                shiftQueries.updateTimeOff(values, "label=$2, color=$3, note=$4, start_time=$5, end_time=$6, is24hours=$7", "id=$1", result => {
+                shiftQueries.updateTimeOff(values, "label=$2, color=$3, note=$4, start_time=$5, end_time=$6, is24hours=$7", "id=$1", async result => {
                     if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to update time off", null)) };
                     let userTimeoff = await getGraphQLUserTimeOff(timeOffId);
                     resolve(getGraphQLOutput("success", "Timeoff updated", userTimeoff));
