@@ -402,6 +402,23 @@ const createOpenShiftActivity = (values, response) => {
     });
 };
 
+const createUserTimeOff = (values, response) => {
+    client.query(`INSERT INTO ${db.user_time_offs} (channel_id, shift_group_id, user_id, label, color, note, start_time, end_time, is24hours) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -749,6 +766,7 @@ module.exports = {
     createAssignedShiftActivity,
     createOpenShift,
     createOpenShiftActivity,
+    createUserTimeOff,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
