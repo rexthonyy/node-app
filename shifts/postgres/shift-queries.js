@@ -555,6 +555,23 @@ const deleteOpenShiftActivitiesByShiftGroupId = (values, response) => {
     });
 };
 
+const deleteUserTimeOffs = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.user_time_offs} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteUserTimeOffsByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.user_time_offs} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
@@ -805,5 +822,6 @@ module.exports = {
     deleteAssignedShiftActivities,
     deleteAssignedShift,
     deleteOpenShiftActivities,
-    deleteOpenShift
+    deleteOpenShift,
+    deleteUserTimeOffs,
 }
