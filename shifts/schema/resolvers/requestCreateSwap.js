@@ -56,7 +56,7 @@ function requestCreateSwap(authUser, channelId, assignedShiftId, groupMemberShif
 
 function getRequestSwap(channelId, requestId) {
     return new Promise(resolve => {
-        shiftQueries.getRequestSwap([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
+        shiftQueries.getRequestSwap([channelId, requestId], "channel_id=$1 AND request_id=$2", async result => {
             if (!result.err && result.res.length > 0) {
                 let swapRequest = result.res[0];
                 let user = await getGraphQLUserById(swapRequest.user_id);
