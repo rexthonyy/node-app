@@ -212,7 +212,7 @@ type Mutation {
     shiftActivities: [SubShiftInput]
   ): AssignedShiftAddResponse
 
-  """Edits an assigned shift"""
+  """Edits an assigned shift. Requires permission MANAGE_STAFF"""
   assignedShiftEdit(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -221,7 +221,7 @@ type Mutation {
     shiftGroupId: ID!
 
     """The id of the shift that you want to update"""
-    shiftId: ID!
+    assignedShiftId: ID!
 
     """The color"""
     color: ShiftColorEnum!
@@ -245,7 +245,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): ResponseStatus
+  ): AssignedShiftAddResponse
 
   """Deletes an assigned shift"""
   assignedShiftDelete(

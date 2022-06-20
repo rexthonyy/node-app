@@ -386,6 +386,23 @@ const updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId = (values, whereCl
     });
 };
 
+const updateAssignedShift = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.assigned_shifts} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
@@ -573,6 +590,23 @@ const deleteShiftGroupById = (values, response) => {
     });
 };
 
+const deleteAssignedShiftActivities = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
@@ -597,6 +631,7 @@ module.exports = {
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
+    updateAssignedShift,
 
     deleteAssignedShiftActivitiesByShiftGroupId,
     deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
@@ -608,5 +643,6 @@ module.exports = {
     deleteOpenShiftsByShiftGroupId,
     deleteShiftGroupMembersByShiftGroupId,
     deleteShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
-    deleteShiftGroupById
+    deleteShiftGroupById,
+    deleteAssignedShiftActivities
 }

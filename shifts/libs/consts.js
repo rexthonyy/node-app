@@ -25,13 +25,19 @@ const db = {
     account_user_user_permissions: "account_user_user_permissions"
 };
 
-const color = {
-    gray: "#f3f2f1",
-    blue: "#cce4f7",
-    green: "#e8f2d1",
-    purple: "#e6e4f8",
-    pink: "#ffd9d9",
-    yellow: "#fbf3a0"
+const colorValue = {
+    WHITE: "#fbf3a0",
+    BLUE: "#cce4f7",
+    GREEN: "#e8f2d1",
+    PURPLE: "#e6e4f8",
+    PINK: "#ffd9d9",
+    YELLOW: "#fbf3a0",
+    GRAY: "#f3f2f1",
+    DARK_BLUE: "#cce4f7",
+    DARK_GREEN: "#e8f2d1",
+    DARK_PURPLE: "#e6e4f8",
+    DARK_PINK: "#ffd9d9",
+    DARK_YELLOW: "#fbf3a0",
 }
 
 const unpaidBreakValue = {
@@ -46,6 +52,6 @@ const unpaidBreakValue = {
 
 module.exports = {
     db,
-    color,
+    colorValue,
     unpaidBreakValue
 };

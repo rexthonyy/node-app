@@ -54,7 +54,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
                 shiftGroupId,
                 userId,
                 label,
-                color,
+                colorValue[color],
                 note,
                 false,
                 formatDate(startTime),
@@ -77,7 +77,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
                         userId,
                         activity.name,
                         activity.code,
-                        activity.color,
+                        colorValue[activity.color],
                         activity.startTime,
                         activity.endTime,
                         activity.isPaid
