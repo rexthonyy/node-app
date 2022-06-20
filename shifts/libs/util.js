@@ -43,6 +43,16 @@ function formatDate(date) {
     );
 }
 
+function getDayFromDate(date) {
+    return (
+        [
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate())
+        ].join('-')
+    );
+}
+
 function diffHours(date1, date2) {
     let diff = (date1.getTime() - date2.getTime()) / 1000;
     diff /= (60 * 60);
@@ -55,5 +65,6 @@ module.exports = {
     sortByPosition,
     sortByStartTime,
     formatDate,
-    diffHours
+    diffHours,
+    getDayFromDate
 }

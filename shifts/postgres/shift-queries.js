@@ -419,6 +419,23 @@ const createUserTimeOff = (values, response) => {
     });
 };
 
+const createDayNote = (values, response) => {
+    client.query(`INSERT INTO ${db.day_notes} (channel_id, note, date) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -489,6 +506,23 @@ const updateOpenShift = (values, set, whereClause, response) => {
 
 const updateTimeOff = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.user_time_offs} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateDayNote = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.day_notes} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -801,12 +835,14 @@ module.exports = {
     createOpenShift,
     createOpenShiftActivity,
     createUserTimeOff,
+    createDayNote,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
     updateAssignedShift,
     updateOpenShift,
     updateTimeOff,
+    updateDayNote,
 
     deleteAssignedShiftActivitiesByShiftGroupId,
     deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
