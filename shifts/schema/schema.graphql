@@ -247,7 +247,7 @@ type Mutation {
     shiftActivities: [SubShiftInput]
   ): AssignedShiftAddResponse
 
-  """Deletes an assigned shift"""
+  """Deletes an assigned shift. Requires permission MANAGE_STAFF"""
   assignedShiftDelete(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -256,7 +256,7 @@ type Mutation {
     shiftGroupId: ID!
 
     """The id of the shift that you want to delete"""
-    shiftId: ID!
+    assignedShiftId: ID!
   ): AssignedShiftAddResponse
 
   """Moves an assigned shift to open"""
