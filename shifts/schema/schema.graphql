@@ -500,7 +500,7 @@ type Mutation {
     """The shift that you want to offer. It should be yours"""
     assignedShiftId: ID!
 
-    """The team members that you want to offer the shift to"""
+    """The team member that you want to offer the shift to"""
     groupMemberId: ID!
 
     """A note"""
