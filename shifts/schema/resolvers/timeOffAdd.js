@@ -53,7 +53,7 @@ function timeOffAdd(channelId, shiftGroupId, userId, color, label, note, is24Hou
                 formatDate(endTime),
                 is24Hours
             ];
-            shiftQueries.createUserTimeOff(values, result => {
+            shiftQueries.createUserTimeOff(values, async result => {
                 if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create user time off", null)) };
                 let userTimeOffId = result.res[0].id;
                 let userTimeoff = await getGraphQLUserTimeOff(userTimeOffId);
