@@ -351,6 +351,7 @@ type Mutation {
     """The ID of the shift group where the shift is being deleted"""
     shiftGroupId: ID!
     """The id of the open shift that you want to delete"""
+    
     openShiftId: ID!
   ): OpenShiftAddResponse
 

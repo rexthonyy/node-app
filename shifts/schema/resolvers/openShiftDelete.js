@@ -38,7 +38,7 @@ function openShiftDelete(openShiftId, channelId, shiftGroupId) {
                 if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "open shift does not exist", null));
                 let shift = await getGraphQLOpenShift(openShiftId);
 
-                shiftQueries.deleteOpenShiftActivities([OpenShiftId], "open_shift_id=$1", result => {
+                shiftQueries.deleteOpenShiftActivities([openShiftId], "open_shift_id=$1", result => {
                     shiftQueries.deleteOpenShift([openShiftId], "id=$1", result => {
                         resolve(getGraphQLOutput("success", "Open shift deleted", shift));
                     });
