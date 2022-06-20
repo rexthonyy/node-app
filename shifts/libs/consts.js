@@ -59,7 +59,8 @@ const requestType = {
 const requestStatus = {
     pending: "pending",
     approved: "approved",
-    rejected: "rejected"
+    rejected: "rejected",
+    cancelled: "cancelled"
 }
 
 module.exports = {
