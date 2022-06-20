@@ -58,7 +58,7 @@ function getRequestOffer(channelId, requestId) {
     return new Promise(resolve => {
         shiftQueries.getRequestOffer([channelId, requestId], "channel_id=$1 AND request_id=$2", async result => {
             if (!result.err && result.res.length > 0) {
-                let offerRequest = result.res;
+                let offerRequest = result.res[0];
                 let user = await getGraphQLUserById(offerRequest.user_id);
                 let responseBy = null;
                 let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
