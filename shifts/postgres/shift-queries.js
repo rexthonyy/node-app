@@ -351,6 +351,39 @@ const createAssignedShiftActivity = (values, response) => {
     });
 };
 
+const createOpenShift = (values, response) => {
+    client.query(`INSERT INTO ${db.open_shifts} (channel_id, shift_group_id, label, color, note, slots, is_open, start_time, end_time, is24Hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createOpenShiftActivity = (values, response) => {
+    client.query(`INSERT INTO ${db.open_shift_activities} (channel_id, shift_group_id, open_shift_id, name, code, color, start_time, end_time, is_paid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
@@ -645,6 +678,8 @@ module.exports = {
     createShiftGroupMember,
     createAssignedShift,
     createAssignedShiftActivity,
+    createOpenShift,
+    createOpenShiftActivity,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
@@ -662,5 +697,5 @@ module.exports = {
     deleteShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
     deleteShiftGroupById,
     deleteAssignedShiftActivities,
-    deleteAssignedShift
+    deleteAssignedShift,
 }

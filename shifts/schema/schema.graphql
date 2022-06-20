@@ -259,7 +259,7 @@ type Mutation {
     assignedShiftId: ID!
   ): AssignedShiftAddResponse
 
-  """Moves an assigned shift to open"""
+  """Moves an assigned shift to open. Requires permission MANAGE_STAFF"""
   assignedShiftMoveToOpen(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -267,8 +267,8 @@ type Mutation {
     """The ID of the shift group where the shift is being deleted"""
     shiftGroupId: ID!
     """The id of the shift that you want to move"""
-    shiftId: ID!
-  ): ResponseStatus
+    assignedShiftId: ID!
+  ): AssignedShiftMoveToOpenResponse
 
   """Adds a new open shift"""
   openShiftAdd(
@@ -632,6 +632,13 @@ type AssignedShiftAddResponse{
   status: String
   message: String
   result: AssignedShift
+}
+
+"""Return type for assignedShiftMoveToOpen"""
+type AssignedShiftMoveToOpenResponse{
+  status: String
+  message: String
+  result: OpenShift
 }
 
 """Return type for shiftGroupRename"""
