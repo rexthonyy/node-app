@@ -371,7 +371,7 @@ type Mutation {
   ): AssignedShiftAddResponse
 
 
-  """Adds a timeoff for a group member"""
+  """Adds a timeoff for a group member. Requires permission MANAGE_STAFF"""
   timeOffAdd(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -401,7 +401,7 @@ type Mutation {
     endTime: String
   ): TimeOffResponse
 
-  """Removes timeoff for a group member"""
+  """Removes timeoff for a group member. Requires permission MANAGE_STAFF"""
   timeOffEdit(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -431,7 +431,7 @@ type Mutation {
     endTime: String
   ): TimeOffResponse
 
-  """Deletes a user time off"""
+  """Deletes a user time off. Requires permission MANAGE_STAFF"""
   timeOffDelete(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -440,10 +440,10 @@ type Mutation {
     shiftGroupId: ID!
 
     """The ID of the user time off"""
-    id: ID!  
-  ): ResponseStatus
+    timeOffId: ID!  
+  ): TimeOffResponse
 
-  """Updates a daily note"""
+  """Updates a daily note. Requires permission MANAGE_STAFF"""
   dayNoteUpdate(
     """id of a channel or branch_id"""
     channelId: ID!
