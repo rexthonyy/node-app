@@ -436,6 +436,23 @@ const createDayNote = (values, response) => {
     });
 };
 
+const createRequest = (values, response) => {
+    client.query(`INSERT INTO ${db.requests} (channel_id, user_id, receipient_id, type) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createRequestTimeOff = (values, response) => {
     client.query(`INSERT INTO ${db.request_time_off} (channel_id, request_id, user_id, is_all_day, start_time, end_time, reason, request_note, status, response_note, response_by_user_id, response_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -853,6 +870,7 @@ module.exports = {
     createOpenShiftActivity,
     createUserTimeOff,
     createDayNote,
+    createRequest,
     createRequestTimeOff,
 
     updateShiftGroupById,
