@@ -343,7 +343,7 @@ type Mutation {
     shiftActivities: [SubShiftInput]
   ): OpenShiftAddResponse
 
-  """Deletes an open shift"""
+  """Deletes an open shift. Requires permission MANAGE_STAFF"""
   openShiftDelete(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -351,8 +351,8 @@ type Mutation {
     """The ID of the shift group where the shift is being deleted"""
     shiftGroupId: ID!
     """The id of the open shift that you want to delete"""
-    shiftId: ID!
-  ): ResponseStatus
+    openShiftId: ID!
+  ): OpenShiftAddResponse
 
   """Assign an open shift to a group member"""
   openShiftAssign(
