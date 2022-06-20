@@ -708,6 +708,23 @@ const deleteAssignedShift = (values, whereClause, response) => {
     });
 };
 
+const deleteOpenShift = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.open_shifts} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     getShiftGroupById,
     getShiftGroupsByChannelId,
@@ -752,4 +769,5 @@ module.exports = {
     deleteAssignedShiftActivities,
     deleteAssignedShift,
     deleteOpenShiftActivities,
+    deleteOpenShift
 }
