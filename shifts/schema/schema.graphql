@@ -270,7 +270,7 @@ type Mutation {
     assignedShiftId: ID!
   ): AssignedShiftMoveToOpenResponse
 
-  """Adds a new open shift"""
+  """Adds a new open shift. Requires permission MANAGE_STAFF"""
   openShiftAdd(
     """id of a channel or branch_id"""
     channelId: ID!
@@ -303,7 +303,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): ResponseStatus
+  ): OpenShiftAddResponse
 
   """Edits an open shift"""
   openShiftEdit(
@@ -632,6 +632,13 @@ type AssignedShiftAddResponse{
   status: String
   message: String
   result: AssignedShift
+}
+
+"""Return type for OpenShiftAdd"""
+type OpenShiftAddResponse{
+  status: String
+  message: String
+  result: OpenShift
 }
 
 """Return type for assignedShiftMoveToOpen"""
