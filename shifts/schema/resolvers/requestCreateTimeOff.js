@@ -49,7 +49,7 @@ function requestCreateTimeOff(authUser, channelId, isAllDay, startTime, endTime,
                 null
             ];
 
-            shiftQueries.createRequestTimeOff(values, result => {
+            shiftQueries.createRequestTimeOff(values, async result => {
                 if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
                 if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request offer could not be created", null));
                 let timeoff = await getRequestOffer(channelId, request.id);
