@@ -1,5 +1,4 @@
-const { requestStatus } = require("../../libs/consts");
-const { formatDate, getDayFromDate } = require("../../libs/util");
+const { requestStatus, requestType } = require("../../libs/consts");
 const shiftQueries = require("../../postgres/shift-queries");
 const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('./lib');
 
