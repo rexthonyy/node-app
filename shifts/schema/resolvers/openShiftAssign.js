@@ -54,17 +54,17 @@ function openShiftAssign(channelId, shiftGroupId, openShiftId, userId) {
 function assignOpenShiftToUser(openShift, userId) {
     return new Promise(resolve => {
         let values = [
-            assignedShift.channel_id,
-            assignedShift.shift_group_id,
+            openShift.channel_id,
+            openShift.shift_group_id,
             userId,
-            assignedShift.label,
-            assignedShift.color,
-            assignedShift.note,
+            openShift.label,
+            openShift.color,
+            openShift.note,
             false,
-            assignedShift.start_time,
-            assignedShift.end_time,
-            assignedShift.is24hours,
-            assignedShift.unpaid_break_time
+            openShift.start_time,
+            openShift.end_time,
+            openShift.is24hours,
+            openShift.unpaid_break_time
         ];
 
         shiftQueries.createAssignedShift(values, result => {
