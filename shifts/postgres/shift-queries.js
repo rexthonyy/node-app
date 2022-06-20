@@ -180,6 +180,23 @@ const getAssignedShiftActivities = (values, whereClause, response) => {
     });
 };
 
+const getOpenShiftActivities = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.open_shift_activities} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getUserTimeOffs = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.user_time_offs} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -667,6 +684,7 @@ module.exports = {
     getOpenShifts,
     getAssignedShifts,
     getAssignedShiftActivities,
+    getOpenShiftActivities,
     getUserTimeOffs,
     getRequests,
     getRequestTimeOff,
