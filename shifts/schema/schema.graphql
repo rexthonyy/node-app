@@ -513,7 +513,7 @@ type Mutation {
 
     """The id of the swap request that you want to cancel"""
     requestId: ID!
-  ): ResponseStatus
+  ): RequestTypeResponseStatus
 
   cancelRequestOffer(
     """id of a channel or branch_id"""
@@ -521,7 +521,7 @@ type Mutation {
 
     """The id of the offer request that you want to cancel"""
     requestId: ID!
-  ): ResponseStatus
+  ): RequestTypeResponseStatus
 
   updateSettings(
     """The settings slug"""
