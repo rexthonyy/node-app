@@ -475,7 +475,7 @@ type Mutation {
 
     """A note"""
     note: String
-  ): ResponseStatus
+  ): RequestTypeResponseStatus
 
   """Create a swap request to a group member"""
   requestCreateSwap(
@@ -537,6 +537,13 @@ type getShiftGroupsResponse{
   status: String
   message: String
   result: [ShiftGroup]
+}
+
+"""Return type for getShiftGroups"""
+type RequestTypeResponseStatus{
+  status: String
+  message: String
+  result: RequestResponse
 }
 
 """Return type for getShiftGroupMembers"""

@@ -50,8 +50,22 @@ const unpaidBreakValue = {
     MIN_90: 90
 }
 
+const requestType = {
+    requestTimeOff: "requestTimeoff",
+    requestOffer: "requestOffer",
+    requestSwap: "requestSwap"
+}
+
+const requestStatus = {
+    pending: "pending",
+    approved: "approved",
+    rejected: "rejected"
+}
+
 module.exports = {
     db,
     colorValue,
-    unpaidBreakValue
+    unpaidBreakValue,
+    requestType,
+    requestStatus
 };
