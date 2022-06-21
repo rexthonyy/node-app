@@ -6,6 +6,7 @@ const getAllUniqueShifts = require("./getAllUniqueShifts");
 const getRequests = require("./getRequests");
 const getAllRequests = require("./getAllRequests");
 const getDayNotes = require("./getDayNotes");
+const getSettings = require("./getSettings");
 const shiftGroupCreate = require("./shiftGroupCreate");
 const shiftGroupReorder = require("./shiftGroupReorder");
 const shiftGroupRename = require("./shiftGroupRename");
@@ -42,6 +43,7 @@ module.exports = {
         getRequests,
         getAllRequests,
         getDayNotes,
+        getSettings,
     },
     Mutation: {
         shiftGroupCreate,
