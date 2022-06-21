@@ -56,6 +56,7 @@ function getAllSettings() {
 
 function getSettingToUpdate(key, value) {
     return new Promise((resolve, reject) => {
+        console.log(key, value);
         if (!settingsType[key]) return reject(getGraphQLOutput("failed", "Settings not defined", null));
         resolve(key, value);
     });
