@@ -25,11 +25,11 @@ function getGraphQLOutput(status, message, result) {
 }
 
 function updateSetting(key, value) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         try {
-            let settings = await getSettingToUpdate(key, value);
-            console.log(settings.key, settings.value);
-            shiftQueries.updateSetting([settings.key, { value: settings.value }], "value=$2", "key=$1", async result => {
+            if (settingsType[key] == undefined) return reject(getGraphQLOutput("failed", "Settings not defined", null));
+            console.log(key, value);
+            shiftQueries.updateSetting([key, { value }], "value=$2", "key=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
                 let updatedSettings = await getAllSettings();
                 let settingsRes = {};
@@ -51,13 +51,5 @@ function getAllSettings() {
             if (result.res.length == 0) return reject(getGraphQLOutput("failed", "Settings unintialized", null));
             resolve(result.res);
         });
-    });
-}
-
-function getSettingToUpdate(key, value) {
-    return new Promise((resolve, reject) => {
-        console.log(key, value);
-        if (!settingsType[key]) return reject(getGraphQLOutput("failed", "Settings not defined", null));
-        resolve(key, value);
     });
 }
