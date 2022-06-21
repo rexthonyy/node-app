@@ -31,7 +31,7 @@ function updateSetting(key, value) {
                 if (s.key == key) isFound = true;
             }
             if (!isFound) return resolve(getGraphQLOutput("failed", "Setting not found", null));
-            shiftQueries.updateSetting([key, value], "value=$2", "key=$1", async result => {
+            shiftQueries.updateSetting([key, { value }], "value=$2", "key=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
                 let updatedSettings = await getAllSettings();
                 let settingsRes = {};
