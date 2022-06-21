@@ -1,13 +1,13 @@
 const { settingsType } = require("../../libs/consts");
 const shiftQueries = require("../../postgres/shift-queries");
-const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('./lib');
+const { checkAuthorization } = require('./lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
         console.log(args.input);
-        if (!(input["key"] && input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
+        if (!(args.input["key"] && args.input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
         let key = args.input.key;
         let value = args.input.value;
 
