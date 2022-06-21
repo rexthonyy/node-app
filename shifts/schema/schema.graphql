@@ -527,11 +527,7 @@ type Mutation {
   ): RequestTypeResponseStatus
 
   updateSettings(
-    """The settings slug"""
-    key: String!
-
-    """The value"""
-    value: String!
+    setting: JSONString
   ): getSettingsResponse
 }
 
