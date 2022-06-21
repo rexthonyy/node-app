@@ -8,7 +8,7 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
         console.log(args.input);
         let input = JSON.parse(args.input);
-        if (!(input["key"] && input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
+        if (!input["key"] || !input["value"]) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
         let key = input.key;
         let value = input.value;
 
