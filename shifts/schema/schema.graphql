@@ -97,7 +97,10 @@ type Query {
     endTime: String!
   ): getDayNotesResponse
 
-
+  """
+  Get the app settings
+  """
+  getSettings: getSettingsResponse
 }
 
 type Mutation {
@@ -537,6 +540,13 @@ type getShiftGroupsResponse{
   status: String
   message: String
   result: [ShiftGroup]
+}
+
+"""Return type for getSettingsResponse"""
+type getSettingsResponse{
+  status: String
+  message: String
+  result: JSONString
 }
 
 """Return type for getShiftGroups"""

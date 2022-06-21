@@ -299,6 +299,23 @@ const getRequestSwap = (values, whereClause, response) => {
     });
 };
 
+const getAllSettings = (response) => {
+    pool.query(`SELECT * from ${db.settings}`, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 const createShiftGroup = (values, response) => {
     client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
@@ -929,6 +946,7 @@ module.exports = {
     getRequestSwap,
     getRequestOffer,
     getDayNotes,
+    getAllSettings,
 
     createShiftGroup,
     createShiftGroupMember,
