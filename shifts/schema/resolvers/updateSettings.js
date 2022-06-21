@@ -7,9 +7,10 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
         console.log(args.input);
-        if (!(args.input["key"] && args.input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
-        let key = args.input.key;
-        let value = args.input.value;
+        let input = JSON.parse(args.input);
+        if (!(input["key"] && input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
+        let key = input.key;
+        let value = input.value;
 
         resolve(await updateSetting(key, value));
     });
