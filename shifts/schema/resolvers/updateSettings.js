@@ -26,7 +26,7 @@ function updateSetting(key, value) {
     return new Promise(async resolve => {
         try {
             let { newkey, newValue } = await getSettingToUpdate(key, value);
-            shiftQueries.updateSetting([newkey, { newValue }], "value=$2", "key=$1", async result => {
+            shiftQueries.updateSetting([newkey, { value: newValue }], "value=$2", "key=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
                 let updatedSettings = await getAllSettings();
                 let settingsRes = {};
