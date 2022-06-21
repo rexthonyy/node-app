@@ -6,9 +6,10 @@ module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
-
-        let key = args.key;
-        let value = args.value;
+        console.log(args.input);
+        if (!(input["key"] && input["value"])) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
+        let key = args.input.key;
+        let value = args.input.value;
 
         resolve(await updateSetting(key, value));
     });
@@ -55,24 +56,6 @@ function getAllSettings() {
 function getSettingToUpdate(key, value) {
     return new Promise((resolve, reject) => {
         if (!settingsType[key]) return reject(getGraphQLOutput("failed", "Settings not defined", null));
-        switch (key) {
-            case settingsType.start_of_week:
-                resolve({ key, value });
-                break;
-            case settingsType.open_shifts:
-                resolve({ key, value: value == "true" });
-                break;
-            case settingsType.requests:
-                try {
-                    let res = JSON.parse(value);
-                    return resolve({ key, value: res });
-                } catch (err) {
-                    reject(getGraphQLOutput("failed", "Malformed json request", null));
-                }
-                break;
-            case settingsType.copying_shifts:
-                resolve({ key, value: value == "true" });
-                break;
-        }
+        resolve(key, value);
     });
 }

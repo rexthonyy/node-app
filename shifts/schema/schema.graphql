@@ -526,8 +526,9 @@ type Mutation {
     requestId: ID!
   ): RequestTypeResponseStatus
 
+  """input value requires a key and value parameter"""
   updateSettings(
-    setting: JSONString
+    input: JSONString
   ): getSettingsResponse
 }
 
