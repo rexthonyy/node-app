@@ -28,7 +28,7 @@ function getSettings() {
             for (let s of settings) {
                 settingsRes[s.key] = s.value;
             }
-            if (result.res.length == 0) return resolve(getGraphQLOutput("success", "Settings fetch successful", settingsRes));
+            return resolve(getGraphQLOutput("success", "Settings fetch successful", settingsRes));
         });
     });
 }
