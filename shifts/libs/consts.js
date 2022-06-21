@@ -63,10 +63,18 @@ const requestStatus = {
     cancelled: "cancelled"
 }
 
+const settingsType = {
+    start_of_week: "start_of_week",
+    open_shifts: "open_shifts",
+    requests: "requests",
+    copying_shifts: "copying_shifts"
+}
+
 module.exports = {
     db,
     colorValue,
     unpaidBreakValue,
     requestType,
-    requestStatus
+    requestStatus,
+    settingsType
 };
