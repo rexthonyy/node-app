@@ -11,14 +11,14 @@ const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsB
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(message);
+        if (!isAuthorized) return reject(message);
         let accessPermissions = ["MANAGE_STAFF"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
 
             permissionsdbQueries.getAuthGroups(result => {
                 if (result.err) {
-                    return resolve(getError(
+                    return reject(getError(
                         "name",
                         result.err,
                         null, [],
