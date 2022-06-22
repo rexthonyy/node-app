@@ -1,5 +1,5 @@
 const permissionsdbQueries = require('../../../postgres/permissionsdb-queries');
-const getIdentityById = require('./getIdentityById');
+const getGraphQLUserById = require('./getGraphQLUserById');
 
 let getUsersInGroupId = (groupId, cb) => {
     permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
@@ -12,17 +12,9 @@ let getUsersInGroupId = (groupId, cb) => {
         let count = -1;
         let users = [];
 
-        accountUserGroupRows.forEach(row => {
+        accountUserGroupRows.forEach(async row => {
             let user_id = row.user_id;
-
-            getIdentityById(user_id, identity => {
-                if (typeof identity != "string") {
-                    let traits = identity.traits;
-                    users.push(traits);
-                }
-
-                checkComplete();
-            });
+            users.push(await getGraphQLUserById(user_id));
         });
 
         checkComplete();
