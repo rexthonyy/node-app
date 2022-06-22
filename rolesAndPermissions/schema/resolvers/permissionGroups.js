@@ -92,14 +92,14 @@ function getError(field, message, code, permissions, users, group) {
 }
 
 function filterAndSortPermissions(resolve, reject, args, edges) {
-    let filterSearch = args.filter.search;
-    let filterIds = args.filter.ids;
-    let sortByDirection = args.sortBy.direction;
-    let sortByField = args.sortBy.field;
-    let before = args.before;
-    let after = args.after;
-    let first = args.first;
-    let last = args.last;
+    let filterSearch = args.filter.search || null;
+    let filterIds = args.filter.ids || null;
+    let sortByDirection = args.sortBy.direction || null;
+    let sortByField = args.sortBy.field || null;
+    let before = args.before || null;
+    let after = args.after || null;
+    let first = args.first || null;
+    let last = args.last || null;
 
     if (!(first || last)) {
         return reject(getError(
