@@ -15,9 +15,9 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return reject(message);
 
         let group_id = args.id;
-        let permissions = ["MANAGE_STAFF"];
+        let accessPermissions = ["MANAGE_STAFF"];
 
-        if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             permissionsdbQueries.getAuthGroupById([group_id], async result => {
                 if (result.err) {
                     return resolve(getError(
@@ -40,8 +40,10 @@ module.exports = async(parent, args, context) => {
                 }
 
                 let authGroup = result.res[0];
+                console.log(authGroup);
 
                 const users = await getUsersInGroupId(authGroup.id);
+                console.log(users);
                 getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
                     let authUserPermissions = authUser.userPermissions;
                     let userCanManage = false;
@@ -52,8 +54,6 @@ module.exports = async(parent, args, context) => {
                             break;
                         }
                     }
-
-                    console.log(users);
 
                     resolve({
                         id: authGroup.id,
