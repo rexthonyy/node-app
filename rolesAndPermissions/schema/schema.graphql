@@ -14140,13 +14140,6 @@ type PermissionGroupDelete {
   group: Group
 }
 
-type Subscription {
-  """
-  Added in Saleor 3.2. Look up subscription event. Note: this feature is in a preview state and can be subject to changes at later point.
-  """
-  event: Event
-}
-
 union Event = CategoryCreated | CategoryUpdated | CategoryDeleted | ChannelCreated | ChannelUpdated | ChannelDeleted | ChannelStatusChanged | GiftCardCreated | GiftCardUpdated | GiftCardDeleted | GiftCardStatusChanged | OrderCreated | OrderUpdated | OrderConfirmed | OrderFullyPaid | OrderCancelled | OrderFulfilled | DraftOrderCreated | DraftOrderUpdated | DraftOrderDeleted | ProductCreated | ProductUpdated | ProductDeleted | ProductVariantCreated | ProductVariantUpdated | ProductVariantOutOfStock | ProductVariantBackInStock | ProductVariantDeleted | SaleCreated | SaleUpdated | SaleDeleted | InvoiceRequested | InvoiceDeleted | InvoiceSent | FulfillmentCreated | FulfillmentCanceled | CustomerCreated | CustomerUpdated | CollectionCreated | CollectionUpdated | CollectionDeleted | CheckoutCreated | CheckoutUpdated | PageCreated | PageUpdated | PageDeleted | ShippingPriceCreated | ShippingPriceUpdated | ShippingPriceDeleted | ShippingZoneCreated | ShippingZoneUpdated | ShippingZoneDeleted | TranslationCreated | TranslationUpdated
 
 type CategoryCreated {
