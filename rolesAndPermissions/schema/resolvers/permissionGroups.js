@@ -56,6 +56,8 @@ module.exports = async(parent, args, context) => {
                         }
                     });
 
+                    console.log(edges);
+
                     checkAuthGroupComplete();
                 });
 
