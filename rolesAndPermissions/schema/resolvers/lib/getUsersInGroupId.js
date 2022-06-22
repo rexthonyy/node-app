@@ -1,7 +1,6 @@
 const permissionsdbQueries = require('../../../postgres/permissionsdb-queries');
 const pgKratosQueries = require('../../../postgres/kratos-queries');
 const getUserPermissions = require('./getUserPermissions');
-const getUserPermissionGroups = require('./getUserPermissionGroups');
 const getAuthGroupPermissionsByGroupId = require('./getAuthGroupPermissionsByGroupId');
 
 let getUsersInGroupId = (groupId) => {
