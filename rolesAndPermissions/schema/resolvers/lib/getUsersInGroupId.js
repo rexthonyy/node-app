@@ -14,6 +14,7 @@ let getUsersInGroupId = (groupId, cb) => {
 
         accountUserGroupRows.forEach(row => {
             let user_id = row.user_id;
+
             getIdentityById(user_id, identity => {
                 if (typeof identity != "string") {
                     let traits = identity.traits;
