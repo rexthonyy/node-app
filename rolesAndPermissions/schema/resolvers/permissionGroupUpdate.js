@@ -16,7 +16,7 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getError(
             null,
             message,
-            "INVALID", ["MANAGE_STAFF"],
+            "REQUIRED", ["MANAGE_STAFF"],
             null,
             null
         ));
