@@ -12,13 +12,7 @@ const getUsersInGroupId = require('./lib/getUsersInGroupId');
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getError(
-            null,
-            message,
-            "INVALID", ["MANAGE_STAFF"],
-            null,
-            null
-        ));
+        if (!isAuthorized) return reject(message);
 
         let group_id = args.id;
         let permissions = ["MANAGE_STAFF"];

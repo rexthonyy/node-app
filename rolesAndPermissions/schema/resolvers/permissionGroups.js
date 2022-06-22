@@ -11,13 +11,7 @@ const getUsersInGroupId = require('./lib/getUsersInGroupId');
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getError(
-            null,
-            message,
-            "INVALID", ["MANAGE_STAFF"],
-            null,
-            null
-        ));
+        if (!isAuthorized) return resolve(message);
         let accessPermissions = ["MANAGE_STAFF"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
@@ -77,13 +71,7 @@ module.exports = async(parent, args, context) => {
                 }
             });
         } else {
-            return reject(getError(
-                null,
-                "Permission not found. Requires PERMISSION_MANAGE_STAFF",
-                "OUT_OF_SCOPE_PERMISSION", ["MANAGE_STAFF"],
-                users,
-                null
-            ));
+            return reject("Permission not found. Requires PERMISSION_MANAGE_STAFF");
         }
     });
 }
