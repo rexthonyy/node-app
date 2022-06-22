@@ -6,7 +6,6 @@ module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
-        console.log(args.input);
         let input = JSON.parse(args.input);
         if (input["key"] == undefined || input["value"] == undefined) return resolve(getGraphQLOutput("failed", "Please enter the key and value parameter of the settings", null));
         let key = input.key;
@@ -28,7 +27,6 @@ function updateSetting(key, value) {
     return new Promise(resolve => {
         try {
             if (settingsType[key] == undefined) return reject(getGraphQLOutput("failed", "Settings not defined", null));
-            console.log(key, value);
             shiftQueries.updateSetting([key, { value }], "value=$2", "key=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
                 let updatedSettings = await getAllSettings();
