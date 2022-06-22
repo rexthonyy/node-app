@@ -3,7 +3,7 @@ const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getAttributesByProductId = require('./getAttributesByProductId');
 
 let getGraphQLProductById = (user_id) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         let productType = await getGraphQLProductTypeById(2);
         let category = await getGraphQLCategoryById(2);
         let defaultVariant = await getGraphQLProductVariantById(2);
