@@ -18,6 +18,7 @@ module.exports = async(parent, args, context) => {
         let permissions = ["MANAGE_STAFF"];
 
         if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
+            console.log(authUser.userPermissions);
             permissionsdbQueries.getAuthGroupById([group_id], result => {
                 if (result.err) {
                     return resolve(getError(
