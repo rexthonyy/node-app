@@ -1,5 +1,5 @@
 const { Pool, Client } = require('pg');
-const { db } = require('../libs/consts');
+const { db } = require('../lib/consts');
 
 const pool = new Pool({
     user: process.env.POSTGRES_USER_USER,
