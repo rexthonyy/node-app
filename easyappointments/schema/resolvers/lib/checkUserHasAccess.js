@@ -1,3 +1,18 @@
+let userHasAccess = (userPermissions, permissions) => {
+    let hasAccess = false;
+    if (userPermissions.find(uPermission => {
+            for (let requiredPermission of permissions) {
+                if (requiredPermission == uPermission) {
+                    return true;
+                }
+            }
+        })) {
+        hasAccess = true;
+    }
+
+    return hasAccess;
+};
+
 let userPermissionGroupHasAccess = (permissionGroups, permissions) => {
     let hasAccess = false;
     for (let group of permissionGroups) {
@@ -15,4 +30,7 @@ let userPermissionGroupHasAccess = (permissionGroups, permissions) => {
     return hasAccess;
 };
 
-module.exports = userPermissionGroupHasAccess;
+module.exports = {
+    userHasAccess,
+    userPermissionGroupHasAccess
+};
