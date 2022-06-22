@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
         let permissions = ["MANAGE_STAFF"];
 
         if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            permissionsdbQueries.getAuthGroupById([group_id], result => {
+            permissionsdbQueries.getAuthGroupById([group_id], async result => {
                 if (result.err) {
                     return resolve(getError(
                         "name",
@@ -43,25 +43,24 @@ module.exports = async(parent, args, context) => {
 
                 console.log(authGroup);
 
-                getUsersInGroupId(authGroup.id, users => {
-                    getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
-                        let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
-                        let userCanManage = false;
+                const users = await getUsersInGroupId(authGroup.id);
+                getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
+                    let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+                    let userCanManage = false;
 
-                        for (let i = 0, j = authUserPermissions.length; i < j; i++) {
-                            if (authUserPermissions[i].code == "MANAGE_USERS") {
-                                userCanManage = true;
-                                break;
-                            }
+                    for (let i = 0, j = authUserPermissions.length; i < j; i++) {
+                        if (authUserPermissions[i].code == "MANAGE_USERS") {
+                            userCanManage = true;
+                            break;
                         }
+                    }
 
-                        resolve({
-                            id: authGroup.id,
-                            name: authGroup.name,
-                            users,
-                            permissions,
-                            userCanManage
-                        });
+                    resolve({
+                        id: authGroup.id,
+                        name: authGroup.name,
+                        users,
+                        permissions,
+                        userCanManage
                     });
                 });
             });

@@ -316,43 +316,43 @@ function updateUserPermission(authUser, users, cb) {
 }
 
 function getGroups(resolve, authUser, group) {
-    getAuthGroupPermissionsByGroupId(group.id, permissions => {
-        getUsersInGroupId(group.id, users => {
-            let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
-            let userCanManage = false;
+    getAuthGroupPermissionsByGroupId(group.id, async permissions => {
+        const users = await getUsersInGroupId(group.id);
 
-            for (let i = 0, j = authUserPermissions.length; i < j; i++) {
-                if (authUserPermissions[i].code == "MANAGE_USERS") {
-                    userCanManage = true;
-                    break;
-                }
+        let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+        let userCanManage = false;
+
+        for (let i = 0, j = authUserPermissions.length; i < j; i++) {
+            if (authUserPermissions[i].code == "MANAGE_USERS") {
+                userCanManage = true;
+                break;
             }
+        }
 
-            let res = {
-                errors: [{
-                    field: null,
-                    message: "Group updated successfully",
-                    code: "REQUIRED",
-                    permissions: null,
-                    users: null
-                }],
-                group: {
-                    id: group.id,
-                    name: group.name,
-                    users,
-                    permissions,
-                    userCanManage
-                },
-                permissionGroupErrors: [{
-                    field: null,
-                    message: "Group updated successfully",
-                    code: "REQUIRED",
-                    permissions: null,
-                    users: null
-                }]
-            };
+        let res = {
+            errors: [{
+                field: null,
+                message: "Group updated successfully",
+                code: "REQUIRED",
+                permissions: null,
+                users: null
+            }],
+            group: {
+                id: group.id,
+                name: group.name,
+                users,
+                permissions,
+                userCanManage
+            },
+            permissionGroupErrors: [{
+                field: null,
+                message: "Group updated successfully",
+                code: "REQUIRED",
+                permissions: null,
+                users: null
+            }]
+        };
 
-            resolve(res);
-        });
+        resolve(res);
     });
 }

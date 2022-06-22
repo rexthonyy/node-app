@@ -1,6 +1,6 @@
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: Bearer 329fcbcd-3cc8-43e1-aad7-b3e604
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1USTROakI5Lk9EZ2padjN5Mkpqb1FNTzZEQmFjX2pxenhyWjQteEk0WnRNajdkSUpObFEiLCJpYXQiOjE2NTU5MTI4NjAsImV4cCI6MTY1NTkxNDY2MCwic3ViIjoiMSJ9.TTid0MWEXJo4vck4m6Sc9lrH0KKc408S4067UJTc69A
 X-Request-Type: GraphQL
 
 query ($id: ID!){
