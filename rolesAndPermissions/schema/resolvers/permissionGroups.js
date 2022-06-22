@@ -26,8 +26,6 @@ module.exports = async(parent, args, context) => {
                 let countAuthGroups = -1;
                 let edges = [];
 
-                console.log(authGroups);
-
                 authGroups.forEach(async authGroup => {
                     const users = await getUsersInGroupId(authGroup.id);
                     const permissions = await getAuthGroupPermissionsByGroupId(authGroup.id);
@@ -51,8 +49,6 @@ module.exports = async(parent, args, context) => {
                             userCanManage
                         }
                     });
-
-                    console.log(edges);
 
                     checkAuthGroupComplete();
                 });

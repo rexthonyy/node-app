@@ -29,7 +29,7 @@ module.exports = async(parent, args, context) => {
             let groupName = args.input.name;
             let removePermissions = args.input.removePermissions;
             let removeUsers = args.input.removeUsers;
-            permissionsdbQueries.getAuthGroupById([groupId], result => {
+            permissionsdbQueries.getAuthGroupById([groupId], async result => {
                 if (result.err) {
                     return resolve(getError(
                         "name",
@@ -52,35 +52,26 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res[0];
 
-                updateGroupName(groupId, groupName)
-                    .then(() => {
-                        addGroupPermissions(groupId, permissions)
-                            .then(() => {
-                                addNewUsersToGroupPermissions(groupId, users)
-                                    .then(() => {
-                                        removeGroupPermissions(groupId, removePermissions)
-                                            .then(() => {
-                                                removeGroupUsers(authUser, groupId, removeUsers)
-                                                    .then(() => {
-                                                        permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
-                                                            let usersInGroup = [];
-                                                            if (!(result.err || result.res.length == 0)) {
-                                                                let accountUserRow = result.res;
-                                                                for (let i = 0, j = accountUserRow.length; i < j; i++) {
-                                                                    usersInGroup.push(accountUserRow[i].user_id);
-                                                                }
-                                                            }
+                await updateGroupName(groupId, groupName);
+                await addGroupPermissions(groupId, permissions);
+                await addNewUsersToGroupPermissions(groupId, users);
+                await removeGroupPermissions(groupId, removePermissions);
+                await removeGroupUsers(authUser, groupId, removeUsers);
 
-                                                            if (groupName) authGroup.name = groupName;
-                                                            updateUserPermission(authUser, usersInGroup, async() => {
-                                                                resolve(getGroups(authUser, authGroup));
-                                                            });
-                                                        });
-                                                    });
-                                            });
-                                    });
-                            });
+                permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
+                    let usersInGroup = [];
+                    if (!(result.err || result.res.length == 0)) {
+                        let accountUserRow = result.res;
+                        for (let i = 0, j = accountUserRow.length; i < j; i++) {
+                            usersInGroup.push(accountUserRow[i].user_id);
+                        }
+                    }
+
+                    if (groupName) authGroup.name = groupName;
+                    updateUserPermission(authUser, usersInGroup, async() => {
+                        resolve(getGroups(authUser, authGroup));
                     });
+                });
             });
         } else {
             return reject(getError(
@@ -353,6 +344,7 @@ function getGroups(authUser, group) {
             }]
         };
 
+        console.log(res);
         resolve(res);
     });
 }
