@@ -1,6 +1,3 @@
-const getGraphQLCategoryById = require('./getGraphQLCategoryById');
-const getAttributesByProductId = require('./getAttributesByProductId');
-
 let getGraphQLProductVariantById = (user_id) => {
     return new Promise((resolve, reject) => {
         let productVariant = {

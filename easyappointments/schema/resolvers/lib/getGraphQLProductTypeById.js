@@ -1,6 +1,3 @@
-const getGraphQLCategoryById = require('./getGraphQLCategoryById');
-const getAttributesByProductId = require('./getAttributesByProductId');
-
 let getGraphQLProductTypeById = (user_id) => {
     return new Promise(async(resolve, reject) => {
         let channelListings = await getChannelListingsById(1);
