@@ -3,71 +3,69 @@
 const { hasAllPermissions } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
-const getAuthenticatedUser = require('./lib/getAuthenticatedUser');
 const getUsersInGroupId = require('./lib/getUsersInGroupId');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        getAuthenticatedUser(context, authUser => {
-            let group_id = args.id;
-            if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
-                permissionsdbQueries.getAuthGroupById([group_id], result => {
-                    if (result.err) {
-                        return resolve(getError(
-                            "name",
-                            result.err,
-                            null, [],
-                            users,
-                            null
-                        ));
-                    }
+        let authUser = context.user;
+        let group_id = args.id;
+        if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
+            permissionsdbQueries.getAuthGroupById([group_id], result => {
+                if (result.err) {
+                    return resolve(getError(
+                        "name",
+                        result.err,
+                        null, [],
+                        users,
+                        null
+                    ));
+                }
 
-                    if (result.res.length == 0) {
-                        return reject(getError(
-                            "id",
-                            "Invalid group id",
-                            400, [],
-                            null,
-                            null
-                        ));
-                    }
+                if (result.res.length == 0) {
+                    return reject(getError(
+                        "id",
+                        "Invalid group id",
+                        400, [],
+                        null,
+                        null
+                    ));
+                }
 
-                    let authGroup = result.res[0];
+                let authGroup = result.res[0];
 
-                    console.log(authGroup);
+                console.log(authGroup);
 
-                    getUsersInGroupId(authGroup.id, users => {
-                        getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
-                            let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
-                            let userCanManage = false;
+                getUsersInGroupId(authGroup.id, users => {
+                    getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
+                        let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+                        let userCanManage = false;
 
-                            for (let i = 0, j = authUserPermissions.length; i < j; i++) {
-                                if (authUserPermissions[i].code == "MANAGE_USERS") {
-                                    userCanManage = true;
-                                    break;
-                                }
+                        for (let i = 0, j = authUserPermissions.length; i < j; i++) {
+                            if (authUserPermissions[i].code == "MANAGE_USERS") {
+                                userCanManage = true;
+                                break;
                             }
+                        }
 
-                            resolve({
-                                id: authGroup.id,
-                                name: authGroup.name,
-                                users,
-                                permissions,
-                                userCanManage
-                            });
+                        resolve({
+                            id: authGroup.id,
+                            name: authGroup.name,
+                            users,
+                            permissions,
+                            userCanManage
                         });
                     });
                 });
-            } else {
-                return reject(getError(
-                    null,
-                    "Permission not found. Requires PERMISSION_MANAGE_STAFF",
-                    "OUT_OF_SCOPE_PERMISSION", ["MANAGE_STAFF"],
-                    users,
-                    null
-                ));
-            }
-        });
+            });
+        } else {
+            return reject(getError(
+                null,
+                "Permission not found. Requires PERMISSION_MANAGE_STAFF",
+                "OUT_OF_SCOPE_PERMISSION", ["MANAGE_STAFF"],
+                users,
+                null
+            ));
+        }
     });
 }
 

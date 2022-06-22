@@ -2,58 +2,52 @@
 
 const { hasAllPermissions } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
-const pgKratosQueries = require('../../postgres/kratos-queries');
-const getUserPermissions = require('./lib/getUserPermissions');
 const updateUserPermissions = require('./lib/updateUserPermissions');
 const getUserPermissionGroups = require('./lib/getUserPermissionGroups');
-const getUserEditableGroups = require('./lib/getUserEditableGroups');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
-const getAuthenticatedUser = require('./lib/getAuthenticatedUser');
 const getUsersInGroupId = require('./lib/getUsersInGroupId');
-const getIdentityById = require('./lib/getIdentityById');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
-        getAuthenticatedUser(context, authUser => {
-            let groupId = args.id;
+        let authUser = context.user;
+        let groupId = args.id;
 
-            if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
-                permissionsdbQueries.getAuthGroupById([groupId], result => {
-                    if (result.err) {
-                        return resolve(getError(
-                            "name",
-                            result.err,
-                            "ERROR", [],
-                            null,
-                            null
-                        ));
-                    }
+        if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
+            permissionsdbQueries.getAuthGroupById([groupId], result => {
+                if (result.err) {
+                    return resolve(getError(
+                        "name",
+                        result.err,
+                        "ERROR", [],
+                        null,
+                        null
+                    ));
+                }
 
-                    if (result.res.length == 0) {
-                        return resolve(getError(
-                            "name",
-                            "Permission Group not found",
-                            "REQUIRED", [],
-                            null,
-                            null
-                        ));
-                    }
+                if (result.res.length == 0) {
+                    return resolve(getError(
+                        "name",
+                        "Permission Group not found",
+                        "REQUIRED", [],
+                        null,
+                        null
+                    ));
+                }
 
-                    let authGroup = result.res[0];
+                let authGroup = result.res[0];
 
-                    deleteAccountUserGroupsByGroupId(authUser, groupId)
-                        .then(() => {
-                            deleteAuthGroupPermissions(groupId)
-                                .then(() => {
-                                    deleteAuthGroup(groupId)
-                                        .then(() => {
-                                            getGroups(resolve, authUser, authGroup);
-                                        });
-                                });
-                        });
-                });
-            }
-        });
+                deleteAccountUserGroupsByGroupId(authUser, groupId)
+                    .then(() => {
+                        deleteAuthGroupPermissions(groupId)
+                            .then(() => {
+                                deleteAuthGroup(groupId)
+                                    .then(() => {
+                                        getGroups(resolve, authUser, authGroup);
+                                    });
+                            });
+                    });
+            });
+        }
     });
 }
 
@@ -122,24 +116,7 @@ function deleteAuthGroup(groupId) {
 function updateUser(authUser, user, cb) {
     getUserPermissionGroups(authUser, user, userPermissionGroups => {
         updateUserPermissions(user, userPermissionGroups, () => {
-            getUserPermissions(user, userPermissions => {
-                getUserEditableGroups(authUser, user, userEditableGroups => {
-                    getIdentityById(user, identity => {
-                        if (typeof identity != "string") {
-                            let traits = identity.traits;
-                            traits.userPermissions = userPermissions;
-                            traits.permissionGroups = userPermissionGroups;
-                            traits.editableGroups = userEditableGroups;
-
-                            pgKratosQueries.updateIdentityTraitsById([user, JSON.stringify(traits)], result => {
-                                cb();
-                            });
-                        } else {
-                            cb();
-                        }
-                    });
-                });
-            });
+            cb();
         });
     });
 }
