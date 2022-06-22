@@ -24,6 +24,7 @@
         "graphql-tools": "^8.2.4",
         "graphql-upload": "^13.0.0",
         "@graphql-tools/schema": "^8.3.6",
+        "graphql-middleware": "^6.1.25",
         "@graphql-tools/stitch": "^8.6.3",
         "@graphql-tools/graphql-file-loader": "^7.3.14",
         "@graphql-tools/load": "^7.5.13",
