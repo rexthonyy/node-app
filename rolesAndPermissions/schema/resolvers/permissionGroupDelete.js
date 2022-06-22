@@ -25,7 +25,7 @@ module.exports = async(parent, args, context) => {
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             let groupId = args.id;
-            permissionsdbQueries.getAuthGroupById([groupId], result => {
+            permissionsdbQueries.getAuthGroupById([groupId], async result => {
                 if (result.err) {
                     return resolve(getError(
                         "name",
@@ -48,16 +48,11 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res[0];
 
-                deleteAccountUserGroupsByGroupId(authUser, groupId)
-                    .then(() => {
-                        deleteAuthGroupPermissions(groupId)
-                            .then(() => {
-                                deleteAuthGroup(groupId)
-                                    .then(async() => {
-                                        resolve(getGroups(authUser, authGroup));
-                                    });
-                            });
-                    });
+                await deleteAccountUserGroupsByGroupId(authUser, groupId);
+                await deleteAuthGroupPermissions(groupId);
+                await deleteAuthGroup(groupId);
+                console.log(authGroup);
+                resolve(getGroups(authUser, authGroup));
             });
         } else {
             return resolve(getError(

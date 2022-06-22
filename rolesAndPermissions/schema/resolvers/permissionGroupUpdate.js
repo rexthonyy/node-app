@@ -29,7 +29,7 @@ module.exports = async(parent, args, context) => {
             let groupName = args.input.name;
             let removePermissions = args.input.removePermissions;
             let removeUsers = args.input.removeUsers;
-            console.log("flag 1");
+
             permissionsdbQueries.getAuthGroupById([groupId], async result => {
                 if (result.err) {
                     return resolve(getError(
@@ -53,18 +53,12 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res[0];
 
-                console.log(authGroup);
-                console.log("flag 2");
+
                 await updateGroupName(groupId, groupName);
-                console.log("flag 3");
                 await addGroupPermissions(groupId, permissions);
-                console.log("flag 4");
                 await addNewUsersToGroupPermissions(groupId, users);
-                console.log("flag 5");
                 await removeGroupPermissions(groupId, removePermissions);
-                console.log("flag 6");
                 await removeGroupUsers(authUser, groupId, removeUsers);
-                console.log("flag 7");
                 permissionsdbQueries.getAccountUserGroupsByGroupId([groupId], result => {
                     let usersInGroup = [];
                     if (!(result.err || result.res.length == 0)) {
@@ -349,7 +343,6 @@ function getGroups(authUser, group) {
             }]
         };
 
-        console.log(res);
         resolve(res);
     });
 }
