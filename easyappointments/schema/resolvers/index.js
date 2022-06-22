@@ -12,9 +12,7 @@ const productTranslate = require("./productTranslate");
 module.exports = {
     Query: {
         product,
-        products,
-        service,
-        services
+        service
     },
     Mutation: {
         productCreate,
