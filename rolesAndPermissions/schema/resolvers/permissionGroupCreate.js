@@ -155,12 +155,10 @@ function updateUserPermission(authUser, users, cb) {
     const numUsers = users.length;
     let countUsers = -1;
 
-    users.forEach(user => {
-        getUserPermissionGroups(authUser, user, userPermissionGroups => {
-            updateUserPermissions(user, userPermissionGroups, () => {
-                checkUserComplete();
-            });
-        });
+    users.forEach(async user => {
+        const userPermissionGroups = await getUserPermissionGroups(authUser, user);
+        await updateUserPermissions(user, userPermissionGroups);
+        checkUserComplete();
     });
 
     checkUserComplete();

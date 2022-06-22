@@ -284,12 +284,10 @@ function removeGroupUsers(authUser, groupId, removeUsers) {
 }
 
 
-function updateUser(authUser, user, cb) {
-    getUserPermissionGroups(authUser, user, userPermissionGroups => {
-        updateUserPermissions(user, userPermissionGroups, () => {
-            cb();
-        });
-    });
+async function updateUser(authUser, user, cb) {
+    const userPermissionGroups = await getUserPermissionGroups(authUser, user);
+    await updateUserPermissions(user, userPermissionGroups);
+    cb();
 }
 
 function updateUserPermission(authUser, users, cb) {
