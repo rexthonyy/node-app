@@ -29,6 +29,7 @@ function getSettings() {
                 settingsRes[s.key] = s.value;
             }
             return resolve(getGraphQLOutput("success", "Settings fetch successful", settingsRes));
+            //.
         });
     });
 }
