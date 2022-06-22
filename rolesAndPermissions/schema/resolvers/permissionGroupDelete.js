@@ -3,13 +3,13 @@
 const {
     checkAuthorization,
     userPermissionGroupHasAccess,
-    userHasAccess
+    userHasAccess,
+    getUsersInGroupId
 } = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const updateUserPermissions = require('./lib/updateUserPermissions');
 const getUserPermissionGroups = require('./lib/getUserPermissionGroups');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
-const getUsersInGroupId = require('./lib/getUsersInGroupId');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {

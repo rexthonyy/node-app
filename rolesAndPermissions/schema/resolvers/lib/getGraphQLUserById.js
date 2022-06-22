@@ -2,7 +2,7 @@ const pgKratosQueries = require('../../../postgres/kratos-queries');
 const getUserPermissions = require('./getUserPermissions');
 const getUserPermissionGroups = require('./getUserPermissionGroups');
 
-let getGraphQLUserById = (user_id) => {
+let getGraphQLUserById = user_id => {
     return new Promise((resolve, reject) => {
         pgKratosQueries.getUserById([user_id], async result => {
             if (result.err || result.res.length == 0) {
