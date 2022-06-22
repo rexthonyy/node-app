@@ -1,7 +1,10 @@
 // Permission: PERMISSION_MANAGE_STAFF
 // Look up permission group by ID. Requires one of the following permissions: MANAGE_STAFF.
-const { userHasAccess, userPermissionGroupHasAccess } = require("./lib/checkUserHasAccess")
-const checkAuthorization = require("./lib/checkAuthorization")
+const {
+    checkAuthorization,
+    userPermissionGroupHasAccess,
+    userHasAccess
+} = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
 const getUsersInGroupId = require('./lib/getUsersInGroupId');
