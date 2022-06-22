@@ -18,13 +18,7 @@ module.exports = async(parent, args, context) => {
 
             permissionsdbQueries.getAuthGroups(result => {
                 if (result.err) {
-                    return reject(getError(
-                        "name",
-                        result.err,
-                        null, [],
-                        users,
-                        null
-                    ));
+                    return reject(JSON.stringify(result.err));
                 }
 
                 let authGroups = result.res;
@@ -93,37 +87,37 @@ function getError(field, message, code, permissions, users, group) {
 }
 
 function filterAndSortPermissions(resolve, reject, args, edges) {
-    let filterSearch = args.filter.search || null;
-    let filterIds = args.filter.ids || null;
-    let sortByDirection = args.sortBy.direction || null;
-    let sortByField = args.sortBy.field || null;
-    let before = args.before || null;
-    let after = args.after || null;
-    let first = args.first || null;
-    let last = args.last || null;
+    // let filterSearch = args.filter.search ? args.filter.search : null;
+    // let filterIds = args.filter.ids ? args.filter.ids : null;
+    // let sortByDirection = args.sortBy.direction ? args.sortBy.direction : null;
+    // let sortByField = args.sortBy.field || null;
+    // let before = args.before || null;
+    // let after = args.after || null;
+    // let first = args.first || null;
+    // let last = args.last || null;
+    /*
+        if (!(first || last)) {
+            return reject(JSON.stringify(getError(
+                "first|last",
+                "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+                "REQUIRED",
+                null,
+                null,
+                null
+            )));
+        }
 
-    if (!(first || last)) {
-        return reject(getError(
-            "first|last",
-            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
-            "REQUIRED",
-            null,
-            null,
-            null
-        ));
-    }
-
-    if (!(first || last)) {
-        return reject(getError(
-            "first|last",
-            "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
-            "REQUIRED",
-            null,
-            null,
-            null
-        ));
-    }
-
+        if (!(first || last)) {
+            return reject(JSON.stringify(getError(
+                "first|last",
+                "You must provide a `first` or `last` value to properly paginate the `permissionGroups` connection.",
+                "REQUIRED",
+                null,
+                null,
+                null
+            )));
+        }
+    */
     resolve({
         pageInfo: {
             hasNextPage: false,
