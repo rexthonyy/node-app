@@ -71,8 +71,7 @@ X-Request-Type: GraphQL
 
 mutation {
   permissionGroupUpdate(id: 4, input: {
-    addPermissions: [MANAGE_ORDERS],
-    addUsers: [1]
+    addPermissions: [MANAGE_ORDERS]
   }){
     errors{
       field
