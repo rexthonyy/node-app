@@ -1,0 +1,9 @@
+module.exports = context => {
+    if (!context.user) return returnData(false, null, "failed", "Please enter a valid authorization header");
+    const authUser = context.user;
+    return returnData(true, authUser);
+}
+
+function returnData(isAuthorized, authUser, status, message) {
+    return { isAuthorized, authUser, status, message };
+}

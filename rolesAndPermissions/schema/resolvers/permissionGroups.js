@@ -1,13 +1,26 @@
 // List of permission groups. Requires one of the following permissions: MANAGE_STAFF.
-const { hasAllPermissions } = require('./lib');
+const {
+    checkAuthorization,
+    userPermissionGroupHasAccess,
+    userHasAccess
+} = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const getAuthGroupPermissionsByGroupId = require('./lib/getAuthGroupPermissionsByGroupId');
 const getUsersInGroupId = require('./lib/getUsersInGroupId');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
-        let authUser = context.user;
-        if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
+        let { isAuthorized, authUser, status, message } = checkAuthorization(context);
+        if (!isAuthorized) return reject(getError(
+            null,
+            message,
+            "INVALID", ["MANAGE_STAFF"],
+            null,
+            null
+        ));
+        let accessPermissions = ["MANAGE_STAFF"];
+
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
 
             permissionsdbQueries.getAuthGroups(result => {
                 if (result.err) {

@@ -1,22 +1,10 @@
-require('../../../permissions');
-
-const hasAllPermissions = (permissions, required) => {
-    let found = [];
-
-    for (let p in permissions) {
-        for (const r of required) {
-            if (p == r) {
-                if (permissions[p] == true) {
-                    found.push(true);
-                    break;
-                }
-            }
-        }
-    }
-
-    return found.length == required.length;
-}
+const getGraphQLUserById = require('./getGraphQLUserById');
+const checkAuthorization = require('./checkAuthorization');
+const { userPermissionGroupHasAccess, userHasAccess } = require('./checkUserHasAccess');
 
 module.exports = {
-    hasAllPermissions
-}
+    getGraphQLUserById,
+    checkAuthorization,
+    userHasAccess,
+    userPermissionGroupHasAccess
+};

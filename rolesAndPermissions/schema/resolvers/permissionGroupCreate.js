@@ -1,5 +1,9 @@
 // Create new permission group. Requires one of the following permissions: MANAGE_STAFF.
-const { hasAllPermissions } = require('./lib');
+const {
+    checkAuthorization,
+    userPermissionGroupHasAccess,
+    userHasAccess
+} = require('./lib');
 const permissionsdbQueries = require('../../postgres/permissionsdb-queries');
 const updateUserPermissions = require('./lib/updateUserPermissions');
 const getUserPermissionGroups = require('./lib/getUserPermissionGroups');
@@ -8,12 +12,21 @@ const getUsersInGroupId = require('./lib/getUsersInGroupId');
 
 module.exports = async(parent, args, context) => {
     return new Promise((resolve) => {
-        let authUser = context.user;
-        let permissions = args.input.addPermissions;
-        let users = args.input.addUsers;
-        let groupName = args.input.name;
+        let { isAuthorized, authUser, status, message } = checkAuthorization(context);
+        if (!isAuthorized) return reject(getError(
+            null,
+            message,
+            "INVALID", ["MANAGE_STAFF"],
+            null,
+            null
+        ));
+        let accessPermissions = ["MANAGE_STAFF"];
 
-        if (hasAllPermissions(context.body.variables, ["PERMISSION_MANAGE_STAFF"])) {
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
+
+            let permissions = args.input.addPermissions;
+            let users = args.input.addUsers;
+            let groupName = args.input.name;
 
             for (let i = 0, j = permissions.length; i < j; i++) {
                 permissions[i] = permissions[i].toLowerCase();
