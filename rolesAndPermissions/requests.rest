@@ -1,6 +1,6 @@
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1USTROakI5Lk9EZ2padjN5Mkpqb1FNTzZEQmFjX2pxenhyWjQteEk0WnRNajdkSUpObFEiLCJpYXQiOjE2NTU5MTI4NjAsImV4cCI6MTY1NTkxNDY2MCwic3ViIjoiMSJ9.TTid0MWEXJo4vck4m6Sc9lrH0KKc408S4067UJTc69A
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UUTNPVFY5LlJ2Y3hXcW5UU3pNWG94ZmhlaHAwaVJmdFR2TjlMMWViMEZYSXZuamN1ZHciLCJpYXQiOjE2NTU5MTQ3OTUsImV4cCI6MTY1NTkxNjU5NSwic3ViIjoiMSJ9.g7kTLiXkZ4iBvZIsJKCQpM_U7AxkJpADp5YTSeX1I7c
 X-Request-Type: GraphQL
 
 query ($id: ID!){
@@ -25,4 +25,35 @@ query ($id: ID!){
 
 {
     "id": 1
+}
+
+### 
+POST http://88.208.199.175:2300/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UUTNPVFY5LlJ2Y3hXcW5UU3pNWG94ZmhlaHAwaVJmdFR2TjlMMWViMEZYSXZuamN1ZHciLCJpYXQiOjE2NTU5MTQ3OTUsImV4cCI6MTY1NTkxNjU5NSwic3ViIjoiMSJ9.g7kTLiXkZ4iBvZIsJKCQpM_U7AxkJpADp5YTSeX1I7c
+X-Request-Type: GraphQL
+
+query PermissionGroups{
+  permissionGroups(
+    filter: {
+      search: ""
+      ids: [1, 2]
+    },
+    sortBy: {
+      direction: ASC,
+      field: NAME
+    }
+  ){
+    edges{
+      node{
+        permissions{
+          code
+        }
+        users{
+          id
+          firstName
+        }
+      }
+    }
+  }
 }

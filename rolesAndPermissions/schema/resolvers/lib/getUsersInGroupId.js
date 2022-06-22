@@ -13,7 +13,6 @@ let getUsersInGroupId = (groupId) => {
             let accountUserGroupRows = result.res;
             let users = [];
 
-            console.log(accountUserGroupRows);
             for (let accountUser of accountUserGroupRows) {
                 let graphQLUser = await getGraphQLUserById(Number(accountUser.user_id));
                 users.push(graphQLUser);

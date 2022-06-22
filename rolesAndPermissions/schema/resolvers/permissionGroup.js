@@ -41,11 +41,9 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res[0];
 
-                console.log(authGroup);
-
                 const users = await getUsersInGroupId(authGroup.id);
                 getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
-                    let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+                    let authUserPermissions = authUser.userPermissions;
                     let userCanManage = false;
 
                     for (let i = 0, j = authUserPermissions.length; i < j; i++) {
@@ -54,6 +52,8 @@ module.exports = async(parent, args, context) => {
                             break;
                         }
                     }
+
+                    console.log(users);
 
                     resolve({
                         id: authGroup.id,
