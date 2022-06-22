@@ -140,7 +140,7 @@ function getDefaultAddress(address_id, addresses) {
 
 let getUserPermissionGroups = (userId) => {
     return new Promise(resolve => {
-        pgPermissionsQueries.getAccountUserGroupsByUserId([userId], result => {
+        permissionsdbQueries.getAccountUserGroupsByUserId([userId], result => {
             if (result.err || result.res.length == 0) {
                 return resolve([]);
             }
@@ -151,7 +151,7 @@ let getUserPermissionGroups = (userId) => {
             let userPermissionGroups = [];
 
             accountUserGroupRows.forEach(row => {
-                pgPermissionsQueries.getAuthGroupById([row.group_id], async result => {
+                permissionsdbQueries.getAuthGroupById([row.group_id], async result => {
                     if (result.err || result.res.length == 0) {
                         checkPermissionGroupComplete();
                     } else {
