@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { applyMiddleware } = require('graphql-middleware');
-const middleware = require('./libs/middleware');
+const middleware = require('./lib/middleware');
 const schema = require('./schema');
 const schemaWithMiddleware = applyMiddleware(schema, middleware)
 const app = express();
