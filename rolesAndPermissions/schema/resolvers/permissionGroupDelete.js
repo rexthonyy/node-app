@@ -134,7 +134,7 @@ async function updateUser(authUser, user, cb) {
     cb();
 }
 
-function getGroups(resolve, authUser, group) {
+function getGroups(authUser, group) {
     return new Promise(async resolve => {
         const permissions = await getAuthGroupPermissionsByGroupId(group.id);
         const users = await getUsersInGroupId(group.id);

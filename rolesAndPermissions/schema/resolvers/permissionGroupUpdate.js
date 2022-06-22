@@ -53,7 +53,6 @@ module.exports = async(parent, args, context) => {
 
                 let authGroup = result.res[0];
 
-
                 await updateGroupName(groupId, groupName);
                 await addGroupPermissions(groupId, permissions);
                 await addNewUsersToGroupPermissions(groupId, users);
