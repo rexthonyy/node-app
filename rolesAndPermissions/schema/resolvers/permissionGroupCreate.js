@@ -106,8 +106,8 @@ module.exports = async(parent, args, context) => {
                             function checkComplete() {
                                 count++;
                                 if (count == numPermissions) {
-                                    updateUserPermission(authUser, users, () => {
-                                        getGroups(resolve, authUser, authGroup);
+                                    updateUserPermission(authUser, users, async() => {
+                                        resolve(await getGroups(authUser, authGroup));
                                     });
                                 }
                             }
@@ -173,8 +173,9 @@ function updateUserPermission(authUser, users, cb) {
     }
 }
 
-function getGroups(resolve, authUser, group) {
-    getAuthGroupPermissionsByGroupId(group.id, async permissions => {
+function getGroups(authUser, group) {
+    return new Promise(async resolve => {
+        const permissions = await getAuthGroupPermissionsByGroupId(group.id);
         const users = await getUsersInGroupId(group.id);
         let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
         let userCanManage = false;

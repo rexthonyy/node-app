@@ -53,8 +53,8 @@ module.exports = async(parent, args, context) => {
                         deleteAuthGroupPermissions(groupId)
                             .then(() => {
                                 deleteAuthGroup(groupId)
-                                    .then(() => {
-                                        getGroups(resolve, authUser, authGroup);
+                                    .then(async() => {
+                                        resolve(getGroups(authUser, authGroup));
                                     });
                             });
                     });
@@ -142,7 +142,8 @@ function updateUser(authUser, user, cb) {
 }
 
 function getGroups(resolve, authUser, group) {
-    getAuthGroupPermissionsByGroupId(group.id, async permissions => {
+    return new Promise(async resolve => {
+        const permissions = await getAuthGroupPermissionsByGroupId(group.id);
         const users = await getUsersInGroupId(group.id);
         let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
         let userCanManage = false;

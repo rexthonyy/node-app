@@ -72,8 +72,8 @@ module.exports = async(parent, args, context) => {
                                                             }
 
                                                             if (groupName) authGroup.name = groupName;
-                                                            updateUserPermission(authUser, usersInGroup, () => {
-                                                                getGroups(resolve, authUser, authGroup);
+                                                            updateUserPermission(authUser, usersInGroup, async() => {
+                                                                resolve(getGroups(authUser, authGroup));
                                                             });
                                                         });
                                                     });
@@ -128,52 +128,52 @@ function updateGroupName(groupId, groupName) {
 }
 
 function addGroupPermissions(groupId, permissions) {
-    return new Promise((resolve) => {
+    return new Promise(async(resolve) => {
         if (permissions == null) return resolve();
-        getAuthGroupPermissionsByGroupId(groupId, authGroupPermissions => {
-            for (let i = 0, j = permissions.length; i < j; i++) {
-                permissions[i] = permissions[i].toLowerCase();
-            }
 
-            let newGroupPermissions = [];
-            for (let k = 0, l = permissions.length; k < l; k++) {
-                let isFound = false;
-                for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
-                    if (permissions[k] == authGroupPermissions[i].code.toLowerCase()) {
-                        isFound = true;
-                        break;
-                    }
-                }
-                if (!isFound) {
-                    newGroupPermissions.push(permissions[k]);
+        const authGroupPermissions = await getAuthGroupPermissionsByGroupId(groupId);
+        for (let i = 0, j = permissions.length; i < j; i++) {
+            permissions[i] = permissions[i].toLowerCase();
+        }
+
+        let newGroupPermissions = [];
+        for (let k = 0, l = permissions.length; k < l; k++) {
+            let isFound = false;
+            for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
+                if (permissions[k] == authGroupPermissions[i].code.toLowerCase()) {
+                    isFound = true;
+                    break;
                 }
             }
+            if (!isFound) {
+                newGroupPermissions.push(permissions[k]);
+            }
+        }
 
-            const numNewGroupPermissions = newGroupPermissions.length;
-            let countNewGroupPermissions = -1;
+        const numNewGroupPermissions = newGroupPermissions.length;
+        let countNewGroupPermissions = -1;
 
-            newGroupPermissions.forEach(newGroupPermissionCodename => {
-                permissionsdbQueries.getAuthPermissionsByCodename("codename=$1", [newGroupPermissionCodename], result => {
-                    if (result.res && result.res.length > 0) {
-                        let authPermission = result.res[0];
-                        permissionsdbQueries.createAuthGroupPermission([groupId, authPermission.id], result => {
-                            checkNewGroupPermissionComplete();
-                        });
-                    } else {
+        newGroupPermissions.forEach(newGroupPermissionCodename => {
+            permissionsdbQueries.getAuthPermissionsByCodename("codename=$1", [newGroupPermissionCodename], result => {
+                if (result.res && result.res.length > 0) {
+                    let authPermission = result.res[0];
+                    permissionsdbQueries.createAuthGroupPermission([groupId, authPermission.id], result => {
                         checkNewGroupPermissionComplete();
-                    }
-                });
-            });
-
-            checkNewGroupPermissionComplete();
-
-            function checkNewGroupPermissionComplete() {
-                countNewGroupPermissions++;
-                if (countNewGroupPermissions == numNewGroupPermissions) {
-                    resolve();
+                    });
+                } else {
+                    checkNewGroupPermissionComplete();
                 }
-            }
+            });
         });
+
+        checkNewGroupPermissionComplete();
+
+        function checkNewGroupPermissionComplete() {
+            countNewGroupPermissions++;
+            if (countNewGroupPermissions == numNewGroupPermissions) {
+                resolve();
+            }
+        }
     });
 }
 
@@ -223,41 +223,40 @@ function addNewUsersToGroupPermissions(groupId, users) {
 }
 
 function removeGroupPermissions(groupId, removePermissions) {
-    return new Promise((resolve) => {
+    return new Promise(async(resolve) => {
         if (removePermissions == null) return resolve();
-        getAuthGroupPermissionsByGroupId(groupId, authGroupPermissions => {
-            for (let i = 0, j = removePermissions.length; i < j; i++) {
-                removePermissions[i] = removePermissions[i].toLowerCase();
-            }
+        const authGroupPermissions = await getAuthGroupPermissionsByGroupId(groupId);
+        for (let i = 0, j = removePermissions.length; i < j; i++) {
+            removePermissions[i] = removePermissions[i].toLowerCase();
+        }
 
-            let idsOfPermissionsToRemove = [];
-            for (let k = 0, l = removePermissions.length; k < l; k++) {
-                for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
-                    if (removePermissions[k] == authGroupPermissions[i].code.toLowerCase()) {
-                        idsOfPermissionsToRemove.push(authGroupPermissions[i].id);
-                        break;
-                    }
+        let idsOfPermissionsToRemove = [];
+        for (let k = 0, l = removePermissions.length; k < l; k++) {
+            for (let i = 0, j = authGroupPermissions.length; i < j; i++) {
+                if (removePermissions[k] == authGroupPermissions[i].code.toLowerCase()) {
+                    idsOfPermissionsToRemove.push(authGroupPermissions[i].id);
+                    break;
                 }
             }
+        }
 
-            const numIdsOfPermissionsToRemove = idsOfPermissionsToRemove.length;
-            let countIdsOfPermissionsToRemove = -1;
+        const numIdsOfPermissionsToRemove = idsOfPermissionsToRemove.length;
+        let countIdsOfPermissionsToRemove = -1;
 
-            idsOfPermissionsToRemove.forEach(groupPermissionId => {
-                permissionsdbQueries.deleteAuthGroupPermissionsByPermissionsId([groupId, groupPermissionId], result => {
-                    checkIdsOfPermissionsToRemoveComplete();
-                });
+        idsOfPermissionsToRemove.forEach(groupPermissionId => {
+            permissionsdbQueries.deleteAuthGroupPermissionsByPermissionsId([groupId, groupPermissionId], result => {
+                checkIdsOfPermissionsToRemoveComplete();
             });
-
-            checkIdsOfPermissionsToRemoveComplete();
-
-            function checkIdsOfPermissionsToRemoveComplete() {
-                countIdsOfPermissionsToRemove++;
-                if (countIdsOfPermissionsToRemove == numIdsOfPermissionsToRemove) {
-                    resolve();
-                }
-            }
         });
+
+        checkIdsOfPermissionsToRemoveComplete();
+
+        function checkIdsOfPermissionsToRemoveComplete() {
+            countIdsOfPermissionsToRemove++;
+            if (countIdsOfPermissionsToRemove == numIdsOfPermissionsToRemove) {
+                resolve();
+            }
+        }
     });
 }
 
@@ -315,8 +314,9 @@ function updateUserPermission(authUser, users, cb) {
     }
 }
 
-function getGroups(resolve, authUser, group) {
-    getAuthGroupPermissionsByGroupId(group.id, async permissions => {
+function getGroups(authUser, group) {
+    return new Promise(async resolve => {
+        const permissions = await getAuthGroupPermissionsByGroupId(group.id);
         const users = await getUsersInGroupId(group.id);
 
         let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];

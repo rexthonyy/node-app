@@ -34,30 +34,29 @@ module.exports = async(parent, args, context) => {
 
                 authGroups.forEach(async authGroup => {
                     const users = await getUsersInGroupId(authGroup.id);
-                    getAuthGroupPermissionsByGroupId(authGroup.id, permissions => {
-                        let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
-                        let userCanManage = false;
+                    const permissions = await getAuthGroupPermissionsByGroupId(authGroup.id);
+                    let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
+                    let userCanManage = false;
 
-                        for (let i = 0, j = authUserPermissions.length; i < j; i++) {
-                            if (authUserPermissions[i].code == "MANAGE_USERS") {
-                                userCanManage = true;
-                                break;
-                            }
+                    for (let i = 0, j = authUserPermissions.length; i < j; i++) {
+                        if (authUserPermissions[i].code == "MANAGE_USERS") {
+                            userCanManage = true;
+                            break;
                         }
+                    }
 
-                        edges.push({
-                            cursor: "",
-                            node: {
-                                id: authGroup.id,
-                                name: authGroup.name,
-                                users,
-                                permissions,
-                                userCanManage
-                            }
-                        });
-
-                        checkAuthGroupComplete();
+                    edges.push({
+                        cursor: "",
+                        node: {
+                            id: authGroup.id,
+                            name: authGroup.name,
+                            users,
+                            permissions,
+                            userCanManage
+                        }
                     });
+
+                    checkAuthGroupComplete();
                 });
 
                 checkAuthGroupComplete();

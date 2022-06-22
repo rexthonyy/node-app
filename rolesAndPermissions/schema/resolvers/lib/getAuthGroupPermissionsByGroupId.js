@@ -30,7 +30,6 @@ let getAuthGroupPermissionsByGroupId = (groupId) => {
             function checkComplete() {
                 countPermissions++;
                 if (countPermissions == numPermissions) {
-                    console.log(permissions);
                     resolve(permissions);
                 }
             }
