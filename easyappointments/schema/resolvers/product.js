@@ -6,9 +6,9 @@ const {
 } = require('./lib');
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return reject(JSON.stringify(status, message));
 
         let includeUnpublishedItems = false;
         let permissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
