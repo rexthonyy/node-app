@@ -1,5 +1,5 @@
 let getGraphQLCategoryById = (user_id) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         let channelListings = await getChannelListingsById(1);
 
         let category = {
