@@ -22,7 +22,32 @@ const db = {
     auth_permissions: "auth_permission",
     auth_group_permissions: "auth_group_permissions",
     account_user_groups: "account_user_groups",
-    account_user_user_permissions: "account_user_user_permissions"
+    account_user_user_permissions: "account_user_user_permissions",
+
+
+    attribute_assignedproductattribute: "attribute_assignedproductattribute",
+    attribute_assignedproductattributevalue: "attribute_assignedproductattributevalue",
+    attribute_assignedvariantattribute: "attribute_assignedvariantattribute",
+    attribute_assignedvariantattributevalue: "attribute_assignedvariantattributevalue",
+    attribute_attribute: "attribute_attribute",
+    attribute_attributeproduct: "attribute_attributeproduct",
+    attribute_attributetranslation: "attribute_attributetranslation",
+    attribute_attributevalue: "attribute_attributevalue",
+    attribute_attributevaluetranslation: "attribute_attributevaluetranslation",
+    attribute_attributevariant: "attribute_attributevariant",
+    product_category: "product_category",
+    product_categorytranslation: "product_categorytranslation",
+    product_collection: "product_collection",
+    product_collectionproduct: "product_collectionproduct",
+    product_collectiontranslation: "product_collectiontranslation",
+    product_digitalcontent: "product_digitalcontent",
+    product_product: "product_product",
+    product_productmedia: "product_productmedia",
+    product_producttranslation: "product_producttranslation",
+    product_producttype: "product_producttype",
+    product_productvariant: "product_productvariant",
+    product_productvarianttranslation: "product_productvarianttranslation",
+    product_variantmedia: "product_variantmedia"
 };
 
 const colorValue = {

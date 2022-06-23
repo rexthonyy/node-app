@@ -2,30 +2,165 @@ const { Pool, Client } = require('pg');
 const { db } = require('../libs/consts');
 
 const pool = new Pool({
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT
+    user: process.env.POSTGRES_PRODUCTS_USER,
+    host: process.env.POSTGRES_PRODUCTS_HOST,
+    database: process.env.POSTGRES_PRODUCTS_DB,
+    password: process.env.POSTGRES_PRODUCTS_PASSWORD,
+    port: process.env.POSTGRES_PRODUCTS_PORT
 });
 
 pool.query('SELECT NOW()', (err, res) => {
     if (err) {
-        console.log("KratosSaleor database initialization failed!!!");
+        console.log(`${process.env.POSTGRES_PRODUCTS_DB} database initialization failed!!!`);
     } else {
-        console.log("KratosSaleor database initialized successfully!!!");
+        console.log(`${process.env.POSTGRES_PRODUCTS_DB} database initialized successfully!!!`);
     }
 });
 
 const client = new Client({
-    user: process.env.POSTGRES_USER,
-    host: process.env.POSTGRES_HOST,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    port: process.env.POSTGRES_PORT
+    user: process.env.POSTGRES_PRODUCTS_USER,
+    host: process.env.POSTGRES_PRODUCTS_HOST,
+    database: process.env.POSTGRES_PRODUCTS_DB,
+    password: process.env.POSTGRES_PRODUCTS_PASSWORD,
+    port: process.env.POSTGRES_PRODUCTS_PORT
 });
 client.connect();
 
+const get = (table, columns, values, whereClause, response) => {
+    pool.query(`SELECT ${columns} from ${table} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getProduct = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_product} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getProductType = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_producttype} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAttribute = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAttributeProduct = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributeproduct} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAttributeValue = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getCategory = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_category} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getCategoryTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_categorytranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
 const getShiftGroupById = (values, response) => {
     pool.query(`SELECT * from ${db.shift_groups} WHERE id=$1`, values, (err, res) => {
@@ -317,8 +452,8 @@ const getAllSettings = (response) => {
 };
 
 
-const createShiftGroup = (values, response) => {
-    client.query(`INSERT INTO ${db.shift_groups} (channel_id, name, position) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+const createProduct = (values, response) => {
+    client.query(`INSERT INTO ${db.product_product} (name, description, updated_at, product_type_id, category_id, seo_description, seo_title, charge_taxes, weight, metadata, private_metadata, slug, default_variant_id, description_plaintext, rating, search_document) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -334,8 +469,42 @@ const createShiftGroup = (values, response) => {
     });
 };
 
-const createShiftGroupMember = (values, response) => {
-    client.query(`INSERT INTO ${db.shift_group_members} (channel_id, shift_group_id, user_id, position) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+const createAttributeProduct = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attributeproduct} (attribute_id, product_type_id, sort_order) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedProductAttribute = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedproductattribute} (product_type_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedProductAttributeValue = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedproductattributevalue} (sort_order, assignment_id, value_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -947,6 +1116,14 @@ const deleteOpenShift = (values, whereClause, response) => {
 };
 
 module.exports = {
+    get,
+    getProduct,
+    getProductType,
+    getAttribute,
+    getAttributeProduct,
+    getAttributeValue,
+    getCategory,
+    getCategoryTranslation,
     getShiftGroupById,
     getShiftGroupsByChannelId,
     getShiftGroupMemberByUserId,
@@ -965,8 +1142,10 @@ module.exports = {
     getDayNotes,
     getAllSettings,
 
-    createShiftGroup,
-    createShiftGroupMember,
+    createProduct,
+    createAssignedProductAttribute,
+    createAttributeProduct,
+    createAssignedProductAttributeValue,
     createAssignedShift,
     createAssignedShiftActivity,
     createOpenShift,

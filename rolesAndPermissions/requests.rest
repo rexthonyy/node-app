@@ -1,6 +1,6 @@
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UY3pOalI5Lnk3Z1VReWx3SWxYVXoxYUxqZThfUk13LXpsVTE1Nl9QUVlSa1NXbjRWcWsiLCJpYXQiOjE2NTU5MTczNjQsImV4cCI6MTY1NTkxOTE2NCwic3ViIjoiMSJ9.3C3ng4YjE-V7X98bFZzo4TB96LoXplaV_wBT-ehVK2U
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UazNPVFI5Ll9ieXZMWlJTVllLUVU5ZHBKTVhRaVFNemxlS0x1Z1lZV1hWaWx6VFU4ODAiLCJpYXQiOjE2NTU5MTk3OTQsImV4cCI6MTY1NTkyMTU5NCwic3ViIjoiMSJ9.CMIVOvMzNFERuokMlTjOQ3Tz1NnYuR5UHE3X6rqhz4Y
 X-Request-Type: GraphQL
 
 query ($id: ID!){
@@ -30,7 +30,7 @@ query ($id: ID!){
 ### 
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UYzRPVFo5Ll93STFmMUlQaURsU1ZyeTdFejlVU2pDNE5lWkNQMDd0WWtNT0NBb3ppdFkiLCJpYXQiOjE2NTU5MTc4OTYsImV4cCI6MTY1NTkxOTY5Niwic3ViIjoiMSJ9.8284hzWVWRQ958FoPP-DeyxGlGwZ2t0dRw3Vo_MnH6o
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1qQTNPRFo5LnBDUXhzd3QzOTZ5aElQcTlhYS10eEZLNG1WU3RHOWVXZlpuQWkzU0ZUd1kiLCJpYXQiOjE2NTU5MjA3ODYsImV4cCI6MTY1NTkyMjU4Niwic3ViIjoiMSJ9.8p1UX_jQoVo1S6WoOvmzw6H9BxBtWAz8YTGx6A4VOaI
 X-Request-Type: GraphQL
 
 query PermissionGroups{
@@ -46,6 +46,8 @@ query PermissionGroups{
   ){
    edges{
       node{
+        id
+        name
         permissions{
           code
         }
@@ -66,13 +68,87 @@ query PermissionGroups{
 ### 
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UYzRPVFo5Ll93STFmMUlQaURsU1ZyeTdFejlVU2pDNE5lWkNQMDd0WWtNT0NBb3ppdFkiLCJpYXQiOjE2NTU5MTc4OTYsImV4cCI6MTY1NTkxOTY5Niwic3ViIjoiMSJ9.8284hzWVWRQ958FoPP-DeyxGlGwZ2t0dRw3Vo_MnH6o
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UazVPVFo5Li1ZM0Z2SFd5VmptSFpkN2wySk8xWEZCYjliRUNqbHBvelg3SDJ5SWFyX0UiLCJpYXQiOjE2NTU5MTk5OTYsImV4cCI6MTY1NTkyMTc5Niwic3ViIjoiMSJ9.1pJNSIqFiXEITkw9c0_jLDI1u7NISQlbbhetu9VnYiM
 X-Request-Type: GraphQL
 
 mutation {
   permissionGroupUpdate(id: 4, input: {
-    addPermissions: [MANAGE_ORDERS]
+    addPermissions: [MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS]
   }){
+    errors{
+      field
+      message
+      code
+      permissions
+      users
+    }
+    group{
+      id
+      name
+      users{
+        email
+        firstName
+        lastName
+      }
+      permissions{
+        code
+        name
+      }
+      userCanManage
+    }
+  }
+}
+
+
+
+
+
+### 
+POST http://88.208.199.175:2300/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UazVPVFo5Li1ZM0Z2SFd5VmptSFpkN2wySk8xWEZCYjliRUNqbHBvelg3SDJ5SWFyX0UiLCJpYXQiOjE2NTU5MTk5OTYsImV4cCI6MTY1NTkyMTc5Niwic3ViIjoiMSJ9.1pJNSIqFiXEITkw9c0_jLDI1u7NISQlbbhetu9VnYiM
+X-Request-Type: GraphQL
+
+mutation {
+  permissionGroupCreate(input: {
+    addPermissions: [MANAGE_USERS, MANAGE_STAFF],
+    addUsers: [1],
+    name: "admin"
+  }){
+    errors{
+      field
+      message
+      code
+      permissions
+      users
+    }
+    group{
+      id
+      name
+      users{
+        email
+        firstName
+        lastName
+      }
+      permissions{
+        code
+        name
+      }
+      userCanManage
+    }
+  }
+}
+
+
+
+### 
+POST http://88.208.199.175:2300/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1qRXlNRFo5LmtaM2dEQjB1RV94Yjd4cy1xZWR4V1FrOUdzVFhvWkg2aHpmLUlFYmh1MWciLCJpYXQiOjE2NTU5MjEyMDYsImV4cCI6MTY1NTkyMzAwNiwic3ViIjoiMSJ9.4Ayo5VYl0bxCXzvE6y6c1chU6EZ2R6ykm_vVR95iKv0
+X-Request-Type: GraphQL
+
+mutation {
+  permissionGroupDelete(id: 7){
     errors{
       field
       message
