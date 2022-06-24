@@ -776,6 +776,23 @@ const deleteUserTimeOffs = (values, whereClause, response) => {
     });
 };
 
+const deleteSharedSchedule = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shared_schedules} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteUserTimeOffsByShiftGroupId = (values, response) => {
     client.query(`DELETE FROM ${db.user_time_offs} WHERE shift_group_id=$1`, values, (err, res) => {
         if (err) {
@@ -1040,4 +1057,5 @@ module.exports = {
     deleteOpenShiftActivities,
     deleteOpenShift,
     deleteUserTimeOffs,
+    deleteSharedSchedule,
 }

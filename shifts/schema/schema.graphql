@@ -306,6 +306,18 @@ type Mutation {
     assignedShiftId: ID!
   ): AssignedShiftShareResponse
 
+  """Recall shared schedules. Requires permission MANAGE_STAFF"""
+  recallSharedSchedules(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """When does the shift start"""
+    startTime: String
+
+    """When does the shift end"""
+    endTime: String
+  ): ResponseStatus
+
   """Adds a new open shift. Requires permission MANAGE_STAFF"""
   openShiftAdd(
     """id of a channel or branch_id"""
