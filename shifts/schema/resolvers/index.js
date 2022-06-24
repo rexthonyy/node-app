@@ -19,6 +19,7 @@ const assignedShiftAdd = require("./assignedShiftAdd");
 const assignedShiftEdit = require("./assignedShiftEdit");
 const assignedShiftDelete = require("./assignedShiftDelete");
 const assignedShiftMoveToOpen = require("./assignedShiftMoveToOpen");
+const assignedShiftShare = require("./assignedShiftShare");
 const openShiftAdd = require("./openShiftAdd");
 const openShiftEdit = require("./openShiftEdit");
 const openShiftDelete = require("./openShiftDelete");
@@ -59,6 +60,7 @@ module.exports = {
         assignedShiftEdit,
         assignedShiftDelete,
         assignedShiftMoveToOpen,
+        assignedShiftShare,
         openShiftAdd,
         openShiftEdit,
         openShiftDelete,
