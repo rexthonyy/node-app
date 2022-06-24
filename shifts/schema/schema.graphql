@@ -46,6 +46,12 @@ type Query {
     """Filter the way you get shifts"""
     filter: getShiftsFilter
 
+    """Page to display in pagination"""
+    page: Int
+
+    """Number of results to display in pagination"""
+    limit: Int
+
      """The start date of the shifts"""
     startDate: String!
 
