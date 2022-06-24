@@ -16,6 +16,7 @@ module.exports = async(parent, args, context) => {
 }
 
 function getGraphQLOutput(status, message, result, pageInfo) {
+    console.log(pageInfo);
     return {
         status,
         message,
@@ -40,7 +41,7 @@ function getShiftGroups(channelId, page, limit) {
             }
 
             let pageInfo = paginate(page, limit, data);
-            console.log(pageInfo);
+
             resolve(getGraphQLOutput("success", `${data.length} shift groups`, data, { next: pageInfo.next, previous: pageInfo.previous, totalPages: pageInfo.totalPages }));
         });
     });
