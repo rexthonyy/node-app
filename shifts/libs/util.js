@@ -59,6 +59,30 @@ function diffHours(date1, date2) {
     return Math.abs(Math.round(diff));
 }
 
+
+function paginate(page, limit, values) {
+    page = page ? Number(page) : 1;
+    limit = limit ? Number(limit) : 5;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const result = {};
+    result.totalPages = Math.ceil(values.length / limit);
+    if (endIndex < values.length) {
+        result.next = {
+            page: page + 1,
+            limit: limit
+        };
+    }
+    if (startIndex > 0) {
+        result.previous = {
+            page: page - 1,
+            limit: limit
+        }
+    }
+
+    result.results = values.slice(startIndex, endIndex);
+    return result;
+}
 module.exports = {
     isEmailValid,
     getRandom,
@@ -66,5 +90,6 @@ module.exports = {
     sortByStartTime,
     formatDate,
     diffHours,
-    getDayFromDate
+    getDayFromDate,
+    paginate
 }

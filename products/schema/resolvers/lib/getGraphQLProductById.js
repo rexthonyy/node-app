@@ -54,7 +54,7 @@ let getGraphQLProductById = (productId) => {
                 mediaById: null,
                 variants: null,
                 media: null,
-                collections: null,
+                collections: [],
                 translation: null,
                 availableForPurchaseAt: null,
                 isAvailableForPurchase: true,

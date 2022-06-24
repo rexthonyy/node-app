@@ -571,6 +571,7 @@ type getNonShiftGroupMembersResponse{
 type getShiftsResponse{
   status: String
   message: String
+  pageInfo: JSONString
   result: Shifts
 }
 

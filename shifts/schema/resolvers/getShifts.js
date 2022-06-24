@@ -1,6 +1,6 @@
 const shiftQueries = require("../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('./lib');
-const { formatDate, sortByStartTime, diffHours } = require("../../libs/util");
+const { formatDate, sortByStartTime, diffHours, paginate } = require("../../libs/util");
 const { color } = require("../../libs/consts");
 
 module.exports = async(parent, args, context) => {
@@ -11,24 +11,27 @@ module.exports = async(parent, args, context) => {
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
         let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true };
+        let page = args.page ? args.page : null;
+        let limit = args.limit ? args.limit : null;
         let startDate = new Date(args.startDate);
         let endDate = new Date(args.endDate);
 
-        resolve(await getShifts(authUser, channelId, shiftGroupId, filter, startDate, endDate));
+        resolve(await getShifts(authUser, channelId, shiftGroupId, filter, page, limit, startDate, endDate));
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(status, message, result, pageInfo = null) {
     return {
         status,
         message,
+        pageInfo,
         result
     };
 }
 
-function getShifts(authUser, channelId, shiftGroupId, filter, startDate, endDate) {
+function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, startDate, endDate) {
     return new Promise(async resolve => {
-        let openShifts = null;
+        let openShifts = result = null;
         let assignedShifts = [];
 
         if (filter.includeOpenShifts) {
@@ -37,9 +40,10 @@ function getShifts(authUser, channelId, shiftGroupId, filter, startDate, endDate
 
         if (filter.includeShifts) {
             assignedShifts = await getAssignedShifts(authUser, filter.includeRequests, channelId, shiftGroupId, startDate, endDate);
+            result = paginate(page, limit, assignedShifts);
         }
 
-        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }));
+        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }, { page: result.page, limit: result.limit }));
     });
 }
 
