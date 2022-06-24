@@ -43,7 +43,7 @@ function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, start
             result = paginate(page, limit, assignedShifts);
         }
 
-        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }, { page: result.page, limit: result.limit }));
+        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }, { next: result.next, previous: result.previous }));
     });
 }
 
