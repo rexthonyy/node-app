@@ -5,6 +5,12 @@ type Query {
   getShiftGroups(
      """ID of the channel."""
     channelId: ID!
+    
+    """Page to display in pagination"""
+    page: Int
+
+    """Number of results to display in pagination"""
+    limit: Int
   ): getShiftGroupsResponse
 
   """
@@ -45,12 +51,6 @@ type Query {
 
     """Filter the way you get shifts"""
     filter: getShiftsFilter
-
-    """Page to display in pagination"""
-    page: Int
-
-    """Number of results to display in pagination"""
-    limit: Int
 
      """The start date of the shifts"""
     startDate: String!
@@ -542,6 +542,7 @@ type Mutation {
 type getShiftGroupsResponse{
   status: String
   message: String
+  pageInfo: JSONString
   result: [ShiftGroup]
 }
 
@@ -577,7 +578,6 @@ type getNonShiftGroupMembersResponse{
 type getShiftsResponse{
   status: String
   message: String
-  pageInfo: JSONString
   result: Shifts
 }
 

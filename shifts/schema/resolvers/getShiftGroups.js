@@ -8,20 +8,23 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
         let channelId = args.channelId;
+        let page = args.page ? args.page : null;
+        let limit = args.limit ? args.limit : null;
 
-        resolve(await getShiftGroups(channelId));
+        resolve(await getShiftGroups(channelId, page, limit));
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(status, message, result, pageInfo) {
     return {
         status,
         message,
+        pageInfo,
         result
     };
 }
 
-function getShiftGroups(channelId) {
+function getShiftGroups(channelId, page, limit) {
     return new Promise(resolve => {
         shiftQueries.getShiftGroupsByChannelId([channelId], result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
@@ -35,7 +38,10 @@ function getShiftGroups(channelId) {
                     name: shiftGroup.name
                 });
             }
-            resolve(getGraphQLOutput("success", `${data.length} shift groups`, data));
+
+            let pageInfo = paginate(page, limit, data);
+
+            resolve(getGraphQLOutput("success", `${data.length} shift groups`, data, { next: pageInfo.next, previous: pageInfo.previous, totalPages: pageInfo.totalPages }));
         });
     });
 }

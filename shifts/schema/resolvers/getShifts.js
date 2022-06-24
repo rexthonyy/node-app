@@ -11,28 +11,24 @@ module.exports = async(parent, args, context) => {
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
         let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true };
-        let page = args.page ? args.page : null;
-        let limit = args.limit ? args.limit : null;
         let startDate = new Date(args.startDate);
         let endDate = new Date(args.endDate);
 
-        resolve(await getShifts(authUser, channelId, shiftGroupId, filter, page, limit, startDate, endDate));
+        resolve(await getShifts(authUser, channelId, shiftGroupId, filter, startDate, endDate));
     });
 }
 
-function getGraphQLOutput(status, message, result, pageInfo = null) {
+function getGraphQLOutput(status, message, result) {
     return {
         status,
         message,
-        pageInfo,
         result
     };
 }
 
-function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, startDate, endDate) {
+function getShifts(authUser, channelId, shiftGroupId, filter, startDate, endDate) {
     return new Promise(async resolve => {
         let openShifts = null;
-        let result = { next: null, previous: null };
         let assignedShifts = [];
 
         if (filter.includeOpenShifts) {
@@ -41,11 +37,9 @@ function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, start
 
         if (filter.includeShifts) {
             assignedShifts = await getAssignedShifts(authUser, filter.includeRequests, channelId, shiftGroupId, startDate, endDate);
-            result = paginate(page, limit, assignedShifts);
         }
 
-        console.log(result);
-        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }, { next: result.next, previous: result.previous }));
+        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }));
     });
 }
 
