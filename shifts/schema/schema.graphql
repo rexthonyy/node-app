@@ -295,6 +295,17 @@ type Mutation {
     assignedShiftId: ID!
   ): AssignedShiftMoveToOpenResponse
 
+  """Share an assigned shift to schedules. Requires permission MANAGE_STAFF"""
+  assignedShiftShare(
+    """id of a channel or branch_id"""
+    channelId: ID!
+
+    """The ID of the shift group where the shift is being deleted"""
+    shiftGroupId: ID!
+    """The id of the shift that you want to move"""
+    assignedShiftId: ID!
+  ): AssignedShiftMoveToOpenResponse
+
   """Adds a new open shift. Requires permission MANAGE_STAFF"""
   openShiftAdd(
     """id of a channel or branch_id"""

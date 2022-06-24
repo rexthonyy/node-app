@@ -538,6 +538,23 @@ const createRequestOffer = (values, response) => {
     });
 };
 
+const createSharedSchedule = (values, response) => {
+    client.query(`INSERT INTO ${db.shared_schedules} (channel_id, shift_group_id, assigned_shift_id, user_id, label, color, note, is_open, start_time, end_time, is24hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const updateShiftGroupById = (values, whereClause, response) => {
     client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
         if (err) {
@@ -995,6 +1012,7 @@ module.exports = {
     createRequestTimeOff,
     createRequestSwap,
     createRequestOffer,
+    createSharedSchedule,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
