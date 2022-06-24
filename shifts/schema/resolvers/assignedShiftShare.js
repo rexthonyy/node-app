@@ -58,7 +58,7 @@ function copyAssignedShiftToSharedSchedules(assignedShift) {
             assignedShift.id,
             assignedShift.user_id,
             assignedShift.label,
-            colorValue[assignedShift.color],
+            assignedShift.color,
             assignedShift.note,
             false,
             assignedShift.start_time,
