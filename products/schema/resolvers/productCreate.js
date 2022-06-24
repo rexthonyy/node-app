@@ -7,7 +7,7 @@ const {
 const productQueries = require("../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null));
 
