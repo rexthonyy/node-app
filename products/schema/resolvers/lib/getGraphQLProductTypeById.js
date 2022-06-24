@@ -1,8 +1,8 @@
 const productQueries = require("../../postgres/product-queries");
 const getGraphQLProductAttributesByProductTypeId = require("./getGraphQLProductAttributesByProductTypeId");
 let getGraphQLProductTypeById = (productTypeId) => {
-    return new Promise(async(resolve, reject) => {
-        productQueries.getProductType([productTypeId], "id=$1", result => {
+    return new Promise((resolve, reject) => {
+        productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("ProductType not found");
             }
