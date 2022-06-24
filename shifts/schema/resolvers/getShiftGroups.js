@@ -16,6 +16,8 @@ module.exports = async(parent, args, context) => {
 }
 
 function getGraphQLOutput(status, message, result, pageInfo) {
+    if (!pageInfo.next) delete pageInfo.next;
+    if (!pageInfo.previous) delete pageInfo.previous;
     console.log(pageInfo);
     return {
         status,
