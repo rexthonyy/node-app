@@ -13,6 +13,7 @@ const db = {
     shift_group_members: "shift_group_members",
     shift_groups: "shift_groups",
     user_time_offs: "user_time_offs",
+    shared_schedules: "shared_schedules",
 
     account_user: "account_user",
     account_address: "account_address",

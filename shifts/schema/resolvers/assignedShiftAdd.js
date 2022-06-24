@@ -57,6 +57,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
                 colorValue[color],
                 note,
                 false,
+                false,
                 formatDate(startTime),
                 formatDate(endTime),
                 is24Hours,

@@ -163,6 +163,23 @@ const getAssignedShifts = (values, whereClause, response) => {
     });
 };
 
+const getSharedSchedules = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shared_schedules} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAssignedShiftActivities = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.assigned_shift_activities} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -352,7 +369,7 @@ const createShiftGroupMember = (values, response) => {
 };
 
 const createAssignedShift = (values, response) => {
-    client.query(`INSERT INTO ${db.assigned_shifts} (channel_id, shift_group_id, user_id, label, color, note, is_open, start_time, end_time, is24Hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.assigned_shifts} (channel_id, shift_group_id, user_id, label, color, note, is_open, is_shared, start_time, end_time, is24Hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -964,6 +981,7 @@ module.exports = {
     getRequestOffer,
     getDayNotes,
     getAllSettings,
+    getSharedSchedules,
 
     createShiftGroup,
     createShiftGroupMember,

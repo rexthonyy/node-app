@@ -5,7 +5,7 @@ type Query {
   getShiftGroups(
      """ID of the channel."""
     channelId: ID!
-    
+
     """Page to display in pagination"""
     page: Int
 
@@ -59,7 +59,23 @@ type Query {
     endDate: String!
   ): getShiftsResponse
 
-  
+  """
+  Look up the shared schedules in a channel at the range specified.
+  """
+  getSharedSchedules(
+   """ID of the channel."""
+    channelId: ID!
+
+    """ID of the shift group."""
+    shiftGroupId: ID!
+
+     """The start date of the shifts"""
+    startDate: String!
+
+     """The end date of the shifts"""
+    endDate: String!
+  ): getSharedScheduleResponse
+
   """
   Look up the details of all shifts in a channel. Requires permission MANAGE_STAFF
   """
@@ -579,6 +595,13 @@ type getShiftsResponse{
   status: String
   message: String
   result: Shifts
+}
+
+"""Return type for getShiftGroupMembers"""
+type getSharedScheduleResponse{
+  status: String
+  message: String
+  schedules: [UserAssignedShifts]
 }
 
 """Return type for getAllUniqueShifts"""
