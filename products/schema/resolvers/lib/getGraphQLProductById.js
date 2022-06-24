@@ -1,4 +1,4 @@
-const productQueries = require("../../postgres/product-queries");
+const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');

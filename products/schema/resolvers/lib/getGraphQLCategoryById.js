@@ -1,4 +1,4 @@
-const productQueries = require("../../postgres/product-queries");
+const productQueries = require("../../../postgres/product-queries");
 const getGraphQLCategoryTranslationByCategoryId = require("./getGraphQLCategoryTranslationByCategoryId");
 let getGraphQLCategoryById = (categoryId) => {
     return new Promise((resolve, reject) => {

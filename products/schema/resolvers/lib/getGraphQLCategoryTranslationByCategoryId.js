@@ -1,8 +1,8 @@
-const productQueries = require("../../postgres/product-queries");
+const productQueries = require("../../../postgres/product-queries");
 let getGraphQLCategoryTranslationByCategoryId = (categoryId) => {
     return new Promise(async(resolve, reject) => {
         if (categoryId == null) return resolve(null);
-        productQueries.getCategoryTranslation([categoryId], "category_id=$1", async result => {
+        productQueries.getCategoryTranslation([categoryId], "category_id=$1", result => {
             if (result.err || result.res.length == 0) {
                 return reject("Category translation not found");
             }

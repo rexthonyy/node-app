@@ -1,4 +1,4 @@
-const productQueries = require("../../postgres/product-queries");
+const productQueries = require("../../../postgres/product-queries");
 let getGraphQLProductAttributeById = (attributeId) => {
     return new Promise((resolve, reject) => {
         productQueries.getAttribute([attributeId], "id=$1", result => {
