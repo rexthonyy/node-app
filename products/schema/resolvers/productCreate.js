@@ -9,7 +9,7 @@ const productQueries = require("../../postgres/product-queries");
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null));
+        if (!isAuthorized) return reject(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null));
 
         let accessPermissions = ["MANAGE_PRODUCTS"];
 
@@ -18,12 +18,6 @@ module.exports = async(parent, args, context) => {
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null));
         }
-
-        let id = args.id;
-        let slug = args.slug;
-        let channel = args.channel;
-
-        resolve(await products(id, slug, channel, includeUnpublishedItems));
     });
 }
 

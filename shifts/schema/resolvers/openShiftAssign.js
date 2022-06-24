@@ -61,6 +61,7 @@ function assignOpenShiftToUser(openShift, userId) {
             openShift.color,
             openShift.note,
             false,
+            false,
             openShift.start_time,
             openShift.end_time,
             openShift.is24hours,
