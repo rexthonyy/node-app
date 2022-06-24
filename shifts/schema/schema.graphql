@@ -42,7 +42,27 @@ type Query {
   """
   Look up the shifts in a channel at the range specified.
   """
-  getShifts(
+  getShiftsByPeople(
+   """ID of the channel."""
+    channelId: ID!
+
+    """ID of the shift group."""
+    shiftGroupId: ID!
+
+    """Filter the way you get shifts"""
+    filter: getShiftsFilter
+
+     """The start date of the shifts"""
+    startDate: String!
+
+     """The end date of the shifts"""
+    endDate: String!
+  ): getShiftsResponse
+
+  """
+  Look up the shifts in a channel at the range specified.
+  """
+  getShiftsByTask(
    """ID of the channel."""
     channelId: ID!
 

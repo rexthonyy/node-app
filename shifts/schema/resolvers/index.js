@@ -1,7 +1,8 @@
 const getShiftGroups = require("./getShiftGroups");
 const getShiftGroupMembers = require("./getShiftGroupMembers");
 const getNonShiftGroupMembers = require("./getNonShiftGroupMembers");
-const getShifts = require("./getShifts");
+const getShiftsByPeople = require("./getShiftsByPeople");
+const getShiftsByTask = require("./getShiftsByTask");
 const getSharedSchedules = require("./getSharedSchedules");
 const getAllUniqueShifts = require("./getAllUniqueShifts");
 const getRequests = require("./getRequests");
@@ -41,7 +42,8 @@ module.exports = {
         getShiftGroups,
         getShiftGroupMembers,
         getNonShiftGroupMembers,
-        getShifts,
+        getShiftsByPeople,
+        getShiftsByTask,
         getSharedSchedules,
         getAllUniqueShifts,
         getRequests,
