@@ -16,7 +16,7 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(status, message, schedules) {
     return {
         status,
         message,
