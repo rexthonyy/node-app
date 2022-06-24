@@ -4,8 +4,8 @@ const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 
 let getGraphQLProductById = (productId) => {
-    return new Promise(async(resolve, reject) => {
-        productQueries.getProduct([productId], "id=$1", result => {
+    return new Promise((resolve, reject) => {
+        productQueries.getProduct([productId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Product not found");
             }
