@@ -14,18 +14,30 @@ type Query {
   ): Product
 
   """
-  Look up a service by ID. Requires one of the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS.
+  List of the shop's products. Requires one of the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS.
   """
-  service(
-    """ID of the service."""
-    id: ID
+  products(
+    """Filtering options for products."""
+    filter: ProductFilterInput
 
-    """Slug of the service."""
-    slug: String
+    """Sort products."""
+    sortBy: ProductOrder
 
     """Slug of a channel for which the data should be returned."""
     channel: String
-  ): Service
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductCountableConnection
 }
 
 
