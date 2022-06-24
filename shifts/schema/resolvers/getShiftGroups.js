@@ -1,6 +1,6 @@
 const shiftQueries = require("../../postgres/shift-queries");
 const { checkAuthorization } = require('./lib');
-const { sortByPosition } = require("../../libs/util");
+const { sortByPosition, paginate } = require("../../libs/util");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
