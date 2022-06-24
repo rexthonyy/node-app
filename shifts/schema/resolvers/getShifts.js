@@ -31,7 +31,8 @@ function getGraphQLOutput(status, message, result, pageInfo = null) {
 
 function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, startDate, endDate) {
     return new Promise(async resolve => {
-        let openShifts = result = null;
+        let openShifts = null;
+        let result = { next: null, previous: null };
         let assignedShifts = [];
 
         if (filter.includeOpenShifts) {
@@ -43,6 +44,7 @@ function getShifts(authUser, channelId, shiftGroupId, filter, page, limit, start
             result = paginate(page, limit, assignedShifts);
         }
 
+        console.log(result);
         resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }, { next: result.next, previous: result.previous }));
     });
 }
