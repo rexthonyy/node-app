@@ -304,7 +304,7 @@ type Mutation {
     shiftGroupId: ID!
     """The id of the shift that you want to move"""
     assignedShiftId: ID!
-  ): AssignedShiftMoveToOpenResponse
+  ): AssignedShiftShareResponse
 
   """Adds a new open shift. Requires permission MANAGE_STAFF"""
   openShiftAdd(
@@ -712,6 +712,13 @@ type AssignedShiftMoveToOpenResponse{
   status: String
   message: String
   result: OpenShift
+}
+
+"""Return type for assignedShiftShare"""
+type AssignedShiftShareResponse{
+  status: String
+  message: String
+  result: AssignedShift
 }
 
 """Return type for shiftGroupRename"""
