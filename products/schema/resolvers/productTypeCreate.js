@@ -4,7 +4,7 @@ const {
     userHasAccess
 } = require('./lib');
 const productQueries = require("../../postgres/product-queries");
-const getGraphQLProductTypeById = require('./lib/getGraphQLProductAttributesByProductTypeId');
+const getGraphQLProductTypeById = require('./lib/getGraphQLProductTypeById');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -74,8 +74,8 @@ function productTypeCreate(authUser, args) {
             await addVariantAttributes(productType, variantAttributes);
             console.log("product type created");
             let graphQLProductType = await getGraphQLProductTypeById(productType.id);
-            console.log(".....");
             console.log(graphQLProductType);
+            console.log(".....");
             resolve(getGraphQLOutput("producttype", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProductType));
         });
 
