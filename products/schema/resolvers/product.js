@@ -21,13 +21,16 @@ module.exports = async(parent, args, context) => {
         let id = args.id;
         let slug = args.slug;
         let channel = args.channel;
-
-        if (id) {
-            return resolve(await getProductById(id, channel, includeUnpublishedItems));
-        } else if (slug) {
-            return resolve(await getProductBySlug(slug, channel, includeUnpublishedItems));
-        } else {
-            reject("Please enter either the product id or product slug");
+        try {
+            if (id) {
+                return resolve(await getProductById(id, channel, includeUnpublishedItems));
+            } else if (slug) {
+                return resolve(await getProductBySlug(slug, channel, includeUnpublishedItems));
+            } else {
+                reject("Please enter either the product id or product slug");
+            }
+        } catch (err) {
+            reject(err);
         }
     });
 }
