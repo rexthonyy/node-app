@@ -77,7 +77,7 @@ type Query {
 
      """The end date of the shifts"""
     endDate: String!
-  ): getShiftsResponse
+  ): getShiftsByTaskResponse
 
   """
   Look up the shared schedules in a channel at the range specified.
@@ -640,6 +640,13 @@ type getShiftsResponse{
   result: Shifts
 }
 
+"""Return type for getShiftsByTask"""
+type getShiftsByTaskResponse{
+  status: String
+  message: String
+  result: [TaskShifts]
+}
+
 """Return type for getShiftGroupMembers"""
 type getSharedScheduleResponse{
   status: String
@@ -896,6 +903,16 @@ type UserAssignedShifts {
   image: String
   numberOfHours: Int!
   shifts: [AssignedShift]
+}
+
+"""Holds information about shifts that are assigned to users in a group"""
+type TaskShifts {
+  label: String!
+  color: String
+  startTime: String
+  endTime: String
+  break: Int
+  users: [User]
 }
 
 type AssignedShift {
