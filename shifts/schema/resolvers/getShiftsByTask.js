@@ -41,8 +41,6 @@ function getShifts(shiftsResponse) {
                         is24Hours: shift.is24Hours,
                         users: [assignedShift.userId]
                     });
-                    console.log(shift);
-                    console.log(userShifts);
                 }
             }
         }
