@@ -38,7 +38,7 @@ function getShifts(shiftsResponse) {
                         color: shift.color,
                         startTime: shift.startTime,
                         endTime: shift.endTime,
-                        is24Hours: shift.is24hours,
+                        is24Hours: shift.is24Hours,
                         users: [assignedShift.userId]
                     });
                     console.log(shift);
