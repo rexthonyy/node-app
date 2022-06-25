@@ -110,7 +110,7 @@ function getShifts(shiftsResponse) {
                         for (const [key, userGroup] of Object.entries(taskShiftsGroupsByColor)) {
                             let users = [];
                             for (let g of userGroup) {
-                                users.push(await getGraphQLUserById(g.user[0]))
+                                users.push(await getGraphQLUserById(g.users[0]))
                             }
                             taskShifts.push({
                                 label: labelGroup[0].label,
