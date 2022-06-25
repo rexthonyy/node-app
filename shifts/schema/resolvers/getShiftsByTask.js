@@ -99,11 +99,11 @@ function getShifts(shiftsResponse) {
                     for (const [key, colorGroup] of Object.entries(taskShiftsGroupsByColor)) {
                         let taskShiftsGroupsByUser = {};
                         for (let g of breakGroup) {
-                            if (taskShiftsGroupsByUser[g.user[0]]) {
-                                taskShiftsGroupsByUser[g.user[0]].push(g);
+                            if (taskShiftsGroupsByUser[g.users[0]]) {
+                                taskShiftsGroupsByUser[g.users[0]].push(g);
                             } else {
-                                taskShiftsGroupsByUser[g.user[0]] = [];
-                                taskShiftsGroupsByUser[g.user[0]].push(g);
+                                taskShiftsGroupsByUser[g.users[0]] = [];
+                                taskShiftsGroupsByUser[g.users[0]].push(g);
                             }
                         }
 
