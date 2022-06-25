@@ -80,7 +80,7 @@ function getOpenShifts(channelId, shiftGroupId, startDate, endDate) {
                             startTime: openShift.start_time,
                             endTime: openShift.end_time,
                             break: openShift.unpaid_break_time,
-                            is24Hours: openShift.is24Hours,
+                            is24Hours: openShift.is24hours,
                             subshifts: openShiftActivities,
                             slots: openShift.slots
                         });

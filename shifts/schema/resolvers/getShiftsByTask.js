@@ -1,7 +1,4 @@
-const shiftQueries = require("../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('./lib');
-const { formatDate, sortByStartTime, diffHours, paginate } = require("../../libs/util");
-const { color } = require("../../libs/consts");
 const getShiftsByPeople = require("./getShiftsByPeople");
 
 module.exports = async(parent, args, context) => {
@@ -28,7 +25,6 @@ function getGraphQLOutput(status, message, result) {
 
 function getShifts(shiftsResponse) {
     return new Promise(async resolve => {
-        let openShifts = shiftsResponse.result.openShifts;
         let assignedShifts = shiftsResponse.result.assignedShifts;
 
         let userShifts = [];
