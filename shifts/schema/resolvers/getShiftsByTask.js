@@ -118,7 +118,7 @@ function getShifts(shiftsResponse) {
                                 color: colorGroup[0].color,
                                 startTime: timeGroup[0].startTime,
                                 endTime: timeGroup[0].endTime,
-                                is24Hours: timeGroup[0].is24Hours,
+                                is24Hours: timeGroup[0].is24Hours || false,
                                 users
                             });
                         }
