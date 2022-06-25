@@ -5,7 +5,6 @@ const {
     userHasAccess
 } = require('./lib');
 const productQueries = require("../../postgres/product-queries");
-const product = require('./product');
 const getGraphQLProductTypeById = require('./lib/getGraphQLProductAttributesByProductTypeId');
 
 module.exports = async(parent, args, context) => {
@@ -23,7 +22,7 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(field, message, code, attributes, values, product) {
+function getGraphQLOutput(field, message, code, attributes, values, productType) {
     return {
         errors: [{
             field,
@@ -39,7 +38,7 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
             attributes,
             values
         }],
-        product
+        productType
     }
 }
 
