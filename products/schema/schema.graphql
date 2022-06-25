@@ -88,6 +88,14 @@ type Mutation {
     """Translation language code."""
     languageCode: LanguageCodeEnum!
   ): ProductTranslate
+
+  """
+  Creates a new product type. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  productTypeCreate(
+    """Fields required to create a product type."""
+    input: ProductTypeInput!
+  ): ProductTypeCreate
 }
 
 """Return type for getShiftGroups"""

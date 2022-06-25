@@ -14,6 +14,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
 
             productTypeAttributes.forEach(async productAttribute => {
                 productAttributes.push(await getGraphQLProductAttributeById(productAttribute.attribute_id));
+                checkComplete();
             });
 
             checkComplete();

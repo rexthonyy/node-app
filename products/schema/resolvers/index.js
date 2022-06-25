@@ -6,6 +6,7 @@ const productDelete = require("./productDelete");
 const productBulkDelete = require("./productBulkDelete");
 const productUpdate = require("./productUpdate");
 const productTranslate = require("./productTranslate");
+const productTypeCreate = require("./productTypeCreate");
 
 module.exports = {
     Query: {
@@ -18,5 +19,6 @@ module.exports = {
         productBulkDelete,
         productUpdate,
         productTranslate,
+        productTypeCreate,
     }
 };

@@ -469,6 +469,23 @@ const createProduct = (values, response) => {
     });
 };
 
+const createProductType = (values, response) => {
+    client.query(`INSERT INTO ${db.product_producttype} (name, has_variant, is_shipping_required, weight, is_digital, metadata, private_metadata, slug, kind) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createAttributeProduct = (values, response) => {
     client.query(`INSERT INTO ${db.attribute_attributeproduct} (attribute_id, product_type_id, sort_order) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -520,8 +537,8 @@ const createAssignedProductAttributeValue = (values, response) => {
     });
 };
 
-const createAssignedShift = (values, response) => {
-    client.query(`INSERT INTO ${db.assigned_shifts} (channel_id, shift_group_id, user_id, label, color, note, is_open, is_shared, start_time, end_time, is24Hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+const createAttributeVariant = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attributevariant} (attribute_id, product_type_id, sort_order, variant_selection) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1143,19 +1160,11 @@ module.exports = {
     getAllSettings,
 
     createProduct,
+    createProductType,
     createAssignedProductAttribute,
     createAttributeProduct,
     createAssignedProductAttributeValue,
-    createAssignedShift,
-    createAssignedShiftActivity,
-    createOpenShift,
-    createOpenShiftActivity,
-    createUserTimeOff,
-    createDayNote,
-    createRequest,
-    createRequestTimeOff,
-    createRequestSwap,
-    createRequestOffer,
+    createAttributeVariant,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
