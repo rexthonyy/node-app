@@ -912,6 +912,7 @@ type TaskShifts {
   startTime: String
   endTime: String
   break: Int
+  is24Hours: Boolean
   users: [User]
 }
 
