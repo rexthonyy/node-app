@@ -183,7 +183,7 @@ function getGroupMemberAssignedShifts(channelId, shiftGroupId, userId, startDate
                         startTime: assignedShift.start_time,
                         endTime: assignedShift.end_time,
                         break: assignedShift.unpaid_break_time,
-                        is24Hours: assignedShift.is24Hours,
+                        is24Hours: assignedShift.is24hours,
                         subshifts: assignedShiftActivities
                     });
 
@@ -236,7 +236,7 @@ function getGraphQLAssignedShift(assignedShiftId) {
                     startTime: assignedShift.start_time,
                     endTime: assignedShift.end_time,
                     break: assignedShift.unpaid_break_time,
-                    is24Hours: assignedShift.is24Hours,
+                    is24Hours: assignedShift.is24hours,
                     subshifts: assignedShiftActivities
                 });
             });
