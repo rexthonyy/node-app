@@ -42,7 +42,7 @@ function getShifts(shiftsResponse) {
                         color: shift.color,
                         startTime: shift.startTime,
                         endTime: shift.endTime,
-                        is24Hours: shift.is24Hours,
+                        is24Hours: shift.is24hours,
                         users: [assignedShift.userId]
                     });
                 }
@@ -118,7 +118,7 @@ function getShifts(shiftsResponse) {
                                 color: colorGroup[0].color,
                                 startTime: timeGroup[0].startTime,
                                 endTime: timeGroup[0].endTime,
-                                is24Hours: timeGroup[0].is24Hours || false,
+                                is24Hours: timeGroup[0].is24Hours,
                                 users
                             });
                         }
