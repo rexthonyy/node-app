@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             resolve(await productTypeCreate(authUser, args));
         } else {
-            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null));
+            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES", "INVALID", null, null, null));
         }
     });
 }
@@ -45,16 +45,16 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 
 function productTypeCreate(authUser, args) {
     return new Promise(resolve => {
-        let name = args.name;
-        let slug = args.slug;
-        let kind = args.kind;
-        let hasVariants = args.hasVariants;
-        let productAttributes = args.productAttributes;
-        let variantAttributes = args.variantAttributes;
-        let isShippingRequired = args.isShippingRequired;
-        let isDigital = args.isDigital;
-        let weight = args.weight;
-        let taxCode = args.taxCode;
+        let name = args.input.name;
+        let slug = args.input.slug;
+        let kind = args.input.kind;
+        let hasVariants = args.input.hasVariants;
+        let productAttributes = args.input.productAttributes || [];
+        let variantAttributes = args.input.variantAttributes || [];
+        let isShippingRequired = args.input.isShippingRequired;
+        let isDigital = args.input.isDigital || false;
+        let weight = args.input.weight;
+        let taxCode = args.input.taxCode || "";
 
         let values = [
             name,
