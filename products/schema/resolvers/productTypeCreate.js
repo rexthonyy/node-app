@@ -74,6 +74,7 @@ function productTypeCreate(authUser, args) {
             await addProductAttributes(productType, productAttributes);
             await addVariantAttributes(productType, variantAttributes);
             let graphQLProductType = await getGraphQLProductTypeById(productType.id);
+            console.log(graphQLProductType);
             resolve(getGraphQLOutput("producttype", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProductType));
         });
 
