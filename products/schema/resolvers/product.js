@@ -36,7 +36,7 @@ function getProductById(id, channel, includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
         productQueries.getProduct([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length) return reject(`Could'nt resolve id: ${id}`);
+            if (result.res.length == 0) return reject(`Could'nt resolve id: ${id}`);
             let product = result.res[0];
             resolve(await getGraphQLProductById(product.id));
         });
@@ -47,7 +47,7 @@ function getProductBySlug(slug, channel, includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
         productQueries.getProduct([slug], "slug=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length) return reject(`Could'nt resolve id: ${id}`);
+            if (result.res.length == 0) return reject(`Could'nt resolve slug: ${slug}`);
             let product = result.res[0];
             resolve(await getGraphQLProductById(product.id));
         });
