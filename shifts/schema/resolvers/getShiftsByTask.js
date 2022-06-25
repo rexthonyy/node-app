@@ -128,22 +128,6 @@ function getShifts(shiftsResponse) {
         }
 
 
-        resolve(taskShifts);
+        resolve(getGraphQLOutput("success", "Fetch successful", taskShifts));
     });
-}
-
-class TaskContainer {
-    constructor() {
-        this.task = [];
-    }
-
-    canAdd(task) {
-        if (this.task[(task.startTime + task.endTime)]) {
-
-        }
-    }
-
-    addTask(task) {
-
-    }
 }
