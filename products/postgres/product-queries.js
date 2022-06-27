@@ -521,7 +521,7 @@ const createAttributeProduct = (values, response) => {
 };
 
 const createAssignedProductAttribute = (values, response) => {
-    client.query(`INSERT INTO ${db.attribute_assignedproductattribute} (product_type_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.attribute_assignedproductattribute} (product_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
