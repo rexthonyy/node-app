@@ -387,7 +387,7 @@ function assignAttributesToProduct(product, attributeProduct) {
     return new Promise((resolve, reject) => {
         if (attributeProduct == null) return resolve();
         productQueries.createAssignedProductAttribute([product.id, attributeProduct.id], result => {
-            if (result.err) return reject("Failed to create assigned product attribute");
+            if (result.err) { console.log(result.err); return reject("Failed to create assigned product attribute"); }
             console.log("assigned attribute created");
             resolve(result.res[0]);
         });
