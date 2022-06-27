@@ -8,6 +8,8 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 return reject("ProductType not found");
             }
             let productType = result.res[0];
+            console.log("product type");
+            console.log(productType);
 
             let productAttributes;
             try {
@@ -42,6 +44,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 variantAttributes: null
             };
 
+            console.log("product type res");
             console.log(res);
 
             resolve(res);

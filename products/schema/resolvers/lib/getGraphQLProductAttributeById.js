@@ -3,7 +3,7 @@ let getGraphQLProductAttributeById = (attributeId) => {
     return new Promise((resolve, reject) => {
         productQueries.getAttribute([attributeId], "id=$1", result => {
             if (result.err || result.res.length == 0) {
-                resolve(null);
+                reject(null);
             } else {
                 let attribute = result.res[0];
 

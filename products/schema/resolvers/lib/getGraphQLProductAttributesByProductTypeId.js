@@ -13,7 +13,10 @@ let getGraphQLProductTypeById = (productTypeId) => {
             let cursor = -1;
 
             productTypeAttributes.forEach(async productAttribute => {
-                productAttributes.push(await getGraphQLProductAttributeById(productAttribute.attribute_id));
+                try {
+                    productAttributes.push(await getGraphQLProductAttributeById(productAttribute.attribute_id));
+                } catch (err) {}
+
                 checkComplete();
             });
 

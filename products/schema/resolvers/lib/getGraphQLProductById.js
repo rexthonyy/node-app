@@ -30,6 +30,7 @@ let getGraphQLProductById = (productId) => {
                 channelListings = null;
             }
 
+            console.log("product product type");
             console.log(productType);
 
             let res = {
@@ -79,6 +80,7 @@ let getGraphQLProductById = (productId) => {
                 availableForPurchase: null
             };
 
+            console.log("product res");
             console.log(res);
 
             resolve(res);
