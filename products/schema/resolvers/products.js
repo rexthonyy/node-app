@@ -27,51 +27,53 @@ module.exports = async(parent, args, context) => {
 
 
 function products(authUser, args, includeUnpublishedItems) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
+        try {
+            let edges = await getAllProducts(includeUnpublishedItems);
+            resolve({
+                pageInfo: {
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                    startCursor: "",
+                    endCursor: ""
+                },
+                edges,
+                totalCount: edges.length
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
+
+function getAllProducts(includeUnpublishedItems) {
+    return new Promise((resolve, reject) => {
         productQueries.getProduct([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
             let products = result.res;
-            console.log(products);
-            return resolve(null);
+
             const numProducts = products.length;
             let cursor = -1;
             let edges = [];
 
-            authGroups.forEach(async authGroup => {
-                const users = await getUsersInGroupId(authGroup.id);
-                const permissions = await getAuthGroupPermissionsByGroupId(authGroup.id);
-                let authUserPermissions = authUser ? (authUser.userPermissions ? authUser.userPermissions : []) : [];
-                let userCanManage = false;
-
-                for (let i = 0, j = authUserPermissions.length; i < j; i++) {
-                    if (authUserPermissions[i].code == "MANAGE_USERS") {
-                        userCanManage = true;
-                        break;
-                    }
-                }
-
+            products.forEach(async product => {
+                let node = await getGraphQLProductById(product.id);
                 edges.push({
                     cursor: "",
-                    node: {
-                        id: authGroup.id,
-                        name: authGroup.name,
-                        users,
-                        permissions,
-                        userCanManage
-                    }
+                    node
                 });
 
-                checkAuthGroupComplete();
+                checkComplete();
             });
 
-            checkAuthGroupComplete();
+            checkComplete();
 
-            function checkAuthGroupComplete() {
-                countAuthGroups++;
-                if (countAuthGroups == numAuthGroups) {
-                    filterAndSortPermissions(resolve, reject, args, edges);
+            function checkComplete() {
+                cursor++;
+                if (cursor == numProducts) {
+                    resolve(edges);
                 }
             }
         });
-    });
+    })
 }
