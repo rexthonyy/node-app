@@ -8,7 +8,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 return reject("ProductType not found");
             }
             let productType = result.res[0];
-            console.log(productType);
+
             let productAttributes;
             try {
                 productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
@@ -41,6 +41,8 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 products: null,
                 variantAttributes: null
             };
+
+            console.log(res);
 
             resolve(res);
         });
