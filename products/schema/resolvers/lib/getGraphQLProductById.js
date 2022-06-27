@@ -18,20 +18,27 @@ let getGraphQLProductById = (productId) => {
             let attributes;
             try {
                 productType = await getGraphQLProductTypeById(product.product_type_id);
+            } catch (err) {
+                productType = null;
+            }
+            try {
                 category = await getGraphQLCategoryById(product.category_id);
-                defaultVariant = null;
-                channelListings = null;
+            } catch (err) {
+                category = null;
+            }
+            try {
                 attributes = await getGraphQLSelectedAttributesByProductId(product.id);
             } catch (err) {
                 attributes = null;
-                productType = null;
-                category = null;
+            }
+
+            try {
+                defaultVariant = null;
+                channelListings = null;
+            } catch (err) {
                 defaultVariant = null;
                 channelListings = null;
             }
-
-            console.log("product product type");
-            console.log(productType);
 
             let res = {
                 id: product.id,
@@ -79,9 +86,6 @@ let getGraphQLProductById = (productId) => {
                 images: null,
                 availableForPurchase: null
             };
-
-            console.log("product res");
-            console.log(res);
 
             resolve(res);
         });
