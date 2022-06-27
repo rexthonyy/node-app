@@ -17,21 +17,24 @@ module.exports = async(parent, args, context) => {
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             includeUnpublishedItems = true;
         }
-        resolve(await products(authUser, args, includeUnpublishedItems));
+        try {
+            resolve(await products(authUser, args, includeUnpublishedItems));
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 
 
 function products(authUser, args, includeUnpublishedItems) {
     return new Promise(resolve => {
-        productQueries.getAllProducts(result => {
-            if (result.err) {
-                return reject(JSON.stringify(result.err));
-            }
-
-            let authGroups = result.res;
-            const numAuthGroups = authGroups.length;
-            let countAuthGroups = -1;
+        productQueries.getProduct([-1], "id <> $1", result => {
+            if (result.err) { return reject(JSON.stringify(result.err)); }
+            let products = result.res;
+            console.log(products);
+            return resolve(null);
+            const numProducts = products.length;
+            let cursor = -1;
             let edges = [];
 
             authGroups.forEach(async authGroup => {
