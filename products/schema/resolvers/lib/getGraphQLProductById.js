@@ -11,11 +11,23 @@ let getGraphQLProductById = (productId) => {
             }
 
             let product = result.res[0];
-            let productType = await getGraphQLProductTypeById(product.product_type_id);
-            let category = await getGraphQLCategoryById(product.category_id);
-            let defaultVariant = null;
-            let channelListings = null;
-            let attributes = await getGraphQLSelectedAttributesByProductId(product.id);
+            let productType;
+            let category;
+            let defaultVariant;
+            let channelListings;
+            try {
+                productType = await getGraphQLProductTypeById(product.product_type_id);
+                category = await getGraphQLCategoryById(product.category_id);
+                defaultVariant = null;
+                channelListings = null;
+                attributes = await getGraphQLSelectedAttributesByProductId(product.id);
+            } catch (err) {
+                attributes = null;
+                productType = null;
+                category = null;
+                defaultVariant = null;
+                channelListings = null;
+            }
 
             let res = {
                 id: product.id,
