@@ -27,7 +27,7 @@ module.exports = async(parent, args, context) => {
 
 
 function products(authUser, args, includeUnpublishedItems) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             let edges = await getAllProducts(includeUnpublishedItems);
             resolve({
