@@ -360,8 +360,6 @@ function createProductAttribute(value) {
         ];
         productQueries.createAttribute(values, result => {
             if (result.err || result.res.length == 0) { console.log(result.err); return reject("Failed to create attribute") };
-            console.log(result.res);
-            console.log(result.res[0]);
             resolve(result.res[0]);
         });
     });
@@ -384,6 +382,8 @@ function produceAttributeProductAssignment(attribute, product) {
 }
 
 function assignAttributesToProduct(product, attributeProduct) {
+    console.log(product);
+    console.log(attributeProduct);
     return new Promise((resolve, reject) => {
         if (attributeProduct == null) return resolve();
         productQueries.createAssignedProductAttribute([product.id, attributeProduct.id], result => {
