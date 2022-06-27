@@ -296,7 +296,6 @@ function getProductAttributesById(attributeId) {
 }
 
 function getProductAttributesByValues(values) {
-    console.log(values);
     return new Promise(resolve => {
         const numValues = values.length;
         let cursor = -1;
@@ -306,6 +305,7 @@ function getProductAttributesByValues(values) {
             productQueries.getProduct([value], "slug=$1", async result => {
                 if (result.err || result.res.length == 0) {
                     try {
+                        console.log(value);
                         let attribute = await createProductAttribute(value);
                         productAttributes.push(attribute);
                         checkComplete();
@@ -361,6 +361,8 @@ function createProductAttribute(value) {
 
         productQueries.createAttribute(values, result => {
             if (result.err || result.res.length == 0) return reject("Failed to create attribute");
+            console.log(result.res);
+            console.log(result.res[0]);
             resolve(result.res[0]);
         });
     });
