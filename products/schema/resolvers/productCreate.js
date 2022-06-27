@@ -238,7 +238,7 @@ function addAttribute(product, attr) {
         const numAttributes = productAttributes.length;
         let cursor = -1;
 
-        productAttributes(attribute => {
+        productAttributes.forEach(attribute => {
             let attributeId = attribute.id;
             let file = attr.file;
             let contentType = attr.contentType;
