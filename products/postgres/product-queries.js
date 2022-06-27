@@ -554,8 +554,8 @@ const createAttributeVariant = (values, response) => {
     });
 };
 
-const createAssignedShiftActivity = (values, response) => {
-    client.query(`INSERT INTO ${db.assigned_shift_activities} (channel_id, shift_group_id, assigned_shift_id, user_id, name, code, color, start_time, end_time, is_paid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, values, (err, res) => {
+const createProductVariant = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productvariant} (sku, name, product_id, track_inventory, weight, metadata, private_metadata, sort_order, is_preorder, preorder_end_date, preorder_global_threshold, quantity_limit_per_customer, created, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -571,8 +571,8 @@ const createAssignedShiftActivity = (values, response) => {
     });
 };
 
-const createOpenShift = (values, response) => {
-    client.query(`INSERT INTO ${db.open_shifts} (channel_id, shift_group_id, label, color, note, slots, is_open, start_time, end_time, is24hours, unpaid_break_time) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
+const createCollectionProduct = (values, response) => {
+    client.query(`INSERT INTO ${db.product_collectionproduct} (collection_id, product_id, sort_order) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -588,8 +588,8 @@ const createOpenShift = (values, response) => {
     });
 };
 
-const createOpenShiftActivity = (values, response) => {
-    client.query(`INSERT INTO ${db.open_shift_activities} (channel_id, shift_group_id, open_shift_id, name, code, color, start_time, end_time, is_paid) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+const createAttributeValue = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attributevalue} (name, attribute_id, slug, sort_order, value, content_type, file_url, rich_text, boolean, date_time, reference_page_id, reference_product_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -605,22 +605,6 @@ const createOpenShiftActivity = (values, response) => {
     });
 };
 
-const createUserTimeOff = (values, response) => {
-    client.query(`INSERT INTO ${db.user_time_offs} (channel_id, shift_group_id, user_id, label, color, note, start_time, end_time, is24hours) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                code: 218
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
 
 const createDayNote = (values, response) => {
     client.query(`INSERT INTO ${db.day_notes} (channel_id, note, date) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
@@ -1165,6 +1149,9 @@ module.exports = {
     createAttributeProduct,
     createAssignedProductAttributeValue,
     createAttributeVariant,
+    createProductVariant,
+    createCollectionProduct,
+    createAttributeValue,
 
     updateShiftGroupById,
     updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,

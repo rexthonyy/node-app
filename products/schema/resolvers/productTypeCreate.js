@@ -72,10 +72,7 @@ function productTypeCreate(authUser, args) {
             let productType = result.res[0];
             await addProductAttributes(productType, productAttributes);
             await addVariantAttributes(productType, variantAttributes);
-            console.log("product type created");
             let graphQLProductType = await getGraphQLProductTypeById(productType.id);
-            console.log(graphQLProductType);
-            console.log(".....");
             resolve(getGraphQLOutput("producttype", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProductType));
         });
 

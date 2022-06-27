@@ -5,13 +5,10 @@ let getGraphQLProductTypeById = (productTypeId) => {
     return new Promise((resolve, reject) => {
         productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
-                console.log("error");
                 return reject("ProductType not found");
             }
             let productType = result.res[0];
-            console.log(productType);
             let productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
-            console.log(productAttributes);
 
             let res = {
                 id: productType.id,
