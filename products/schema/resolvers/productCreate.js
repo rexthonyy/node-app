@@ -104,7 +104,7 @@ function createProduct(args) {
             chargeTaxes,
             weight,
             JSON.stringify({}),
-            JSON.stringify({ "vatlayer.code": taxCode, "vatlayer.description": "standard" }),
+            JSON.stringify([{ "vatlayer.code": taxCode, "vatlayer.description": "standard" }]),
             slug,
             null,
             description_plaintext,
