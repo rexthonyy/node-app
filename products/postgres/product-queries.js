@@ -486,6 +486,23 @@ const createProductType = (values, response) => {
     });
 };
 
+const createAttribute = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attribute} (slug, name, metadata, private_metadata, input_type, available_in_grind, visible_in_storefront, filterable_in_dashboard, filterable_in_storefront, value_required, storefront_search_position, is_variant_only, type, entity_type, unit) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createAttributeProduct = (values, response) => {
     client.query(`INSERT INTO ${db.attribute_attributeproduct} (attribute_id, product_type_id, sort_order) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -1112,6 +1129,7 @@ module.exports = {
     createProduct,
     createProductType,
     createAssignedProductAttribute,
+    createAttribute,
     createAttributeProduct,
     createAssignedProductAttributeValue,
     createAttributeVariant,
