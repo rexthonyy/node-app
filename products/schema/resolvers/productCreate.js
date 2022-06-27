@@ -370,7 +370,7 @@ function produceAttributeProductAssignment(attribute, product) {
         productQueries.getAttributeProduct([attribute.id, product.product_type_id], "attribute_id=$1 AND product_type_id=$2", result => {
             if (result.err) return reject("Failed to fetch product attributes");
             if (result.res.length == 0) {
-                productQueries.createAttributeProduct([attribute.id, product.product_type_id], result => {
+                productQueries.createAttributeProduct([attribute.id, product.product_type_id, null], result => {
                     if (result.err) return reject("Failed to create product attribute");
                     resolve(result.res[0]);
                 });
