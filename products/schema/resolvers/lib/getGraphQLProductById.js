@@ -5,6 +5,7 @@ const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAtt
 
 let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
+        console.log(productId);
         productQueries.getProduct([productId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 if (result.err) console.log(result.err);

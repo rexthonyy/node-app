@@ -114,8 +114,9 @@ function createProduct(args) {
 
         productQueries.createProduct(values, result => {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length) return resolve(getGraphQLOutput("product", "Failed to create product", "REQUIRED", null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("product", "Failed to create product", "REQUIRED", null, null, null));
             let product = result.res[0];
+            console.log(product);
             resolve(product);
         });
     });
@@ -143,7 +144,7 @@ function createProductVariant(product) {
 
         productQueries.createProductVariant(values, result => {
             if (result.err) return resolve(getGraphQLOutput("productvariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length) return resolve(getGraphQLOutput("productvariant", "Failed to create product variant", "REQUIRED", null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("productvariant", "Failed to create product variant", "REQUIRED", null, null, null));
             let productvariant = result.res[0];
             resolve(productvariant);
         });
@@ -154,7 +155,7 @@ function updateProductVariantId(product, productvariant) {
     return new Promise(resolve => {
         productQueries.updateProductVariant([product.id, productvariant.id], "default_variant_id=$2", "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length) return resolve(getGraphQLOutput("product", "Failed to update default variant id", "REQUIRED", null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("product", "Failed to update default variant id", "REQUIRED", null, null, null));
             resolve();
         });
     });
