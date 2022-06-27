@@ -691,42 +691,8 @@ const createRequestOffer = (values, response) => {
     });
 };
 
-const updateShiftGroupById = (values, whereClause, response) => {
-    client.query(`UPDATE ${db.shift_groups} SET ${whereClause} WHERE id=$1 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId = (values, whereClause, response) => {
-    client.query(`UPDATE ${db.shift_group_members} SET ${whereClause} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3 RETURNING *`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 229
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const updateAssignedShift = (values, set, whereClause, response) => {
-    client.query(`UPDATE ${db.assigned_shifts} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+const updateProductVariant = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_productvariant} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1153,9 +1119,7 @@ module.exports = {
     createCollectionProduct,
     createAttributeValue,
 
-    updateShiftGroupById,
-    updateShiftGroupMembersByChannelIdShiftGroupIdAndUserId,
-    updateAssignedShift,
+    updateProductVariant,
     updateOpenShift,
     updateTimeOff,
     updateDayNote,

@@ -44,16 +44,16 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 function productCreate(authUser, args) {
     return new Promise(resolve => {
         let productTypeId = args.input.productType;
-        console.log(productTypeId);
 
         productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Product type not found", "INVALID", null, null, null));
 
             let product = await createProduct(args);
-            await createProductVariant(product);
+            let productvariant = await createProductVariant(product);
+            await updateProductVariantId(product, productvariant);
             await addProductToCollections(product, args.input.collections ? args.input.collections : null);
-            await addProductAttributes(product, args.input.attributes ? args.inut.attributes : null);
+            await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
             let graphQLProduct = await getGraphQLProductById(product.id);
             resolve(getGraphQLOutput("product", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProduct));
         });
@@ -69,9 +69,15 @@ function createProduct(args) {
         let slug = args.input.slug;
         let taxCode = args.input.taxCode;
         let seo = args.input.seo;
+        let seo_description = null;
+        let seo_title = null;
+        if (seo) {
+            seo_description = seo.description;
+            seo_title = seo.title;
+        }
         let weight = args.input.weight;
         let rating = args.input.rating;
-        let productTypeId = args.input.productTypeId;
+        let productTypeId = args.input.productType;
         let now = new Date().toUTCString();
 
         let values = [
@@ -80,8 +86,8 @@ function createProduct(args) {
             now,
             productTypeId,
             categoryId,
-            seo.description,
-            seo.title,
+            seo_description,
+            seo_title,
             chargeTaxes,
             weight,
             JSON.stringify({}),
@@ -94,8 +100,8 @@ function createProduct(args) {
         ];
 
         productQueries.createProduct(values, result => {
-            if (result.err) return resolve(getGraphQLOutput("productvariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length) return resolve(getGraphQLOutput("productvariant", "Failed to create product variant", "REQUIRED", null, null, null));
+            if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+            if (result.res.length) return resolve(getGraphQLOutput("product", "Failed to create product", "REQUIRED", null, null, null));
             let product = result.res[0];
             resolve(product);
         });
@@ -123,6 +129,19 @@ function createProductVariant(product) {
         ];
 
         productQueries.createProductVariant(values, result => {
+            if (result.err) return resolve(getGraphQLOutput("productvariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+            if (result.res.length) return resolve(getGraphQLOutput("productvariant", "Failed to create product variant", "REQUIRED", null, null, null));
+            let productvariant = result.res[0];
+            resolve(productvariant);
+        });
+    });
+}
+
+function updateProductVariantId(product, productvariant) {
+    return new Promise(resolve => {
+        productQueries.updateProductVariant([product.id, productvariant.id], "default_variant_id=$2", "id=$1", result => {
+            if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+            if (result.res.length) return resolve(getGraphQLOutput("product", "Failed to update default variant id", "REQUIRED", null, null, null));
             resolve();
         });
     });
