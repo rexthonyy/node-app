@@ -3,12 +3,18 @@ const getGraphQLProductAttributesByProductTypeId = require("./getGraphQLProductA
 
 let getGraphQLProductTypeById = (productTypeId) => {
     return new Promise((resolve, reject) => {
+        console.log(productTypeId);
         productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("ProductType not found");
             }
             let productType = result.res[0];
-            let productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
+            let productAttributes;
+            try {
+                productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
+            } catch (err) {
+                productAttributes = null;
+            }
 
             let res = {
                 id: productType.id,
@@ -35,8 +41,6 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 products: null,
                 variantAttributes: null
             };
-
-            console.log(res);
 
             resolve(res);
         });

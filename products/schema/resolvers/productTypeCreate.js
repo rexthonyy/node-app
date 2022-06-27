@@ -60,8 +60,7 @@ function productTypeCreate(authUser, args) {
             isShippingRequired,
             weight,
             isDigital,
-            null,
-            { taxCode },
+            null, [{ taxCode }],
             slug,
             kind
         ];

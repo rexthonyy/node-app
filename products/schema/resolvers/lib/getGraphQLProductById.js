@@ -15,6 +15,7 @@ let getGraphQLProductById = (productId) => {
             let category;
             let defaultVariant;
             let channelListings;
+            let attributes;
             try {
                 productType = await getGraphQLProductTypeById(product.product_type_id);
                 category = await getGraphQLCategoryById(product.category_id);
@@ -28,6 +29,8 @@ let getGraphQLProductById = (productId) => {
                 defaultVariant = null;
                 channelListings = null;
             }
+
+            console.log(productType);
 
             let res = {
                 id: product.id,
@@ -75,6 +78,8 @@ let getGraphQLProductById = (productId) => {
                 images: null,
                 availableForPurchase: null
             };
+
+            console.log(res);
 
             resolve(res);
         });
