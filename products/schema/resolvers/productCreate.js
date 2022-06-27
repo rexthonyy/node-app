@@ -43,6 +43,7 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 
 function productCreate(authUser, args) {
     return new Promise(resolve => {
+        console.log(productTypeId);
         let productTypeId = args.input.productTypeId;
 
         productQueries.getProductType([productTypeId], "id=$1", async result => {
