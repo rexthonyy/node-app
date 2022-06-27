@@ -18,7 +18,7 @@ let getGraphQLCategoryById = (categoryId) => {
                 privateMetadata: category.private_metadata,
                 privateMetafield: JSON.stringify(category.private_metadata),
                 privateMetafields: null,
-                metadata: [category.metadata],
+                metadata: category.metadata,
                 metadatafield: JSON.stringify(category.metadata),
                 metadatafields: null,
                 seoTitle: category.seo_title,

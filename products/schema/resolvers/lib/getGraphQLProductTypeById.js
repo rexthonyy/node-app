@@ -3,12 +3,12 @@ const getGraphQLProductAttributesByProductTypeId = require("./getGraphQLProductA
 
 let getGraphQLProductTypeById = (productTypeId) => {
     return new Promise((resolve, reject) => {
-        console.log(productTypeId);
         productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("ProductType not found");
             }
             let productType = result.res[0];
+            console.log(productType);
             let productAttributes;
             try {
                 productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
@@ -21,7 +21,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 privateMetadata: productType.private_metadata,
                 privateMetafield: JSON.stringify(productType.private_metadata),
                 privateMetafields: null,
-                metadata: [productType.metadata],
+                metadata: productType.metadata,
                 metadatafield: JSON.stringify(productType.metadata),
                 metadatafields: null,
                 name: productType.name,

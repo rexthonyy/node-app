@@ -37,7 +37,7 @@ let getGraphQLProductById = (productId) => {
                 privateMetadata: product.private_metadata,
                 privateMetafield: JSON.stringify(product.private_metadata),
                 privateMetafields: null,
-                metadata: [product.metadata],
+                metadata: product.metadata,
                 metadatafield: JSON.stringify(product.metadata),
                 metadatafields: null,
                 seoTitle: product.seo_title,

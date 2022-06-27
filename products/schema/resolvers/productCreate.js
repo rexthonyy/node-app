@@ -80,7 +80,7 @@ function createProduct(args) {
         }
         let name = args.input.name;
         let slug = args.input.slug;
-        let taxCode = args.input.taxCode;
+        let taxCode = args.input.taxCode || "";
         let seo = args.input.seo;
         let seo_description = null;
         let seo_title = null;
@@ -93,6 +93,21 @@ function createProduct(args) {
         let productTypeId = args.input.productType;
         let now = new Date().toUTCString();
 
+        let metadata = [{
+            key: "",
+            value: ""
+        }];
+
+        let private_metadata = [{
+                key: "vatlayer.code",
+                value: taxCode
+            },
+            {
+                key: "vatlayer.description",
+                value: "standard"
+            }
+        ];
+
         let values = [
             name,
             description,
@@ -103,8 +118,8 @@ function createProduct(args) {
             seo_title,
             chargeTaxes,
             weight,
-            JSON.stringify({}),
-            JSON.stringify([{ "vatlayer.code": taxCode, "vatlayer.description": "standard" }]),
+            JSON.stringify(metadata),
+            JSON.stringify(private_metadata),
             slug,
             null,
             description_plaintext,
