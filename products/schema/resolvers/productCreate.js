@@ -228,12 +228,15 @@ function addProductAttributes(product, attributes) {
 function addAttribute(product, attr) {
     return new Promise(async resolve => {
 
+        console.log(attr);
         let productAttributes = [];
         if (attr.id) {
             productAttributes = await getProductAttributesById(attr.id);
         } else if (attr.values) {
             productAttributes = await getProductAttributesByValues(attr.values);
         }
+
+
 
         const numAttributes = productAttributes.length;
         let cursor = -1;
@@ -293,6 +296,7 @@ function getProductAttributesById(attributeId) {
 }
 
 function getProductAttributesByValues(values) {
+    console.log(values);
     return new Promise(resolve => {
         const numValues = values.length;
         let cursor = -1;
