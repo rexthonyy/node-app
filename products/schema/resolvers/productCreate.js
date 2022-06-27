@@ -116,7 +116,6 @@ function createProduct(args) {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("product", "Failed to create product", "REQUIRED", null, null, null));
             let product = result.res[0];
-            console.log(product);
             resolve(product);
         });
     });
@@ -236,7 +235,7 @@ function addAttribute(attr) {
                         richText,
                         boolean,
                         dateTime,
-                        null,
+                        product.id,
                         null
                     ];
 
