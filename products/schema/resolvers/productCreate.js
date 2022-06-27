@@ -359,7 +359,7 @@ function createProductAttribute(value) {
             null
         ];
         productQueries.createAttribute(values, result => {
-            if (result.err || result.res.length == 0) return reject("Failed to create attribute");
+            if (result.err || result.res.length == 0) { console.log(result.err); return reject("Failed to create attribute") };
             console.log(result.res);
             console.log(result.res[0]);
             resolve(result.res[0]);
