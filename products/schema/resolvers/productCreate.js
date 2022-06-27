@@ -65,6 +65,15 @@ function createProduct(args) {
         let categoryId = args.input.categoryId;
         let chargeTaxes = args.input.chargeTaxes;
         let description = args.input.description;
+        let description_plaintext = "";
+        if (description) {
+            if (description.blocks) {
+                let block = description.blocks[0];
+                if (block.text) {
+                    description_plaintext = block.text;
+                }
+            }
+        }
         let name = args.input.name;
         let slug = args.input.slug;
         let taxCode = args.input.taxCode;
@@ -94,7 +103,7 @@ function createProduct(args) {
             JSON.stringify({ "vatlayer.code": taxCode, "vatlayer.description": "standard" }),
             slug,
             null,
-            description.blocks[0].data.text,
+            description_plaintext,
             rating,
             slug.replace("-", " ")
         ];
