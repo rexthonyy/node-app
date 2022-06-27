@@ -49,13 +49,17 @@ function productCreate(authUser, args) {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Product type not found", "INVALID", null, null, null));
 
-            let product = await createProduct(args);
-            let productvariant = await createProductVariant(product);
-            await updateProductVariantId(product, productvariant);
-            await addProductToCollections(product, args.input.collections ? args.input.collections : null);
-            await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
-            let graphQLProduct = await getGraphQLProductById(product.id);
-            resolve(getGraphQLOutput("product", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProduct));
+            try {
+                let product = await createProduct(args);
+                let productvariant = await createProductVariant(product);
+                await updateProductVariantId(product, productvariant);
+                await addProductToCollections(product, args.input.collections ? args.input.collections : null);
+                await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
+                let graphQLProduct = await getGraphQLProductById(product.id);
+                resolve(getGraphQLOutput("product", "Product type created", "GRAPHQL_ERROR", null, null, graphQLProduct));
+            } catch (err) {
+                return resolve(getGraphQLOutput("product", err, "GRAPHQL_ERROR", null, null, null));
+            }
         });
     });
 }

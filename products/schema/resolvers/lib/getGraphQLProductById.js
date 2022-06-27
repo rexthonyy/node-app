@@ -7,6 +7,7 @@ let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
         productQueries.getProduct([productId], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
+                if (result.err) console.log(result.err);
                 return reject("Product not found");
             }
 
