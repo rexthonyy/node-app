@@ -344,8 +344,8 @@ function createProductAttribute(value) {
         let values = [
             value,
             value.replace("-", " "),
-            metadata,
-            private_metadata,
+            JSON.stringify(metadata),
+            JSON.stringify(private_metadata),
             "DROPDOWN",
             false,
             false,
