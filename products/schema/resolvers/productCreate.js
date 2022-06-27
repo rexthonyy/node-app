@@ -305,7 +305,6 @@ function getProductAttributesByValues(values) {
             productQueries.getProduct([value], "slug=$1", async result => {
                 if (result.err || result.res.length == 0) {
                     try {
-                        console.log(value);
                         let attribute = await createProductAttribute(value);
                         productAttributes.push(attribute);
                         checkComplete();
@@ -331,6 +330,7 @@ function getProductAttributesByValues(values) {
 }
 
 function createProductAttribute(value) {
+    console.log(value);
     return new Promise((resolve, reject) => {
         let metadata = [{
             key: "",
@@ -358,7 +358,7 @@ function createProductAttribute(value) {
             "PRODUCT",
             null
         ];
-
+        console.log(values);
         productQueries.createAttribute(values, result => {
             if (result.err || result.res.length == 0) return reject("Failed to create attribute");
             console.log(result.res);
