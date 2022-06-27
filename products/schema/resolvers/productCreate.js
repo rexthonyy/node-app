@@ -228,15 +228,12 @@ function addProductAttributes(product, attributes) {
 function addAttribute(product, attr) {
     return new Promise(async resolve => {
 
-        console.log(attr);
         let productAttributes = [];
         if (attr.id) {
             productAttributes = await getProductAttributesById(attr.id);
         } else if (attr.values) {
             productAttributes = await getProductAttributesByValues(attr.values);
         }
-
-
 
         const numAttributes = productAttributes.length;
         let cursor = -1;
@@ -266,20 +263,23 @@ function addAttribute(product, attr) {
                 product.id
             ];
 
-            productQueries.createAttributeValue(input, result => {
-                checkComplete();
+            productQueries.createAttributeValue(input, async result => {
+                try {
+                    let attributeProduct = await produceAttributeProductAssignment(attribute, product);
+                    await assignAttributesToProduct(product, attributeProduct);
+                    checkComplete();
+                } catch (err) {
+                    console.log(err);
+                    checkComplete();
+                }
             });
         });
 
         checkComplete();
 
-        async function checkComplete() {
+        function checkComplete() {
             cursor++;
             if (cursor == numAttributes) {
-                try {
-                    let attributeProduct = await produceAttributeProductAssignment(attribute, product);
-                    await assignAttributesToProduct(product, attributeProduct);
-                } catch (err) { console.log(err) }
                 resolve();
             }
         }
