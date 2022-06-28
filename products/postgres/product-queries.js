@@ -1108,6 +1108,5 @@ module.exports = {
     deleteAssignedShiftActivities,
     deleteAssignedShift,
     deleteOpenShiftActivities,
-    deleteOpenShift,
-    deleteUserTimeOffs,
+    deleteOpenShift
 }
