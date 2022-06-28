@@ -44,7 +44,7 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 
 function productUpdate(authUser, args) {
     return new Promise(async resolve => {
-        let id = args.input.id;
+        let id = args.id;
         let name = args.input.name;
         let slug = args.input.slug;
         let chargeTaxes = args.input.chargeTaxes || "";
