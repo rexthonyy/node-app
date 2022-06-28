@@ -310,7 +310,7 @@ function addAttribute(productId, attr) {
             productAttributes = await getProductAttributesByValues(attr.values);
         }
 
-        productQueries.deleteAttributeValue([id], "reference_product_id=$1", result => {
+        productQueries.deleteAttributeValue([productId], "reference_product_id=$1", result => {
             const numAttributes = productAttributes.length;
             let cursor = -1;
 
