@@ -1097,9 +1097,6 @@ module.exports = {
     updateSetting,
 
     deleteAttributeValue,
-    deleteAssignedShiftActivitiesByShiftGroupId,
-    deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
-    deleteOpenShiftActivitiesByShiftGroupId,
     deleteUserTimeOffsByShiftGroupId,
     deleteUserTimeOffsByChannelIdShiftGroupIdAndUserId,
     deleteAssignedShiftsByShiftGroupId,
