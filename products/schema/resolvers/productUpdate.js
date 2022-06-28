@@ -169,10 +169,14 @@ function updateProductName(id, name) {
 
 function updateProductSlug(id, slug) {
     return new Promise((resolve, reject) => {
-        productQueries.updateProduct([id, slug], "slug=$2", "id=$1", result => {
+        productQueries.getProduct([id, slug], "slug=$2", result => {
             if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product slug", "REQUIRED", null, null, null));
-            resolve();
+            if (result.res.length > 0) return reject(getGraphQLOutput("product", "Product slug already being used", "REQUIRED", null, null, null));
+            productQueries.updateProduct([id, slug], "slug=$2", "id=$1", result => {
+                if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+                if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product slug", "REQUIRED", null, null, null));
+                resolve();
+            });
         });
     });
 }
