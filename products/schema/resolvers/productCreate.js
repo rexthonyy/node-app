@@ -382,8 +382,6 @@ function produceAttributeProductAssignment(attribute, product) {
 }
 
 function assignAttributesToProduct(product, attributeProduct) {
-    console.log(product);
-    console.log(attributeProduct);
     return new Promise((resolve, reject) => {
         if (attributeProduct == null) return resolve();
         productQueries.createAssignedProductAttribute([product.id, attributeProduct.id], result => {

@@ -691,13 +691,14 @@ const createRequestSwap = (values, response) => {
     });
 };
 
-const createRequestOffer = (values, response) => {
-    client.query(`INSERT INTO ${db.request_offer} (channel_id, request_id, user_id, assigned_user_shift_id, offered_to_user_id, request_note, status, response_note, response_by_user_id, response_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, values, (err, res) => {
+
+const updateProduct = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_product} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
                 res: null,
-                code: 218
+                test: 229
             });
         } else {
             response({
@@ -827,59 +828,8 @@ const updateSetting = (values, set, whereClause, response) => {
     });
 };
 
-const deleteAssignedShiftActivitiesByShiftGroupId = (values, response) => {
-    client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 8
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId = (values, response) => {
-    client.query(`DELETE FROM ${db.assigned_shift_activities} WHERE channel_id=$1 AND shift_group_id=$2 AND user_id=$3`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 8
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteOpenShiftActivitiesByShiftGroupId = (values, response) => {
-    client.query(`DELETE FROM ${db.open_shift_activities} WHERE shift_group_id=$1`, values, (err, res) => {
-        if (err) {
-            response({
-                err: err.stack,
-                res: null,
-                test: 8
-            });
-        } else {
-            response({
-                err: null,
-                res: res.rows
-            });
-        }
-    });
-};
-
-const deleteUserTimeOffs = (values, whereClause, response) => {
-    client.query(`DELETE FROM ${db.user_time_offs} WHERE ${whereClause}`, values, (err, res) => {
+const deleteAttributeValue = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributevalue} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1137,6 +1087,7 @@ module.exports = {
     createCollectionProduct,
     createAttributeValue,
 
+    updateProduct,
     updateProductVariant,
     updateOpenShift,
     updateTimeOff,
@@ -1145,6 +1096,7 @@ module.exports = {
     updateRequestOffer,
     updateSetting,
 
+    deleteAttributeValue,
     deleteAssignedShiftActivitiesByShiftGroupId,
     deleteAssignedShiftActivitiesByChannelIdShiftGroupIdAndUserId,
     deleteOpenShiftActivitiesByShiftGroupId,
