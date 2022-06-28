@@ -279,7 +279,7 @@ function updateProductCollections(id, collectionIds) {
 }
 
 function updateProductAttributes(id, attributes) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         if (attributes == null) return resolve();
         const numAttributes = attributes.length;
         let cursor = -1;
