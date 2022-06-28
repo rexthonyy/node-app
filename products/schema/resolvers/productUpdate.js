@@ -22,7 +22,7 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(field, message, code, attributes, values, productType) {
+function getGraphQLOutput(field, message, code, attributes, values, product) {
     return {
         errors: [{
             field,
@@ -38,7 +38,7 @@ function getGraphQLOutput(field, message, code, attributes, values, productType)
             attributes,
             values
         }],
-        productType
+        product
     }
 }
 
