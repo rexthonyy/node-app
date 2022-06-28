@@ -63,6 +63,7 @@ function productUpdate(authUser, args) {
         let attributes = args.input.attributes;
 
         let errors = [];
+        let product = null;
 
         try {
             if (name) await updateProductName(id, name);
@@ -141,7 +142,12 @@ function productUpdate(authUser, args) {
             errors.push(err.errors[0]);
         }
 
-        let product = await getGraphQLProductById(id);
+        try {
+            product = await getGraphQLProductById(id);
+        } catch (err) {
+            console.log(err);
+            errors.push(getGraphQLOutput("product", err, "NOT_FOUND", null, null, null).errors[0]);
+        }
 
         return {
             errors: errors,
