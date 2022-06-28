@@ -149,11 +149,11 @@ function productUpdate(authUser, args) {
             errors.push(getGraphQLOutput("product", err, "NOT_FOUND", null, null, null).errors[0]);
         }
 
-        return {
+        resolve({
             errors: errors,
             productErrors: errors,
             product
-        };
+        });
     });
 }
 
