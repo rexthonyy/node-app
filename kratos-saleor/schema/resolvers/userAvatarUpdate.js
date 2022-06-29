@@ -4,11 +4,10 @@ module.exports = async(parent, args, context) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
         const authUser = context.user;
 
-        let files = context.files;
-        files.map(function(file) {
-            pgKratosQueries.updateAccountUserById([authUser.id, file.location], "avatar=$2", result => {
-                return resolve(getGraphQLOutput("", "", "INVALID", "", authUser));
-            });
+        let avatar = args.imageHTML;
+
+        pgKratosQueries.updateAccountUserById([authUser.id, avatar], "avatar=$2", result => {
+            return resolve(getGraphQLOutput("", "", "INVALID", "", authUser));
         });
     });
 }

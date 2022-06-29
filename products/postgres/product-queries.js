@@ -179,6 +179,23 @@ const getProductTranslation = (values, whereClause, response) => {
     });
 };
 
+const getProductVariant = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_productvariant} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -736,6 +753,7 @@ module.exports = {
     getCategory,
     getCategoryTranslation,
     getProductTranslation,
+    getProductVariant,
 
     createProduct,
     createProductType,
