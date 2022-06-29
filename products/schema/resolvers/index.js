@@ -1,5 +1,6 @@
 const product = require("./product");
 const products = require("./products");
+const productType = require("./productType");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -11,7 +12,8 @@ const productTypeCreate = require("./productTypeCreate");
 module.exports = {
     Query: {
         product,
-        products
+        products,
+        productType
     },
     Mutation: {
         productCreate,
