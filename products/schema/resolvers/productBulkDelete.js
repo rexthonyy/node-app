@@ -42,27 +42,29 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 }
 
 function productBulkDelete(authUser, args) {
-    let ids = args.ids;
-    const numIds = ids.length;
-    let cursor = -1;
+    return new Promise(resolve => {
+        let ids = args.ids;
+        const numIds = ids.length;
+        let cursor = -1;
 
-    ids.forEach(async id => {
-        await productDelete(id);
+        ids.forEach(async id => {
+            await productDelete(id);
+            checkComplete();
+        });
+
         checkComplete();
-    });
 
-    checkComplete();
-
-    function checkComplete() {
-        cursor++;
-        if (cursor == numIds) {
-            resolve({
-                errors: [],
-                productErrors: [],
-                count: numIds
-            });
+        function checkComplete() {
+            cursor++;
+            if (cursor == numIds) {
+                resolve({
+                    errors: [],
+                    productErrors: [],
+                    count: numIds
+                });
+            }
         }
-    }
+    });
 }
 
 function productDelete(id) {
