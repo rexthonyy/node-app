@@ -1,4 +1,5 @@
 const pgKratosQueries = require("../../postgres/kratos-queries");
+const getGraphQLUserById = require("./lib/getGraphQLUserById");
 module.exports = async(parent, args, context) => {
     return new Promise((resolve, reject) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
@@ -6,10 +7,9 @@ module.exports = async(parent, args, context) => {
 
         let avatar = args.imageHTML;
 
-        console.log(avatar);
-
-        pgKratosQueries.updateAccountUserById([authUser.id, avatar], "avatar=$2", result => {
-            return resolve(getGraphQLOutput("", "", "INVALID", "", authUser));
+        pgKratosQueries.updateAccountUserById([authUser.id, avatar], "avatar=$2", async result => {
+            let graphQLUser = await getGraphQLUserById(authUser.id);
+            return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser));
         });
     });
 }

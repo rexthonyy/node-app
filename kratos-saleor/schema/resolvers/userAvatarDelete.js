@@ -5,8 +5,9 @@ module.exports = async(parent, args, context) => {
         if (!context.user) return resolve(getGraphQLOutput("authorization-bearer", "Please enter a valid authorization header", "JWT_INVALID_TOKEN", null, null));
         const authUser = context.user;
 
-        pgKratosQueries.updateAccountUserById([authUser.id, null], "avatar=$2", result => {
-            return resolve(getGraphQLOutput("", "", "INVALID", "", authUser));
+        pgKratosQueries.updateAccountUserById([authUser.id, null], "avatar=$2", async result => {
+            let graphQLUser = await getGraphQLUserById(authUser.id);
+            return resolve(getGraphQLOutput("", "", "INVALID", "", graphQLUser));
         });
     });
 }
