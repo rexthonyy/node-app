@@ -131,7 +131,6 @@ function productDelete(authUser, args) {
             product
         };
 
-        console.log(product);
         resolve(res);
     });
 }
