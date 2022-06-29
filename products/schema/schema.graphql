@@ -44,6 +44,28 @@ type Query {
     """ID of the product type."""
     id: ID!
   ): ProductType
+
+  """List of the shop's product types."""
+  productTypes(
+    """Filtering options for product types."""
+    filter: ProductTypeFilterInput
+
+    """Sort product types."""
+    sortBy: ProductTypeSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): ProductTypeCountableConnection
+
 }
 
 
