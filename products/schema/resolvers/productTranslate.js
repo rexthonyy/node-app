@@ -115,11 +115,10 @@ function updateProductTranslation(translationId, args) {
             seoDescription,
             languageCode,
             name,
-            description,
-            productId
+            description
         ];
 
-        productQueries.updateProductTranslation(values, "seo_title=$2, seo_description=$3, language_code=$4, name=$5, description=$6, product_id=$7", "id=$1", result => {
+        productQueries.updateProductTranslation(values, "seo_title=$2, seo_description=$3, language_code=$4, name=$5, description=$6", "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("product translation", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length == 0) return reject(getGraphQLOutput("product translation", "Failed to update product translation", "GRAPHQL_ERROR", null));
             resolve();
