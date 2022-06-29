@@ -68,12 +68,12 @@ query PermissionGroups{
 ### 
 POST http://88.208.199.175:2300/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRVNU1UazVPVFo5Li1ZM0Z2SFd5VmptSFpkN2wySk8xWEZCYjliRUNqbHBvelg3SDJ5SWFyX0UiLCJpYXQiOjE2NTU5MTk5OTYsImV4cCI6MTY1NTkyMTc5Niwic3ViIjoiMSJ9.1pJNSIqFiXEITkw9c0_jLDI1u7NISQlbbhetu9VnYiM
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRZMU1EZ3dNVFY5Lk5EUndWTWZYbXBTODluMGpWa01GTDBvcFJDZklqa1YxclphRW1LelNGZWMiLCJpYXQiOjE2NTY1MDgwMTUsImV4cCI6MTY1NjUwOTgxNSwic3ViIjoiMSJ9.NgvUHiBpPR6mmwtdo4eATEldl7S3Si72powRFPOvcuY
 X-Request-Type: GraphQL
 
 mutation {
   permissionGroupUpdate(id: 4, input: {
-    addPermissions: [MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS]
+    addPermissions: [MANAGE_TRANSLATIONS]
   }){
     errors{
       field

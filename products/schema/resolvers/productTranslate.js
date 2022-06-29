@@ -41,10 +41,6 @@ function productTranslate(authUser, args) {
     return new Promise(resolve => {
         let productId = args.id;
         let languageCode = args.languageCode;
-        let seoTitle = args.input.seoTitle;
-        let seoDescription = args.input.seoDescription;
-        let name = args.input.name;
-        let description = args.input.description;
 
         productQueries.getProduct([productId], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
@@ -68,6 +64,7 @@ function productTranslate(authUser, args) {
                 }
 
                 let graphQLProduct = await getGraphQLProductById(productId);
+                console.log(graphQLProduct);
                 resolve({
                     errors: [],
                     translationErrors: [],
