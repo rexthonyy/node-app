@@ -125,11 +125,14 @@ function productDelete(authUser, args) {
             errors.push(err.errors[0]);
         }
 
-        resolve({
+        let res = {
             errors: errors,
             productErrors: errors,
             product
-        });
+        };
+
+        console.log(product);
+        resolve(res);
     });
 }
 
