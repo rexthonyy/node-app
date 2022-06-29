@@ -49,7 +49,7 @@ function productDelete(authUser, args) {
         let product = null;
 
         try {
-            await getGraphQLProductById(id);
+            product = await getGraphQLProductById(id);
         } catch (err) {
             console.log(err);
             errors.push(getGraphQLOutput("product", err, "NOT_FOUND", null, null, null).errors[0]);
