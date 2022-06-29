@@ -5,7 +5,6 @@ const {
     getGraphQLProductById
 } = require('./lib');
 const productQueries = require("../../postgres/product-queries");
-const getGraphQLProductTypeById = require('./lib/getGraphQLProductTypeById');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {

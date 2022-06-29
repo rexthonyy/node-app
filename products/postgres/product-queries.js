@@ -386,6 +386,278 @@ const deleteAttributeValue = (values, whereClause, response) => {
     });
 };
 
+const deleteProductVariant = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_productvariant} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedVariantAttribute = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedvariantattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedVariantAttributeValue = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedvariantattributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteProductTranslation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_producttranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedProductAttribute = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedproductattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedProductAttributeValue = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedproductattributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAttributeValueTranslation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributevaluetranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedPageAttributeValue = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedpageattributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDiscountVoucherProduct = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.discount_voucher_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDiscountSaleProduct = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.discount_sale_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteProductCollectionProduct = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_collectionproduct} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteGiftCard = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.giftcard_giftcard} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteGiftCardEvent = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.giftcard_giftcardevent} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteGiftCardTags = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.giftcard_giftcard_tags} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteCheckoutGiftCards = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.checkout_checkout_gift_cards} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteProduct = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_product} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     get,
     getProduct,
@@ -411,4 +683,20 @@ module.exports = {
     updateProductVariant,
 
     deleteAttributeValue,
+    deleteProductVariant,
+    deleteAssignedVariantAttribute,
+    deleteAssignedVariantAttributeValue,
+    deleteProductTranslation,
+    deleteAssignedProductAttribute,
+    deleteAssignedProductAttributeValue,
+    deleteAttributeValueTranslation,
+    deleteAssignedPageAttributeValue,
+    deleteDiscountVoucherProduct,
+    deleteDiscountSaleProduct,
+    deleteProductCollectionProduct,
+    deleteGiftCard,
+    deleteGiftCardEvent,
+    deleteGiftCardTags,
+    deleteCheckoutGiftCards,
+    deleteProduct
 }
