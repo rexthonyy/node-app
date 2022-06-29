@@ -38,6 +38,12 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): ProductCountableConnection
+
+   """Look up a product type by ID."""
+  productType(
+    """ID of the product type."""
+    id: ID!
+  ): ProductType
 }
 
 
