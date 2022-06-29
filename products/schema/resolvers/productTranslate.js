@@ -64,11 +64,10 @@ function productTranslate(authUser, args) {
                 }
 
                 let graphQLProduct = await getGraphQLProductById(productId);
-                console.log(graphQLProduct);
                 resolve({
                     errors: [],
                     translationErrors: [],
-                    graphQLProduct
+                    product: graphQLProduct
                 });
             });
         });
