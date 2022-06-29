@@ -6,6 +6,8 @@ module.exports = async(parent, args, context) => {
 
         let avatar = args.imageHTML;
 
+        console.log(avatar);
+
         pgKratosQueries.updateAccountUserById([authUser.id, avatar], "avatar=$2", result => {
             return resolve(getGraphQLOutput("", "", "INVALID", "", authUser));
         });

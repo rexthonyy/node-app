@@ -12,6 +12,21 @@ mutation{
   }
 }
 
+### 
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRZMU1Ua3hORGw5LkoyM0w2MXM1ZjhIeVR2aU54dXFOMkRNdFdQc1hldlFDclgwekFsU1VSLU0iLCJpYXQiOjE2NTY1MTkxNDksImV4cCI6MjYwMzI0NzE0OSwic3ViIjoiMSJ9.AIVt8pieBuIwgVmvd848jQ9jP59Ihon9LukqHreZRMU
+X-Request-Type: GraphQL
+
+mutation{
+  userAvatarUpdate(imageHTML: "<a>user avatar</a>"){
+   	user{
+      avatar{
+        url
+      }
+    } 
+  }
+}
 
 ###
 POST http://88.208.199.175:1410/graphql
