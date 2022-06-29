@@ -37,8 +37,8 @@ let getGraphQLUserById = user_id => {
                 permissionGroups,
                 editableGroups: null,
                 avatar: {
-                    url: accountUser.avatar,
-                    alt: accountUser.avatar
+                    url: accountUser.avatar || "",
+                    alt: accountUser.avatar || ""
                 },
                 events: null,
                 storedPaymentSources: null,
