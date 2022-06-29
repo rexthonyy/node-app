@@ -66,6 +66,20 @@ type Query {
     last: Int
   ): ProductTypeCountableConnection
 
+
+  """
+  Look up a product variant by ID or SKU. Requires one of the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS.
+  """
+  productVariant(
+    """ID of the product variant."""
+    id: ID
+
+    """Sku of the product variant."""
+    sku: String
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+  ): ProductVariant
 }
 
 
