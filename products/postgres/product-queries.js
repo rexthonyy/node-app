@@ -162,6 +162,23 @@ const getCategoryTranslation = (values, whereClause, response) => {
     });
 };
 
+const getProductTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_producttranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -334,6 +351,23 @@ const createAttributeValue = (values, response) => {
     });
 };
 
+const createProductTranslation = (values, response) => {
+    client.query(`INSERT INTO ${db.product_producttranslation} (seo_title, seo_description, language_code, name, description, product_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 const updateProduct = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.product_product} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
@@ -354,6 +388,23 @@ const updateProduct = (values, set, whereClause, response) => {
 
 const updateProductVariant = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.product_productvariant} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateProductTranslation = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_producttranslation} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -684,6 +735,7 @@ module.exports = {
     getAttributeValue,
     getCategory,
     getCategoryTranslation,
+    getProductTranslation,
 
     createProduct,
     createProductType,
@@ -695,9 +747,11 @@ module.exports = {
     createProductVariant,
     createCollectionProduct,
     createAttributeValue,
+    createProductTranslation,
 
     updateProduct,
     updateProductVariant,
+    updateProductTranslation,
 
     deleteAttributeValue,
     deleteProductVariant,
