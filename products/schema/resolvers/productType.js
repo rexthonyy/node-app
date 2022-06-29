@@ -1,6 +1,7 @@
 const {
     checkAuthorization
 } = require('./lib');
+//.
 const getGraphQLProductTypeById = require('./lib/getGraphQLProductTypeById');
 
 module.exports = async(parent, args, context) => {
