@@ -27,14 +27,14 @@ let getGraphQLSelectedAttributeByProductVariantId = (id) => {
 
 
 
-        productQueries.getAttributeValue([id], "id=$1", result => {
+        productQueries.getAttributeValue([id], "id=$1", await result => {
             if (result.err || result.res.length == 0) {
                 return reject("Attribute value not found");
             }
 
             let attributeValue = result.res[0];
             let translation;
-            let attribute;
+            let attr;
 
             try {
                 translation = await getTranslation(attributeValue.id);
@@ -42,9 +42,9 @@ let getGraphQLSelectedAttributeByProductVariantId = (id) => {
                 translation = null;
             }
             try {
-                attribute = await getGraphQLProductAttributeById(attributeValue.attribute_id);
+                attr = await getGraphQLProductAttributeById(attributeValue.attribute_id);
             } catch (err) {
-                attribute = {};
+                attr = {};
             }
 
             resolve({
@@ -53,7 +53,7 @@ let getGraphQLSelectedAttributeByProductVariantId = (id) => {
                 slug: attributeValue.slug,
                 value: attributeValue.value,
                 translation,
-                inputType: attribute.input_type || "",
+                inputType: attr.input_type || "",
                 reference: attributeValue.reference_product_id,
                 file: {
                     url: attributeValue.file_url,
