@@ -55,6 +55,7 @@ const db = {
     product_producttranslation: "product_producttranslation",
     product_producttype: "product_producttype",
     product_productvariant: "product_productvariant",
+    product_productvariantchannellisting: "product_productvariantchannellisting",
     product_productvarianttranslation: "product_productvarianttranslation",
     product_variantmedia: "product_variantmedia"
 };

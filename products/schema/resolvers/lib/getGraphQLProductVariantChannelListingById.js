@@ -1,5 +1,4 @@
 const productQueries = require("../../../postgres/product-queries");
-const getGraphQLProductVariantChannelListingById = require('./getGraphQLProductVariantChannelListingById');
 
 let getGraphQLProductVariantChannelListingById = (id) => {
     return new Promise((resolve, reject) => {

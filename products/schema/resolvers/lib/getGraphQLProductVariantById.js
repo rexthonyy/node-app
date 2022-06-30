@@ -1,7 +1,7 @@
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductById = require('./getGraphQLProductById');
 const getGraphQLProductVariantChannelListingsByVariantId = require('./getGraphQLProductVariantChannelListingsByVariantId');
-const getGraphQLSelectedAttributesByProductVariantId = require('./getGraphQLSelectedAttributesByProductVariantId');
+const getGraphQLSelectedAttributeByProductVariantId = require('./getGraphQLSelectedAttributeByProductVariantId');
 
 let getGraphQLProductVariantById = (id, channel = "default-channel") => {
     return new Promise((resolve, reject) => {
@@ -25,11 +25,11 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             try {
                 channelListings = await getGraphQLProductVariantChannelListingsByVariantId(productVariant.id);
             } catch (err) {
-                attributes = null;
+                channelListings = null;
             }
 
             try {
-                attributes = await getGraphQLSelectedAttributesByProductVariantId(productVariant.id);
+                attributes = await getGraphQLSelectedAttributeByProductVariantId(productVariant.id);
             } catch (err) {
                 attributes = null;
             }

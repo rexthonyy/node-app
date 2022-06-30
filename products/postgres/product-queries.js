@@ -213,6 +213,91 @@ const getOrderLine = (values, whereClause, response) => {
     });
 };
 
+const getProductVariantChannelListing = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_productvariantchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAttributeAssignedVariantAttribute = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedvariantattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAttributeVariant = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributevariant} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAssignedVariantAttribute = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedvariantattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAssignedVariantAttributeValue = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedvariantattributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -772,6 +857,11 @@ module.exports = {
     getProductTranslation,
     getProductVariant,
     getOrderLine,
+    getProductVariantChannelListing,
+    getAttributeAssignedVariantAttribute,
+    getAttributeVariant,
+    getAssignedVariantAttribute,
+    getAssignedVariantAttributeValue,
 
     createProduct,
     createProductType,
