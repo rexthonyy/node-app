@@ -298,6 +298,57 @@ const getAssignedVariantAttributeValue = (values, whereClause, response) => {
     });
 };
 
+const getDiscountSaleVariants = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_sale_variants} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountSale = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_sale} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountSaleChannelListing = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_salechannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -862,6 +913,9 @@ module.exports = {
     getAttributeVariant,
     getAssignedVariantAttribute,
     getAssignedVariantAttributeValue,
+    getDiscountSaleVariants,
+    getDiscountSale,
+    getDiscountSaleChannelListing,
 
     createProduct,
     createProductType,
