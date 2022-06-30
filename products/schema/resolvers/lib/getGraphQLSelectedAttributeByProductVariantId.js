@@ -79,7 +79,7 @@ function getAttribute(id) {
 
             let assignedVariantAttribute = result.res[0];
 
-            productQueries.getAttributeVariant([assignedVariantAttribute.assignment_id], "id=$1", result => {
+            productQueries.getAttributeVariant([assignedVariantAttribute.assignment_id], "id=$1", async result => {
                 if (result.err || result.res.length == 0) {
                     return reject("Attribute variant not found");
                 }
@@ -114,7 +114,7 @@ function getValues(id) {
                 let cursor = -1;
                 let values = [];
 
-                assignedVariantAttributeValues.forEach(assignedVariantAttributeValue => {
+                assignedVariantAttributeValues.forEach(async assignedVariantAttributeValue => {
                     try {
                         values.push(await getGraphQLAttributeValueById(assignedVariantAttributeValue.value_id));
                     } catch (err) {
