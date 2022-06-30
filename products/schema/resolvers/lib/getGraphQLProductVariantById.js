@@ -14,6 +14,7 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             let product;
             let channelListings;
             let attributes;
+            let quantityOrdered;
 
             try {
                 product = await getGraphQLProductById(productVariant.product_id);
@@ -31,6 +32,12 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
                 attributes = await getGraphQLSelectedAttributesByProductVariantId(productVariant.id);
             } catch (err) {
                 attributes = null;
+            }
+
+            try {
+                quantityOrdered = await getQuantityOrdered(productVariant.id);
+            } catch (err) {
+                quantityOrdered = null;
             }
 
             let res = {
@@ -71,5 +78,14 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
         });
     });
 };
+
+function getQuantityOrdered(productVariantId) {
+    return new Promise(resolve => {
+        productQueries.getOrderLine([productVariantId], "variant_id=$1", result => {
+            if (result.err) return resolve(0);
+            resolve(result.res.length);
+        });
+    });
+}
 
 module.exports = getGraphQLProductVariantById;

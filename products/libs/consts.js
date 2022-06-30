@@ -43,6 +43,7 @@ const db = {
     giftcard_giftcard_tags: "giftcard_giftcard_tags",
     giftcard_giftcardevent: "giftcard_giftcardevent",
     giftcard_giftcardtag: "giftcard_giftcardtag",
+    order_orderline: "order_orderline",
     product_category: "product_category",
     product_categorytranslation: "product_categorytranslation",
     product_collection: "product_collection",

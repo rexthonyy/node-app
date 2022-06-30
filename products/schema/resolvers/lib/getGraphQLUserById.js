@@ -37,8 +37,8 @@ let getGraphQLUserById = (user_id) => {
                 permissionGroups,
                 editableGroups: null,
                 avatar: {
-                    url: accountUser.avatar || "",
-                    alt: accountUser.avatar || ""
+                    url: formatAvatarOutput(accountUser.avatar),
+                    alt: formatAvatarOutput(accountUser.avatar)
                 },
                 events: null,
                 storedPaymentSources: null,
@@ -114,6 +114,189 @@ function getDefaultAddress(address_id, addresses) {
         }
     }
     return defaultAddress;
+}
+
+function formatAvatarOutput(avatar) {
+    if (!avatar) return "";
+    return `
+    resources: [
+        {
+          id: "dayNote",
+          name: "Day Note",
+          groupOnly: false,
+          render: <p>Abc</p>
+        },
+        {
+          id: "groupOne",
+          name: (
+            <div className="contentRes">
+              <div>Group One</div>
+              <IconButton
+                style={{
+                  maxWidth: "130px",
+                  fontSize: "13px",
+                  marginTop: "13px"
+                }}
+                onClick={() => {
+                  console.log("This is click");
+                }}
+              >
+                <Group style={{ color: "#665d5d", fontSize: "18px" }} />
+                <span
+                  style={{ fontSize: "13px", marginLeft: "3px" }}
+                >{\`Add People\`}</span>
+              </IconButton>
+            </div>
+          ),
+          groupOnly: true,
+          render: <p>Abc</p>
+        },
+        {
+          id: "r1",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">RA</div>
+              <div className="contentRes">
+                <span>{\`Roy alex\`}</span>
+                <span className="hrsRes">{\`12 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          author: "X",
+          bgColor: "red",
+          issue: "#1",
+          parentId: "groupOne"
+        },
+        {
+          id: "r2",
+          name: (
+            <div className="containerRes">
+              <img
+                src="${avatar}"
+                className="avatare"
+              />
+              <div className="contentRes">
+                <span>{\`Alax alex\`}</span>
+                <span className="hrsRes">{\`12 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          author: "X",
+          bgColor: "red",
+          issue: "#1",
+          parentId: "groupOne"
+        },
+        {
+          id: "r3",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">RA</div>
+              <div className="contentRes">
+                <span>{\`Roy alex\`}</span>
+                <span className="hrsRes">{\`12 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          author: "X",
+          bgColor: "red",
+          issue: "#1",
+          parentId: "groupOne"
+        },
+        {
+          id: "r4",
+          name: (
+            <div className="containerRes">
+              <img
+                src="${avatar}"
+                className="avatare"
+              />
+              <div className="contentRes">
+                <span>{\`Alax alex\`}</span>
+                <span className="hrsRes">{\`12 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          parentId: "groupOne"
+        },
+        {
+          id: "groupTwo",
+          name: (
+            <div className="contentRes">
+              <div>Group Two</div>
+              <IconButton
+                style={{
+                  maxWidth: "130px",
+                  fontSize: "13px",
+                  marginTop: "13px"
+                }}
+                onClick={() => {
+                  console.log("This is click");
+                }}
+              >
+                <Group style={{ color: "#665d5d", fontSize: "18px" }} />
+                <span
+                  style={{ fontSize: "13px", marginLeft: "3px" }}
+                >{\`Add People\`}</span>
+              </IconButton>
+            </div>
+          ),
+          groupOnly: true,
+          render: <p>Abc</p>
+        },
+        {
+          id: "r5",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">MA</div>
+              <div className="contentRes">
+                <span>{\`MAx alex\`}</span>
+                <span className="hrsRes">{\`1 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          parentId: "groupTwo"
+        },
+        {
+          id: "r6",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">TA</div>
+              <div className="contentRes">
+                <span>{\`Taan alex\`}</span>
+                <span className="hrsRes">{\`2 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          parentId: "groupTwo"
+        },
+        {
+          id: "r7",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">AA</div>
+              <div className="contentRes">
+                <span>{\`Alex alex\`}</span>
+                <span className="hrsRes">{\`120 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          parentId: "groupTwo"
+        },
+        {
+          id: "r8",
+          name: (
+            <div className="containerRes">
+              <div className="avatare">AA</div>
+              <div className="contentRes">
+                <span>{\`Alex alex\`}</span>
+                <span className="hrsRes">{\`120 Hrs\`}</span>
+              </div>
+            </div>
+          ),
+          parentId: "groupTwo"
+        }
+      ],
+    `;
 }
 
 module.exports = getGraphQLUserById;
