@@ -3,7 +3,7 @@ const getGraphQLProductAttributeById = require("./getGraphQLProductAttributeById
 
 let getGraphQLAttributeValueById = (id) => {
     return new Promise(async(resolve, reject) => {
-        productQueries.getAttributeValue([id], "id=$1", result => {
+        productQueries.getAttributeValue([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Attribute value not found");
             }
