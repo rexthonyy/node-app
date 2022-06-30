@@ -27,7 +27,7 @@ let getGraphQLSelectedAttributeByProductVariantId = (id) => {
 
 
 
-        productQueries.getAttributeValue([id], "id=$1", await result => {
+        productQueries.getAttributeValue([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Attribute value not found");
             }
