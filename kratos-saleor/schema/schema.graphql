@@ -356,7 +356,7 @@ type Mutation {
   """
   userAvatarUpdate(
     """Represents the avatar in html format"""
-    imageHTML: String!
+     avatar: String!
   ): UserAvatarUpdate
 
   """

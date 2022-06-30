@@ -55,8 +55,10 @@ require('./postgres/initialize_dbs').init()
 
         //use by upload form
         app.post('/uploadUserAvatar', s3Handler.upload.array('upload', 25), function(req, res, next) {
-            let result = middleware(userAvatarUpdate, null, null, req, null);
-            res.send(result);
+            req.files.map(function(file) {
+                let result = middleware(userAvatarUpdate, null, { avatar: file.location }, {}, null);
+                res.send(result);
+            });
         });
 
         app.get('/login', utils.isAuthenticated, (req, res) => {
