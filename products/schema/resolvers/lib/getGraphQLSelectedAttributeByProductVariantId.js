@@ -71,7 +71,7 @@ let getGraphQLSelectedAttributeByProductVariantId = (id) => {
 
 
 function getAttribute(id) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.getAssignedVariantAttribute([id], "variant_id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Assigned variant attribute not found");
@@ -96,7 +96,7 @@ function getAttribute(id) {
 }
 
 function getValues(id) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.getAssignedVariantAttribute([id], "variant_id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Assigned variant attribute not found");

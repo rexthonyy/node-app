@@ -4,6 +4,18 @@ authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY
 X-Request-Type: GraphQL
 
 mutation{
+ tokenCreate(email: "admin@user.com", password: "admin"){
+    token
+  }
+}
+
+###
+POST http://88.208.199.175:1410/graphql
+Content-Type: application/json
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREE1TENKbGJXRnBiQ0k2SW05dmVVQjJMbU52SWl3aWFXRjBJam94TmpVME56ZzJNVFExZlEuTGFzWTJSdlBLeXliYV95UUhVR28xMm1GSUdWUm9hUWJFbUFTS3Vwcmd6SSIsImlhdCI6MTY1NDc4NjE0NSwiZXhwIjoxNjU0Nzg2NDQ1LCJzdWIiOiIxMDA5In0.4jQ-9-5pm5VG_Y-mgtFEIs0ziscJLe_Wast-KGbCZ9g
+X-Request-Type: GraphQL
+
+mutation{
  tokensDeactivateAll{
     errors{
       field
