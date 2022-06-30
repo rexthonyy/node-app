@@ -57,7 +57,7 @@ function getAllProductVariants(includeUnpublishedItems) {
             let edges = [];
 
             productVariantValues.forEach(async productVariant => {
-                let node = await getProductVariantById(productVariant.id);
+                let node = await getGraphQLProductVariantById(productVariant.id);
                 edges.push({
                     cursor: "",
                     node
