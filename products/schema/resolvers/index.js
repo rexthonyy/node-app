@@ -4,6 +4,7 @@ const productType = require("./productType");
 const productTypes = require("./productTypes");
 const productVariant = require("./productVariant");
 const productVariants = require("./productVariants");
+const payment = require("./payment");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -19,7 +20,8 @@ module.exports = {
         productType,
         productTypes,
         productVariant,
-        productVariants
+        productVariants,
+        payment
     },
     Mutation: {
         productCreate,

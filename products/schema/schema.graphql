@@ -111,6 +111,14 @@ type Query {
     last: Int
   ): ProductVariantCountableConnection
 
+
+  """
+  Look up a payment by ID. Requires one of the following permissions: MANAGE_ORDERS.
+  """
+  payment(
+    """ID of the payment."""
+    id: ID!
+  ): Payment
 }
 
 

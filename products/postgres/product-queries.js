@@ -349,6 +349,23 @@ const getDiscountSaleChannelListing = (values, whereClause, response) => {
     });
 };
 
+const getPayment = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.payment_payment} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -916,6 +933,7 @@ module.exports = {
     getDiscountSaleVariants,
     getDiscountSale,
     getDiscountSaleChannelListing,
+    getPayment,
 
     createProduct,
     createProductType,
