@@ -17,6 +17,7 @@ const db = {
     account_user: "account_user",
     account_address: "account_address",
     account_user_addresses: "account_user_addresses",
+    channel_channel: "channel_channel",
 
     auth_group: "auth_group",
     auth_permissions: "auth_permission",
@@ -36,6 +37,7 @@ const db = {
     attribute_attributevaluetranslation: "attribute_attributevaluetranslation",
     attribute_attributevariant: "attribute_attributevariant",
     attribute_assignedpageattributevalue: "attribute_assignedpageattributevalue",
+    checkout_checkout: "checkout_checkout",
     checkout_checkout_gift_cards: "checkout_checkout_gift_cards",
     discount_voucher_products: "discount_voucher_products",
     discount_sale_products: "discount_sale_products",
@@ -61,7 +63,10 @@ const db = {
     product_productvariant: "product_productvariant",
     product_productvariantchannellisting: "product_productvariantchannellisting",
     product_productvarianttranslation: "product_productvarianttranslation",
-    product_variantmedia: "product_variantmedia"
+    product_variantmedia: "product_variantmedia",
+    shipping_shippingmethod: "shipping_shippingmethod",
+    shipping_shippingmethodtranslation: "shipping_shippingmethodtranslation",
+    warehouse_warehouse: "warehouse_warehouse",
 };
 
 const colorValue = {

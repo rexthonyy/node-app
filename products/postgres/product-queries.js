@@ -366,6 +366,108 @@ const getPayment = (values, whereClause, response) => {
     });
 };
 
+const getCheckout = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.checkout_checkout} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getShippingMethod = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingmethod} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getShippingMethodTranslationByShippingMethodId = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingmethodtranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getWarehouse = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.warehouse_warehouse} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getGiftCardTags = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.giftcard_giftcard_tags} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getGiftCardTag = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.giftcard_giftcardtag} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -934,6 +1036,12 @@ module.exports = {
     getDiscountSale,
     getDiscountSaleChannelListing,
     getPayment,
+    getCheckout,
+    getShippingMethod,
+    getShippingMethodTranslationByShippingMethodId,
+    getWarehouse,
+    getGiftCardTags,
+    getGiftCardTag,
 
     createProduct,
     createProductType,
