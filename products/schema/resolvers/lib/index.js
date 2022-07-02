@@ -4,6 +4,7 @@ const getGraphQLProductVariantById = require('./getGraphQLProductVariantById');
 const getGraphQLPaymentById = require('./getGraphQLPaymentById');
 const getGraphQLWarehouseById = require('./getGraphQLWarehouseById');
 const getGraphQLStockById = require('./getGraphQLStockById');
+const getGraphQLShippingZoneById = require('./getGraphQLShippingZoneById');
 const checkAuthorization = require('./checkAuthorization');
 const { userPermissionGroupHasAccess, userHasAccess } = require('./checkUserHasAccess');
 
@@ -14,6 +15,7 @@ module.exports = {
     getGraphQLPaymentById,
     getGraphQLWarehouseById,
     getGraphQLStockById,
+    getGraphQLShippingZoneById,
     checkAuthorization,
     userHasAccess,
     userPermissionGroupHasAccess

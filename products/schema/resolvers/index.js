@@ -9,6 +9,7 @@ const warehouse = require("./warehouse");
 const warehouses = require("./warehouses");
 const stock = require("./stock");
 const stocks = require("./stocks");
+const shippingZone = require("./shippingZone");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -30,6 +31,7 @@ module.exports = {
         warehouses,
         stock,
         stocks,
+        shippingZone,
     },
     Mutation: {
         productCreate,

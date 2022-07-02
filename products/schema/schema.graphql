@@ -176,6 +176,17 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): StockCountableConnection
+
+  """
+  Look up a shipping zone by ID. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZone(
+    """ID of the shipping zone."""
+    id: ID!
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+  ): ShippingZone
 }
 
 

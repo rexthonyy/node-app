@@ -638,6 +638,57 @@ const getStock = (values, whereClause, response) => {
     });
 };
 
+const getShippingZone = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingzone} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getWarehouseShippingZones = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.warehouse_warehouse_shipping_zones} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getShippingZoneChannel = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingzone_channels} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1222,6 +1273,9 @@ module.exports = {
     getPaymentTransaction,
     getCheckoutGiftCardsByCheckoutId,
     getStock,
+    getShippingZone,
+    getWarehouseShippingZones,
+    getShippingZoneChannel,
 
     createProduct,
     createProductType,
