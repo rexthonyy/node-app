@@ -4,6 +4,8 @@ const getGraphQLWarehouseById = require("./getGraphQLWarehouseById");
 const getGraphQLUserById = require("./getGraphQLUserById");
 const getGraphQLAddressById = require("./getGraphQLAddressById");
 const getGraphQLChannelById = require("./getGraphQLChannelById");
+const getGraphQLOrderFulfillmentById = require("./getGraphQLOrderLineById");
+const getGraphQLOrderLineById = require("./getGraphQLOrderLineById");
 
 let getGraphQLOrderById = (id) => {
     return new Promise((resolve, reject) => {
@@ -146,5 +148,63 @@ let getGraphQLOrderById = (id) => {
         });
     });
 };
+
+function getFullfillmentsByOrderId(id) {
+    return new Promise((resolve, reject) => {
+        productQueries.getOrderFulfillment([id], "order_id=$1", result => {
+            if (result.err) {
+                reject(JSON.stringify(result.err));
+            } else {
+                let orderFullfillments = result.res;
+                const numOrderFulfillment = orderFullfillments.length;
+                let cursor = -1;
+                let fullfillment = [];
+
+                orderFullfillments.forEach(async orderFulfillment => {
+                    fullfillment.push(await getGraphQLOrderFulfillmentById(orderFulfillment.id));
+                    checkComplete();
+                });
+
+                checkComplete();
+
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numOrderFulfillment) {
+                        resolve(fullfillment);
+                    }
+                }
+            }
+        });
+    });
+}
+
+function getLinesByOrderId(id) {
+    return new Promise((resolve, reject) => {
+        productQueries.getOrderLine([id], "order_id=$1", result => {
+            if (result.err) {
+                reject(JSON.stringify(result.err));
+            } else {
+                let orderLines = result.res;
+                const numOrderLines = orderLines.length;
+                let cursor = -1;
+                let graphQLOrderLines = [];
+
+                orderLines.forEach(async orderLine => {
+                    graphQLOrderLines.push(await getGraphQLOrderLineById(orderLine.id));
+                    checkComplete();
+                });
+
+                checkComplete();
+
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numOrderLines) {
+                        resolve(graphQLOrderLines);
+                    }
+                }
+            }
+        });
+    });
+}
 
 module.exports = getGraphQLOrderById;

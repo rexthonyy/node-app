@@ -519,6 +519,74 @@ const getOrderFulfillment = (values, whereClause, response) => {
     });
 };
 
+const getOrderFulfillmentLine = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.order_fulfillmentline} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDigitalContentUrl = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_digitalcontenturl} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDigitalContent = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_digitalcontent} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getPaymentTransaction = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.payment_transaction} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1096,6 +1164,10 @@ module.exports = {
     getAppExtensions,
     getOrder,
     getOrderFulfillment,
+    getOrderFulfillmentLine,
+    getDigitalContentUrl,
+    getDigitalContent,
+    getPaymentTransaction,
 
     createProduct,
     createProductType,
