@@ -149,6 +149,13 @@ type Query {
     last: Int
   ): WarehouseCountableConnection
 
+  """
+  Look up a stock by ID Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  stock(
+    """ID of an warehouse"""
+    id: ID!
+  ): Stock
 }
 
 
