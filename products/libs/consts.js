@@ -53,7 +53,7 @@ const db = {
     order_fulfillment: "order_fulfillment",
     order_fulfillmentline: "order_fulfillmentline",
     order_orderline: "order_orderline",
-    payment: "payment",
+    payment_payment: "payment_payment",
     payment_transaction: "payment_transaction",
     product_category: "product_category",
     product_categorytranslation: "product_categorytranslation",
