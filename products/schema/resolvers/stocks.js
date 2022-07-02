@@ -44,7 +44,7 @@ function stocks(args) {
 function getAllStocks() {
     return new Promise((resolve, reject) => {
         productQueries.getStock([-1], "id <> $1", result => {
-            if (result.err) { return reject(JSON.stringify(result.err)); }
+            if (result.err) { console.log(JSON.stringify(result.err)); return reject(JSON.stringify(result.err)); }
             let stocks = result.res;
 
             const numStocks = stocks.length;
