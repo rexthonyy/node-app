@@ -434,6 +434,23 @@ const getWarehouse = (values, whereClause, response) => {
     });
 };
 
+const getGiftCard = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.giftcard_giftcard} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getGiftCardTags = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.giftcard_giftcard_tags} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -572,6 +589,23 @@ const getDigitalContent = (values, whereClause, response) => {
 
 const getPaymentTransaction = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.payment_transaction} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getCheckoutGiftCardsByCheckoutId = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.checkout_checkout_gift_cards} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
@@ -1161,6 +1195,7 @@ module.exports = {
     getWarehouse,
     getGiftCardTags,
     getGiftCardTag,
+    getGiftCard,
     getAppExtensions,
     getOrder,
     getOrderFulfillment,
@@ -1168,6 +1203,7 @@ module.exports = {
     getDigitalContentUrl,
     getDigitalContent,
     getPaymentTransaction,
+    getCheckoutGiftCardsByCheckoutId,
 
     createProduct,
     createProductType,
