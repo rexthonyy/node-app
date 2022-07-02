@@ -621,6 +621,23 @@ const getCheckoutGiftCardsByCheckoutId = (values, whereClause, response) => {
     });
 };
 
+const getStock = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.warehouse_stock} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1204,6 +1221,7 @@ module.exports = {
     getDigitalContent,
     getPaymentTransaction,
     getCheckoutGiftCardsByCheckoutId,
+    getStock,
 
     createProduct,
     createProductType,
