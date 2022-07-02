@@ -6,8 +6,8 @@ const getGraphQLShippingMethodById = require("./getGraphQLShippingMethodById");
 const getGraphQLWarehouseById = require("./getGraphQLWarehouseById");
 const getGraphQLGiftCardById = require("./getGraphQLGiftCardById");
 let getGraphQLCheckoutById = (id) => {
-    return new Promise(async(resolve, reject) => {
-        productQueries.getCheckout([id], "id=$1", result => {
+    return new Promise((resolve, reject) => {
+        productQueries.getCheckout([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 reject(null);
             } else {
