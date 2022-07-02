@@ -23,10 +23,9 @@ module.exports = async(parent, args, context) => {
 
 function payment(args) {
     return new Promise((resolve, reject) => {
-        console.log(args);
         productQueries.getPayment([args.id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return reject(`Could'nt resolve id: ${id}`);
+            if (result.res.length == 0) return reject(`Could'nt resolve id: ${args.id}`);
             let payment = result.res[0];
             resolve(await getGraphQLPaymentById(payment.id));
         });
