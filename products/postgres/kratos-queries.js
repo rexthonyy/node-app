@@ -164,6 +164,23 @@ const getAccountAddress = (values, whereClause, response) => {
 };
 
 
+const getApp = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.app_app} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createAccountUser = (values, response) => {
     client.query(`INSERT INTO ${db.account_user} (is_superuser, email, is_staff, is_active, password, date_joined, last_login, default_billing_address_id, default_shipping_address_id, note, first_name, last_name, avatar, private_metadata, metadata, jwt_token_key, language_code, search_document, updated_at) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -395,6 +412,7 @@ module.exports = {
     getAccountAddressById,
     getChannel,
     getAccountAddress,
+    getApp,
 
     createAccountUser,
     createAccountAddress,

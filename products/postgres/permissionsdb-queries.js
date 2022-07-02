@@ -26,6 +26,39 @@ const client = new Client({
 });
 client.connect();
 
+const getAppPermissions = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.app_app_permissions} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAuthPermission = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.auth_permissions} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
 
 const getAuthGroups = (response) => {
     pool.query(`SELECT * from ${db.auth_group}`, (err, res) => {
@@ -334,6 +367,8 @@ const updateAuthGroupById = (values, response) => {
 };
 
 module.exports = {
+    getAppPermissions,
+    getAuthPermission,
     getAuthGroups,
     getAuthGroupById,
     createAuthGroup,

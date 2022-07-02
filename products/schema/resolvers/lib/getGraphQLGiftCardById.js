@@ -2,6 +2,7 @@ const productQueries = require("../../../postgres/product-queries");
 const getGraphQLUserById = require("./getGraphQLUserById");
 const getGraphQLGiftCardById = require("./getGraphQLGiftCardById");
 const getGraphQLProductById = require("./getGraphQLProductById");
+const getGraphQLAppById = require("./getGraphQLAppById");
 let getGraphQLGiftCardById = (id) => {
     return new Promise(async(resolve, reject) => {
         productQueries.getGiftCard([id], "id=$1", result => {
@@ -19,12 +20,6 @@ let getGraphQLGiftCardById = (id) => {
                 let tags;
 
                 try {
-                    user = await getGraphQLUserById(giftcard.user_id);
-                } catch (err) {
-                    user = null;
-                }
-
-                try {
                     createdBy = await getGraphQLUserById(giftcard.created_by_id);
                     createdByEmail = createdBy.email;
                 } catch (err) {
@@ -34,10 +29,12 @@ let getGraphQLGiftCardById = (id) => {
 
                 try {
                     usedBy = await getGraphQLUserById(giftcard.used_by_id);
+                    user = usedBy;
                     usedByEmail = usedBy.email;
                 } catch (err) {
                     usedBy = null;
                     usedByEmail = null;
+                    user = null;
                 }
 
                 try {
@@ -80,7 +77,7 @@ let getGraphQLGiftCardById = (id) => {
                     product,
                     events: null,
                     tags,
-                    boughtInChannel: giftcard.email,
+                    boughtInChannel: "",
                     isActive: giftcard.is_active,
                     initialBalance: null,
                     currentBalance: null,

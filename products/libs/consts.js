@@ -67,6 +67,9 @@ const db = {
     shipping_shippingmethod: "shipping_shippingmethod",
     shipping_shippingmethodtranslation: "shipping_shippingmethodtranslation",
     warehouse_warehouse: "warehouse_warehouse",
+    app_app: "app_app",
+    app_app_permissions: "app_app_permissions",
+    app_appextension: "app_appextension",
 };
 
 const colorValue = {

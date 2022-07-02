@@ -1,5 +1,5 @@
 const productQueries = require("../../../postgres/product-queries");
-let getGraphQLShippingMethodById = (id, authUser = null) => {
+let getGraphQLShippingMethodById = (id) => {
     return new Promise(async(resolve, reject) => {
         productQueries.getShippingMethod([id], "id=$1", result => {
             if (result.err || result.res.length == 0) {
