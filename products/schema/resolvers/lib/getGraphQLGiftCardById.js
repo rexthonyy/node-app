@@ -1,6 +1,5 @@
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLUserById = require("./getGraphQLUserById");
-const getGraphQLGiftCardById = require("./getGraphQLGiftCardById");
 const getGraphQLProductById = require("./getGraphQLProductById");
 const getGraphQLAppById = require("./getGraphQLAppById");
 let getGraphQLGiftCardById = (id) => {
