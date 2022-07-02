@@ -119,6 +119,14 @@ type Query {
     """ID of the payment."""
     id: ID!
   ): Payment
+
+  """
+  Look up a warehouse by ID. Requires one of the following permissions: MANAGE_PRODUCTS, MANAGE_ORDERS, MANAGE_SHIPPING.
+  """
+  warehouse(
+    """ID of an warehouse"""
+    id: ID!
+  ): Warehouse
 }
 
 
