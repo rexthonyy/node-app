@@ -4,8 +4,8 @@ const getGraphQLGiftCardById = require("./getGraphQLGiftCardById");
 const getGraphQLProductById = require("./getGraphQLProductById");
 const getGraphQLAppById = require("./getGraphQLAppById");
 let getGraphQLGiftCardById = (id) => {
-    return new Promise(async(resolve, reject) => {
-        productQueries.getGiftCard([id], "id=$1", result => {
+    return new Promise((resolve, reject) => {
+        productQueries.getGiftCard([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 reject("Giftcard not found");
             } else {

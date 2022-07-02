@@ -1,8 +1,8 @@
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLAddressById = require("./getGraphQLAddressById");
 let getGraphQLWarehouseById = (id) => {
-    return new Promise(async(resolve, reject) => {
-        productQueries.getWarehouse([id], "id=$1", result => {
+    return new Promise((resolve, reject) => {
+        productQueries.getWarehouse([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 reject(null);
             } else {
