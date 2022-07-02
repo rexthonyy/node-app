@@ -14,14 +14,14 @@ module.exports = async(parent, args, context) => {
         let permissions = ["MANAGE_PRODUCTS", "MANAGE_ORDERS", "MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            resolve(payment(args));
+            resolve(warehouse(args));
         } else {
             reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS, MANAGE_ORDERS, MANAGE_SHIPPING");
         }
     });
 }
 
-function payment(args) {
+function warehouse(args) {
     return new Promise((resolve, reject) => {
         productQueries.getWarehouse([args.id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));

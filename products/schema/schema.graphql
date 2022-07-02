@@ -127,6 +127,28 @@ type Query {
     """ID of an warehouse"""
     id: ID!
   ): Warehouse
+
+  
+  """
+  List of warehouses. Requires one of the following permissions: MANAGE_PRODUCTS, MANAGE_ORDERS, MANAGE_SHIPPING.
+  """
+  warehouses(
+    filter: WarehouseFilterInput
+    sortBy: WarehouseSortingInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): WarehouseCountableConnection
+
 }
 
 
