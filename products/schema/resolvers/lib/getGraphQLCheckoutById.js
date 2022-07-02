@@ -112,6 +112,8 @@ function getCheckoutGiftCardsByCheckoutToken(token) {
     return new Promise((resolve, reject) => {
         productQueries.getCheckoutGiftCardsByCheckoutId([token], "checkout_id=$1", result => {
             if (result.err) {
+                console.log("get checkout gift cards by checkout token");
+                console.log(result.err);
                 reject(JSON.stringify(result.err));
             } else {
                 let checkoutGiftCards = result.res;

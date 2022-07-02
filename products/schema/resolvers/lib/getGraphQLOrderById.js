@@ -153,6 +153,8 @@ function getFullfillmentsByOrderId(id) {
     return new Promise((resolve, reject) => {
         productQueries.getOrderFulfillment([id], "order_id=$1", result => {
             if (result.err) {
+                console.log("get fulfillments by order id");
+                console.log(result.err);
                 reject(JSON.stringify(result.err));
             } else {
                 let orderFullfillments = result.res;
@@ -182,6 +184,8 @@ function getLinesByOrderId(id) {
     return new Promise((resolve, reject) => {
         productQueries.getOrderLine([id], "order_id=$1", result => {
             if (result.err) {
+                console.log("get lines by order id");
+                console.log(result.err);
                 reject(JSON.stringify(result.err));
             } else {
                 let orderLines = result.res;
