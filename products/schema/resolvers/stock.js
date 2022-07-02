@@ -23,6 +23,7 @@ module.exports = async(parent, args, context) => {
 
 function stock(args) {
     return new Promise((resolve, reject) => {
+        console.log(args);
         productQueries.getStock([args.id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject(`Could'nt resolve id: ${args.id}`);
