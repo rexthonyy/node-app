@@ -485,6 +485,40 @@ const getAppExtensions = (values, whereClause, response) => {
     });
 };
 
+const getOrder = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.order_order} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getOrderFulfillment = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.order_fulfillment} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1060,6 +1094,8 @@ module.exports = {
     getGiftCardTags,
     getGiftCardTag,
     getAppExtensions,
+    getOrder,
+    getOrderFulfillment,
 
     createProduct,
     createProductType,
