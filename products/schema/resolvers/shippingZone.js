@@ -26,8 +26,8 @@ function shippingZone(args) {
         productQueries.getShippingZone([args.id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject(`Could'nt resolve id: ${args.id}`);
-            let stock = result.res[0];
-            resolve(await getGraphQLShippingZoneById(stock.id));
+            let shippingZone = result.res[0];
+            resolve(await getGraphQLShippingZoneById(shippingZone.id));
         });
     });
 }
