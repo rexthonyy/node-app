@@ -1,10 +1,10 @@
 const {
     checkAuthorization,
     userPermissionGroupHasAccess,
-    userHasAccess
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
-const getGraphQLProductTypeById = require('./lib/getGraphQLProductTypeById');
+    userHasAccess,
+    getGraphQLProductTypeById
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {

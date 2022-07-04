@@ -1,25 +1,26 @@
-const product = require("./product");
-const products = require("./products");
-const productType = require("./productType");
-const productTypes = require("./productTypes");
-const productVariant = require("./productVariant");
-const productVariants = require("./productVariants");
-const payment = require("./payment");
-const warehouse = require("./warehouse");
-const warehouses = require("./warehouses");
-const stock = require("./stock");
-const stocks = require("./stocks");
-const shippingZone = require("./shippingZone");
-const shippingZones = require("./shippingZones");
-const digitalContent = require("./digitalContent");
-const digitalContents = require("./digitalContents");
-const categories = require("./categories");
+const product = require("./Query/product");
+const products = require("./Query/products");
+const productType = require("./Query/productType");
+const productTypes = require("./Query/productTypes");
+const productVariant = require("./Query/productVariant");
+const productVariants = require("./Query/productVariants");
+const payment = require("./Query/payment");
+const warehouse = require("./Query/warehouse");
+const warehouses = require("./Query/warehouses");
+const stock = require("./Query/stock");
+const stocks = require("./Query/stocks");
+const shippingZone = require("./Query/shippingZone");
+const shippingZones = require("./Query/shippingZones");
+const digitalContent = require("./Query/digitalContent");
+const digitalContents = require("./Query/digitalContents");
+const categories = require("./Query/categories");
 const category = require("./category");
 const collection = require("./collection");
 const collections = require("./collections");
-const orderSettings = require("./orderSettings");
-const collectionTranslation = require("./collectionTranslation");
-const productTranslation = require("./productTranslation");
+const orderSettings = require("./Query/orderSettings");
+const collectionTranslation = require("./Collection/translation");
+const productTranslation = require("./Product/translation");
+const productMediaById = require("./productMediaById");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -60,7 +61,8 @@ module.exports = {
         productTypeCreate,
     },
     Product: {
-        translation: productTranslation
+        translation: productTranslation,
+        mediaById: productMediaById,
     },
     Collection: {
         translation: collectionTranslation,

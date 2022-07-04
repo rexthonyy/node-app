@@ -1,8 +1,8 @@
 const {
     checkAuthorization,
     getGraphQLProductTranslationById
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {

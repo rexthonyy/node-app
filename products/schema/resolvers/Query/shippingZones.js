@@ -1,30 +1,31 @@
 const {
     checkAuthorization,
-    getGraphQLWarehouseById,
+    getGraphQLShippingZoneById,
     userPermissionGroupHasAccess,
     userHasAccess
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        let permissions = ["MANAGE_PRODUCTS", "MANAGE_ORDERS", "MANAGE_SHIPPING"];
+        let accessPermissions = ["MANAGE_SHIPPING"];
 
-        if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            resolve(warehouses(args));
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
+            resolve(getShippingZones(args));
         } else {
-            reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS, MANAGE_ORDERS, MANAGE_SHIPPING");
+            reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING");
         }
     });
 }
 
-function warehouses(args) {
+
+function getShippingZones(args) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllWarehouses();
+            let edges = await getAllShippingZones();
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -41,18 +42,18 @@ function warehouses(args) {
     });
 }
 
-function getAllWarehouses() {
+function getAllShippingZones() {
     return new Promise((resolve, reject) => {
-        productQueries.getWarehouse([-1], "id <> $1", result => {
+        productQueries.getShippingZone([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
-            let warehouses = result.res;
+            let shippingZones = result.res;
 
-            const numWarehouses = warehouses.length;
+            const numShippingZones = shippingZones.length;
             let cursor = -1;
             let edges = [];
 
-            warehouses.forEach(async warehouse => {
-                let node = await getGraphQLWarehouseById(warehouse.id);
+            shippingZones.forEach(async shippingZone => {
+                let node = await getGraphQLShippingZoneById(shippingZone.id);
                 edges.push({
                     cursor: "",
                     node
@@ -65,7 +66,7 @@ function getAllWarehouses() {
 
             function checkComplete() {
                 cursor++;
-                if (cursor == numWarehouses) {
+                if (cursor == numShippingZones) {
                     resolve(edges);
                 }
             }

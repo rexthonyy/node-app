@@ -1,24 +1,16 @@
 const {
     checkAuthorization,
-    getGraphQLProductById,
-    userPermissionGroupHasAccess,
-    userHasAccess
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+    getGraphQLProductTypeById
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        let includeUnpublishedItems = false;
-        let accessPermissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
-
-        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            includeUnpublishedItems = true;
-        }
         try {
-            resolve(await products(authUser, args, includeUnpublishedItems));
+            resolve(await productTypes(authUser, args));
         } catch (err) {
             reject(err);
         }
@@ -26,10 +18,10 @@ module.exports = async(parent, args, context) => {
 }
 
 
-function products(authUser, args, includeUnpublishedItems) {
+function productTypes(authUser, args) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllProducts(includeUnpublishedItems);
+            let edges = await getAllProductTypes();
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -46,18 +38,18 @@ function products(authUser, args, includeUnpublishedItems) {
     });
 }
 
-function getAllProducts(includeUnpublishedItems) {
+function getAllProductTypes() {
     return new Promise((resolve, reject) => {
-        productQueries.getProduct([-1], "id <> $1", result => {
+        productQueries.getProductType([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
-            let products = result.res;
+            let productTypes = result.res;
 
-            const numProducts = products.length;
+            const numProducts = productTypes.length;
             let cursor = -1;
             let edges = [];
 
-            products.forEach(async product => {
-                let node = await getGraphQLProductById(product.id);
+            productTypes.forEach(async product => {
+                let node = await getGraphQLProductTypeById(product.id);
                 edges.push({
                     cursor: "",
                     node

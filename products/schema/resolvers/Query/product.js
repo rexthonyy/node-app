@@ -1,10 +1,10 @@
 const {
     checkAuthorization,
-    getGraphQLProductVariantById,
+    getGraphQLProductById,
     userPermissionGroupHasAccess,
     userHasAccess
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
@@ -19,15 +19,15 @@ module.exports = async(parent, args, context) => {
         }
 
         let id = args.id;
-        let sku = args.sku;
+        let slug = args.slug;
         let channel = args.channel;
         try {
             if (id) {
-                return resolve(await getProductVariantById(id, channel, includeUnpublishedItems));
-            } else if (sku) {
-                return resolve(await getProductVariantBySku(sku, channel, includeUnpublishedItems));
+                return resolve(await getProductById(id, channel, includeUnpublishedItems));
+            } else if (slug) {
+                return resolve(await getProductBySlug(slug, channel, includeUnpublishedItems));
             } else {
-                reject("Please enter either the product variant id or product variant sku");
+                reject("Please enter either the product id or product slug");
             }
         } catch (err) {
             reject(err);
@@ -35,24 +35,24 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getProductVariantById(id, channel, includeUnpublishedItems) {
+function getProductById(id, channel, includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductVariant([id], "id=$1", async result => {
+        productQueries.getProduct([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject(`Could'nt resolve id: ${id}`);
-            let productVariant = result.res[0];
-            resolve(await getGraphQLProductVariantById(productVariant.id));
+            let product = result.res[0];
+            resolve(await getGraphQLProductById(product.id));
         });
     });
 }
 
-function getProductVariantBySku(sku, channel, includeUnpublishedItems) {
+function getProductBySlug(slug, channel, includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductVariant([sku], "sku=$1", async result => {
+        productQueries.getProduct([slug], "slug=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return reject(`Could'nt resolve sku: ${sku}`);
-            let productVariant = result.res[0];
-            resolve(await getGraphQLProductVariantById(productVariant.id));
+            if (result.res.length == 0) return reject(`Could'nt resolve slug: ${slug}`);
+            let product = result.res[0];
+            resolve(await getGraphQLProductById(product.id));
         });
     });
 }

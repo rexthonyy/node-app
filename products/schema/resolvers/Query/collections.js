@@ -1,23 +1,34 @@
 const {
     checkAuthorization,
-    getGraphQLCategoryById
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+    userPermissionGroupHasAccess,
+    userHasAccess,
+    getGraphQLCollectionById
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        resolve(getCategories(args));
+        let includeUnpublishedItems = false;
+        let accessPermissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
+
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
+            includeUnpublishedItems = true;
+        }
+        try {
+            resolve(await collections(authUser, args, includeUnpublishedItems));
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 
-
-function getCategories(args) {
+function collections(authUser, args, includeUnpublishedItems) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllCategories();
+            let edges = await getAllCollections(includeUnpublishedItems);
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -34,18 +45,18 @@ function getCategories(args) {
     });
 }
 
-function getAllCategories() {
+function getAllCollections(includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
-        productQueries.getCategory([-1], "id <> $1", result => {
+        productQueries.getCollection([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
-            let categories = result.res;
+            let collections = result.res;
 
-            const numCategories = categories.length;
+            const numCollections = collections.length;
             let cursor = -1;
             let edges = [];
 
-            categories.forEach(async category => {
-                let node = await getGraphQLCategoryById(category.id);
+            collections.forEach(async collection => {
+                let node = await getGraphQLCollectionById(collection.id);
                 edges.push({
                     cursor: "",
                     node
@@ -58,7 +69,7 @@ function getAllCategories() {
 
             function checkComplete() {
                 cursor++;
-                if (cursor == numCategories) {
+                if (cursor == numCollections) {
                     resolve(edges);
                 }
             }

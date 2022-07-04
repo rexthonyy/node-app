@@ -1,10 +1,10 @@
 const {
     checkAuthorization,
-    getGraphQLProductVariantById,
+    getGraphQLProductById,
     userPermissionGroupHasAccess,
     userHasAccess
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
@@ -12,23 +12,24 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return reject(message);
 
         let includeUnpublishedItems = false;
-        let permissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
+        let accessPermissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
 
-        if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
+        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             includeUnpublishedItems = true;
         }
         try {
-            resolve(await productVariants(args, includeUnpublishedItems));
+            resolve(await products(authUser, args, includeUnpublishedItems));
         } catch (err) {
             reject(err);
         }
     });
 }
 
-function productVariants(args, includeUnpublishedItems) {
+
+function products(authUser, args, includeUnpublishedItems) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllProductVariants(includeUnpublishedItems);
+            let edges = await getAllProducts(includeUnpublishedItems);
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -45,19 +46,18 @@ function productVariants(args, includeUnpublishedItems) {
     });
 }
 
-
-function getAllProductVariants(includeUnpublishedItems) {
+function getAllProducts(includeUnpublishedItems) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductVariant([-1], "id <> $1", result => {
+        productQueries.getProduct([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
-            let productVariantValues = result.res;
+            let products = result.res;
 
-            const numProductVariants = productVariantValues.length;
+            const numProducts = products.length;
             let cursor = -1;
             let edges = [];
 
-            productVariantValues.forEach(async productVariant => {
-                let node = await getGraphQLProductVariantById(productVariant.id);
+            products.forEach(async product => {
+                let node = await getGraphQLProductById(product.id);
                 edges.push({
                     cursor: "",
                     node
@@ -70,7 +70,7 @@ function getAllProductVariants(includeUnpublishedItems) {
 
             function checkComplete() {
                 cursor++;
-                if (cursor == numProductVariants) {
+                if (cursor == numProducts) {
                     resolve(edges);
                 }
             }

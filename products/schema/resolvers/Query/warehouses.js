@@ -1,35 +1,30 @@
 const {
     checkAuthorization,
-    getGraphQLProductById,
+    getGraphQLWarehouseById,
     userPermissionGroupHasAccess,
-    userHasAccess,
-    getGraphQLCollectionById
-} = require('./lib');
-const productQueries = require("../../postgres/product-queries");
+    userHasAccess
+} = require('../lib');
+const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        let includeUnpublishedItems = false;
-        let accessPermissions = ["MANAGE_ORDERS", "MANAGE_DISCOUNTS", "MANAGE_PRODUCTS"];
+        let permissions = ["MANAGE_PRODUCTS", "MANAGE_ORDERS", "MANAGE_SHIPPING"];
 
-        if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            includeUnpublishedItems = true;
-        }
-        try {
-            resolve(await collections(authUser, args, includeUnpublishedItems));
-        } catch (err) {
-            reject(err);
+        if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
+            resolve(warehouses(args));
+        } else {
+            reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS, MANAGE_ORDERS, MANAGE_SHIPPING");
         }
     });
 }
 
-function collections(authUser, args, includeUnpublishedItems) {
+function warehouses(args) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllCollections(includeUnpublishedItems);
+            let edges = await getAllWarehouses();
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -46,18 +41,18 @@ function collections(authUser, args, includeUnpublishedItems) {
     });
 }
 
-function getAllCollections(includeUnpublishedItems) {
+function getAllWarehouses() {
     return new Promise((resolve, reject) => {
-        productQueries.getCollection([-1], "id <> $1", result => {
+        productQueries.getWarehouse([-1], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
-            let collections = result.res;
+            let warehouses = result.res;
 
-            const numCollections = collections.length;
+            const numWarehouses = warehouses.length;
             let cursor = -1;
             let edges = [];
 
-            collections.forEach(async collection => {
-                let node = await getGraphQLCollectionById(collection.id);
+            warehouses.forEach(async warehouse => {
+                let node = await getGraphQLWarehouseById(warehouse.id);
                 edges.push({
                     cursor: "",
                     node
@@ -70,7 +65,7 @@ function getAllCollections(includeUnpublishedItems) {
 
             function checkComplete() {
                 cursor++;
-                if (cursor == numCollections) {
+                if (cursor == numWarehouses) {
                     resolve(edges);
                 }
             }
