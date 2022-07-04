@@ -13,6 +13,8 @@ const shippingZone = require("./shippingZone");
 const shippingZones = require("./shippingZones");
 const digitalContent = require("./digitalContent");
 const digitalContents = require("./digitalContents");
+const categories = require("./categories");
+const category = require("./category");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -38,6 +40,8 @@ module.exports = {
         shippingZones,
         digitalContent,
         digitalContents,
+        categories,
+        category,
     },
     Mutation: {
         productCreate,

@@ -9,9 +9,20 @@ let getGraphQLCategoryById = (categoryId) => {
             }
 
             let category = result.res[0];
+            let parent;
+            let translation;
 
-            let parent = await getGraphQLCategoryById(category.parent_id);
-            let translation = await getGraphQLCategoryTranslationByCategoryId(categoryId);
+            try {
+                parent = await getGraphQLCategoryById(category.parent_id);
+            } catch (err) {
+                parent = null;
+            }
+
+            try {
+                translation = await getGraphQLCategoryTranslationByCategoryId(categoryId);
+            } catch (err) {
+                translation = null;
+            }
 
             let res = {
                 id: category.id,
@@ -28,13 +39,6 @@ let getGraphQLCategoryById = (categoryId) => {
                 slug: category.slug,
                 parent,
                 level: category.level,
-                ancestors: null,
-                products: null,
-                children: null,
-                backgroundImage: {
-                    url: category.background_image,
-                    alt: category.background_image_alt
-                },
                 translation,
                 descriptionJson: category.description
             };

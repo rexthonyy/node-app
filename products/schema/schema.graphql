@@ -238,6 +238,52 @@ type Query {
     last: Int
   ): DigitalContentCountableConnection
 
+"""List of the shop's categories."""
+  categories(
+    """Filtering options for categories."""
+    filter: CategoryFilterInput
+
+    """Sort categories."""
+    sortBy: CategorySortingInput
+
+    """Filter categories by the nesting level in the category tree."""
+    level: Int
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CategoryCountableConnection
+
+  """Look up a category by ID or slug."""
+  category(
+    """ID of the category."""
+    id: ID
+
+    """Slug of the category"""
+    slug: String
+  ): Category
+
+  """
+  Look up a collection by ID. Requires one of the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS.
+  """
+  collection(
+    """ID of the collection."""
+    id: ID
+
+    """Slug of the category"""
+    slug: String
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+  ): Collection
 }
 
 

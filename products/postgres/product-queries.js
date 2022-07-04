@@ -706,6 +706,40 @@ const getShippingMethodPostalCodeRule = (values, whereClause, response) => {
     });
 };
 
+const getCollection = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_collection} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getCollectionChannelListing = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_collectionchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1294,6 +1328,8 @@ module.exports = {
     getWarehouseShippingZones,
     getShippingZoneChannel,
     getShippingMethodPostalCodeRule,
+    getCollection,
+    getCollectionChannelListing,
 
     createProduct,
     createProductType,
