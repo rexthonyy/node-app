@@ -3,7 +3,7 @@ let getGraphQLChannelById = (id) => {
     return new Promise((resolve, reject) => {
         kratosQueries.getChannel([id], "id=$1", result => {
             if (result.err || result.res.length == 0) {
-                reject(null);
+                reject("Channel not found");
             } else {
                 let channel = result.res[0];
 
