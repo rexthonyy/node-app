@@ -315,6 +315,9 @@ type Query {
   Order related settings from site settings. Requires one of the following permissions: MANAGE_ORDERS.
   """
   orderSettings: OrderSettings
+
+  """Return information about the shop."""
+  shop: Shop!
 }
 
 

@@ -18,7 +18,8 @@ const category = require("./category");
 const collection = require("./collection");
 const collections = require("./collections");
 const orderSettings = require("./orderSettings");
-const translation = require("./translation");
+const collectionTranslation = require("./collectionTranslation");
+const productTranslation = require("./productTranslation");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -58,7 +59,10 @@ module.exports = {
         productTranslate,
         productTypeCreate,
     },
+    Product: {
+        translation: productTranslation
+    },
     Collection: {
-        translation,
+        translation: collectionTranslation,
     }
 };

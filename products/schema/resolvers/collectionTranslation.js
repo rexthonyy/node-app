@@ -9,8 +9,8 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
+        console.log(parent);
         let languageCode = args.languageCode;
-        console.log(languageCode);
         resolve(getTranslation(languageCode));
     });
 }
