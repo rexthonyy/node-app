@@ -27,6 +27,8 @@ let getGraphQLTransactionsByPaymentId = (id) => {
                         amount: transaction.amount
                     }
                 });
+
+                checkComplete();
             });
 
             checkComplete();
