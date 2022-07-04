@@ -10,16 +10,17 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return reject(message);
 
         console.log(parent);
+        let collectionId = parent.id;
         let languageCode = args.languageCode;
-        resolve(getTranslation(languageCode));
+        resolve(getTranslation(collectionId, languageCode));
     });
 }
 
-function getTranslation(languageCode) {
+function getTranslation(collectionId, languageCode) {
     return new Promise((resolve, reject) => {
-        productQueries.getCollectionTranslation([languageCode], "language_code=$1", async result => {
+        productQueries.getCollectionTranslation([collectionId, languageCode], "collection_id=$1 AND language_code=$2", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return null;
+            if (result.res.length == 0) return resolve(null);
             let translation = result.res[0];
             resolve(await getGraphQLCollectionTranslationById(translation.id));
         });
