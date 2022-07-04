@@ -212,6 +212,32 @@ type Query {
     last: Int
   ): ShippingZoneCountableConnection
 
+  """
+  Look up digital content by ID. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContent(
+    """ID of the digital content."""
+    id: ID!
+  ): DigitalContent
+
+  
+  """
+  List of digital content. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContents(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): DigitalContentCountableConnection
+
 }
 
 

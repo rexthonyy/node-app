@@ -11,6 +11,8 @@ const stock = require("./stock");
 const stocks = require("./stocks");
 const shippingZone = require("./shippingZone");
 const shippingZones = require("./shippingZones");
+const digitalContent = require("./digitalContent");
+const digitalContents = require("./digitalContents");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -34,6 +36,8 @@ module.exports = {
         stocks,
         shippingZone,
         shippingZones,
+        digitalContent,
+        digitalContents,
     },
     Mutation: {
         productCreate,
