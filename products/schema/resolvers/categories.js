@@ -3,7 +3,6 @@ const {
     getGraphQLCategoryById
 } = require('./lib');
 const productQueries = require("../../postgres/product-queries");
-const getGraphQLCategoryById = require('./lib/getGraphQLCategoryById');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
