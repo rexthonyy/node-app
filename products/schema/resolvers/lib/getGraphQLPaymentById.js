@@ -17,25 +17,25 @@ let getGraphQLPaymentById = (id) => {
             let actions;
             let transactions;
 
-            console.log("checkout");
+
             try {
                 checkout = await getGraphQLCheckoutById(payment.checkout_id);
             } catch (err) {
                 checkout = null;
             }
-            console.log("order");
+
             try {
                 order = await getGraphQLOrderById(payment.order_id);
             } catch (err) {
                 order = null;
             }
-            console.log("selectedattributes");
+
             try {
                 actions = await getGraphQLSelectedAttributesByProductId(payment.id);
             } catch (err) {
                 actions = null;
             }
-            console.log("transactions");
+
             try {
                 transactions = await getGraphQLTransactionsByPaymentId(payment.id);
             } catch (err) {

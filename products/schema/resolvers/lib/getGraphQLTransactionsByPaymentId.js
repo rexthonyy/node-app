@@ -7,7 +7,7 @@ let getGraphQLTransactionsByPaymentId = (id) => {
                 return reject("Payment transaction not found");
             }
 
-            let paymentTransactions = result.res[0];
+            let paymentTransactions = result.res;
             const numPaymentTransactions = paymentTransactions.length;
             let cursor = -1;
             let graphQLPaymentTransactions = [];
