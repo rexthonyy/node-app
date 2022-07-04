@@ -14,20 +14,20 @@ const shippingZones = require("./Query/shippingZones");
 const digitalContent = require("./Query/digitalContent");
 const digitalContents = require("./Query/digitalContents");
 const categories = require("./Query/categories");
-const category = require("./category");
-const collection = require("./collection");
-const collections = require("./collections");
+const category = require("./Query/category");
+const collection = require("./Query/collection");
+const collections = require("./Query/collections");
 const orderSettings = require("./Query/orderSettings");
 const collectionTranslation = require("./Collection/translation");
 const productTranslation = require("./Product/translation");
-const productMediaById = require("./productMediaById");
+const productMediaById = require("./Product/productMediaById");
 
-const productCreate = require("./productCreate");
-const productDelete = require("./productDelete");
-const productBulkDelete = require("./productBulkDelete");
-const productUpdate = require("./productUpdate");
-const productTranslate = require("./productTranslate");
-const productTypeCreate = require("./productTypeCreate");
+const productCreate = require("./Mutation/productCreate");
+const productDelete = require("./Mutation/productDelete");
+const productBulkDelete = require("./Mutation/productBulkDelete");
+const productUpdate = require("./Mutation/productUpdate");
+const productTranslate = require("./Mutation/productTranslate");
+const productTypeCreate = require("./Mutation/productTypeCreate");
 
 module.exports = {
     Query: {
