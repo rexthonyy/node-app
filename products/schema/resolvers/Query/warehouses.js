@@ -43,7 +43,7 @@ function warehouses(args) {
 
 function getAllWarehouses() {
     return new Promise((resolve, reject) => {
-        productQueries.getWarehouse([-1], "id <> $1", result => {
+        productQueries.getWarehouse(["9f900efa-a5ea-4dfd-8311-a8c7448ffeec"], "id <> $1", result => {
             if (result.err) { return reject(JSON.stringify(result.err)); }
             let warehouses = result.res;
 
