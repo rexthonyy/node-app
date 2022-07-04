@@ -49,7 +49,6 @@ module.exports = {
         collection,
         collections,
         orderSettings,
-        translation
     },
     Mutation: {
         productCreate,
@@ -58,5 +57,8 @@ module.exports = {
         productUpdate,
         productTranslate,
         productTypeCreate,
+    },
+    Collection: {
+        translation,
     }
 };
