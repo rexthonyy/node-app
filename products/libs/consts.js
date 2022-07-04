@@ -74,6 +74,7 @@ const db = {
     shipping_shippingmethodtranslation: "shipping_shippingmethodtranslation",
     shipping_shippingzone: "shipping_shippingzone",
     shipping_shippingzone_channels: "shipping_shippingzone_channels",
+    shipping_shippingmethodpostalcoderule: "shipping_shippingmethodpostalcoderule",
     warehouse_warehouse_shipping_zones: "warehouse_warehouse_shipping_zones",
     warehouse_warehouse: "warehouse_warehouse",
     warehouse_stock: "warehouse_stock",

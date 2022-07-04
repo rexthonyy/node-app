@@ -1,6 +1,6 @@
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLChannelById = require("./getGraphQLChannelById");
-const getGraphQLShippingMethodById = require("./getGraphQLShippingMethodById");
+const getGraphQLShippingMethodTypeById = require("./getGraphQLShippingMethodTypeById");
 const getGraphQLWarehouseById = require("./getGraphQLWarehouseById");
 let getGraphQLShippingZoneById = (id) => {
     return new Promise((resolve, reject) => {
@@ -10,13 +10,16 @@ let getGraphQLShippingZoneById = (id) => {
             } else {
                 let shippingZone = result.res[0];
                 let shippingMethods;
+                let shippingMethodChannelListing;
                 let warehouses;
                 let channels;
 
                 try {
-                    shippingMethods = await getShippingMethodsByShippingZoneId(id);
+                    shippingMethods = await getShippingMethodTypesByShippingZoneId(id);
+                    shippingMethodChannelListing = shippingMethods.length > 0 ? shippingMethods[0] : null;
                 } catch (err) {
                     shippingMethods = null;
+                    shippingMethodChannelListing = null;
                 }
 
                 try {
@@ -42,8 +45,8 @@ let getGraphQLShippingZoneById = (id) => {
                     name: shippingZone.name,
                     default: shippingZone.default,
                     priceRange: {
-                        start: 0,
-                        stop: 0
+                        start: shippingMethodChannelListing ? shippingMethodChannelListing.maximumOrderPrice : null,
+                        stop: shippingMethodChannelListing ? shippingMethodChannelListing.minimumOrderPrice : null
                     },
                     countries: [{
                         code: shippingZone.country,
@@ -62,19 +65,19 @@ let getGraphQLShippingZoneById = (id) => {
 };
 
 
-function getShippingMethodsByShippingZoneId(id) {
+function getShippingMethodTypesByShippingZoneId(id) {
     return new Promise((resolve, reject) => {
         productQueries.getShippingMethod([id], "shipping_zone_id=$1", result => {
-            if (result.err || result.res.length == 0) {
-                reject("Shipping method not found");
+            if (result.err) {
+                reject(JSON.stringify(result.err));
             } else {
-                let shippingMethods = result.res[0];
+                let shippingMethods = result.res;
                 const numShippingMethods = shippingMethods.length;
                 let cursor = -1;
                 let graphqlShippingMethods = [];
 
                 shippingMethods.forEach(async shippingMethod => {
-                    graphqlShippingMethods.push(await getGraphQLShippingMethodById(shippingMethod.id));
+                    graphqlShippingMethods.push(await getGraphQLShippingMethodTypeById(shippingMethod.id));
                     checkComplete();
                 });
 
