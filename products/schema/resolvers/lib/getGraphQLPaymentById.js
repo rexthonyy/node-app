@@ -42,8 +42,6 @@ let getGraphQLPaymentById = (id) => {
                 transactions = null;
             }
 
-            console.log(transactions);
-
             let res = {
                 id: payment.id,
                 privateMetadata: payment.private_metadata,
@@ -63,8 +61,14 @@ let getGraphQLPaymentById = (id) => {
                 customerIpAddress: payment.customer_ip_address,
                 chargeStatus: payment.charge_status,
                 actions,
-                total: payment.total,
-                capturedAmount: payment.captured_amount,
+                total: {
+                    currency: payment.currency,
+                    amount: payment.total
+                },
+                capturedAmount: {
+                    currency: payment.currency,
+                    amount: payment.captured_amount
+                },
                 transactions,
                 availableCaptureAmount: null,
                 availableRefundAmount: null,
