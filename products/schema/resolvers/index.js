@@ -22,6 +22,7 @@ const collectionTranslation = require("./Collection/translation");
 const productTranslation = require("./Product/translation");
 const productMediaById = require("./Product/mediaById");
 const orderlineThumbnail = require("./OrderLine/thumbnail");
+const warehouseShippingZones = require("./Warehouse/shippingZones");
 
 const productCreate = require("./Mutation/productCreate");
 const productDelete = require("./Mutation/productDelete");
@@ -70,5 +71,8 @@ module.exports = {
     },
     OrderLine: {
         thumbnail: orderlineThumbnail
+    },
+    Warehouse: {
+        shippingZones: warehouseShippingZones
     }
 };
