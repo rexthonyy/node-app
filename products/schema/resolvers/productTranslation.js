@@ -1,6 +1,6 @@
 const {
     checkAuthorization,
-    getGraphQLCollectionTranslationById
+    getGraphQLProductTranslationById
 } = require('./lib');
 const productQueries = require("../../postgres/product-queries");
 
@@ -9,15 +9,15 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        console.log(parent);
+        let productId = parent.id;
         let languageCode = args.languageCode;
-        resolve(getTranslation(languageCode));
+        resolve(getTranslation(productId, languageCode));
     });
 }
 
-function getTranslation(languageCode) {
+function getTranslation(productId, languageCode) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductTranslation([languageCode], "language_code=$1", async result => {
+        productQueries.getProductTranslation([productId, languageCode], "product_id=$1 AND language_code=$2", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return null;
             let translation = result.res[0];

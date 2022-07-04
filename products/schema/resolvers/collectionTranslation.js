@@ -9,7 +9,6 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        console.log(parent);
         let collectionId = parent.id;
         let languageCode = args.languageCode;
         resolve(getTranslation(collectionId, languageCode));

@@ -9,6 +9,7 @@ const getGraphQLDigitalContentById = require('./getGraphQLDigitalContentById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLCollectionById = require('./getGraphQLCollectionById');
 const getGraphQLCollectionTranslationById = require('./getGraphQLCollectionTranslationById');
+const getGraphQLProductTranslationById = require('./getGraphQLProductTranslationById');
 const checkAuthorization = require('./checkAuthorization');
 const { userPermissionGroupHasAccess, userHasAccess } = require('./checkUserHasAccess');
 
@@ -24,6 +25,7 @@ module.exports = {
     getGraphQLCategoryById,
     getGraphQLCollectionById,
     getGraphQLCollectionTranslationById,
+    getGraphQLProductTranslationById,
     checkAuthorization,
     userHasAccess,
     userPermissionGroupHasAccess
