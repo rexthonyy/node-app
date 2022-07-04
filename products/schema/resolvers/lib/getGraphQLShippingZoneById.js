@@ -100,7 +100,7 @@ function getWarehousesByShippingZoneId(id) {
             if (result.err) {
                 reject(JSON.stringify(result.err));
             } else {
-                let warehouseShippingzones = result.res[0];
+                let warehouseShippingzones = result.res;
                 const numWarehouseShippingZones = warehouseShippingzones.length;
                 let cursor = -1;
                 let graphqlWarehouse = [];
@@ -129,7 +129,7 @@ function getChannelsByShippingZoneId(id) {
             if (result.err) {
                 reject(JSON.stringify(result.err));
             } else {
-                let shippingZoneChannels = result.res[0];
+                let shippingZoneChannels = result.res;
                 const numShippingZoneChannel = shippingZoneChannels.length;
                 let cursor = -1;
                 let graphqlChannels = [];
