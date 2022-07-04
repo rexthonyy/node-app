@@ -30,7 +30,6 @@ let getGraphQLOrderLineById = (id) => {
                 unitDiscountReason: orderline.unit_discount_reason,
                 taxRate: orderline.tax_rate,
                 digitalContentUrl,
-                thumbnail,
                 unitPrice: null,
                 undiscountedUnitPrice: null,
                 unitDiscount: null,

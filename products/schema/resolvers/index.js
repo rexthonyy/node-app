@@ -21,6 +21,7 @@ const orderSettings = require("./Query/orderSettings");
 const collectionTranslation = require("./Collection/translation");
 const productTranslation = require("./Product/translation");
 const productMediaById = require("./Product/mediaById");
+const orderlineThumbnail = require("./OrderLine/thumbnail");
 
 const productCreate = require("./Mutation/productCreate");
 const productDelete = require("./Mutation/productDelete");
@@ -66,5 +67,8 @@ module.exports = {
     },
     Collection: {
         translation: collectionTranslation,
+    },
+    OrderLine: {
+        thumbnail: orderlineThumbnail
     }
 };
