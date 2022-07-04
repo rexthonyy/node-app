@@ -19,7 +19,7 @@ function getTranslation(languageCode) {
     return new Promise((resolve, reject) => {
         productQueries.getCollectionTranslation([languageCode], "language_code=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return reject(`Could'nt resolve languageCode: ${languageCode}`);
+            if (result.res.length == 0) return null;
             let translation = result.res[0];
             resolve(await getGraphQLCollectionTranslationById(translation.id));
         });
