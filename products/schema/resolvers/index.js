@@ -20,7 +20,7 @@ const collections = require("./Query/collections");
 const orderSettings = require("./Query/orderSettings");
 const collectionTranslation = require("./Collection/translation");
 const productTranslation = require("./Product/translation");
-const productMediaById = require("./Product/productMediaById");
+const productMediaById = require("./Product/mediaById");
 
 const productCreate = require("./Mutation/productCreate");
 const productDelete = require("./Mutation/productDelete");
