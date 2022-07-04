@@ -284,6 +284,32 @@ type Query {
     """Slug of a channel for which the data should be returned."""
     channel: String
   ): Collection
+
+  """
+  List of the shop's collections. Requires one of the following permissions to include the unpublished items: MANAGE_ORDERS, MANAGE_DISCOUNTS, MANAGE_PRODUCTS.
+  """
+  collections(
+    """Filtering options for collections."""
+    filter: CollectionFilterInput
+
+    """Sort collections."""
+    sortBy: CollectionSortingInput
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): CollectionCountableConnection
 }
 
 
