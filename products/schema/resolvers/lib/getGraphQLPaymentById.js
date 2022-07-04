@@ -42,6 +42,8 @@ let getGraphQLPaymentById = (id) => {
                 transactions = null;
             }
 
+            console.log(transactions);
+
             let res = {
                 id: payment.id,
                 privateMetadata: payment.private_metadata,
