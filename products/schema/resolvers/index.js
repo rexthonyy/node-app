@@ -17,6 +17,7 @@ const categories = require("./categories");
 const category = require("./category");
 const collection = require("./collection");
 const collections = require("./collections");
+const orderSettings = require("./orderSettings");
 
 const productCreate = require("./productCreate");
 const productDelete = require("./productDelete");
@@ -46,6 +47,7 @@ module.exports = {
         category,
         collection,
         collections,
+        orderSettings,
     },
     Mutation: {
         productCreate,

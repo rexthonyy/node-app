@@ -310,6 +310,11 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): CollectionCountableConnection
+
+  """
+  Order related settings from site settings. Requires one of the following permissions: MANAGE_ORDERS.
+  """
+  orderSettings: OrderSettings
 }
 
 

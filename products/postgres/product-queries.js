@@ -740,6 +740,23 @@ const getCollectionChannelListing = (values, whereClause, response) => {
     });
 };
 
+const getSiteSettings = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.site_sitesettings} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1330,6 +1347,7 @@ module.exports = {
     getShippingMethodPostalCodeRule,
     getCollection,
     getCollectionChannelListing,
+    getSiteSettings,
 
     createProduct,
     createProductType,
