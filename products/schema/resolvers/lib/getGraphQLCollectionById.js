@@ -1,7 +1,4 @@
 const productQueries = require("../../../postgres/product-queries");
-const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
-const getGraphQLCategoryById = require('./getGraphQLCategoryById');
-const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 const getGraphQLChannelById = require("./getGraphQLChannelById");
 
 let getGraphQLCollectionById = (id, channel = "default-channel") => {

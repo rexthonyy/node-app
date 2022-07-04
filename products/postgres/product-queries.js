@@ -757,6 +757,23 @@ const getSiteSettings = (values, whereClause, response) => {
     });
 };
 
+const getCollectionTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_collectiontranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1348,6 +1365,7 @@ module.exports = {
     getCollection,
     getCollectionChannelListing,
     getSiteSettings,
+    getCollectionTranslation,
 
     createProduct,
     createProductType,
