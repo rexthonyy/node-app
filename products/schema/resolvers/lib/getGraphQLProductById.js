@@ -42,8 +42,8 @@ let getGraphQLProductById = (productId) => {
 
             let res = {
                 id: product.id,
-                privateMetadata: product.private_metadata,
-                metadata: product.metadata,
+                privateMetadata: formatMetadata(product.private_metadata),
+                metadata: formatMetadata(product.metadata),
                 seoTitle: product.seo_title,
                 seoDescription: product.seo_description,
                 name: product.name,
@@ -87,5 +87,16 @@ let getGraphQLProductById = (productId) => {
         });
     });
 };
+
+function formatMetadata(metadata) {
+    let data = [];
+    for (const [key, value] of Object.entries(metadata)) {
+        data.push({
+            key,
+            value
+        });
+    }
+    return data;
+}
 
 module.exports = getGraphQLProductById;
