@@ -29,11 +29,12 @@ function giftCardSettings(authUser) {
             let setting = result.res[0];
 
             let expiryType = setting.gift_card_expiry_type ? setting.gift_card_expiry_type.toUpperCase() : "EXPIRY_PERIOD";
-            let type = setting.gift_card_expiry_period_type ? setting.gift_card_expiry_period_type.toUpperCase() : "DAY";
+            let amount = setting.gift_card_expiry_period ? setting.gift_card_expiry_period : 365;
+            let type = setting.gift_card_expiry_period_type ? setting.gift_card_expiry_period_type.toUpperCase() : "YEAR";
             resolve({
                 expiryType,
                 expiryPeriod: {
-                    amount: setting.gift_card_expiry_period,
+                    amount,
                     type
                 }
             });
