@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLChannelById = require("./getGraphQLChannelById");
 const getGraphQLShippingMethodTypeById = require("./getGraphQLShippingMethodTypeById");
@@ -36,12 +37,8 @@ let getGraphQLShippingZoneById = (id) => {
 
                 let res = {
                     id: shippingZone.id,
-                    privateMetadata: shippingZone.private_metadata,
-                    privateMetafield: JSON.stringify(shippingZone.private_metadata),
-                    privateMetafields: null,
-                    metadata: shippingZone.metadata,
-                    metadatafield: JSON.stringify(shippingZone.metadata),
-                    metadatafields: null,
+                    privateMetadata: formatMetadata(shippingZone.private_metadata),
+                    metadata: formatMetadata(shippingZone.metadata),
                     name: shippingZone.name,
                     default: shippingZone.default,
                     priceRange: {

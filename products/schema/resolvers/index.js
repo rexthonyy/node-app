@@ -19,6 +19,7 @@ const {
     collection,
     collections,
     orderSettings,
+    giftCardSettings,
 } = require('./Query');
 
 const {
@@ -31,8 +32,19 @@ const {
 } = require('./Mutation');
 
 const {
+    collectionPrivateMetafield,
+    collectionPrivateMetafields,
+    collectionMetafield,
+    collectionMetafields,
     collectionTranslation,
 } = require('./Collection');
+
+const {
+    digitalContentPrivateMetafield,
+    digitalContentPrivateMetafields,
+    digitalContentMetafield,
+    digitalContentMetafields,
+} = require('./DigitalContent');
 
 const {
     paymentPrivateMetafield,
@@ -91,6 +103,13 @@ const {
 } = require('./Warehouse');
 
 const {
+    shippingZonePrivateMetafield,
+    shippingZonePrivateMetafields,
+    shippingZoneMetafield,
+    shippingZoneMetafields,
+} = require('./ShippingZone');
+
+const {
     attributeTranslation,
 } = require('./Attribute');
 
@@ -116,6 +135,7 @@ module.exports = {
         collection,
         collections,
         orderSettings,
+        giftCardSettings,
     },
     Mutation: {
         productCreate,
@@ -127,6 +147,12 @@ module.exports = {
     },
     Attribute: {
         translation: attributeTranslation,
+    },
+    DigitalContent: {
+        privateMetafield: digitalContentPrivateMetafield,
+        privateMetafields: digitalContentPrivateMetafields,
+        metafield: digitalContentMetafield,
+        metafields: digitalContentMetafields,
     },
     Payment: {
         privateMetafield: paymentPrivateMetafield,
@@ -168,6 +194,10 @@ module.exports = {
         url: productMediaUrl
     },
     Collection: {
+        privateMetafield: collectionPrivateMetafield,
+        privateMetafields: collectionPrivateMetafields,
+        metafield: collectionMetafield,
+        metafields: collectionMetafields,
         translation: collectionTranslation,
     },
     OrderLine: {
@@ -179,5 +209,11 @@ module.exports = {
         metafield: warehouseMetafield,
         metafields: warehouseMetafields,
         shippingZones: warehouseShippingZones
-    }
+    },
+    shippingZone: {
+        privateMetafield: shippingZonePrivateMetafield,
+        privateMetafields: shippingZonePrivateMetafields,
+        metafield: shippingZoneMetafield,
+        metafields: shippingZoneMetafields,
+    },
 };

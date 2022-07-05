@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
 
@@ -20,12 +21,8 @@ let getGraphQLDigitalContentById = (id) => {
 
             let res = {
                 id: digitalContent.id,
-                privateMetadata: digitalContent.private_metadata,
-                privateMetafield: JSON.stringify(digitalContent.private_metadata),
-                privateMetafields: null,
-                metadata: digitalContent.metadata,
-                metadatafield: JSON.stringify(digitalContent.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(digitalContent.private_metadata),
+                metadata: formatMetadata(digitalContent.metadata),
                 useDefaultSettings: digitalContent.use_default_settings,
                 automaticFulfillment: digitalContent.automatic_fulfillment,
                 contentFile: digitalContent.content_file,

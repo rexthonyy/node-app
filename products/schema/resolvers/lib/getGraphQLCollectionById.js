@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLChannelById = require("./getGraphQLChannelById");
 
@@ -18,12 +19,8 @@ let getGraphQLCollectionById = (id, channel = "default-channel") => {
 
             let res = {
                 id: collection.id,
-                privateMetadata: collection.private_metadata,
-                privateMetafield: JSON.stringify(collection.private_metadata),
-                privateMetafields: null,
-                metadata: collection.metadata,
-                metadatafield: JSON.stringify(collection.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(collection.private_metadata),
+                metadata: formatMetadata(collection.metadata),
                 seoTitle: collection.seo_title,
                 seoDescription: collection.seo_description,
                 name: collection.name,

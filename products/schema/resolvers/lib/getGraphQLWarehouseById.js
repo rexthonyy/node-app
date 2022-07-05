@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLAddressById = require("./getGraphQLAddressById");
 let getGraphQLWarehouseById = (id) => {
@@ -20,8 +21,8 @@ let getGraphQLWarehouseById = (id) => {
 
                 let res = {
                     id: warehouse.id,
-                    privateMetadata: warehouse.private_metadata,
-                    metadata: warehouse.metadata,
+                    privateMetadata: formatMetadata(warehouse.private_metadata),
+                    metadata: formatMetadata(warehouse.metadata),
                     name: warehouse.name,
                     slug: warehouse.slug,
                     email: warehouse.email,

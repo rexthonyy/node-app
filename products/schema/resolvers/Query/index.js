@@ -5,6 +5,7 @@ const collections = require('./collections');
 const digitalContent = require('./digitalContent');
 const digitalContents = require('./digitalContents');
 const orderSettings = require('./orderSettings');
+const giftCardSettings = require('./giftCardSettings');
 const payment = require('./payment');
 const product = require('./product');
 const products = require('./products');
@@ -27,6 +28,7 @@ module.exports = {
     digitalContent,
     digitalContents,
     orderSettings,
+    giftCardSettings,
     payment,
     product,
     products,
