@@ -12,7 +12,6 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return reject(message);
 
         let warehouseId = parent.id;
-        console.log(warehouseId);
         resolve(getShippingZones(args, warehouseId));
     });
 }
