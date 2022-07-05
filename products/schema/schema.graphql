@@ -318,6 +318,11 @@ type Query {
 
   """Return information about the shop."""
   shop: Shop!
+
+  """
+  Gift card related settings from site settings. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardSettings: GiftCardSettings!
 }
 
 
