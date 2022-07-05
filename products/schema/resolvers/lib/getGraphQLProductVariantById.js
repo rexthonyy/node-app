@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductById = require('./getGraphQLProductById');
 const getGraphQLProductVariantChannelListingsByVariantId = require('./getGraphQLProductVariantChannelListingsByVariantId');
@@ -17,17 +18,12 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             let pricing;
             let attributes;
             let quantityOrdered;
+            let defaultWeightUnit;
 
             try {
                 product = await getGraphQLProductById(productVariant.product_id);
             } catch (err) {
                 product = null;
-            }
-
-            try {
-                pricing = await getGraphQLVariantPricingInfoByVariantId(productVariant.id);
-            } catch (err) {
-                pricing = null;
             }
 
             try {
@@ -37,45 +33,38 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             }
 
             try {
-                attributes = await getGraphQLSelectedAttributeByProductVariantId(productVariant.id);
-            } catch (err) {
-                attributes = null;
-            }
-
-            try {
                 quantityOrdered = await getQuantityOrdered(productVariant.id);
             } catch (err) {
                 quantityOrdered = null;
             }
 
+            try {
+                defaultWeightUnit = await getDefaultWeightUnit();
+            } catch (err) {
+                defaultWeightUnit = null;
+            }
+
+
             let res = {
                 id: productVariant.id,
-                privateMetadata: productVariant.private_metadata,
-                privateMetafield: JSON.stringify(productVariant.private_metadata),
-                privateMetafields: null,
-                metadata: productVariant.metadata,
-                metadatafield: JSON.stringify(productVariant.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(productVariant.private_metadata),
+                metadata: formatMetadata(productVariant.metadata),
                 name: productVariant.name,
                 sku: productVariant.sku,
                 product,
                 trackInventory: productVariant.track_inventory,
                 quantityLimitPerCustomer: productVariant.quantity_limit_per_customer,
                 weight: {
-                    unit: "G",
+                    unit: defaultWeightUnit,
                     value: productVariant.weight
                 },
                 channel,
                 channelListings,
-                pricing,
-                attributes,
                 margin: null,
                 quantityOrdered,
-                revenue: null,
                 media: null,
                 translation: null,
                 digitalContent: null,
-                stocks: null,
                 quantityAvailable: null,
                 preorder: null,
                 created: product.created,
@@ -96,4 +85,9 @@ function getQuantityOrdered(productVariantId) {
     });
 }
 
+function getDefaultWeightUnit() {
+    return new Promise((resolve, reject) => {
+        resolve("kg");;
+    });
+}
 module.exports = getGraphQLProductVariantById;

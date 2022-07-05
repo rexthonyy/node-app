@@ -10,10 +10,17 @@ let getGraphQLProductTypeById = (productTypeId) => {
             let productType = result.res[0];
 
             let productAttributes;
+            let defaultWeightUnit;
+
             try {
                 productAttributes = await getGraphQLProductAttributesByProductTypeId(productType.id);
             } catch (err) {
                 productAttributes = null;
+            }
+            try {
+                defaultWeightUnit = await getDefaultWeightUnit();
+            } catch (err) {
+                defaultWeightUnit = null;
             }
 
             let res = {
@@ -30,12 +37,11 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 isShippingRequired: productType.is_shipping_required,
                 isDigital: productType.is_digital,
                 weight: {
-                    unit: "G",
+                    unit: defaultWeightUnit,
                     value: productType.weight
                 },
                 kind: productType.kind,
                 taxType: null,
-                assignedVariantAttributes: null,
                 productAttributes,
                 availableAttributes: null,
                 products: null,
@@ -46,5 +52,12 @@ let getGraphQLProductTypeById = (productTypeId) => {
         });
     });
 };
+
+
+function getDefaultWeightUnit() {
+    return new Promise((resolve, reject) => {
+        resolve("kg");;
+    });
+}
 
 module.exports = getGraphQLProductTypeById;

@@ -791,6 +791,40 @@ const getProductMedia = (values, whereClause, response) => {
     });
 };
 
+const getProductVariantTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_productvarianttranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getCollectionProduct = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_collectionproduct} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1384,6 +1418,8 @@ module.exports = {
     getSiteSettings,
     getCollectionTranslation,
     getProductMedia,
+    getProductVariantTranslation,
+    getCollectionProduct,
 
     createProduct,
     createProductType,

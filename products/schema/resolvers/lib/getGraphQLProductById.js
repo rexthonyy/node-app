@@ -1,7 +1,9 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
+const getGraphQLCollectionById = require("./getGraphQLCollectionById");
 
 let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
@@ -16,6 +18,9 @@ let getGraphQLProductById = (productId) => {
             let defaultVariant;
             let channelListings;
             let attributes;
+            let collections;
+            let defaultWeightUnit;
+
             try {
                 productType = await getGraphQLProductTypeById(product.product_type_id);
             } catch (err) {
@@ -30,6 +35,16 @@ let getGraphQLProductById = (productId) => {
                 attributes = await getGraphQLSelectedAttributesByProductId(product.id);
             } catch (err) {
                 attributes = null;
+            }
+            try {
+                collections = await getCollectionsByProductId(product.id);
+            } catch (err) {
+                collections = [];
+            }
+            try {
+                defaultWeightUnit = await getDefaultWeightUnit();
+            } catch (err) {
+                defaultWeightUnit = [];
             }
 
             try {
@@ -55,26 +70,18 @@ let getGraphQLProductById = (productId) => {
                 updatedAt: product.updated_at,
                 chargeTaxes: product.charge_taxes,
                 weight: {
-                    unit: "G",
+                    unit: defaultWeightUnit,
                     value: product.weight
                 },
                 defaultVariant,
                 rating: product.rating,
                 channel: "default-channel",
-                thumbnail: {
-                    url: "",
-                    alt: ""
-                },
-                pricing: null,
-                isAvailable: false,
                 taxType: null,
                 attributes,
                 channelListings,
-                mediaById: null,
                 variants: null,
                 media: null,
-                collections: [],
-                translation: null,
+                collections,
                 availableForPurchaseAt: null,
                 isAvailableForPurchase: true,
                 descriptionJson: {},
@@ -88,15 +95,37 @@ let getGraphQLProductById = (productId) => {
     });
 };
 
-function formatMetadata(metadata) {
-    let data = [];
-    for (const [key, value] of Object.entries(metadata)) {
-        data.push({
-            key,
-            value
-        });
-    }
-    return data;
+function getCollectionsByProductId(productId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getCollectionProduct([productId], "product_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let collectionProducts = result.res;
+            const numCollectionProducts = collectionProducts.length;
+            let cursor = -1;
+            let graphQLCollections = [];
+
+            collectionProducts.forEach(async collectionProduct => {
+                try {
+                    graphQLCollections.push(await getGraphQLCollectionById(collectionProduct.collection_id));
+                } catch (err) {}
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numCollectionProducts) {
+                    resolve(graphQLCollections);
+                }
+            }
+        })
+    });
 }
 
+function getDefaultWeightUnit() {
+    return new Promise((resolve, reject) => {
+        resolve("kg");;
+    });
+}
 module.exports = getGraphQLProductById;

@@ -31,8 +31,20 @@ function myMap(val, minF, maxF, minT, maxT) {
     return minT + (((val - minF) / (maxF - minF)) * (maxT - minT));
 }
 
+
+function formatMetadata(metadata) {
+    let data = [];
+    for (const [key, value] of Object.entries(metadata)) {
+        data.push({
+            key,
+            value
+        });
+    }
+    return data;
+}
 module.exports = {
     isEmailValid,
     isAuthenticated,
-    getRandom
+    getRandom,
+    formatMetadata,
 }

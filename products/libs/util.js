@@ -59,6 +59,17 @@ function diffHours(date1, date2) {
     return Math.abs(Math.round(diff));
 }
 
+
+function formatMetadata(metadata) {
+    let data = [];
+    for (const [key, value] of Object.entries(metadata)) {
+        data.push({
+            key,
+            value
+        });
+    }
+    return data;
+}
 module.exports = {
     isEmailValid,
     getRandom,
@@ -66,5 +77,6 @@ module.exports = {
     sortByStartTime,
     formatDate,
     diffHours,
-    getDayFromDate
+    getDayFromDate,
+    formatMetadata
 }
