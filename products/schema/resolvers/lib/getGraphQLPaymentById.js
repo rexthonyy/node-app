@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLCheckoutById = require('./getGraphQLCheckoutById');
 const getGraphQLOrderById = require('./getGraphQLOrderById');
@@ -44,12 +45,8 @@ let getGraphQLPaymentById = (id) => {
 
             let res = {
                 id: payment.id,
-                privateMetadata: payment.private_metadata,
-                privateMetafield: JSON.stringify(payment.private_metadata),
-                privateMetafields: null,
-                metadata: payment.metadata,
-                metadatafield: JSON.stringify(payment.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(payment.private_metadata),
+                metadata: formatMetadata(payment.metadata),
                 gateway: payment.gateway,
                 isActive: payment.is_active,
                 created: payment.created,
