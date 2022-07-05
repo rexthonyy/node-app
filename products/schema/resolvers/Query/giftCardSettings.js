@@ -28,11 +28,13 @@ function giftCardSettings(authUser) {
             if (result.res.length == 0) return reject(`Could'nt resolve id: ${id}`);
             let setting = result.res[0];
 
+            let expiryType = setting.gift_card_expiry_type ? setting.gift_card_expiry_type.toUpperCase() : "EXPIRY_PERIOD";
+            let type = setting.gift_card_expiry_period_type ? setting.gift_card_expiry_period_type.toUpperCase() : "DAY";
             resolve({
-                expiryType: setting.gift_card_expiry_type.toUpperCase(),
+                expiryType,
                 expiryPeriod: {
                     amount: setting.gift_card_expiry_period,
-                    type: setting.gift_card_expiry_period_type.toUpperCase()
+                    type
                 }
             });
         });
