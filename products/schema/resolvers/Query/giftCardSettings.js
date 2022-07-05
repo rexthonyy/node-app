@@ -29,10 +29,10 @@ function giftCardSettings(authUser) {
             let setting = result.res[0];
 
             resolve({
-                expiryType: setting.gift_card_expiry_type,
+                expiryType: setting.gift_card_expiry_type.toUpperCase(),
                 expiryPeriod: {
                     amount: setting.gift_card_expiry_period,
-                    type: setting.gift_card_expiry_period_type
+                    type: setting.gift_card_expiry_period_type.toUpperCase()
                 }
             });
         });
