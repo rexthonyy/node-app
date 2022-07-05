@@ -210,7 +210,7 @@ module.exports = {
         metafields: warehouseMetafields,
         shippingZones: warehouseShippingZones
     },
-    shippingZone: {
+    ShippingZone: {
         privateMetafield: shippingZonePrivateMetafield,
         privateMetafields: shippingZonePrivateMetafields,
         metafield: shippingZoneMetafield,
