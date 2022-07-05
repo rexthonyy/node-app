@@ -21,11 +21,7 @@ let getGraphQLWarehouseById = (id) => {
                 let res = {
                     id: warehouse.id,
                     privateMetadata: warehouse.private_metadata,
-                    privateMetafield: JSON.stringify(warehouse.private_metadata),
-                    privateMetafields: null,
                     metadata: warehouse.metadata,
-                    metadatafield: JSON.stringify(warehouse.metadata),
-                    metadatafields: null,
                     name: warehouse.name,
                     slug: warehouse.slug,
                     email: warehouse.email,

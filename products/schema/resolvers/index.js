@@ -35,6 +35,10 @@ const {
 } = require('./Collection');
 
 const {
+    productPrivateMetafield,
+    productPrivateMetafields,
+    productMetafield,
+    productMetafields,
     productTranslation,
     productMediaById,
 } = require('./Product');
@@ -44,6 +48,10 @@ const {
 } = require('./OrderLine');
 
 const {
+    warehousePrivateMetafield,
+    warehousePrivateMetafields,
+    warehouseMetafield,
+    warehouseMetafields,
     warehouseShippingZones,
 } = require('./Warehouse');
 
@@ -79,6 +87,10 @@ module.exports = {
         productTypeCreate,
     },
     Product: {
+        privateMetafield: productPrivateMetafield,
+        privateMetafields: productPrivateMetafields,
+        metafield: productMetafield,
+        metafields: productMetafields,
         translation: productTranslation,
         mediaById: productMediaById,
     },
@@ -89,6 +101,10 @@ module.exports = {
         thumbnail: orderlineThumbnail
     },
     Warehouse: {
+        privateMetafield: warehousePrivateMetafield,
+        privateMetafields: warehousePrivateMetafields,
+        metafield: warehouseMetafield,
+        metafields: warehouseMetafields,
         shippingZones: warehouseShippingZones
     }
 };
