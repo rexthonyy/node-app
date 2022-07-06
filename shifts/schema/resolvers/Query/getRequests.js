@@ -220,7 +220,7 @@ function getGraphQLAssignedShift(assignedShiftId) {
                 }
 
                 resolve({
-                    id: assignedShift.id,
+                    id: assignedShiftId,
                     type: "shift",
                     label: assignedShift.label,
                     note: assignedShift.note,
