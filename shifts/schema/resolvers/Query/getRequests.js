@@ -63,24 +63,24 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let swapRequests = result.res;
                             for (let swapRequest of swapRequests) {
-                                let user = await getGraphQLUserById(timeOffRequest.user_id);
-                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                let user = await getGraphQLUserById(swapRequest.user_id);
+                                let responseBy = await getGraphQLUserById(swapRequest.response_by_user_id);
                                 let shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
                                 let toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
                                 shifts.push({
-                                    id: timeOffRequest.id,
-                                    channelId: timeOffRequest.channel_id,
-                                    requestId: timeOffRequest.request_id,
+                                    id: swapRequest.id,
+                                    channelId: swapRequest.channel_id,
+                                    requestId: swapRequest.request_id,
                                     user,
                                     type: "SWAP",
                                     shiftToSwap,
                                     toSwapWith,
-                                    requestNote: timeOffRequest.request_note,
-                                    status: timeOffRequest.status,
-                                    responseNote: timeOffRequest.responseNote,
+                                    requestNote: swapRequest.request_note,
+                                    status: swapRequest.status,
+                                    responseNote: swapRequest.responseNote,
                                     responseBy,
-                                    responseAt: timeOffRequest.response_at,
-                                    createdAt: timeOffRequest.created_at
+                                    responseAt: swapRequest.response_at,
+                                    createdAt: swapRequest.created_at
                                 });
                             }
                         }
@@ -91,24 +91,24 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let offerRequests = result.res;
                             for (let offerRequest of offerRequests) {
-                                let user = await getGraphQLUserById(timeOffRequest.user_id);
-                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                let user = await getGraphQLUserById(offerRequest.user_id);
+                                let responseBy = await getGraphQLUserById(offerRequest.response_by_user_id);
                                 let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
-                                let shiftOfferedTo = await getGraphQLUserById(timeOffRequest.offered_to_user_id);
+                                let shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
                                 shifts.push({
-                                    id: timeOffRequest.id,
-                                    channelId: timeOffRequest.channel_id,
-                                    requestId: timeOffRequest.request_id,
+                                    id: offerRequest.id,
+                                    channelId: offerRequest.channel_id,
+                                    requestId: offerRequest.request_id,
                                     user,
                                     type: "SWAP",
                                     shiftToOffer,
                                     shiftOfferedTo,
-                                    requestNote: timeOffRequest.request_note,
-                                    status: timeOffRequest.status,
-                                    responseNote: timeOffRequest.responseNote,
+                                    requestNote: offerRequest.request_note,
+                                    status: offerRequest.status,
+                                    responseNote: offerRequest.responseNote,
                                     responseBy,
-                                    responseAt: timeOffRequest.response_at,
-                                    createdAt: timeOffRequest.created_at
+                                    responseAt: offerRequest.response_at,
+                                    createdAt: offerRequest.created_at
                                 });
                             }
                         }
