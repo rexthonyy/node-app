@@ -5,6 +5,8 @@ const productTranslate = require('./productTranslate');
 const productTypeCreate = require('./productTypeCreate');
 const productUpdate = require('./productUpdate');
 const productChannelListingUpdate = require('./productChannelListingUpdate');
+const productMediaCreate = require('./productMediaCreate');
+const productVariantReorder = require('./productVariantReorder');
 
 module.exports = {
     productBulkDelete,
@@ -14,4 +16,5 @@ module.exports = {
     productTypeCreate,
     productUpdate,
     productChannelListingUpdate,
+    productMediaCreate,
 };

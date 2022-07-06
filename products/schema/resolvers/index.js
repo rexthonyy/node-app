@@ -30,6 +30,7 @@ const {
     productTranslate,
     productTypeCreate,
     productChannelListingUpdate,
+    productMediaCreate,
 } = require('./Mutation');
 
 const {
@@ -153,6 +154,7 @@ module.exports = {
         productTranslate,
         productTypeCreate,
         productChannelListingUpdate,
+        productMediaCreate,
     },
     Attribute: {
         translation: attributeTranslation,
