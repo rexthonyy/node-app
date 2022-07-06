@@ -19,11 +19,17 @@ const app = express();
 // var lesServer = app.listen(port, function() {
 //     console.log("Listening on port %s...", lesServer.address().port);
 // });
+async function main() {
+    const server = new ApolloServer({
+        schema: schema,
+        uploads: false
+    });
 
-const server = new ApolloServer({
-    schema: schema,
-    uploads: false
+    const { url } = await server.listen({ port: process.env.PORT });
+    console.log(`🚀 Server ready at ${url}`);
+}
+
+main().catch(e => {
+    console.error(e);
+    process.exit(1);
 });
-
-const { url } = await server.listen({ port: process.env.PORT });
-console.log(`🚀 Server ready at ${url}`);
