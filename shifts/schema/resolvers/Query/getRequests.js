@@ -199,7 +199,7 @@ function getRequests(authUser, channelId) {
 function getGraphQLAssignedShift(assignedShiftId) {
     return new Promise(resolve => {
         shiftQueries.getAssignedShifts([assignedShiftId], "id=$1", result => {
-            if (result.err) return resolve([]);
+            if (result.err || result.res.length == 0) return resolve([]);
             let assignedShift = result.res[0];
 
             shiftQueries.getAssignedShiftActivities([assignedShiftId], "assigned_shift_id=$1", result => {
