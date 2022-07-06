@@ -6,15 +6,13 @@ const { sortByPosition, paginate } = require("../../../libs/util");
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return reject(message);
 
         resolve(await getShiftGroups(args));
     });
 }
 
 function getGraphQLOutput(status, message, result, pageInfo) {
-    if (!pageInfo.next) delete pageInfo.next;
-    if (!pageInfo.previous) delete pageInfo.previous;
     return {
         status,
         message,
