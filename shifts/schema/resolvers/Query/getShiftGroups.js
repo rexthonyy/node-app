@@ -51,7 +51,7 @@ function getAllShiftGroups(channel) {
             if (result.err) return resolve(getGraphQLOutput("graphql error", JSON.stringify(result.err), null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
             let channelId = result.res[0].id;
-            shiftQueries.getShiftGroups([channelId], result => {
+            shiftQueries.getShiftGroupsByChannelId([channelId], result => {
                 if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
                 let shiftGroups = result.res;
                 shiftGroups.sort(sortByPosition);
