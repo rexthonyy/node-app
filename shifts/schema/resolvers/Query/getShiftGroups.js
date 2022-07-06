@@ -55,15 +55,18 @@ function getAllShiftGroups(channel) {
                 if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
                 let shiftGroups = result.res;
                 shiftGroups.sort(sortByPosition);
-                let data = [];
+                let edges = [];
                 for (let shiftGroup of shiftGroups) {
-                    data.push({
-                        channelId: shiftGroup.channel_id,
-                        shiftGroupId: shiftGroup.id,
-                        name: shiftGroup.name
+                    edges.push({
+                        cursor: "",
+                        node: {
+                            channelId: shiftGroup.channel_id,
+                            shiftGroupId: shiftGroup.id,
+                            name: shiftGroup.name
+                        }
                     });
                 }
-                resolve(data);
+                resolve(edges);
             });
         });
     });
