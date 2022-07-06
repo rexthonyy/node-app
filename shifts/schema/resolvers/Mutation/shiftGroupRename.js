@@ -31,7 +31,8 @@ function getGraphQLOutput(status, message, result) {
 function shiftGroupRename(channelId, shiftGroupId, name) {
     return new Promise(resolve => {
         shiftQueries.updateShiftGroupById([shiftGroupId, name], "name=$2", result => {
-            if (result.err) { return resolve(getGraphQLOutput("failed", "Failed to create shift groups", null)) };
+            if (result.err) return resolve(getGraphQLOutput("failed", JSON.stringify(result.err), null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Failed to rename shift group", null));
             let shiftGroup = result.res[0];
             let data = {
                 channelId: shiftGroup.channel_id,

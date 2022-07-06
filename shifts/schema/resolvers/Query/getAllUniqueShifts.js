@@ -1,5 +1,5 @@
 const shiftQueries = require("../../../postgres/shift-queries");
-const { checkAuthorization } = require('../lib');
+const { checkAuthorization, userPermissionGroupHasAccess } = require('../lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {

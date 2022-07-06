@@ -1,3 +1,4 @@
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('../lib');
 
@@ -33,15 +34,19 @@ function shiftGroupMemberAdd(channelId, shiftGroupId, userId) {
             let userToAdd = await getGraphQLUserById(userId);
             if (!userToAdd.isStaff) resolve(getGraphQLOutput("failed", "Cannot add a non staff user"));
 
-            shiftQueries.getShiftGroupById([shiftGroupId], result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch shift group"));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group not found"));
-                shiftQueries.getShiftGroupMemberByUserId([userId], result => {
-                    if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch shift group members"));
-                    if (result.res.length != 0) return resolve(getGraphQLOutput("failed", "Member already in group"));
-                    shiftQueries.createShiftGroupMember([channelId, shiftGroupId, userId, -1], result => {
-                        if (result.err) return resolve(getGraphQLOutput("failed", "Failed to add user to shift group"));
-                        return resolve(getGraphQLOutput("success", "User added to shift group"));
+            kratosQueries.getChannel([channelId], "id=$1", result => {
+                if (result.err) return resolve(getGraphQLOutput("failed", JSON.stringify(result.err), null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
+                shiftQueries.getShiftGroupById([shiftGroupId], result => {
+                    if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch shift group"));
+                    if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group not found"));
+                    shiftQueries.getShiftGroupMemberByUserId([userId], result => {
+                        if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch shift group members"));
+                        if (result.res.length != 0) return resolve(getGraphQLOutput("failed", "Member already in group"));
+                        shiftQueries.createShiftGroupMember([channelId, shiftGroupId, userId, -1], result => {
+                            if (result.err) return resolve(getGraphQLOutput("failed", "Failed to add user to shift group"));
+                            return resolve(getGraphQLOutput("success", "User added to shift group"));
+                        });
                     });
                 });
             });
