@@ -8,9 +8,7 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
-        let channel = args.channel;
-
-        resolve(await getShiftGroups(channel));
+        resolve(await getShiftGroups(args));
     });
 }
 
@@ -25,10 +23,13 @@ function getGraphQLOutput(status, message, result, pageInfo) {
     };
 }
 
-function getShiftGroups(channel) {
+function getShiftGroups(args) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllShiftGroups(channel);
+            let edges = await getAllShiftGroups(args.channel);
+            if (args.first) {
+                edges = edges.splice(0, args.first);
+            }
             resolve({
                 pageInfo: {
                     hasNextPage: false,
