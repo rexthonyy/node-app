@@ -35,8 +35,22 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let timeOffRequests = result.res;
                             for (let timeOffRequest of timeOffRequests) {
-                                let user = await getGraphQLUserById(timeOffRequest.user_id);
-                                let responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                let user;
+                                let responseBy;
+
+                                try {
+                                    user = await getGraphQLUserById(timeOffRequest.user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    user = null;
+                                }
+                                try {
+                                    responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    responseBy = null;
+                                }
+
                                 shifts.push({
                                     id: timeOffRequest.id,
                                     channelId: timeOffRequest.channel_id,
@@ -63,10 +77,35 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let swapRequests = result.res;
                             for (let swapRequest of swapRequests) {
-                                let user = await getGraphQLUserById(swapRequest.user_id);
-                                let responseBy = await getGraphQLUserById(swapRequest.response_by_user_id);
-                                let shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
-                                let toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
+                                let user;
+                                let responseBy;
+                                let shiftToSwap;
+                                let toSwapWith;
+                                try {
+                                    user = await getGraphQLUserById(swapRequest.user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    user = null;
+                                }
+                                try {
+                                    responseBy = await getGraphQLUserById(swapRequest.response_by_user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    responseBy = null;
+                                }
+                                try {
+                                    shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    shiftToSwap = null;
+                                }
+                                try {
+                                    toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
+                                } catch (err) {
+                                    console.log(err);
+                                    toSwapWith = null;
+                                }
+
                                 shifts.push({
                                     id: swapRequest.id,
                                     channelId: swapRequest.channel_id,
@@ -91,10 +130,35 @@ function getRequests(authUser, channelId) {
                         if (!result.err && result.res.length > 0) {
                             let offerRequests = result.res;
                             for (let offerRequest of offerRequests) {
-                                let user = await getGraphQLUserById(offerRequest.user_id);
-                                let responseBy = await getGraphQLUserById(offerRequest.response_by_user_id);
-                                let shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
-                                let shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
+                                let user;
+                                let responseBy;
+                                let shiftToOffer;
+                                let shiftOfferedTo;
+                                try {
+                                    user = await getGraphQLUserById(offerRequest.user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    user = null;
+                                }
+                                try {
+                                    responseBy = await getGraphQLUserById(offerRequest.response_by_user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    responseBy = null;
+                                }
+                                try {
+                                    shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    shiftToOffer = null;
+                                }
+                                try {
+                                    shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
+                                } catch (err) {
+                                    console.log(err);
+                                    shiftOfferedTo = null;
+                                }
+
                                 shifts.push({
                                     id: offerRequest.id,
                                     channelId: offerRequest.channel_id,
