@@ -1,5 +1,6 @@
 const { formatDate } = require("../../../libs/util");
 const { unpaidBreakValue, colorValue } = require("../../../libs/consts");
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('../lib');
 
@@ -40,58 +41,63 @@ function getGraphQLOutput(status, message, result) {
 
 function openShiftAdd(channelId, shiftGroupId, slots, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities) {
     return new Promise(resolve => {
-        shiftQueries.getShiftGroupById([shiftGroupId], async result => {
+        kratosQueries.getChannel([channelId], "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
 
-            let values = [
-                channelId,
-                shiftGroupId,
-                label,
-                colorValue[color],
-                note,
-                slots,
-                true,
-                formatDate(startTime),
-                formatDate(endTime),
-                is24Hours,
-                unpaidBreakValue[unpaidBreak],
-            ];
-            shiftQueries.createOpenShift(values, result => {
-                if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create open shift", null)) };
-                let openShift = result.res[0];
-                let openShiftId = openShift.id;
-                const numopenShiftActivities = shiftActivities.length;
-                let cursor = -1;
+            shiftQueries.getShiftGroupById([shiftGroupId], async result => {
+                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
 
-                shiftActivities.forEach(activity => {
-                    values = [
-                        channelId,
-                        shiftGroupId,
-                        openShiftId,
-                        activity.name,
-                        activity.code,
-                        colorValue[activity.color],
-                        activity.startTime,
-                        activity.endTime,
-                        activity.isPaid
-                    ];
+                let values = [
+                    channelId,
+                    shiftGroupId,
+                    label,
+                    colorValue[color],
+                    note,
+                    slots,
+                    true,
+                    formatDate(startTime),
+                    formatDate(endTime),
+                    is24Hours,
+                    unpaidBreakValue[unpaidBreak],
+                ];
+                shiftQueries.createOpenShift(values, result => {
+                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create open shift", null)) };
+                    let openShift = result.res[0];
+                    let openShiftId = openShift.id;
+                    const numopenShiftActivities = shiftActivities.length;
+                    let cursor = -1;
 
-                    shiftQueries.createOpenShiftActivity(values, result => {
-                        checkComplete();
+                    shiftActivities.forEach(activity => {
+                        values = [
+                            channelId,
+                            shiftGroupId,
+                            openShiftId,
+                            activity.name,
+                            activity.code,
+                            colorValue[activity.color],
+                            activity.startTime,
+                            activity.endTime,
+                            activity.isPaid
+                        ];
+
+                        shiftQueries.createOpenShiftActivity(values, result => {
+                            checkComplete();
+                        });
                     });
-                });
 
-                checkComplete();
+                    checkComplete();
 
-                async function checkComplete() {
-                    cursor++;
-                    if (cursor == numopenShiftActivities) {
-                        let shift = await getGraphQLOpenShift(openShiftId);
-                        resolve(getGraphQLOutput("success", "Open shift created", shift));
+                    async function checkComplete() {
+                        cursor++;
+                        if (cursor == numopenShiftActivities) {
+                            let shift = await getGraphQLOpenShift(openShiftId);
+                            resolve(getGraphQLOutput("success", "Open shift created", shift));
+                        }
                     }
-                }
 
+                });
             });
         });
     });
