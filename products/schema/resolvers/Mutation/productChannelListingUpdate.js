@@ -47,9 +47,9 @@ function getGraphQLOutput(field, message, code, attributes, values, channels, va
 }
 
 function productChannelListingUpdate(authUser, args) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         let id = args.id;
-        productQueries.getProduct([id], "id=$1", result => {
+        productQueries.getProduct([id], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", [], [], [], [], null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("id", `Cannot resolve id:${id}`, "NOT_FOUND", [], [], [], [], null));
 
