@@ -376,16 +376,16 @@ function getUpdateProductChannelListingValues(listingId, productId, channel, upd
     let cursor = 4;
 
     if (updateChannel.isPublished != null) {
-        values.push(isPublished);
+        values.push(updateChannel.isPublished);
         set += `, is_published=$${++cursor}`;
     }
     if (updateChannel.publishedAt != null) {
-        values.push(publishedAt);
+        values.push(updateChannel.publishedAt);
         set += `, publication_date=$${++cursor}`;
     }
 
     if (updateChannel.visibleInListings != null) {
-        values.push(visibleInListings);
+        values.push(updateChannel.visibleInListings);
         set += `, visible_in_listings=$${++cursor}`;
     }
 
