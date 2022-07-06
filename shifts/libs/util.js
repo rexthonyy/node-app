@@ -83,6 +83,18 @@ function paginate(page, limit, values) {
     result.results = values.slice(startIndex, endIndex);
     return result;
 }
+
+function formatMetadata(metadata) {
+    let data = [];
+    for (const [key, value] of Object.entries(metadata)) {
+        data.push({
+            key,
+            value
+        });
+    }
+    return data;
+}
+
 module.exports = {
     isEmailValid,
     getRandom,
@@ -91,5 +103,6 @@ module.exports = {
     formatDate,
     diffHours,
     getDayFromDate,
-    paginate
+    paginate,
+    formatMetadata
 }

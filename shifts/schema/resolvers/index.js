@@ -1,83 +1,101 @@
-const getShiftGroups = require("./getShiftGroups");
-const getShiftGroupMembers = require("./getShiftGroupMembers");
-const getNonShiftGroupMembers = require("./getNonShiftGroupMembers");
-const getShiftsByPeople = require("./getShiftsByPeople");
-const getShiftsByTask = require("./getShiftsByTask");
-const getSharedSchedules = require("./getSharedSchedules");
-const getAllUniqueShifts = require("./getAllUniqueShifts");
-const getRequests = require("./getRequests");
-const getAllRequests = require("./getAllRequests");
-const getDayNotes = require("./getDayNotes");
-const getSettings = require("./getSettings");
-const shiftGroupCreate = require("./shiftGroupCreate");
-const shiftGroupReorder = require("./shiftGroupReorder");
-const shiftGroupRename = require("./shiftGroupRename");
-const shiftGroupDelete = require("./shiftGroupDelete");
-const shiftGroupMemberAdd = require("./shiftGroupMemberAdd");
-const shiftGroupMembersReorder = require("./shiftGroupMembersReorder");
-const shiftGroupMemberRemove = require("./shiftGroupMemberRemove");
-const assignedShiftAdd = require("./assignedShiftAdd");
-const assignedShiftEdit = require("./assignedShiftEdit");
-const assignedShiftDelete = require("./assignedShiftDelete");
-const assignedShiftMoveToOpen = require("./assignedShiftMoveToOpen");
-const assignedShiftShare = require("./assignedShiftShare");
-const recallSharedSchedules = require("./recallSharedSchedules");
-const openShiftAdd = require("./openShiftAdd");
-const openShiftEdit = require("./openShiftEdit");
-const openShiftDelete = require("./openShiftDelete");
-const openShiftAssign = require("./openShiftAssign");
-const timeOffAdd = require("./timeOffAdd");
-const timeOffEdit = require("./timeOffEdit");
-const timeOffDelete = require("./timeOffDelete");
-const dayNoteUpdate = require("./dayNoteUpdate");
-const requestCreateTimeOff = require("./requestCreateTimeOff");
-const requestCreateSwap = require("./requestCreateSwap");
-const requestCreateOffer = require("./requestCreateOffer");
-const cancelRequestSwap = require("./cancelRequestSwap");
-const cancelRequestOffer = require("./cancelRequestOffer");
-const updateSettings = require("./updateSettings");
+const {
+    queryGetAllRequests,
+    queryGetAllUniqueShifts,
+    queryGetDayNotes,
+    queryGetNonShiftGroupMembers,
+    queryGetRequests,
+    queryGetSettings,
+    queryGetSharedSchedules,
+    queryGetShiftGroupMembers,
+    queryGetShiftGroups,
+    queryGetShiftsByPeople,
+    queryGetShiftsByTask,
+} = require('./Query');
+
+const {
+    mutationAssignedShiftAdd,
+    mutationAssignedShiftDelete,
+    mutationAssignedShiftEdit,
+    mutationAssignedShiftMoveToOpen,
+    mutationAssignedShiftShare,
+    mutationCancelRequestOffer,
+    mutationCancelRequestSwap,
+    mutationDayNoteUpdate,
+    mutationOpenShiftAdd,
+    mutationOpenShiftAssign,
+    mutationOpenShiftDelete,
+    mutationOpenShiftEdit,
+    mutationRecallSharedSchedules,
+    mutationRequestCreateOffer,
+    mutationRequestCreateSwap,
+    mutationRequestCreateTimeOff,
+    mutationShiftGroupCreate,
+    mutationShiftGroupDelete,
+    mutationShiftGroupMemberAdd,
+    mutationShiftGroupMemberRemove,
+    mutationShiftGroupMembersReorder,
+    mutationShiftGroupRename,
+    mutationShiftGroupReorder,
+    mutationTimeOffAdd,
+    mutationTimeOffDelete,
+    mutationTimeOffEdit,
+    mutationUpdateSettings,
+} = require('./Mutation');
+
+const {
+    userPrivateMetafield,
+    userPrivateMetafields,
+    userMetafield,
+    userMetafields,
+} = require('./User');
 
 module.exports = {
     Query: {
-        getShiftGroups,
-        getShiftGroupMembers,
-        getNonShiftGroupMembers,
-        getShiftsByPeople,
-        getShiftsByTask,
-        getSharedSchedules,
-        getAllUniqueShifts,
-        getRequests,
-        getAllRequests,
-        getDayNotes,
-        getSettings,
+        getShiftGroups: queryGetShiftGroups,
+        getShiftGroupMembers: queryGetShiftGroupMembers,
+        getNonShiftGroupMembers: queryGetNonShiftGroupMembers,
+        getShiftsByPeople: queryGetShiftsByPeople,
+        getShiftsByTask: queryGetShiftsByTask,
+        getSharedSchedules: queryGetSharedSchedules,
+        getAllUniqueShifts: queryGetAllUniqueShifts,
+        getRequests: queryGetRequests,
+        getAllRequests: queryGetAllRequests,
+        getDayNotes: queryGetDayNotes,
+        getSettings: queryGetSettings,
     },
     Mutation: {
-        shiftGroupCreate,
-        shiftGroupReorder,
-        shiftGroupRename,
-        shiftGroupDelete,
-        shiftGroupMemberAdd,
-        shiftGroupMembersReorder,
-        shiftGroupMemberRemove,
-        assignedShiftAdd,
-        assignedShiftEdit,
-        assignedShiftDelete,
-        assignedShiftMoveToOpen,
-        assignedShiftShare,
-        recallSharedSchedules,
-        openShiftAdd,
-        openShiftEdit,
-        openShiftDelete,
-        openShiftAssign,
-        timeOffAdd,
-        timeOffEdit,
-        timeOffDelete,
-        dayNoteUpdate,
-        requestCreateTimeOff,
-        requestCreateSwap,
-        requestCreateOffer,
-        cancelRequestSwap,
-        cancelRequestOffer,
-        updateSettings
-    }
+        shiftGroupCreate: mutationShiftGroupCreate,
+        shiftGroupReorder: mutationShiftGroupReorder,
+        shiftGroupRename: mutationShiftGroupRename,
+        shiftGroupDelete: mutationShiftGroupDelete,
+        shiftGroupMemberAdd: mutationShiftGroupMemberAdd,
+        shiftGroupMembersReorder: mutationShiftGroupMembersReorder,
+        shiftGroupMemberRemove: mutationShiftGroupMemberRemove,
+        assignedShiftAdd: mutationAssignedShiftAdd,
+        assignedShiftEdit: mutationAssignedShiftEdit,
+        assignedShiftDelete: mutationAssignedShiftDelete,
+        assignedShiftMoveToOpen: mutationAssignedShiftMoveToOpen,
+        assignedShiftShare: mutationAssignedShiftShare,
+        recallSharedSchedules: mutationRecallSharedSchedules,
+        openShiftAdd: mutationOpenShiftAdd,
+        openShiftEdit: mutationOpenShiftEdit,
+        openShiftDelete: mutationOpenShiftDelete,
+        openShiftAssign: mutationOpenShiftAssign,
+        timeOffAdd: mutationTimeOffAdd,
+        timeOffEdit: mutationTimeOffEdit,
+        timeOffDelete: mutationTimeOffDelete,
+        dayNoteUpdate: mutationDayNoteUpdate,
+        requestCreateTimeOff: mutationRequestCreateTimeOff,
+        requestCreateSwap: mutationRequestCreateSwap,
+        requestCreateOffer: mutationRequestCreateOffer,
+        cancelRequestSwap: mutationCancelRequestSwap,
+        cancelRequestOffer: mutationCancelRequestOffer,
+        updateSettings: mutationUpdateSettings
+    },
+    User: {
+        privateMetafield: userPrivateMetafield,
+        privateMetafields: userPrivateMetafields,
+        metafield: userMetafield,
+        metafields: userMetafields,
+    },
 };

@@ -381,6 +381,18 @@ type Mutation {
     """Fields required to create a product type."""
     input: ProductTypeInput!
   ): ProductTypeCreate
+
+  """
+  Manage product's availability in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productChannelListingUpdate(
+    """ID of a product to update."""
+    id: ID!
+
+    """Fields required to create or update product channel listings."""
+    input: ProductChannelListingUpdateInput!
+  ): ProductChannelListingUpdate
+
 }
 
 """Return type for getShiftGroups"""

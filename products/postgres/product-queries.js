@@ -825,6 +825,23 @@ const getCollectionProduct = (values, whereClause, response) => {
     });
 };
 
+const getProductChannelListing = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.product_productchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -999,6 +1016,23 @@ const createAttributeValue = (values, response) => {
 
 const createProductTranslation = (values, response) => {
     client.query(`INSERT INTO ${db.product_producttranslation} (seo_title, seo_description, language_code, name, description, product_id) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createProductChannelListing = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productchannellisting} (publication_date, is_published, channel_id, product_id, discounted_price_amount, currency, visible_in_listings, available_for_purchase) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1420,6 +1454,7 @@ module.exports = {
     getProductMedia,
     getProductVariantTranslation,
     getCollectionProduct,
+    getProductChannelListing,
 
     createProduct,
     createProductType,
@@ -1432,6 +1467,7 @@ module.exports = {
     createCollectionProduct,
     createAttributeValue,
     createProductTranslation,
+    createProductChannelListing,
 
     updateProduct,
     updateProductVariant,

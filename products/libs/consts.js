@@ -63,6 +63,7 @@ const db = {
     product_digitalcontent: "product_digitalcontent",
     product_digitalcontenturl: "product_digitalcontenturl",
     product_product: "product_product",
+    product_productchannellisting: "product_productchannellisting",
     product_productmedia: "product_productmedia",
     product_producttranslation: "product_producttranslation",
     product_producttype: "product_producttype",

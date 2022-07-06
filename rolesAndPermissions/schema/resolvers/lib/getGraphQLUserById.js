@@ -1,3 +1,4 @@
+const { formatMetadata } = require('../../../libs/util');
 const pgKratosQueries = require('../../../postgres/kratos-queries');
 const getUserPermissions = require('./getUserPermissions');
 const getUserPermissionGroups = require('./getUserPermissionGroups');
@@ -17,12 +18,8 @@ let getGraphQLUserById = user_id => {
             let permissionGroups = await getUserPermissionGroups(accountUser.id);
             let userType = {
                 id: accountUser.id,
-                privateMetadata: accountUser.private_metadata,
-                privateMetafield: JSON.stringify(accountUser.private_metadata),
-                privateMetafields: null,
-                metadata: [accountUser.metadata],
-                metadatafield: JSON.stringify(accountUser.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(accountUser.private_metadata),
+                metadata: formatMetadata(accountUser.metadata),
                 email: accountUser.email,
                 firstName: accountUser.first_name,
                 lastName: accountUser.last_name,

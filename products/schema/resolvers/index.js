@@ -29,6 +29,7 @@ const {
     productUpdate,
     productTranslate,
     productTypeCreate,
+    productChannelListingUpdate,
 } = require('./Mutation');
 
 const {
@@ -38,6 +39,13 @@ const {
     collectionMetafields,
     collectionTranslation,
 } = require('./Collection');
+
+const {
+    userPrivateMetafield,
+    userPrivateMetafields,
+    userMetafield,
+    userMetafields,
+} = require('./User');
 
 const {
     digitalContentPrivateMetafield,
@@ -144,6 +152,7 @@ module.exports = {
         productUpdate,
         productTranslate,
         productTypeCreate,
+        productChannelListingUpdate,
     },
     Attribute: {
         translation: attributeTranslation,
@@ -215,5 +224,11 @@ module.exports = {
         privateMetafields: shippingZonePrivateMetafields,
         metafield: shippingZoneMetafield,
         metafields: shippingZoneMetafields,
+    },
+    User: {
+        privateMetafield: userPrivateMetafield,
+        privateMetafields: userPrivateMetafields,
+        metafield: userMetafield,
+        metafields: userMetafields,
     },
 };
