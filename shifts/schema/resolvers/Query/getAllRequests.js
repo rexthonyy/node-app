@@ -1,5 +1,5 @@
 const shiftQueries = require("../../../postgres/shift-queries");
-const { checkAuthorization, getGraphQLUserById } = require('../lib');
+const { checkAuthorization, getGraphQLUserById, userPermissionGroupHasAccess } = require('../lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
