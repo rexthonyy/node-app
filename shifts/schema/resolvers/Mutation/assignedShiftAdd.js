@@ -1,5 +1,6 @@
 const { formatDate } = require("../../../libs/util");
 const { unpaidBreakValue, colorValue } = require("../../../libs/consts");
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('../lib');
 
@@ -40,65 +41,70 @@ function getGraphQLOutput(status, message, result) {
 
 function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities) {
     return new Promise(resolve => {
-        shiftQueries.getShiftGroupById([shiftGroupId], async result => {
+        kratosQueries.getChannel([channelId], "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
-            try {
-                let user = await getGraphQLUserById(userId);
-            } catch (err) {
-                return resolve(getGraphQLOutput("failed", err, null));
-            }
+            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
 
-            let values = [
-                channelId,
-                shiftGroupId,
-                userId,
-                label,
-                colorValue[color],
-                note,
-                false,
-                false,
-                formatDate(startTime),
-                formatDate(endTime),
-                is24Hours,
-                unpaidBreakValue[unpaidBreak],
-            ];
-            shiftQueries.createAssignedShift(values, result => {
-                if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create assigned shift", null)) };
-                let assignedShift = result.res[0];
-                let assignedShiftId = assignedShift.id;
-                const numAssignedShiftActivities = shiftActivities.length;
-                let cursor = -1;
-
-                shiftActivities.forEach(activity => {
-                    values = [
-                        channelId,
-                        shiftGroupId,
-                        assignedShiftId,
-                        userId,
-                        activity.name,
-                        activity.code,
-                        colorValue[activity.color],
-                        activity.startTime,
-                        activity.endTime,
-                        activity.isPaid
-                    ];
-
-                    shiftQueries.createAssignedShiftActivity(values, result => {
-                        checkComplete();
-                    });
-                });
-
-                checkComplete();
-
-                async function checkComplete() {
-                    cursor++;
-                    if (cursor == numAssignedShiftActivities) {
-                        let shift = await getGraphQLAssignedShift(assignedShiftId);
-                        resolve(getGraphQLOutput("success", "Assigned shift created", shift));
-                    }
+            shiftQueries.getShiftGroupById([shiftGroupId], async result => {
+                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+                try {
+                    let user = await getGraphQLUserById(userId);
+                } catch (err) {
+                    return resolve(getGraphQLOutput("failed", err, null));
                 }
 
+                let values = [
+                    channelId,
+                    shiftGroupId,
+                    userId,
+                    label,
+                    colorValue[color],
+                    note,
+                    false,
+                    false,
+                    formatDate(startTime),
+                    formatDate(endTime),
+                    is24Hours,
+                    unpaidBreakValue[unpaidBreak],
+                ];
+                shiftQueries.createAssignedShift(values, result => {
+                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create assigned shift", null)) };
+                    let assignedShift = result.res[0];
+                    let assignedShiftId = assignedShift.id;
+                    const numAssignedShiftActivities = shiftActivities.length;
+                    let cursor = -1;
+
+                    shiftActivities.forEach(activity => {
+                        values = [
+                            channelId,
+                            shiftGroupId,
+                            assignedShiftId,
+                            userId,
+                            activity.name,
+                            activity.code,
+                            colorValue[activity.color],
+                            activity.startTime,
+                            activity.endTime,
+                            activity.isPaid
+                        ];
+
+                        shiftQueries.createAssignedShiftActivity(values, result => {
+                            checkComplete();
+                        });
+                    });
+
+                    checkComplete();
+
+                    async function checkComplete() {
+                        cursor++;
+                        if (cursor == numAssignedShiftActivities) {
+                            let shift = await getGraphQLAssignedShift(assignedShiftId);
+                            resolve(getGraphQLOutput("success", "Assigned shift created", shift));
+                        }
+                    }
+
+                });
             });
         });
     });

@@ -1100,6 +1100,45 @@ const updateProductTranslation = (values, set, whereClause, response) => {
     });
 };
 
+const updateProductChannelListing = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_productchannellisting} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateProductVariantChannelListing = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_productvariantchannellisting} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+
+
+
+
+
 const deleteAttributeValue = (values, whereClause, response) => {
     client.query(`DELETE FROM ${db.attribute_attributevalue} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -1406,6 +1445,40 @@ const deleteProductMedia = (values, whereClause, response) => {
     });
 };
 
+const deleteProductVariantChannelListing = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_productvariantchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteProductChannelListing = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_productchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     get,
     getProduct,
@@ -1472,6 +1545,8 @@ module.exports = {
     updateProduct,
     updateProductVariant,
     updateProductTranslation,
+    updateProductChannelListing,
+    updateProductVariantChannelListing,
 
     deleteAttributeValue,
     deleteProductVariant,
@@ -1491,4 +1566,6 @@ module.exports = {
     deleteCheckoutGiftCards,
     deleteProduct,
     deleteProductMedia,
+    deleteProductVariantChannelListing,
+    deleteProductChannelListing,
 }

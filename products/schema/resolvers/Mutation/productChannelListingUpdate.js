@@ -67,7 +67,7 @@ function productChannelListingUpdate(authUser, args) {
 
             if (removeChannels) {
                 try {
-                    await removeProductChannelListing(id, updateChannels);
+                    await removeProductChannelListingIterable(id, removeChannels);
                 } catch (err) {
                     errors.concat(err);
                 }
@@ -79,6 +79,63 @@ function productChannelListingUpdate(authUser, args) {
                 errors,
                 productChannelListingErrors: errors,
                 product
+            });
+        });
+    });
+}
+
+function removeProductChannelListingIterable(productId, removeChannels) {
+    return new Promise((resolve, reject) => {
+        const numRemovedChannels = removeChannels.length;
+        let cursor = -1;
+        let errors = [];
+
+        removeChannels.forEach(async channelId => {
+            try {
+                await removeProductChannelListing(productId, channelId);
+            } catch (err) {
+                errors.concat(err);
+            }
+            checkComplete();
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            cursor++;
+            if (cursor == numRemovedChannels) {
+                if (errors.length > 0) return reject(errors)
+                resolve();
+            }
+        }
+    });
+}
+
+function removeProductChannelListing(productId, channelId) {
+    return new Promise((resolve, reject) => {
+        productQueries.deleteProductChannelListing([productId, channelId], "product_id=$1 AND channel_id=$2", result => {
+            if (result.err) return reject(getGraphQLOutput("removeChannel", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+
+            productQueries.getProductVariant([productId], "product_id=$1", result => {
+                if (result.err) return reject(getGraphQLOutput("removeChannel", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+                let productVariants = result.res;
+                const numVariants = productVariants.length;
+                let cursor = -1;
+
+                productVariants.forEach(variant => {
+                    productQueries.deleteProductVariantChannelListing([channelId, variant.id], "channel_id=$1 AND variant_id=$2", result => {
+                        checkComplete();
+                    });
+                });
+
+                checkComplete();
+
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numVariants) {
+                        resolve();
+                    }
+                }
             });
         });
     });
@@ -113,7 +170,7 @@ function iterateProductChannelListing(productId, updateChannels) {
 
 function assignOrUpdateProductChannelListing(productId, updateChannel) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductChannelListing([updateChannel.channelId], "channel_id=$1", async result => {
+        productQueries.getProductChannelListing([productId, updateChannel.channelId], "product_id=$1 AND channel_id=$2", async result => {
             if (result.err) return reject(getGraphQLOutput("channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
             if (result.res.length == 0) {
                 try {
@@ -122,8 +179,9 @@ function assignOrUpdateProductChannelListing(productId, updateChannel) {
                     return reject(err);
                 }
             } else {
+                let listingId = result.res[0].id;
                 try {
-                    await updateProductChannelListing(productId, updateChannel);
+                    await updateProductChannelListing(listingId, productId, updateChannel);
                 } catch (err) {
                     return reject(err);
                 }
@@ -213,85 +271,35 @@ function assignVariantsToChannelIterable(productId, updateChannel) {
 
 function assignVariantToChannel(productId, updateChannel, variantId) {
     return new Promise((resolve, reject) => {
+        productQueries.getProductVariant([variantId, productId], "id=$1 AND product_id=$2", result => {
+            if (result.err) return reject(getGraphQLOutput("addVariants", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("addVariants", "Invalid variant of product", "NOT_PRODUCTS_VARIANT", null, null, null, null, null).errors);
 
-    });
-}
-
-function updateProductSeoTitle(id, seo_title) {
-    return new Promise((resolve, reject) => {
-        productQueries.updateProduct([id, seo_title], "seo_title=$2", "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product seo_title", "REQUIRED", null, null, null));
-            resolve();
+            let values = [
+                variantId,
+                updateChannel.channelId
+            ];
+            productQueries.updateProductVariantChannelListing(values, "channel_id=$2", "variant_id=$1", result => {
+                if (result.err) return reject(getGraphQLOutput("addVariants", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+                resolve();
+            });
         });
     });
 }
 
-function updateProductWeight(id, weight) {
+function removeVariantsFromChannelIterable(productId, updateChannel) {
     return new Promise((resolve, reject) => {
-        productQueries.updateProduct([id, weight], "weight=$2", "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product weight", "REQUIRED", null, null, null));
-            resolve();
-        });
-    });
-}
-
-function updateProductRating(id, rating) {
-    return new Promise((resolve, reject) => {
-        productQueries.updateProduct([id, rating], "rating=$2", "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product rating", "REQUIRED", null, null, null));
-            resolve();
-        });
-    });
-}
-
-function updateProductCategory(id, category_id) {
-    return new Promise((resolve, reject) => {
-        productQueries.updateProduct([id, category_id], "category_id=$2", "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to update product category_id", "REQUIRED", null, null, null));
-            resolve();
-        });
-    });
-}
-
-function updateProductCollections(id, collectionIds) {
-    return new Promise((resolve, reject) => {
-        productQueries.deleteCollectionProductProduct([id], "product_id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("product", "Failed to delete collection product", "REQUIRED", null, null, null));
-
-            const numCollections = collectionIds.length;
-            let cursor = -1;
-
-            collectionIds.forEach(collectionId => {
-                productQueries.createCollectionProduct([collectionId, id, null], result => {
-                    checkComplete();
-                });
-            })
-
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numCollections) {
-                    resolve();
-                }
-            }
-        });
-    });
-}
-
-function updateProductAttributes(id, attributes) {
-    return new Promise((resolve) => {
-        if (attributes == null) return resolve();
-        const numAttributes = attributes.length;
+        let removeVariants = updateChannel.removeVariants;
+        const numVariants = removeVariants.length;
         let cursor = -1;
+        let errors = [];
 
-        attributes.forEach(async attr => {
-            await addAttribute(id, attr);
+        removeVariants.forEach(async variantId => {
+            try {
+                await removeVariantFromChannel(productId, updateChannel, variantId);
+            } catch (err) {
+                errors.concat(err);
+            }
             checkComplete();
         });
 
@@ -299,150 +307,93 @@ function updateProductAttributes(id, attributes) {
 
         function checkComplete() {
             cursor++;
-            if (cursor == numAttributes) {
+            if (cursor == numVariants) {
+                if (errors.length > 0) return reject(errors);
                 resolve();
             }
         }
     });
 }
 
-function addAttribute(productId, attr) {
-    return new Promise(async resolve => {
-
-        let productAttributes = [];
-        if (attr.id) {
-            productAttributes = await getProductAttributesById(attr.id);
-        } else if (attr.values) {
-            productAttributes = await getProductAttributesByValues(attr.values);
-        }
-
-        productQueries.deleteAttributeValue([productId], "reference_product_id=$1", result => {
-            const numAttributes = productAttributes.length;
-            let cursor = -1;
-
-            productAttributes.forEach(attribute => {
-                let attributeId = attribute.id;
-                let file = attr.file;
-                let contentType = attr.contentType;
-                let references = attr.references;
-                let richText = attr.richText;
-                let boolean = attr.boolean;
-                let date = attr.date;
-                let dateTime = attr.dateTime;
-
-                let input = [
-                    attribute.name,
-                    attributeId,
-                    attribute.slug,
-                    null,
-                    "",
-                    contentType,
-                    file,
-                    richText,
-                    boolean,
-                    dateTime,
-                    null,
-                    productId
-                ];
-
-                productQueries.createAttributeValue(input, async result => {
-                    try {
-                        checkComplete();
-                    } catch (err) {
-                        console.log(err);
-                        checkComplete();
-                    }
-                });
-            });
-
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numAttributes) {
-                    resolve();
-                }
-            }
-        });
-    });
-}
-
-
-function getProductAttributesById(attributeId) {
-    return new Promise(resolve => {
-        productQueries.getAttribute([attributeId], "id=$1", result => {
-            if (result.err || result.res.length == 0) return resolve([]);
-            resolve(result.res);
-        });
-    });
-}
-
-function getProductAttributesByValues(values) {
-    return new Promise(resolve => {
-        const numValues = values.length;
-        let cursor = -1;
-        let productAttributes = [];
-
-        values.forEach(value => {
-            productQueries.getProduct([value], "slug=$1", async result => {
-                if (result.err || result.res.length == 0) {
-                    try {
-                        let attribute = await createProductAttribute(value);
-                        productAttributes.push(attribute);
-                        checkComplete();
-                    } catch (err) {
-                        console.log(err);
-                        checkComplete();
-                    }
-                } else {
-                    productAttributes.push(result.res[0]);
-                    checkComplete();
-                }
-            });
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numValues) {
-                resolve(productAttributes);
-            }
-        }
-    });
-}
-
-function createProductAttribute(value) {
+function removeVariantFromChannel(productId, updateChannel, variantId) {
     return new Promise((resolve, reject) => {
-        let metadata = [{
-            key: "",
-            value: ""
-        }];
-        let private_metadata = [{
-            key: "",
-            value: ""
-        }];
+        productQueries.getProductVariant([variantId, productId], "id=$1 AND product_id=$2", result => {
+            if (result.err) return reject(getGraphQLOutput("removeVariants", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("removeVariants", "Invalid variant of product", "NOT_PRODUCTS_VARIANT", null, null, null, null, null).errors);
 
-        let values = [
-            value,
-            value.replace("-", " "),
-            JSON.stringify(metadata),
-            JSON.stringify(private_metadata),
-            "DROPDOWN",
-            false,
-            false,
-            false,
-            false,
-            false,
-            1,
-            false,
-            "PRODUCT_TYPE",
-            "PRODUCT",
-            null
-        ];
-        productQueries.createAttribute(values, result => {
-            if (result.err || result.res.length == 0) { console.log(result.err); return reject("Failed to create attribute") };
-            resolve(result.res[0]);
+            productQueries.deleteProductVariantChannelListing([updateChannel.channelId, variantId], "channel_id=$1 AND variant_id=$2", result => {
+                if (result.err) return reject(getGraphQLOutput("removeVariants", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+                resolve();
+            });
         });
     });
+}
+
+function updateProductChannelListing(listingId, productId, updateChannel) {
+    return new Promise((resolve, reject) => {
+        kratosQueries.getChannel([updateChannel.channelId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("channelId", "Channel not found", "NOT_FOUND", null, null, null, null, null).errors);
+
+            let channel = result.res[0];
+
+            let { values, set, whereClause } = getUpdateProductChannelListingValues(listingId, productId, channel, updateChannel);
+
+            productQueries.updateProductChannelListing(values, set, whereClause, async result => {
+                if (result.err) return reject(getGraphQLOutput("updateChannel", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null, null).errors);
+
+                let addVariants = updateChannel.addVariants;
+                let removeVariants = updateChannel.removeVariants;
+                let errors = [];
+
+                if (addVariants) {
+                    try {
+                        await assignVariantsToChannelIterable(productId, updateChannel);
+                    } catch (err) {
+                        errors.concat(err);
+                    }
+                }
+
+                if (removeVariants) {
+                    try {
+                        await removeVariantsFromChannelIterable(productId, updateChannel);
+                    } catch (err) {
+                        errors.concat(err);
+                    }
+                }
+
+                if (errors.length > 0) return reject(errors);
+                resolve();
+            });
+        });
+    });
+}
+
+function getUpdateProductChannelListingValues(listingId, productId, channel, updateChannel) {
+    let values = [listingId, productId, channel.id, channel.currency_code];
+    let whereClause = "id=$1";
+    let set = "product_id=$2, channel_id=$3, currency=$4";
+    let cursor = 4;
+
+    if (updateChannel.isPublished != null) {
+        values.push(isPublished);
+        set += `, is_published=$${++cursor}`;
+    }
+    if (updateChannel.publishedAt != null) {
+        values.push(publishedAt);
+        set += `, publication_date=$${++cursor}`;
+    }
+
+    if (updateChannel.visibleInListings != null) {
+        values.push(visibleInListings);
+        set += `, visible_in_listings=$${++cursor}`;
+    }
+
+    if (updateChannel.isAvailableForPurchase) {
+        let availableForPurchase = updateChannel.isAvailableForPurchase ? updateChannel.availableForPurchaseAt : null;
+        values.push(availableForPurchase);
+        set += `, available_for_purchase=$${++cursor}`;
+    }
+
+    return { values, set, whereClause };
 }
