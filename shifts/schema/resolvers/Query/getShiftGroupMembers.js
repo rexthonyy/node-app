@@ -4,13 +4,13 @@ const { checkAuthorization, getGraphQLUserById } = require('../lib');
 const { sortByPosition } = require("../../../libs/util");
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        try{
+        try {
             resolve(await getShiftGroupMembers(args));
-        }catch(err){
+        } catch (err) {
             reject(err);
         }
     });
@@ -39,7 +39,7 @@ function getShiftGroupMembers(args) {
     });
 }
 
-function getShiftGroupMembers({channel, shiftGroupId}) {
+function getAllShiftGroupMembers({ channel, shiftGroupId }) {
     return new Promise((resolve, reject) => {
         kratosQueries.getChannel([channel], "slug=$1", result => {
             if (result.err) return reject(JSON.stringify(result.err));
