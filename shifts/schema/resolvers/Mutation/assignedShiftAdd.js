@@ -107,7 +107,7 @@ function assignedShiftAdd(channelId, shiftGroupId, userId, color, label, note, i
                             resolve({
                                 errors: [],
                                 assignedShift: shift
-                            })
+                            });
                         }
                     }
 

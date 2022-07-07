@@ -373,7 +373,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): AssignedShiftAddResponse
+  ): AssignedShiftEditResponse
 
   """Deletes an assigned shift. Requires permission MANAGE_STAFF"""
   assignedShiftDelete(
@@ -879,8 +879,14 @@ type shiftGroupCreateResponse{
   result: ShiftGroup
 }
 
-"""Return type for shiftGroupCreate"""
+"""Return type for assignedShiftAdd"""
 type AssignedShiftAddResponse{
+  assignedShift: AssignedShift
+  errors: [ShiftError!]!
+}
+
+"""Return type for assignedShiftEdit"""
+type AssignedShiftEditResponse{
   assignedShift: AssignedShift
   errors: [ShiftError!]!
 }
