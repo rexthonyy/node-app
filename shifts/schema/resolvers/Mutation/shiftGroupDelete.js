@@ -31,8 +31,8 @@ function getGraphQLOutput(field, message, code, shiftGroup = null) {
 }
 
 function shiftGroupDelete(channelId, shiftGroupId) {
-    return new Promise(async resolve => {
-        shiftQueries.getShiftGroupById([shiftGroupId], result => {
+    return new Promise(resolve => {
+        shiftQueries.getShiftGroupById([shiftGroupId], async result => {
             if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group not found", "NOT_FOUND", null));
             let shiftGroupRow = result.res[0];
