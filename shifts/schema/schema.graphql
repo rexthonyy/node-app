@@ -895,6 +895,12 @@ type shiftGroupCreateResponse{
   errors: [ShiftError!]!
 }
 
+"""Return type for shiftGroupDelete"""
+type shiftGroupDeleteResponse{
+  shiftGroup: ShiftGroup
+  errors: [ShiftError!]!
+}
+
 """Return type for dayNoteUpdate"""
 type DayNoteUpdateResponse{
   note: DayNotes
