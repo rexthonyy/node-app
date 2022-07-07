@@ -891,7 +891,7 @@ type UniqueShifts{
 
 """Return type for shiftGroupCreate"""
 type shiftGroupCreateResponse{
-  note: ShiftGroup
+  shiftGroup: ShiftGroup
   errors: [ShiftError!]!
 }
 
