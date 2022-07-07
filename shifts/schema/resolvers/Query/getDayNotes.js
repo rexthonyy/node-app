@@ -1,4 +1,5 @@
 const { formatDate } = require("../../../libs/util");
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, userPermissionGroupHasAccess } = require('../lib');
 
