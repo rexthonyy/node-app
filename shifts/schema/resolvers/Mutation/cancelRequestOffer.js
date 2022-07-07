@@ -28,19 +28,22 @@ function getGraphQLOutput(field, message, code, request = null) {
 function cancelRequestOffer(authUser, channelId, requestId) {
     return new Promise(resolve => {
         shiftQueries.getRequestOffer([channelId, requestId, authUser.id], "channel_id=$1 AND request_id=$2 AND user_id=$3", result => {
-            if (result.err) return resolve(getGraphQLOutput("channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request not found", "NOT_FOUND", null));
+            if (result.err) return resolve(getGraphQLOutput("channelId, requestId, authUser.id", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("channelId, requestId, authUser.id", "Request not found", "NOT_FOUND", null));
             let requestOfferId = result.res[0].id;
             shiftQueries.updateRequestOffer([requestOfferId, requestStatus.cancelled], "status=$2", "id=$1", async result => {
-                let offer = await getRequestOffer(channelId, requestId);
-                resolve(getGraphQLOutput("success", "Request offer cancelled", offer));
-                resolve({
-                    errors: [],
-                    request: offer
-                });
+                if (result.err) return resolve(getGraphQLOutput("requestOfferId, requestStatus.cancelled", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                try {
+                    let offer = await getRequestOffer(channelId, requestId);
+                    resolve({
+                        errors: [],
+                        request: offer
+                    });
+                } catch (err) {
+                    resolve(getGraphQLOutput("offer", err, "GRAPHQL_ERROR", null));
+                }
             });
         });
-
     });
 }
 
