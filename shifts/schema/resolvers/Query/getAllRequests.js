@@ -8,21 +8,21 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return reject(message);
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
-            resolve(await getRequests(args));
+            try {
+                resolve(await getRequests(args));
+            } catch (err) {
+                reject(err);
+            }
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
-            resolve(await getRequests(args));
+            try {
+                resolve(await getRequests(args));
+            } catch (err) {
+                reject(err);
+            }
         } else {
             reject("You do not have permission to perform this operation");
         }
     });
-}
-
-function getGraphQLOutput(status, message, result) {
-    return {
-        status,
-        message,
-        result
-    };
 }
 
 function getRequests(args) {
@@ -55,7 +55,7 @@ function getAllRequests({ channel }) {
             if (result.res.length == 0) return reject("Channel not found");
             let channelId = result.res[0].id;
             shiftQueries.getRequests([channelId], "channel_id=$1", result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", result.err, []));
+                if (result.err) return reject(JSON.stringify(result.err));
                 let requests = result.res;
                 const numRequests = requests.length;
                 let cursor = -1;
