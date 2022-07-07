@@ -752,7 +752,7 @@ type getAllRequestsResponse{
   status: String
   message: String
   numberOfRequests: Int
-  result: RequestResponse
+  result: [RequestResponse]
 }
 
 """Return type for getDayNotes"""
