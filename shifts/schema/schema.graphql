@@ -149,12 +149,6 @@ type Query {
   Look up the requests for the logged in user in a channel
   """
   getRequests(
-    """The start date of the shifts"""
-    startDate: String!
-
-     """The end date of the shifts"""
-    endDate: String!
-
     """Filtering options for products."""
     filter: ProductFilterInput
 
@@ -179,12 +173,6 @@ type Query {
   Look up the requests for all users in a channel. Requires permission MANAGE_STAFF
   """
   getAllRequests(
-   """The start date of the shifts"""
-    startDate: String!
-
-     """The end date of the shifts"""
-    endDate: String!
-
     """Filtering options for products."""
     filter: ProductFilterInput
 
