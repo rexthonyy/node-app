@@ -1,19 +1,18 @@
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById, userPermissionGroupHasAccess } = require('../lib');
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
-
-        let channelId = args.channelId;
+        if (!isAuthorized) return reject(message);
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
-            resolve(await getRequests(channelId));
+            resolve(await getRequests(args));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
-            resolve(await getRequests(channelId));
+            resolve(await getRequests(args));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            reject("You do not have permission to perform this operation");
         }
     });
 }
@@ -26,178 +25,212 @@ function getGraphQLOutput(status, message, result) {
     };
 }
 
-function getRequests(channelId) {
-    return new Promise(async resolve => {
-        shiftQueries.getRequests([channelId], "channel_id=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, []));
-            let requests = result.res;
-            const numRequests = requests.length;
-            let cursor = -1;
-            let shifts = [];
+function getRequests(args) {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let edges = await getAllRequests(args);
+            if (args.first) {
+                edges = edges.splice(0, args.first);
+            }
+            resolve({
+                pageInfo: {
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                    startCursor: "",
+                    endCursor: ""
+                },
+                edges,
+                totalCount: edges.length
+            });
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
 
-            requests.forEach(request => {
-                if (request.type == "requestTimeoff") {
-                    shiftQueries.getRequestTimeOff([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
-                        if (!result.err && result.res.length > 0) {
-                            let timeOffRequests = result.res;
-                            for (let timeOffRequest of timeOffRequests) {
+function getAllRequests({ channel }) {
+    return new Promise((resolve, reject) => {
+        kratosQueries.getChannel([channel], "slug=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Channel not found");
+            let channelId = result.res[0].id;
+            shiftQueries.getRequests([channelId], "channel_id=$1", result => {
+                if (result.err) return resolve(getGraphQLOutput("failed", result.err, []));
+                let requests = result.res;
+                const numRequests = requests.length;
+                let cursor = -1;
+                let shifts = [];
 
-                                let user;
-                                let responseBy;
+                requests.forEach(request => {
+                    if (request.type == "requestTimeoff") {
+                        shiftQueries.getRequestTimeOff([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
+                            if (!result.err && result.res.length > 0) {
+                                let timeOffRequests = result.res;
+                                for (let timeOffRequest of timeOffRequests) {
 
-                                try {
-                                    user = await getGraphQLUserById(timeOffRequest.user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    user = null;
+                                    let user;
+                                    let responseBy;
+
+                                    try {
+                                        user = await getGraphQLUserById(timeOffRequest.user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        user = null;
+                                    }
+                                    try {
+                                        responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        responseBy = null;
+                                    }
+
+                                    shifts.push({
+                                        id: timeOffRequest.id,
+                                        channelId: timeOffRequest.channel_id,
+                                        requestId: timeOffRequest.request_id,
+                                        user,
+                                        type: "TIMEOFF",
+                                        isAllDay: timeOffRequest.is_all_day,
+                                        startTime: timeOffRequest.start_time,
+                                        endTime: timeOffRequest.end_time,
+                                        reason: timeOffRequest.reason,
+                                        requestNote: timeOffRequest.request_note,
+                                        status: timeOffRequest.status,
+                                        responseNote: timeOffRequest.responseNote,
+                                        responseBy,
+                                        responseAt: timeOffRequest.response_at,
+                                        createdAt: timeOffRequest.created_at
+                                    });
                                 }
-                                try {
-                                    responseBy = await getGraphQLUserById(timeOffRequest.response_by_user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    responseBy = null;
-                                }
-
-                                shifts.push({
-                                    id: timeOffRequest.id,
-                                    channelId: timeOffRequest.channel_id,
-                                    requestId: timeOffRequest.request_id,
-                                    user,
-                                    type: "TIMEOFF",
-                                    isAllDay: timeOffRequest.is_all_day,
-                                    startTime: timeOffRequest.start_time,
-                                    endTime: timeOffRequest.end_time,
-                                    reason: timeOffRequest.reason,
-                                    requestNote: timeOffRequest.request_note,
-                                    status: timeOffRequest.status,
-                                    responseNote: timeOffRequest.responseNote,
-                                    responseBy,
-                                    responseAt: timeOffRequest.response_at,
-                                    createdAt: timeOffRequest.created_at
-                                });
                             }
-                        }
-                        checkComplete();
-                    });
-                } else if (request.type == "requestSwap") {
-                    shiftQueries.getRequestSwap([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
-                        if (!result.err && result.res.length > 0) {
-                            let swapRequests = result.res;
-                            for (let swapRequest of swapRequests) {
-                                let user;
-                                let responseBy;
-                                let shiftToSwap;
-                                let toSwapWith;
-                                try {
-                                    user = await getGraphQLUserById(swapRequest.user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    user = null;
+                            checkComplete();
+                        });
+                    } else if (request.type == "requestSwap") {
+                        shiftQueries.getRequestSwap([channelId, request.id], "channel_id=$1 AND request_id=$2", async result => {
+                            if (!result.err && result.res.length > 0) {
+                                let swapRequests = result.res;
+                                for (let swapRequest of swapRequests) {
+                                    let user;
+                                    let responseBy;
+                                    let shiftToSwap;
+                                    let toSwapWith;
+                                    try {
+                                        user = await getGraphQLUserById(swapRequest.user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        user = null;
+                                    }
+                                    try {
+                                        responseBy = await getGraphQLUserById(swapRequest.response_by_user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        responseBy = null;
+                                    }
+                                    try {
+                                        shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        shiftToSwap = null;
+                                    }
+                                    try {
+                                        toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
+                                    } catch (err) {
+                                        console.log(err);
+                                        toSwapWith = null;
+                                    }
+                                    shifts.push({
+                                        id: swapRequest.id,
+                                        channelId: swapRequest.channel_id,
+                                        requestId: swapRequest.request_id,
+                                        user,
+                                        type: "SWAP",
+                                        shiftToSwap,
+                                        toSwapWith,
+                                        requestNote: swapRequest.request_note,
+                                        status: swapRequest.status,
+                                        responseNote: swapRequest.responseNote,
+                                        responseBy,
+                                        responseAt: swapRequest.response_at,
+                                        createdAt: swapRequest.created_at
+                                    });
                                 }
-                                try {
-                                    responseBy = await getGraphQLUserById(swapRequest.response_by_user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    responseBy = null;
-                                }
-                                try {
-                                    shiftToSwap = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    shiftToSwap = null;
-                                }
-                                try {
-                                    toSwapWith = await getGraphQLAssignedShift(swapRequest.assigned_user_shift_id_to_swap);
-                                } catch (err) {
-                                    console.log(err);
-                                    toSwapWith = null;
-                                }
-                                shifts.push({
-                                    id: swapRequest.id,
-                                    channelId: swapRequest.channel_id,
-                                    requestId: swapRequest.request_id,
-                                    user,
-                                    type: "SWAP",
-                                    shiftToSwap,
-                                    toSwapWith,
-                                    requestNote: swapRequest.request_note,
-                                    status: swapRequest.status,
-                                    responseNote: swapRequest.responseNote,
-                                    responseBy,
-                                    responseAt: swapRequest.response_at,
-                                    createdAt: swapRequest.created_at
-                                });
                             }
-                        }
-                        checkComplete();
-                    });
-                } else if (request.type == "requestOffer") {
-                    shiftQueries.getRequestOffer([channelId, request.id, "pending"], "channel_id=$1 AND request_id=$2 AND status=$3", async result => {
-                        if (!result.err && result.res.length > 0) {
-                            let offerRequests = result.res;
-                            for (let offerRequest of offerRequests) {
-                                let user;
-                                let responseBy;
-                                let shiftToOffer;
-                                let shiftOfferedTo;
-                                try {
-                                    user = await getGraphQLUserById(offerRequest.user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    user = null;
-                                }
-                                try {
-                                    responseBy = await getGraphQLUserById(offerRequest.response_by_user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    responseBy = null;
-                                }
-                                try {
-                                    shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    shiftToOffer = null;
-                                }
-                                try {
-                                    shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
-                                } catch (err) {
-                                    console.log(err);
-                                    shiftOfferedTo = null;
-                                }
+                            checkComplete();
+                        });
+                    } else if (request.type == "requestOffer") {
+                        shiftQueries.getRequestOffer([channelId, request.id, "pending"], "channel_id=$1 AND request_id=$2 AND status=$3", async result => {
+                            if (!result.err && result.res.length > 0) {
+                                let offerRequests = result.res;
+                                for (let offerRequest of offerRequests) {
+                                    let user;
+                                    let responseBy;
+                                    let shiftToOffer;
+                                    let shiftOfferedTo;
+                                    try {
+                                        user = await getGraphQLUserById(offerRequest.user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        user = null;
+                                    }
+                                    try {
+                                        responseBy = await getGraphQLUserById(offerRequest.response_by_user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        responseBy = null;
+                                    }
+                                    try {
+                                        shiftToOffer = await getGraphQLAssignedShift(offerRequest.assigned_user_shift_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        shiftToOffer = null;
+                                    }
+                                    try {
+                                        shiftOfferedTo = await getGraphQLUserById(offerRequest.offered_to_user_id);
+                                    } catch (err) {
+                                        console.log(err);
+                                        shiftOfferedTo = null;
+                                    }
 
-                                shifts.push({
-                                    id: offerRequest.id,
-                                    channelId: offerRequest.channel_id,
-                                    requestId: offerRequest.request_id,
-                                    user,
-                                    type: "SWAP",
-                                    shiftToOffer,
-                                    shiftOfferedTo,
-                                    requestNote: offerRequest.request_note,
-                                    status: offerRequest.status,
-                                    responseNote: offerRequest.responseNote,
-                                    responseBy,
-                                    responseAt: offerRequest.response_at,
-                                    createdAt: offerRequest.created_at
-                                });
+                                    shifts.push({
+                                        id: offerRequest.id,
+                                        channelId: offerRequest.channel_id,
+                                        requestId: offerRequest.request_id,
+                                        user,
+                                        type: "SWAP",
+                                        shiftToOffer,
+                                        shiftOfferedTo,
+                                        requestNote: offerRequest.request_note,
+                                        status: offerRequest.status,
+                                        responseNote: offerRequest.responseNote,
+                                        responseBy,
+                                        responseAt: offerRequest.response_at,
+                                        createdAt: offerRequest.created_at
+                                    });
+                                }
                             }
-                        }
+                            checkComplete();
+                        });
+                    } else {
                         checkComplete();
-                    });
-                } else {
-                    checkComplete();
+                    }
+                });
+
+                checkComplete();
+
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numRequests) {
+                        let edges = [];
+                        for (let shift of shifts) {
+                            edges.push({
+                                cursor: "",
+                                node: shift
+                            });
+                        }
+                        resolve(edges);
+                    }
                 }
             });
-
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numRequests) {
-                    console.log(shifts);
-                    resolve({ status: "success", message: "Fetch successful", numberOfRequests: shifts.length, result: shifts });
-                }
-            }
         });
     });
 }
