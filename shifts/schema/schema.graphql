@@ -492,7 +492,7 @@ type Mutation {
     break: UnpaidBreakEnum
 
     shiftActivities: [SubShiftInput]
-  ): OpenShiftAddResponse
+  ): OpenShiftEditResponse
 
   """Deletes an open shift. Requires permission MANAGE_STAFF"""
   openShiftDelete(
@@ -926,6 +926,12 @@ enum ShiftErrorCode {
 
 """Return type for OpenShiftAdd"""
 type OpenShiftAddResponse{
+  openShift: OpenShift
+  errors: [ShiftError!]!
+}
+
+"""Return type for OpenShiftAdd"""
+type OpenShiftEditResponse{
   openShift: OpenShift
   errors: [ShiftError!]!
 }

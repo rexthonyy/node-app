@@ -26,7 +26,7 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await openShiftAdd(channelId, shiftGroupId, slots, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", "GRAPHQL_ERROR", null));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "GRAPHQL_ERROR", null));
         }
     });
 }
@@ -67,7 +67,7 @@ function openShiftAdd(channelId, shiftGroupId, slots, color, label, note, is24Ho
                     unpaidBreakValue[unpaidBreak],
                 ];
                 shiftQueries.createOpenShift(values, result => {
-                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create open shift", null)) };
+                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create open shift", "GRAPHQL_ERROR", null)) };
                     let openShift = result.res[0];
                     let openShiftId = openShift.id;
                     const numopenShiftActivities = shiftActivities.length;

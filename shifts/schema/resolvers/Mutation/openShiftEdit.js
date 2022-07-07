@@ -6,7 +6,7 @@ const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } =
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
@@ -26,27 +26,30 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await openShiftEdit(openShiftId, channelId, shiftGroupId, slots, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "GRAPHQL_ERROR", null));
         }
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, openShift = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        openShift
+    }
 }
 
 function openShiftEdit(openShiftId, channelId, shiftGroupId, slots, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities) {
     return new Promise(resolve => {
         shiftQueries.getShiftGroupById([shiftGroupId], async result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+            if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group does not exist", "NOT_FOUND", null));
             shiftQueries.getOpenShifts([openShiftId], "id=$1", result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Open shift does not exist", null));
+                if (result.err) return resolve(getGraphQLOutput("openShiftId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("openShiftId", "Open shift does not exist", "NOT_FOUND", null));
 
                 let values = [
                     openShiftId,
@@ -61,7 +64,7 @@ function openShiftEdit(openShiftId, channelId, shiftGroupId, slots, color, label
                 ];
 
                 shiftQueries.updateOpenShift(values, "label=$2, color=$3, note=$4, slots=$5, start_time=$6, end_time=$7, is24hours=$8, unpaid_break_time=$9", "id=$1", result => {
-                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to update open shift", null)) };
+                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to update open shift", "GRAPHQL_ERROR", null)) };
                     shiftQueries.deleteOpenShiftActivities([openShiftId], "open_shift_id=$1", result => {
                         const numOpenShiftActivities = shiftActivities.length;
                         let cursor = -1;
@@ -89,8 +92,15 @@ function openShiftEdit(openShiftId, channelId, shiftGroupId, slots, color, label
                         async function checkComplete() {
                             cursor++;
                             if (cursor == numOpenShiftActivities) {
-                                let shift = await getGraphQLOpenShift(openShiftId);
-                                resolve(getGraphQLOutput("success", "Open shift updated", shift));
+                                try {
+                                    let shift = await getGraphQLOpenShift(openShiftId);
+                                    resolve({
+                                        errors: [],
+                                        openShift: shift
+                                    });
+                                } catch (err) {
+                                    resolve(getGraphQLOutput("openshift", err, "GRAPHQL_ERROR", null));
+                                }
                             }
                         }
                     });
