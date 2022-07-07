@@ -26,7 +26,7 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await openShiftAdd(channelId, shiftGroupId, slots, color, label, note, is24Hours, startTime, endTime, unpaidBreak, shiftActivities));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", "GRAPHQL_ERROR", null));
         }
     });
 }

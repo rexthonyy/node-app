@@ -519,7 +519,7 @@ type Mutation {
 
      """The id of the group member that the shift should be assigned"""
     userId: ID!
-  ): AssignedShiftAddResponse
+  ): OpenShiftAssignResponse
 
 
   """Adds a timeoff for a group member. Requires permission MANAGE_STAFF"""
@@ -933,6 +933,12 @@ type OpenShiftAddResponse{
 """Return type for assignedShiftMoveToOpen"""
 type AssignedShiftMoveToOpenResponse{
   openShift: OpenShift
+  errors: [ShiftError!]!
+}
+
+"""Return type for openShiftAssign"""
+type OpenShiftAssignResponse{
+  assignedShift: AssignedShift
   errors: [ShiftError!]!
 }
 
