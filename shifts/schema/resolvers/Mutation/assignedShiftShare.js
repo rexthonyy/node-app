@@ -37,17 +37,20 @@ function getGraphQLOutput(field, message, code, assignedShift = null) {
 function assignedShiftShare(assignedShiftId, channelId, shiftGroupId) {
     return new Promise(resolve => {
         shiftQueries.getShiftGroupById([shiftGroupId], async result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+            if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group does not exist", "NOT_FOUND", null));
             shiftQueries.getAssignedShifts([assignedShiftId], "id=$1", async result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Assigned shift does not exist", null));
+                if (result.err) return resolve(getGraphQLOutput("assignedShiftId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("assignedShiftId", "Assigned shift does not exist", "NOT_FOUND", null));
                 let assignedShift = result.res[0];
 
                 await copyAssignedShiftToSharedSchedules(assignedShift);
                 await updateAssignedShift(assignedShift.id);
                 let graphQLAssignedShift = await getGraphQLAssignedShift(assignedShift.id);
-                resolve(getGraphQLOutput("success", "Assigned shift added to shared schedule", graphQLAssignedShift));
+                resolve({
+                    errors: [],
+                    assignedShift: graphQLAssignedShift
+                });
             });
         });
     });
