@@ -881,9 +881,30 @@ type shiftGroupCreateResponse{
 
 """Return type for shiftGroupCreate"""
 type AssignedShiftAddResponse{
-  status: String
+  assignedShift: AssignedShift
+  errors: [ShiftError!]!
+}
+
+type ShiftError {
+  """
+  Name of a field that caused the error. A value of `null` indicates that the error isn't associated with a particular field.
+  """
+  field: String
+
+  """The error message."""
   message: String
-  result: AssignedShift
+
+  """The error code."""
+  code: ShiftErrorCode!
+}
+
+
+"""An enumeration."""
+enum ShiftErrorCode {
+  INVALID
+  GRAPHQL_ERROR
+  NOT_FOUND
+  REQUIRED
 }
 
 """Return type for OpenShiftAdd"""
