@@ -5,7 +5,7 @@ const { checkAuthorization, userPermissionGroupHasAccess } = require('../lib');
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let name = args.name || "Unnamed group";
@@ -15,33 +15,39 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await shiftGroupCreate(channelId, name));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "INVALID", null));
         }
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, shiftGroup = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        shiftGroup
+    }
 }
 
 function shiftGroupCreate(channelId, name) {
     return new Promise(resolve => {
         kratosQueries.getChannel([channelId], "id=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", JSON.stringify(result.err), null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
+            if (result.err) return resolve(getGraphQLOutput("channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("channelId", "Channel not found", "NOT_FOUND", null));
             shiftQueries.createShiftGroup([channelId, name, -1], result => {
-                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("failed", "Failed to create shift groups", null));
+                if (result.err || result.res.length == 0) return resolve(getGraphQLOutput("channelId, name", "Failed to create shift groups", "GRAPHQL_ERROR", null));
                 let shiftGroup = result.res[0];
                 let data = {
                     channelId: shiftGroup.channel_id,
                     shiftGroupId: shiftGroup.id,
                     name: shiftGroup.name
                 };
-                resolve(getGraphQLOutput("success", "Shift group created", data));
+                resolve({
+                    errors: [],
+                    shiftGroup: data
+                })
             });
         });
     });

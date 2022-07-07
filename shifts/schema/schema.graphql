@@ -891,9 +891,8 @@ type UniqueShifts{
 
 """Return type for shiftGroupCreate"""
 type shiftGroupCreateResponse{
-  status: String
-  message: String
-  result: ShiftGroup
+  note: ShiftGroup
+  errors: [ShiftError!]!
 }
 
 """Return type for dayNoteUpdate"""
