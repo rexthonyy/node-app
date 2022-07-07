@@ -5,7 +5,7 @@ const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } =
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let note = args.note || "";
@@ -21,30 +21,45 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, note = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        note
+    }
 }
 
 function dayNoteUpdate(channelId, note, date) {
     return new Promise(resolve => {
         let day = getDayFromDate(date);
         shiftQueries.getDayNotes([formatDate(day)], "date=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err));
+            if (result.err) return resolve(getGraphQLOutput("formatDate(day)", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length == 0) {
                 shiftQueries.createDayNote([channelId, note, day], result => {
-                    if (result.err) return resolve(getGraphQLOutput("failed", result.err));
-                    resolve(getGraphQLOutput("success", "Note updated"));
+                    if (result.err) return resolve(getGraphQLOutput("channelId, note, day", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                    if (result.res.length == 0) return resolve(getGraphQLOutput("channelId, note, day", "Failed to create day note", "GRAPHQL_ERROR", null));
+                    let dayNote = result.res[0];
+                    resolve(getDayNote(dayNote));
                 });
             } else {
                 shiftQueries.updateDayNote([channelId, note, day], "channel_id=$1, note=$2", "date=$3", result => {
-                    if (result.err) return resolve(getGraphQLOutput("failed", result.err));
-                    resolve(getGraphQLOutput("success", "Note updated"));
+                    if (result.err) return resolve(getGraphQLOutput("channelId, note, day", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                    if (result.res.length == 0) return resolve(getGraphQLOutput("channelId, note, day", "Failed to update day note", "GRAPHQL_ERROR", null));
+                    let dayNote = result.res[0];
+                    resolve(getDayNote(dayNote));
                 });
             }
         });
     });
+}
+
+
+function getDayNote(note) {
+    return {
+        errors: [],
+        note
+    };
 }

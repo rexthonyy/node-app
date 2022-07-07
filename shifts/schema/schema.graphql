@@ -604,7 +604,7 @@ type Mutation {
 
     """A date"""
     date: String!
-  ): ResponseStatus
+  ): DayNoteUpdateResponse
 
 
   """Create a time off request to an admin"""
@@ -876,6 +876,12 @@ type shiftGroupCreateResponse{
   status: String
   message: String
   result: ShiftGroup
+}
+
+"""Return type for dayNoteUpdate"""
+type DayNoteUpdateResponse{
+  note: DayNotes
+  errors: [ShiftError!]!
 }
 
 """Return type for assignedShiftAdd"""
