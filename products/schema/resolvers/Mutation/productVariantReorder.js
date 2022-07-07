@@ -10,37 +10,33 @@ const productQueries = require("../../../postgres/product-queries");
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null, null, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null));
 
         let accessPermissions = ["MANAGE_PRODUCTS"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             resolve(await productVariantReorder(authUser, args));
         } else {
-            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null, null, null));
+            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null));
         }
     });
 }
 
-function getGraphQLOutput(field, message, code, attributes, values, channels, variants, product) {
+function getGraphQLOutput(field, message, code, attributes, values, product=null) {
     return {
         errors: [{
             field,
             message,
             code,
             attributes,
-            values,
-            channels,
-            variants
+            values
         }],
-        productChannelListingErrors: [{
+        productErrors: [{
             field,
             message,
             code,
             attributes,
-            values,
-            channels,
-            variants
+            values
         }],
         product
     }
@@ -48,7 +44,8 @@ function getGraphQLOutput(field, message, code, attributes, values, channels, va
 
 function productVariantReorder(authUser, args) {
     return new Promise(resolve => {
-        let id = args.id;
+        let productId = args.productId;
+        let moves = args.moves;
         productQueries.getProduct([id], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", [], [], [], [], null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("id", `Cannot resolve id:${id}`, "NOT_FOUND", [], [], [], [], null));

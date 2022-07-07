@@ -6,21 +6,13 @@ const { sortByPosition, paginate } = require("../../../libs/util");
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
-
-        resolve(await getShiftGroups(args));
+        if (!isAuthorized) return reject(message);
+        try{
+            resolve(await getShiftGroups(args));
+        }catch(err){
+            reject(err);
+        }
     });
-}
-
-function getGraphQLOutput(status, message, result, pageInfo) {
-    if (!pageInfo.next) delete pageInfo.next;
-    if (!pageInfo.previous) delete pageInfo.previous;
-    return {
-        status,
-        message,
-        pageInfo,
-        result
-    };
 }
 
 function getShiftGroups(args) {
@@ -47,13 +39,13 @@ function getShiftGroups(args) {
 }
 
 function getAllShiftGroups(channel) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         kratosQueries.getChannel([channel], "slug=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("graphql error", JSON.stringify(result.err), null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Channel not found", null));
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Channel not found");
             let channelId = result.res[0].id;
             shiftQueries.getShiftGroupsByChannelId([channelId], result => {
-                if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift groups", null));
+                if (result.err) return reject("Failed to get shift groups");
                 let shiftGroups = result.res;
                 shiftGroups.sort(sortByPosition);
                 let edges = [];
