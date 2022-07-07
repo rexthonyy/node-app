@@ -708,9 +708,8 @@ type getSettingsResponse{
 
 """Return type for getShiftGroups"""
 type RequestTypeResponseStatus{
-  status: String
-  message: String
-  result: RequestResponse
+  request: RequestResponse
+  errors: [ShiftError!]!
 }
 
 """Return type for getShiftGroupMembers"""

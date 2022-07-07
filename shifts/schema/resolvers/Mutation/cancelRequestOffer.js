@@ -5,7 +5,7 @@ const { checkAuthorization, getGraphQLUserById } = require('../lib');
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let requestId = args.requestId;
@@ -14,23 +14,30 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, request = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        request
+    }
 }
 
 function cancelRequestOffer(authUser, channelId, requestId) {
     return new Promise(resolve => {
         shiftQueries.getRequestOffer([channelId, requestId, authUser.id], "channel_id=$1 AND request_id=$2 AND user_id=$3", result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request not found", null));
+            if (result.err) return resolve(getGraphQLOutput("channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request not found", "NOT_FOUND", null));
             let requestOfferId = result.res[0].id;
             shiftQueries.updateRequestOffer([requestOfferId, requestStatus.cancelled], "status=$2", "id=$1", async result => {
                 let offer = await getRequestOffer(channelId, requestId);
                 resolve(getGraphQLOutput("success", "Request offer cancelled", offer));
+                resolve({
+                    errors: [],
+                    request: offer
+                });
             });
         });
 
