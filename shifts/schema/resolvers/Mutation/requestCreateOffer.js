@@ -5,7 +5,7 @@ const { checkAuthorization, getGraphQLUserById } = require('../lib');
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let assignedShiftId = args.assignedShiftId;
@@ -16,19 +16,22 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, request = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        request
+    }
 }
 
 function requestCreateOffer(authUser, channelId, assignedShiftId, groupMemberId, note) {
     return new Promise(resolve => {
         shiftQueries.createRequest([channelId, authUser.id, -1, requestType.requestOffer], result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request could not be created", null));
+            if (result.err) return resolve(getGraphQLOutput("channelId, requestId, authUser.id", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request could not be created", "NOT_FOUND", null));
             let request = result.res[0];
 
             let values = [
@@ -45,10 +48,17 @@ function requestCreateOffer(authUser, channelId, assignedShiftId, groupMemberId,
             ];
 
             shiftQueries.createRequestOffer(values, async result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Request swap could not be created", null));
-                let offer = await getRequestOffer(channelId, request.id);
-                resolve(getGraphQLOutput("success", "Request offer created", offer));
+                if (result.err) return resolve(getGraphQLOutput("values", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("values", "Request swap could not be created", "GRAPHQL_ERROR", null));
+                try {
+                    let offer = await getRequestOffer(channelId, request.id);
+                    resolve({
+                        errors: [],
+                        request: offer
+                    });
+                } catch (err) {
+                    resolve(getGraphQLOutput("offer", err, "GRAPHQL_ERROR", null));
+                }
             });
         });
     });

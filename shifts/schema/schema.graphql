@@ -656,7 +656,7 @@ type Mutation {
 
     """A note"""
     note: String
-  ): RequestTypeResponseStatus
+  ): RequestCreateOfferResponse
 
   cancelRequestSwap(
     """id of a channel or branch_id"""
@@ -708,6 +708,12 @@ type getSettingsResponse{
 
 """Return type for getShiftGroups"""
 type RequestTypeResponseStatus{
+  request: RequestResponse
+  errors: [ShiftError!]!
+}
+
+"""Return type for getShiftGroups"""
+type RequestCreateOfferResponse{
   request: RequestResponse
   errors: [ShiftError!]!
 }
