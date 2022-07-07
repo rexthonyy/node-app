@@ -7,7 +7,7 @@ type Query {
     filter: ProductFilterInput
 
     """Slug of a channel for which the data should be returned."""
-    channel: String
+    channel: String!
 
     """Return the elements in the list that come before the specified cursor."""
     before: String
@@ -33,7 +33,7 @@ type Query {
     filter: ProductFilterInput
 
     """Slug of a channel for which the data should be returned."""
-    channel: String
+    channel: String!
 
     """Return the elements in the list that come before the specified cursor."""
     before: String
