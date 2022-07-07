@@ -926,9 +926,8 @@ enum ShiftErrorCode {
 
 """Return type for OpenShiftAdd"""
 type OpenShiftAddResponse{
-  status: String
-  message: String
-  result: OpenShift
+  openShift: OpenShift
+  errors: [ShiftError!]!
 }
 
 """Return type for assignedShiftMoveToOpen"""
