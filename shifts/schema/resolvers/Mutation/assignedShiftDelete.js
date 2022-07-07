@@ -20,14 +20,14 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(field, message, code, shift = null) {
+function getGraphQLOutput(field, message, code, assignedShift = null) {
     return {
         errors: [{
             field,
             message,
             code
         }],
-        shift
+        assignedShift
     }
 }
 

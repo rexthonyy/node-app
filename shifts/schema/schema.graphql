@@ -928,16 +928,14 @@ type OpenShiftAddResponse{
 
 """Return type for assignedShiftMoveToOpen"""
 type AssignedShiftMoveToOpenResponse{
-  status: String
-  message: String
-  result: OpenShift
+  openShift: OpenShift
+  errors: [ShiftError!]!
 }
 
 """Return type for assignedShiftShare"""
 type AssignedShiftShareResponse{
-  status: String
-  message: String
-  result: AssignedShift
+  openShift: AssignedShift
+  errors: [ShiftError!]!
 }
 
 """Return type for shiftGroupRename"""
