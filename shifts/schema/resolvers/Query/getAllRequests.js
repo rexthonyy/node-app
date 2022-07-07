@@ -194,6 +194,7 @@ function getRequests(channelId) {
             function checkComplete() {
                 cursor++;
                 if (cursor == numRequests) {
+                    console.log(shifts);
                     resolve({ status: "success", message: "Fetch successful", numberOfRequests: shifts.length, result: shifts });
                 }
             }
