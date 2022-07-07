@@ -7,7 +7,7 @@ const getGraphQLAssignedShift = require("../lib/getGraphQLAssignedShift");
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let assignedShiftId = args.assignedShiftId;
         let channelId = args.channelId;
@@ -23,12 +23,15 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, assignedShift = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        assignedShift
+    }
 }
 
 function assignedShiftShare(assignedShiftId, channelId, shiftGroupId) {
