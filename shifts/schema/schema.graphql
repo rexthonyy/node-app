@@ -80,7 +80,7 @@ type Query {
 
      """The end date of the shifts"""
     endDate: String!
-  ): getShiftsResponse
+  ): GetShiftsResponse
 
   """
   Look up the shifts in a channel at the range specified.
@@ -106,9 +106,6 @@ type Query {
   Look up the shared schedules in a channel at the range specified.
   """
   getSharedSchedules(
-   """ID of the channel."""
-    channelId: ID!
-
     """ID of the shift group."""
     shiftGroupId: ID!
 
@@ -117,7 +114,25 @@ type Query {
 
      """The end date of the shifts"""
     endDate: String!
-  ): getSharedScheduleResponse
+
+    """Filtering options for products."""
+    filter: ProductFilterInput
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String!
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): GetSharedScheduleResponse
 
   """
   Look up the details of all shifts in a channel. Requires permission MANAGE_STAFF
@@ -679,7 +694,7 @@ type getNonShiftGroupMembersResponse{
 }
 
 """Return type for getShiftGroupMembers"""
-type getShiftsResponse{
+type GetShiftsResponse{
   status: String
   message: String
   result: Shifts
@@ -693,10 +708,21 @@ type getShiftsByTaskResponse{
 }
 
 """Return type for getShiftGroupMembers"""
-type getSharedScheduleResponse{
-  status: String
-  message: String
-  schedules: [UserAssignedShifts]
+type GetSharedScheduleResponse{
+  """Pagination data for this connection."""
+  pageInfo: PageInfo!
+  edges: [GetSharedScheduleCountableEdge!]!
+
+  """A total count of items in the collection."""
+  totalCount: Int
+}
+
+type GetSharedScheduleCountableEdge {
+  """The item at the end of the edge."""
+  node: UserAssignedShifts!
+
+  """A cursor for use in pagination."""
+  cursor: String!
 }
 
 """Return type for getAllUniqueShifts"""

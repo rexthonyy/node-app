@@ -1,18 +1,40 @@
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
-const { formatDate, sortByStartTime, diffHours, paginate } = require("../../../libs/util");
+const { formatDate, sortByStartTime, diffHours } = require("../../../libs/util");
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return reject(message);
 
-        let channelId = args.channelId;
-        let shiftGroupId = args.shiftGroupId;
-        let startDate = new Date(args.startDate);
-        let endDate = new Date(args.endDate);
+        try {
+            resolve(await getSharedSchedules(args));
+        } catch (err) {
+            reject(err);
+        }
+    });
+}
 
-        resolve(await getSharedSchedules(authUser, channelId, shiftGroupId, startDate, endDate));
+function getSharedSchedules(args) {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let edges = await getAllSharedSchedules(args);
+            if (args.first) {
+                edges = edges.splice(0, args.first);
+            }
+            resolve({
+                pageInfo: {
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                    startCursor: "",
+                    endCursor: ""
+                },
+                edges,
+                totalCount: edges.length
+            });
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 
@@ -24,42 +46,55 @@ function getGraphQLOutput(status, message, schedules) {
     };
 }
 
-function getSharedSchedules(authUser, channelId, shiftGroupId, startDate, endDate) {
-    return new Promise(async resolve => {
-        shiftQueries.getShiftGroupMembersByChannelIdAndShiftGroupId([channelId, shiftGroupId], result => {
-            if (result.err) return resolve([]);
-            let shiftGroupMembers = result.res;
-            const numShiftGroupMembers = shiftGroupMembers.length;
-            let cursor = -1;
-            let assignedShifts = [];
+function getAllSharedSchedules({ channel, shiftGroupId, startDate, endDate }) {
+    return new Promise(async(resolve, reject) => {
+        startDate = new Date(startDate);
+        endDate = new Date(endDate);
+        kratosQueries.getChannel([channel], "slug=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Channel not found");
+            let channelId = result.res[0].id;
+            shiftQueries.getShiftGroupMembersByChannelIdAndShiftGroupId([channelId, shiftGroupId], result => {
+                if (result.err) return reject(JSON.stringify(result.err));
+                let shiftGroupMembers = result.res;
+                const numShiftGroupMembers = shiftGroupMembers.length;
+                let cursor = -1;
+                let assignedShifts = [];
 
-            shiftGroupMembers.forEach(async groupMember => {
-                let shifts = await getGroupMemberSharedSchedules(channelId, shiftGroupId, groupMember.user_id, startDate, endDate);
-                shifts.sort(sortByStartTime);
+                shiftGroupMembers.forEach(async groupMember => {
+                    let shifts = await getGroupMemberSharedSchedules(channelId, shiftGroupId, groupMember.user_id, startDate, endDate);
+                    shifts.sort(sortByStartTime);
 
-                let userId = groupMember.user_id;
-                let graphQLUser = await getGraphQLUserById(userId);
-                let name = `${graphQLUser.firstName} ${graphQLUser.lastName}`;
-                let image = graphQLUser.avatar.url;
-                let numberOfHours = 0;
-                for (let shift of shifts) {
-                    numberOfHours += diffHours(new Date(shift.endTime), new Date(shift.startTime));
-                }
+                    let userId = groupMember.user_id;
+                    let graphQLUser = await getGraphQLUserById(userId);
+                    let name = `${graphQLUser.firstName} ${graphQLUser.lastName}`;
+                    let image = graphQLUser.avatar.url;
+                    let numberOfHours = 0;
+                    for (let shift of shifts) {
+                        numberOfHours += diffHours(new Date(shift.endTime), new Date(shift.startTime));
+                    }
 
-                assignedShifts.push({ userId, name, image, numberOfHours, shifts });
+                    assignedShifts.push({ userId, name, image, numberOfHours, shifts });
+                    checkComplete();
+                });
+
                 checkComplete();
-            });
 
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numShiftGroupMembers) {
-                    resolve(getGraphQLOutput("success", "Fetch successful", assignedShifts));
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numShiftGroupMembers) {
+                        let edges = [];
+                        for (let assignedShift of assignedShifts) {
+                            edges.push({
+                                cursor: "",
+                                node: assignedShift
+                            });
+                        }
+                        resolve(edges);
+                    }
                 }
-            }
+            });
         });
-
     });
 }
 

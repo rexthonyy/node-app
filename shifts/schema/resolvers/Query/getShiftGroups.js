@@ -1,15 +1,15 @@
 const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization } = require('../lib');
-const { sortByPosition, paginate } = require("../../../libs/util");
+const { sortByPosition } = require("../../../libs/util");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
-        try{
+        try {
             resolve(await getShiftGroups(args));
-        }catch(err){
+        } catch (err) {
             reject(err);
         }
     });
