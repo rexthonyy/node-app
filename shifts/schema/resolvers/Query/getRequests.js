@@ -16,14 +16,6 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message, result) {
-    return {
-        status,
-        message,
-        result
-    };
-}
-
 function getRequests(args) {
     return new Promise(async(resolve, reject) => {
         try {
