@@ -626,7 +626,7 @@ type Mutation {
 
     """A note"""
     note: String
-  ): RequestTypeResponseStatus
+  ): RequestCreateTimeOffResponse
 
   """Create a swap request to a group member"""
   requestCreateSwap(
@@ -664,7 +664,7 @@ type Mutation {
 
     """The id of the swap request that you want to cancel"""
     requestId: ID!
-  ): RequestTypeResponseStatus
+  ): RequestCreateSwapResponse
 
   cancelRequestOffer(
     """id of a channel or branch_id"""
@@ -712,8 +712,20 @@ type RequestTypeResponseStatus{
   errors: [ShiftError!]!
 }
 
-"""Return type for getShiftGroups"""
+"""Return type for requestCreateOffer"""
 type RequestCreateOfferResponse{
+  request: RequestResponse
+  errors: [ShiftError!]!
+}
+
+"""Return type for requestCreateSwap"""
+type RequestCreateSwapResponse{
+  request: RequestResponse
+  errors: [ShiftError!]!
+}
+
+"""Return type for requestCreateTimeOff"""
+type RequestCreateTimeOffResponse{
   request: RequestResponse
   errors: [ShiftError!]!
 }
