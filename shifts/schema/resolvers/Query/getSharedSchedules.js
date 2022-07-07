@@ -1,3 +1,4 @@
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
 const { formatDate, sortByStartTime, diffHours } = require("../../../libs/util");
