@@ -385,7 +385,7 @@ type Mutation {
 
     """The id of the shift that you want to delete"""
     assignedShiftId: ID!
-  ): AssignedShiftAddResponse
+  ): AssignedShiftDeleteResponse
 
   """Moves an assigned shift to open. Requires permission MANAGE_STAFF"""
   assignedShiftMoveToOpen(
@@ -887,6 +887,12 @@ type AssignedShiftAddResponse{
 
 """Return type for assignedShiftEdit"""
 type AssignedShiftEditResponse{
+  assignedShift: AssignedShift
+  errors: [ShiftError!]!
+}
+
+"""Return type for assignedShiftDelete"""
+type AssignedShiftDeleteResponse{
   assignedShift: AssignedShift
   errors: [ShiftError!]!
 }
