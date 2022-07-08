@@ -91,7 +91,7 @@ function getUpdateProductTypeValues({ id, input, productType }) {
     let values = [id];
     let whereClause = "id=$1";
     let set = null;
-    let cursor = 0;
+    let cursor = 1;
 
     if (input.name != null) {
         values.push(input.name);
