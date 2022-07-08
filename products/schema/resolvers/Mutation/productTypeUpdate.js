@@ -53,6 +53,8 @@ function productTypeUpdate(args) {
 
         let { values, set, whereClause } = getUpdateProductTypeValues(args);
 
+        console.log(values, set, whereClause);
+
         productQueries.updateProductType(values, set, whereClause, async result => {
             if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Failed to update product type", "GRAPHQL_ERROR", null, null, null));
