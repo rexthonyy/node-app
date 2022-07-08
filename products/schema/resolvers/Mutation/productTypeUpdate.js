@@ -143,20 +143,17 @@ function getUpdateProductTypeValues({ id, input, productType }) {
 }
 
 function addToMetadata(privateMetadata, taxCode) {
-    let pm = [];
+    let pm = {};
     let isAdded = false;
     for (let metadata of privateMetadata) {
         if (metadata.key == "vatlayer.code") {
             metadata.value = taxCode;
             isAdded = true;
         }
-        pm.push(metadata);
+        pm[metadata.key] = metadata.value;
     }
     if (!isAdded) {
-        pm.push({
-            key: "vatlayer.code",
-            value: taxCode
-        });
+        pm["vatlayer.code"] = taxCode;
     }
     return pm;
 }
