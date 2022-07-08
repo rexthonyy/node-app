@@ -53,7 +53,9 @@ function productTypeUpdate(args) {
 
         let { values, set, whereClause } = getUpdateProductTypeValues(args);
 
-        console.log(values, set, whereClause);
+        console.log(values);
+        console.log(set);
+        console.log(whereClause);
 
         productQueries.updateProductType(values, set, whereClause, async result => {
             if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
@@ -92,48 +94,48 @@ function productTypeUpdate(args) {
 function getUpdateProductTypeValues({ id, input, productType }) {
     let values = [id];
     let whereClause = "id=$1";
-    let set = null;
+    let set = "";
     let cursor = 1;
 
     if (input.name != null) {
         values.push(input.name);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `name=$${++cursor}`;
     }
     if (input.slug != null) {
         values.push(input.slug);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `slug=$${++cursor}`;
     }
     if (input.kind != null) {
         values.push(input.kind);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `kind=$${++cursor}`;
     }
     if (input.hasVariants != null) {
         values.push(input.hasVariants);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `has_variants=$${++cursor}`;
     }
     if (input.isShippingRequired != null) {
         values.push(input.isShippingRequired);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `is_shipping_required=$${++cursor}`;
     }
     if (input.isDigital != null) {
         values.push(input.isDigital);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `is_digital=$${++cursor}`;
     }
     if (input.weight != null) {
         values.push(input.weight);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `weight=$${++cursor}`;
     }
     if (input.taxCode != null) {
         let metadata = addToMetadata(productType.metadata, input.taxCode);
         values.push(metadata);
-        set = set ? ", " : "";
+        set += set ? ", " : "";
         set += `metadata=$${++cursor}`;
     }
 
