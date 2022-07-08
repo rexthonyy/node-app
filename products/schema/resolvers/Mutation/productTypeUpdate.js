@@ -5,6 +5,7 @@ const {
     getGraphQLProductTypeById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
+const { formatMetadata } = require('../../../libs/util');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -142,10 +143,11 @@ function getUpdateProductTypeValues({ id, input, productType }) {
     return { values, set, whereClause };
 }
 
-function addToMetadata(privateMetadata, taxCode) {
+function addToMetadata(data, taxCode) {
     let pm = {};
     let isAdded = false;
-    for (let metadata of privateMetadata) {
+    data = formatMetadata(data);
+    for (let metadata of data) {
         if (metadata.key == "vatlayer.code") {
             metadata.value = taxCode;
             isAdded = true;
