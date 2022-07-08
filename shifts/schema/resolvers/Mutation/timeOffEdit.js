@@ -6,7 +6,7 @@ const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } =
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
@@ -19,31 +19,34 @@ module.exports = async(parent, args, context) => {
         let endTime = new Date(args.endTime);
 
         if (authUser.userPermissions.find(permission => permission.code == "MANAGE_STAFF")) {
-            resolve(await timeOffAdd(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime));
+            resolve(await timeOffEdit(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime));
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
-            resolve(await timeOffAdd(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime));
+            resolve(await timeOffEdit(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "INVALID", null));
         }
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, timeoff = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        timeoff
+    }
 }
 
-function timeOffAdd(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime) {
+function timeOffEdit(channelId, shiftGroupId, timeOffId, color, label, note, is24Hours, startTime, endTime) {
     return new Promise(resolve => {
         shiftQueries.getShiftGroupById([shiftGroupId], async result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+            if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group does not exist", "NOT_FOUND", null));
             shiftQueries.getUserTimeOffs([timeOffId], "id=$1", result => {
-                if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Time off does not exist", null));
+                if (result.err) return resolve(getGraphQLOutput("timeOffId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("timeOffId", "Time off does not exist", "NOT_FOUND", null));
 
                 let values = [
                     timeOffId,
@@ -56,9 +59,12 @@ function timeOffAdd(channelId, shiftGroupId, timeOffId, color, label, note, is24
                 ];
 
                 shiftQueries.updateTimeOff(values, "label=$2, color=$3, note=$4, start_time=$5, end_time=$6, is24hours=$7", "id=$1", async result => {
-                    if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to update time off", null)) };
+                    if (result.err) return resolve(getGraphQLOutput("values", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                     let userTimeoff = await getGraphQLUserTimeOff(timeOffId);
-                    resolve(getGraphQLOutput("success", "Timeoff updated", userTimeoff));
+                    resolve({
+                        errors: [],
+                        timeoff: userTimeoff
+                    });
                 });
             });
         });
