@@ -991,9 +991,8 @@ type AssignedShiftShareResponse{
 
 """Return type for shiftGroupRename"""
 type shiftGroupRenameResponse{
-  status: String
-  message: String
-  result: ShiftGroup
+  shiftGroup: ShiftGroup
+  errors: [ShiftError!]!
 }
 
 """Return type for shiftGroupDelete"""
