@@ -134,7 +134,7 @@ function getUpdateProductTypeValues({ id, input, productType }) {
     }
     if (input.taxCode != null) {
         let metadata = addToMetadata(productType.metadata, input.taxCode);
-        values.push(metadata);
+        values.push(JSON.stringify(metadata));
         set += set ? ", " : "";
         set += `metadata=$${++cursor}`;
     }
