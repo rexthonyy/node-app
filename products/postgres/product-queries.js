@@ -1151,6 +1151,40 @@ const updateProductType = (values, set, whereClause, response) => {
     });
 };
 
+const updateAttributeProduct = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.attribute_attributeproduct} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateAttributeVariant = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.attribute_attributevariant} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1616,6 +1650,8 @@ module.exports = {
     updateProductChannelListing,
     updateProductVariantChannelListing,
     updateProductType,
+    updateAttributeProduct,
+    updateAttributeVariant,
 
     deleteAttributeValue,
     deleteProductVariant,

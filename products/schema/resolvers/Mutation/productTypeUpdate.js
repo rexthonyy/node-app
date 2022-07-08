@@ -54,10 +54,6 @@ function productTypeUpdate(args) {
 
         let { values, set, whereClause } = getUpdateProductTypeValues(args);
 
-        console.log(values);
-        console.log(set);
-        console.log(whereClause);
-
         productQueries.updateProductType(values, set, whereClause, async result => {
             if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Failed to update product type", "GRAPHQL_ERROR", null, null, null));
@@ -146,7 +142,6 @@ function getUpdateProductTypeValues({ id, input, productType }) {
 function addToMetadata(data, taxCode) {
     let pm = {};
     let isAdded = false;
-    console.log(data);
     for (let metadata of data) {
         if (metadata.key == "vatlayer.code") {
             metadata.value = taxCode;
