@@ -146,7 +146,7 @@ function getUpdateProductTypeValues({ id, input, productType }) {
 function addToMetadata(data, taxCode) {
     let pm = {};
     let isAdded = false;
-    data = formatMetadata(data);
+    console.log(data);
     for (let metadata of data) {
         if (metadata.key == "vatlayer.code") {
             metadata.value = taxCode;
