@@ -15,7 +15,7 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await shiftGroupMemberRemove(channelId, shiftGroupId, userId));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation"));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "INVALID", null));
         }
     });
 }
