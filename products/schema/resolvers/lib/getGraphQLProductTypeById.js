@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductAttributesByProductTypeId = require("./getGraphQLProductAttributesByProductTypeId");
 
@@ -25,12 +26,8 @@ let getGraphQLProductTypeById = (productTypeId) => {
 
             let res = {
                 id: productType.id,
-                privateMetadata: productType.private_metadata,
-                privateMetafield: JSON.stringify(productType.private_metadata),
-                privateMetafields: null,
-                metadata: productType.metadata,
-                metadatafield: JSON.stringify(productType.metadata),
-                metadatafields: null,
+                privateMetadata: formatMetadata(product.private_metadata),
+                metadata: formatMetadata(product.metadata),
                 name: productType.name,
                 slug: productType.slug,
                 hasVariants: productType.has_variants,
