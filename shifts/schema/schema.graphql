@@ -279,7 +279,7 @@ type Mutation {
 
      """The ID of the user to add"""
      userId: ID!
-  ): ResponseStatus
+  ): ShiftGroupMemberAddResponse
 
   """Change the position of Shift group members in a group. Requires permission MANAGE_STAFF"""
   shiftGroupMembersReorder(
@@ -892,6 +892,12 @@ type UniqueShifts{
 """Return type for shiftGroupCreate"""
 type shiftGroupCreateResponse{
   shiftGroup: ShiftGroup
+  errors: [ShiftError!]!
+}
+
+"""Return type for shiftGroupDelete"""
+type ShiftGroupMemberAddResponse{
+  user: User
   errors: [ShiftError!]!
 }
 
