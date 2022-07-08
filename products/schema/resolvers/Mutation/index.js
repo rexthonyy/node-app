@@ -9,6 +9,7 @@ const productMediaCreate = require('./productMediaCreate');
 const productVariantReorder = require('./productVariantReorder');
 const productTypeDelete = require('./productTypeDelete');
 const productTypeBulkDelete = require('./productTypeBulkDelete');
+const productTypeUpdate = require('./productTypeUpdate');
 
 module.exports = {
     productBulkDelete,
@@ -22,4 +23,5 @@ module.exports = {
     productVariantReorder,
     productTypeDelete,
     productTypeBulkDelete,
+    productTypeUpdate,
 };

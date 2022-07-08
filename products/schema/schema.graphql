@@ -400,6 +400,17 @@ type Mutation {
   ): ProductTypeBulkDelete
 
   """
+  Updates an existing product type. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  productTypeUpdate(
+    """ID of a product type to update."""
+    id: ID!
+
+    """Fields required to update a product type."""
+    input: ProductTypeInput!
+  ): ProductTypeUpdate
+
+  """
   Manage product's availability in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productChannelListingUpdate(
