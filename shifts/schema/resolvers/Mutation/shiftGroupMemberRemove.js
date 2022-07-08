@@ -1,10 +1,10 @@
 const shiftQueries = require("../../../postgres/shift-queries");
-const { checkAuthorization, userPermissionGroupHasAccess } = require('../lib');
+const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } = require('../lib');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
@@ -20,17 +20,21 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(status, message) {
+function getGraphQLOutput(field, message, code, user = null) {
     return {
-        status,
-        message
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        user
+    }
 }
 
 function shiftGroupMemberRemove(channelId, shiftGroupId, userId) {
     return new Promise(resolve => {
         shiftQueries.getAssignedShiftsByChannelIdShiftGroupIdAndUserId([channelId, shiftGroupId, userId], async result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", "Failed to fetch user assigned shifts"));
+            if (result.err) return resolve(getGraphQLOutput("channelId, shiftGroupId, userId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             let assignedShifts = result.res;
             if (assignedShifts.length == 0) return resolve(await removeMemberFromShiftGroup(channelId, shiftGroupId, userId));
             let isPendingShifts = false;
@@ -43,7 +47,7 @@ function shiftGroupMemberRemove(channelId, shiftGroupId, userId) {
                     }
                 }
             }
-            if (isPendingShifts) return resolve(getGraphQLOutput("failed", "member has pending shifts and cannot be removed"));
+            if (isPendingShifts) return resolve(getGraphQLOutput("isPendingShifts", "member has pending shifts and cannot be removed", "INVALID", null));
             return resolve(await removeMemberFromShiftGroup(channelId, shiftGroupId, userId));
         });
     });
@@ -55,7 +59,15 @@ function removeMemberFromShiftGroup(channelId, shiftGroupId, userId) {
         await deleteUserTimeOffsInShiftGroup(channelId, shiftGroupId, userId);
         await deleteAssignedShiftsInShiftGroup(channelId, shiftGroupId, userId);
         await deleteShiftGroupMembersInShiftGroup(channelId, shiftGroupId, userId);
-        resolve(getGraphQLOutput("success", "Shift group member removed"));
+        try {
+            let user = await getGraphQLUserById(userId);
+            resolve({
+                errors: [],
+                user
+            });
+        } catch (err) {
+            resolve(getGraphQLOutput("user", err, "GRAPHQL_ERROR", null));
+        }
     });
 }
 

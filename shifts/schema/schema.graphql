@@ -303,7 +303,7 @@ type Mutation {
 
    """The ID of the group members to remove"""
     userId: ID!
-  ): ResponseStatus
+  ): ShiftGroupMemberRemoveResponse
 
   """Adds a new assigned shift. Requires permission MANAGE_STAFF"""
   assignedShiftAdd(
@@ -895,8 +895,14 @@ type shiftGroupCreateResponse{
   errors: [ShiftError!]!
 }
 
-"""Return type for shiftGroupDelete"""
+"""Return type for ShiftGroupMemberAdd"""
 type ShiftGroupMemberAddResponse{
+  user: User
+  errors: [ShiftError!]!
+}
+
+"""Return type for ShiftGroupMemberRemove"""
+type ShiftGroupMemberRemoveResponse{
   user: User
   errors: [ShiftError!]!
 }
