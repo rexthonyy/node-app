@@ -375,6 +375,20 @@ type Mutation {
   ): ProductTranslate
 
   """
+  Reorder product attribute values. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productReorderAttributeValues(
+    """ID of an attribute."""
+    attributeId: ID!
+
+    """The list of reordering operations for given attribute values."""
+    moves: [ReorderInput!]!
+
+    """ID of a product."""
+    productId: ID!
+  ): ProductReorderAttributeValues
+
+  """
   Creates a new product type. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
   """
   productTypeCreate(

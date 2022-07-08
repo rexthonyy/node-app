@@ -1185,6 +1185,23 @@ const updateAttributeVariant = (values, set, whereClause, response) => {
     });
 };
 
+const updateAttributeValue = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.attribute_attributevalue} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1652,6 +1669,7 @@ module.exports = {
     updateProductType,
     updateAttributeProduct,
     updateAttributeVariant,
+    updateAttributeValue,
 
     deleteAttributeValue,
     deleteProductVariant,

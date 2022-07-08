@@ -21,7 +21,7 @@ module.exports = async(parent, args, context) => {
                 reject(err);
             }
         } else {
-            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null));
+            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES", "INVALID", null, null));
         }
     });
 }
@@ -53,7 +53,7 @@ function productTypeReorderAttributes(args) {
         let type = args.type;
         productQueries.getProductType([productTypeId], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return reject(`Cannot resolve productId: ${productTypeId}`);
+            if (result.res.length == 0) return reject(`Cannot resolve productTypeId: ${productTypeId}`);
 
             const numMoves = moves.length;
             let cursor = -1;
