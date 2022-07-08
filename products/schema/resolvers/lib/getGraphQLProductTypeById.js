@@ -32,7 +32,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 metadatafield: JSON.stringify(productType.metadata),
                 metadatafields: null,
                 name: productType.name,
-                slug: productType.slug.toUpperCase(),
+                slug: productType.slug,
                 hasVariants: productType.has_variants,
                 isShippingRequired: productType.is_shipping_required,
                 isDigital: productType.is_digital,
@@ -40,7 +40,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                     unit: defaultWeightUnit,
                     value: productType.weight
                 },
-                kind: productType.kind,
+                kind: productType.kind.toUpperCase(),
                 taxType: null,
                 productAttributes,
                 availableAttributes: null,
