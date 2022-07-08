@@ -550,7 +550,7 @@ type Mutation {
 
     """When does the shift end"""
     endTime: String
-  ): TimeOffResponse
+  ): TimeOffAddResponse
 
   """Removes timeoff for a group member. Requires permission MANAGE_STAFF"""
   timeOffEdit(
@@ -792,6 +792,12 @@ type getAllUniqueShiftsResponse{
   status: String
   message: String
   result: UniqueShifts
+}
+
+"""Return type for timeOffAdd"""
+type TimeOffAddResponse{
+  errors: [ShiftError!]!
+  timeoff: AssignedShift
 }
 
 """Return type for timeOffAdd"""

@@ -6,7 +6,7 @@ const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } =
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
@@ -23,24 +23,27 @@ module.exports = async(parent, args, context) => {
         } else if (userPermissionGroupHasAccess(authUser.permissionGroups, ["MANAGE_STAFF"])) {
             resolve(await timeOffAdd(channelId, shiftGroupId, userId, color, label, note, is24Hours, startTime, endTime));
         } else {
-            resolve(getGraphQLOutput("failed", "You do not have permission to perform this operation", null));
+            resolve(getGraphQLOutput("permission", "You do not have permission to perform this operation", "INVALID", null));
         }
     });
 }
 
-function getGraphQLOutput(status, message, result) {
+function getGraphQLOutput(field, message, code, request = null) {
     return {
-        status,
-        message,
-        result
-    };
+        errors: [{
+            field,
+            message,
+            code
+        }],
+        request
+    }
 }
 
 function timeOffAdd(channelId, shiftGroupId, userId, color, label, note, is24Hours, startTime, endTime) {
     return new Promise(resolve => {
         shiftQueries.getShiftGroupById([shiftGroupId], async result => {
-            if (result.err) return resolve(getGraphQLOutput("failed", result.err, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("failed", "Shift group does not exist", null));
+            if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group does not exist", "NOT_FOUND", null));
 
             let values = [
                 channelId,
@@ -54,10 +57,13 @@ function timeOffAdd(channelId, shiftGroupId, userId, color, label, note, is24Hou
                 is24Hours
             ];
             shiftQueries.createUserTimeOff(values, async result => {
-                if (result.err) { console.log(result.err); return resolve(getGraphQLOutput("failed", "Failed to create user time off", null)) };
+                if (result.err) return resolve(getGraphQLOutput("values", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                 let userTimeOffId = result.res[0].id;
                 let userTimeoff = await getGraphQLUserTimeOff(userTimeOffId);
-                resolve(getGraphQLOutput("success", "User time off created", userTimeoff));
+                resolve({
+                    errors: [],
+                    request: userTimeoff
+                });
             });
         });
     });
