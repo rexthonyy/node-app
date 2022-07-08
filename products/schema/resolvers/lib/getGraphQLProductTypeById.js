@@ -32,7 +32,7 @@ let getGraphQLProductTypeById = (productTypeId) => {
                 metadatafield: JSON.stringify(productType.metadata),
                 metadatafields: null,
                 name: productType.name,
-                slug: productType.slug,
+                slug: productType.slug.toUpperCase(),
                 hasVariants: productType.has_variants,
                 isShippingRequired: productType.is_shipping_required,
                 isDigital: productType.is_digital,
