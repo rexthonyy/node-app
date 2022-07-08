@@ -17,4 +17,5 @@ module.exports = {
     productUpdate,
     productChannelListingUpdate,
     productMediaCreate,
+    productVariantReorder,
 };
