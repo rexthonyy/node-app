@@ -592,7 +592,7 @@ type Mutation {
 
     """The ID of the user time off"""
     timeOffId: ID!  
-  ): TimeOffResponse
+  ): TimeOffDeleteResponse
 
   """Updates a daily note. Requires permission MANAGE_STAFF"""
   dayNoteUpdate(
@@ -796,6 +796,12 @@ type getAllUniqueShiftsResponse{
 
 """Return type for timeOffAdd"""
 type TimeOffAddResponse{
+  errors: [ShiftError!]!
+  timeoff: AssignedShift
+}
+
+"""Return type for timeOffDelete"""
+type TimeOffDeleteResponse{
   errors: [ShiftError!]!
   timeoff: AssignedShift
 }
