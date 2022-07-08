@@ -77,7 +77,7 @@ function productTypeReorderAttributes(args) {
             async function checkComplete() {
                 cursor++;
                 if (cursor == numMoves) {
-                    let productType = await getGraphQLProductTypeById(productId);
+                    let productType = await getGraphQLProductTypeById(productTypeId);
                     resolve({
                         errors: [],
                         productErrors: [],
