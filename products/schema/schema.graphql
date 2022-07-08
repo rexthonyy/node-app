@@ -390,6 +390,15 @@ type Mutation {
     id: ID!
   ): ProductTypeDelete
 
+
+  """
+  Deletes product types. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  productTypeBulkDelete(
+    """List of product type IDs to delete."""
+    ids: [ID!]!
+  ): ProductTypeBulkDelete
+
   """
   Manage product's availability in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
