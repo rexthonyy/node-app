@@ -28,14 +28,14 @@ module.exports = async(parent, args, context) => {
     });
 }
 
-function getGraphQLOutput(field, message, code, request = null) {
+function getGraphQLOutput(field, message, code, timeoff = null) {
     return {
         errors: [{
             field,
             message,
             code
         }],
-        request
+        timeoff
     }
 }
 
@@ -62,7 +62,7 @@ function timeOffAdd(channelId, shiftGroupId, userId, color, label, note, is24Hou
                 let userTimeoff = await getGraphQLUserTimeOff(userTimeOffId);
                 resolve({
                     errors: [],
-                    request: userTimeoff
+                    timeoff: userTimeoff
                 });
             });
         });
