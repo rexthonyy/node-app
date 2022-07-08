@@ -6,7 +6,7 @@ const { checkAuthorization, userPermissionGroupHasAccess, getGraphQLUserById } =
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput(status, message, "INVALID", null));
+        if (!isAuthorized) return reject(message);
 
         let channelId = args.channelId;
         let shiftGroupId = args.shiftGroupId;
