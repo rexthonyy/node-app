@@ -57,7 +57,6 @@ function productTypeUpdate(args) {
             if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Failed to update product type", "GRAPHQL_ERROR", null, null, null));
             let productType = result.res[0];
-            console.log(productType);
             let errors = [];
             if (args.input.productAttributes) {
                 try {
@@ -78,7 +77,7 @@ function productTypeUpdate(args) {
                 resolve({
                     errors: errors,
                     productErrors: errors,
-                    graphQLProductType
+                    productType: graphQLProductType
                 });
             } catch (err) {
                 resolve(getGraphQLOutput("producttype", err, "NOT_FOUND", null, null, null));
@@ -130,10 +129,10 @@ function getUpdateProductTypeValues({ id, input, productType }) {
         set += `weight=$${++cursor}`;
     }
     if (input.taxCode != null) {
-        let privateMetadata = addToMetadata(productType.private_metadata, input.taxCode);
-        values.push(privateMetadata);
+        let metadata = addToMetadata(productType.metadata, input.taxCode);
+        values.push(metadata);
         set = set ? ", " : "";
-        set += `private_metadata=$${++cursor}`;
+        set += `metadata=$${++cursor}`;
     }
 
     return { values, set, whereClause };
