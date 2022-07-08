@@ -1479,6 +1479,57 @@ const deleteProductChannelListing = (values, whereClause, response) => {
     });
 };
 
+const deleteProductType = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_producttype} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAttributeVariant = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributevariant} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAttributeProduct = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributeproduct} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     get,
     getProduct,
@@ -1568,4 +1619,7 @@ module.exports = {
     deleteProductMedia,
     deleteProductVariantChannelListing,
     deleteProductChannelListing,
+    deleteProductType,
+    deleteAttributeVariant,
+    deleteAttributeProduct,
 }

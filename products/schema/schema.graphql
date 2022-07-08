@@ -383,6 +383,14 @@ type Mutation {
   ): ProductTypeCreate
 
   """
+  Deletes a product type. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  productTypeDelete(
+    """ID of a product type to delete."""
+    id: ID!
+  ): ProductTypeDelete
+
+  """
   Manage product's availability in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productChannelListingUpdate(
