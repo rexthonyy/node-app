@@ -202,7 +202,7 @@ function updateVariantAttributes({ id, input }) {
         const numVariantAttributes = input.variantAttributes.length;
         let cursor = -1;
 
-        input.variantAttributes.forEach(attributeId => {
+        input.variantAttributes.forEach(async attributeId => {
             try {
                 await createProductVariant(id, attributeId);
             } catch (err) {}
