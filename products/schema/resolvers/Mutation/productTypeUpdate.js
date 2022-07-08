@@ -57,6 +57,7 @@ function productTypeUpdate(args) {
             if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Failed to update product type", "GRAPHQL_ERROR", null, null, null));
             let productType = result.res[0];
+            console.log(productType);
             let errors = [];
             if (args.input.productAttributes) {
                 try {
