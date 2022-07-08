@@ -26,8 +26,8 @@ let getGraphQLProductTypeById = (productTypeId) => {
 
             let res = {
                 id: productType.id,
-                privateMetadata: formatMetadata(product.private_metadata),
-                metadata: formatMetadata(product.metadata),
+                privateMetadata: formatMetadata(productType.private_metadata),
+                metadata: formatMetadata(productType.metadata),
                 name: productType.name,
                 slug: productType.slug,
                 hasVariants: productType.has_variants,
