@@ -35,6 +35,7 @@ const {
     productTypeDelete,
     productTypeBulkDelete,
     productTypeUpdate,
+    productTypeReorderAttributes,
 } = require('./Mutation');
 
 const {
@@ -163,6 +164,7 @@ module.exports = {
         productTypeDelete,
         productTypeBulkDelete,
         productTypeUpdate,
+        productTypeReorderAttributes,
     },
     Attribute: {
         translation: attributeTranslation,

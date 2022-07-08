@@ -411,6 +411,20 @@ type Mutation {
   ): ProductTypeUpdate
 
   """
+  Reorder the attributes of a product type. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  productTypeReorderAttributes(
+    """The list of attribute reordering operations."""
+    moves: [ReorderInput!]!
+
+    """ID of a product type."""
+    productTypeId: ID!
+
+    """The attribute type to reorder."""
+    type: ProductAttributeType!
+  ): ProductTypeReorderAttributes
+
+  """
   Manage product's availability in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productChannelListingUpdate(
