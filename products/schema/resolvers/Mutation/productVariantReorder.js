@@ -8,7 +8,7 @@ const kratosQueries = require("../../../postgres/kratos-queries");
 const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null));
 
