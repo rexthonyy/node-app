@@ -580,7 +580,7 @@ type Mutation {
 
     """When does the shift end"""
     endTime: String
-  ): TimeOffResponse
+  ): TimeOffEditResponse
 
   """Deletes a user time off. Requires permission MANAGE_STAFF"""
   timeOffDelete(
@@ -796,6 +796,12 @@ type getAllUniqueShiftsResponse{
 
 """Return type for timeOffAdd"""
 type TimeOffAddResponse{
+  errors: [ShiftError!]!
+  timeoff: AssignedShift
+}
+
+"""Return type for timeOffEdit"""
+type TimeOffEditResponse{
   errors: [ShiftError!]!
   timeoff: AssignedShift
 }
