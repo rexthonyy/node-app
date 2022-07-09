@@ -1,7 +1,8 @@
 const { gql } = require("apollo-server-express");
+const { join } = require('path');
 const fs = require('fs');
 
-const file = fs.readFileSync('./schema.graphql', 'utf8');
+const file = fs.readFileSync(join(__dirname, './schema.graphql'), 'utf8');
 
 console.log(file);
 
