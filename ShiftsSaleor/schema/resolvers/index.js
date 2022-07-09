@@ -7,7 +7,9 @@ module.exports = {
     Mutation: {
         userCreate: (parent, args) => {
             console.log(args);
-            return "REX";
+            return {
+                name: args.name
+            };
         },
     }
 };
