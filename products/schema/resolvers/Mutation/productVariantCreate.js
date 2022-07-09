@@ -313,7 +313,7 @@ function createProductVariantStock(args, productVariantId) {
         const numStock = stocks.length;
         let cursor = -1;
 
-        stocks.forEach(stock => {
+        stocks.forEach(async stock => {
             try {
                 await createWarehouseStock(stock, productVariantId);
             } catch (err) {}
