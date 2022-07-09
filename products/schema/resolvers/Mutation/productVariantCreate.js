@@ -75,6 +75,8 @@ function productVariantCreate(authUser, args) {
                 productErrors: errors,
                 productVariant
             });
+        } catch (err) {
+            resolve(getGraphQLOutput("productVariant", err, "GRAPHQL_ERROR", null, null, null));
         }
     });
 }
