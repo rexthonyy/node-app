@@ -4,15 +4,13 @@ const { ApolloServer } = require("apollo-server-express");
 const schema = require('./schema');
 const app = express();
 
-const server = new ApolloServer({
-    schema: schema,
-    uploads: false
-});
-
-server.applyMiddleware({ app });
-
 async function main() {
+    const server = new ApolloServer({
+        schema: schema,
+        uploads: false
+    });
     const { url } = await server.listen({ port: process.env.PORT });
+    server.applyMiddleware({ app });
     console.log(`🚀 Server ready at ${url}`);
 }
 
