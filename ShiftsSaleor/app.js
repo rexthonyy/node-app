@@ -4,7 +4,7 @@ const express = require('express');
 const schema = require('./schema');
 
 const app = express();
-const server = new ApolloServer({ schema });
+const server = new ApolloServer(schema);
 
 server.applyMiddleware({ app });
 
