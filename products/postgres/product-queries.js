@@ -1100,7 +1100,7 @@ const createAssignedVariantAttribute = (values, response) => {
 };
 
 const createAssignedVariantAttributeValue = (values, response) => {
-    client.query(`INSERT INTO ${db.attribute_assignedvariantattributevalue} (sort_order, variant_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.attribute_assignedvariantattributevalue} (sort_order, assignment_id, value_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
