@@ -82,9 +82,8 @@ function productVariantCreate(authUser, args) {
 }
 
 function createProductVariant(args) {
-    console.log(args);
     return new Promise((resolve, reject) => {
-        productQueries.getProduct([args.product], "id=$1", result => {
+        productQueries.getProduct([args.input.product], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("product", "Product not found", "NOT_FOUND", null, null, null).errors);
             let product = result.res[0];
@@ -105,24 +104,24 @@ function getCreateProductVariantInputValues(args) {
     let trackInventory;
     let weight = null;
     let preorderGlobalThreshold = null;
-    let isPreorder = args.preorder != null;
+    let isPreorder = args.input.preorder != null;
     let preorderEndDate = null;
     let quantityLimitPerCustomer = null;
-    let productId = args.product;
+    let productId = args.input.product;
     let now = new Date().toUTCString();
 
-    sku = args.sku ? args.sku : null;
+    sku = args.input.sku ? args.input.sku : null;
 
-    trackInventory = args.trackInventory ? args.trackInventory : true;
+    trackInventory = args.input.trackInventory ? args.input.trackInventory : true;
 
-    weight = args.weight ? args.weight : null;
+    weight = args.input.weight ? args.input.weight : null;
 
     if (isPreorder) {
-        preorderGlobalThreshold = args.preorder.globalThreshold ? args.preorder.globalThreshold : null;
-        preorderEndDate = args.preorder.endDate ? new Date(args.preorder.endDate).toUTCString() : null;
+        preorderGlobalThreshold = args.input.preorder.globalThreshold ? args.input.preorder.globalThreshold : null;
+        preorderEndDate = args.input.preorder.endDate ? new Date(args.input.preorder.endDate).toUTCString() : null;
     }
 
-    quantityLimitPerCustomer = args.quantity_limit_per_customer ? args.quantity_limit_per_customer : null;
+    quantityLimitPerCustomer = args.input.quantity_limit_per_customer ? args.input.quantity_limit_per_customer : null;
 
     return [
         sku,
@@ -144,11 +143,11 @@ function getCreateProductVariantInputValues(args) {
 
 function createProductVariantAttributes(args, product, productVariant) {
     return new Promise(resolve => {
-        const numVariantAttributes = args.attributes.length;
+        const numVariantAttributes = args.input.attributes.length;
         let variantAttributeCursor = -1;
         let errors = [];
 
-        args.attributes.forEach(async attr => {
+        args.input.attributes.forEach(async attr => {
             try {
                 await addAttribute(product, productVariant, attr);
             } catch (err) {
@@ -309,8 +308,8 @@ function createAssignedVariantAttributeValue(assignedVariantAttributeId, attribu
 
 function createProductVariantStock(args, productVariantId) {
     return new Promise((resolve, reject) => {
-        if (args.stocks == null) return resolve();
-        let stocks = args.stocks;
+        if (args.input.stocks == null) return resolve();
+        let stocks = args.input.stocks;
         const numStock = stocks.length;
         let cursor = -1;
 
