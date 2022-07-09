@@ -44,11 +44,10 @@ function getGraphQLOutput(field, message, code, attributes, values, productVaria
 function productVariantCreate(authUser, args) {
     return new Promise(async resolve => {
         let errors = [];
-        let product;
-        let productVariant;
+        let res;
 
         try {
-            { product, productVariant } = await createProductVariant(args);
+            res = await createProductVariant(args);
         } catch (err) {
             return resolve({
                 errors: err,
@@ -58,19 +57,19 @@ function productVariantCreate(authUser, args) {
         }
 
         try {
-            await createProductVariantAttributes(args, product, productVariant);
+            await createProductVariantAttributes(args, res.product, res.productVariant);
         } catch (err) {
             errors.concat(err);
         }
 
         try {
-            await createProductVariantStock(args, productVariant.id);
+            await createProductVariantStock(args, res.productVariant.id);
         } catch (err) {
             errors.concat(err);
         }
 
         try {
-            let productVariant = await getGraphQLProductVariantById(productVariant.id);
+            let productVariant = await getGraphQLProductVariantById(res.productVariant.id);
             return resolve({
                 errors,
                 productErrors: errors,
