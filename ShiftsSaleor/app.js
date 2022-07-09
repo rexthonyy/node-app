@@ -5,8 +5,11 @@ const schema = require('./schema');
 const app = express();
 
 const server = new ApolloServer({ schema });
-
-app.listen({ port: process.env.PORT }, () => {
+async function main() {
+    await server.start();
     server.applyMiddleware({ app });
+}
+main();
+app.listen({ port: process.env.PORT }, () => {
     console.log("SERVER LISTENING ON PORT " + process.env.PORT);
 });
