@@ -842,6 +842,40 @@ const getProductChannelListing = (values, whereClause, response) => {
     });
 };
 
+const getAssignedProductAttribute = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedproductattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAssignedProductAttributeValue = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedproductattributevalue} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 const createProduct = (values, response) => {
@@ -1047,6 +1081,61 @@ const createProductChannelListing = (values, response) => {
         }
     });
 };
+
+const createAssignedVariantAttribute = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedvariantattribute} (variant_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedVariantAttributeValue = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedvariantattribute} (variant_id, assignment_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createWarehouseStock = (values, response) => {
+    client.query(`INSERT INTO ${db.warehouse_stock} (quantity, product_variant_id, warehouse_id, quantity_allocated) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+
+
+
 
 
 const updateProduct = (values, set, whereClause, response) => {
@@ -1647,6 +1736,8 @@ module.exports = {
     getProductVariantTranslation,
     getCollectionProduct,
     getProductChannelListing,
+    getAssignedProductAttribute,
+    getAssignedProductAttributeValue,
 
     createProduct,
     createProductType,
@@ -1660,6 +1751,9 @@ module.exports = {
     createAttributeValue,
     createProductTranslation,
     createProductChannelListing,
+    createAssignedVariantAttribute,
+    createAssignedVariantAttributeValue,
+    createWarehouseStock,
 
     updateProduct,
     updateProductVariant,

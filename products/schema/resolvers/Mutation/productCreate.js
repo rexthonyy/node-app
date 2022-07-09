@@ -44,22 +44,29 @@ function getGraphQLOutput(field, message, code, attributes, values, product) {
 function productCreate(authUser, args) {
     return new Promise(resolve => {
         let productTypeId = args.input.productType;
+        let slug = args.input.slug;
 
         productQueries.getProductType([productTypeId], "id=$1", async result => {
-            if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+            if (result.err) return resolve(getGraphQLOutput("producttype", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Product type not found", "INVALID", null, null, null));
+            let productType = result.res[0];
 
-            try {
-                let product = await createProduct(args);
-                let productvariant = await createProductVariant(product);
-                await updateProductVariantId(product, productvariant);
-                await addProductToCollections(product, args.input.collections ? args.input.collections : null);
-                await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
-                let graphQLProduct = await getGraphQLProductById(product.id);
-                resolve(getGraphQLOutput("product", "Product created", "GRAPHQL_ERROR", null, null, graphQLProduct));
-            } catch (err) {
-                return resolve(getGraphQLOutput("product", err, "GRAPHQL_ERROR", null, null, null));
-            }
+            productQueries.getProduct([slug], "slug=$1", result => {
+                if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
+                if (result.res.length > 0) return resolve(getGraphQLOutput("product", "slug already being used", "GRAPHQL_ERROR", null, null, null));;
+
+                try {
+                    let product = await createProduct(args);
+                    let productvariant = await createDefaultProductVariant(product);
+                    await updateProductVariantId(product, productvariant);
+                    await addProductToCollections(product, args.input.collections ? args.input.collections : null);
+                    await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
+                    let graphQLProduct = await getGraphQLProductById(product.id);
+                    resolve(getGraphQLOutput("product", "Product created", "GRAPHQL_ERROR", null, null, graphQLProduct));
+                } catch (err) {
+                    return resolve(getGraphQLOutput("product", err, "GRAPHQL_ERROR", null, null, null));
+                }
+            });
         });
     });
 }
@@ -93,55 +100,38 @@ function createProduct(args) {
         let productTypeId = args.input.productType;
         let now = new Date().toUTCString();
 
-        productQueries.getProduct([slug], "slug=$1", result => {
+        let metadata =  {"vatlayer.code": taxCode, "vatlayer.description": "standard"};
+        let private_metadata = {};
+
+        let values = [
+            name,
+            description,
+            now,
+            productTypeId,
+            categoryId,
+            seo_description,
+            seo_title,
+            chargeTaxes,
+            weight,
+            JSON.stringify(metadata),
+            JSON.stringify(private_metadata),
+            slug,
+            null,
+            description_plaintext,
+            rating,
+            slug.replace("-", " ")
+        ];
+
+        productQueries.createProduct(values, result => {
             if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length > 0) return reject("slug already being used");
-
-            let metadata = [{
-                key: "",
-                value: ""
-            }];
-
-            let private_metadata = [{
-                    key: "vatlayer.code",
-                    value: taxCode
-                },
-                {
-                    key: "vatlayer.description",
-                    value: "standard"
-                }
-            ];
-
-            let values = [
-                name,
-                description,
-                now,
-                productTypeId,
-                categoryId,
-                seo_description,
-                seo_title,
-                chargeTaxes,
-                weight,
-                JSON.stringify(metadata),
-                JSON.stringify(private_metadata),
-                slug,
-                null,
-                description_plaintext,
-                rating,
-                slug.replace("-", " ")
-            ];
-
-            productQueries.createProduct(values, result => {
-                if (result.err) return reject(JSON.stringify(result.err));
-                if (result.res.length == 0) return reject("Failed to create product");
-                let product = result.res[0];
-                resolve(product);
-            });
+            if (result.res.length == 0) return reject("Failed to create product");
+            let product = result.res[0];
+            resolve(product);
         });
     });
 }
 
-function createProductVariant(product) {
+function createDefaultProductVariant(product) {
     return new Promise(resolve => {
         let now = new Date().toUTCString();
         let values = [
@@ -210,7 +200,9 @@ function addProductAttributes(product, attributes) {
         let cursor = -1;
 
         attributes.forEach(async attr => {
-            await addAttribute(product, attr);
+            try{
+                await addAttribute(product, attr);
+            }catch(err){}
             checkComplete();
         });
 
@@ -226,167 +218,139 @@ function addProductAttributes(product, attributes) {
 }
 
 function addAttribute(product, attr) {
-    return new Promise(async resolve => {
+    return new Promise(async (resolve, reject) => {
+        if(attr.values == null) return reject();
 
-        let productAttributes = [];
-        if (attr.id) {
-            productAttributes = await getProductAttributesById(attr.id);
-        } else if (attr.values) {
-            productAttributes = await getProductAttributesByValues(attr.values);
-        }
+        productQueries.getAttributeProduct([attr.id, product.product_type_id], "attribute_id=$1 AND product_type_id=$2", result => {
+            if(result.err) return reject();
+            if(result.res.length == 0) return reject();
+            let attributeProduct = result.res[0];
 
-        const numAttributes = productAttributes.length;
-        let cursor = -1;
-
-        productAttributes.forEach(attribute => {
-            let attributeId = attribute.id;
-            let file = attr.file;
-            let contentType = attr.contentType;
-            let references = attr.references;
-            let richText = attr.richText;
-            let boolean = attr.boolean;
-            let date = attr.date;
-            let dateTime = attr.dateTime;
-
-            let input = [
-                attribute.name,
-                attributeId,
-                attribute.slug,
-                null,
-                "",
-                contentType,
-                file,
-                richText,
-                boolean,
-                dateTime,
-                null,
-                product.id
-            ];
-
-            productQueries.createAttributeValue(input, async result => {
-                try {
-                    let attributeProduct = await produceAttributeProductAssignment(attribute, product);
-                    await assignAttributesToProduct(product, attributeProduct);
-                    checkComplete();
-                } catch (err) {
+            const numValues = attr.values.length;
+            let cursor = -1;
+    
+            attr.values.forEach(async value => {
+                try{
+                    let attributeValue = await resolveAttributeValue(attr, value);
+                    let assignedProductAttribute = await resolveAssignedProductAttribute(product.id, attributeProduct.id);
+                    let assignedProductAttributeValue = await resolveAssignedProductAttributeValue(assignedProductAttribute.id, attributeValue.id);
+                }catch(err){
                     console.log(err);
-                    checkComplete();
                 }
+                checkComplete();
             });
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numAttributes) {
-                resolve();
-            }
-        }
-    });
-}
-
-function getProductAttributesById(attributeId) {
-    return new Promise(resolve => {
-        productQueries.getAttribute([attributeId], "id=$1", result => {
-            if (result.err || result.res.length == 0) return resolve([]);
-            resolve(result.res);
-        });
-    });
-}
-
-function getProductAttributesByValues(values) {
-    return new Promise(resolve => {
-        const numValues = values.length;
-        let cursor = -1;
-        let productAttributes = [];
-
-        values.forEach(value => {
-            productQueries.getProduct([value], "slug=$1", async result => {
-                if (result.err || result.res.length == 0) {
-                    try {
-                        let attribute = await createProductAttribute(value);
-                        productAttributes.push(attribute);
-                        checkComplete();
-                    } catch (err) {
-                        console.log(err);
-                        checkComplete();
-                    }
-                } else {
-                    productAttributes.push(result.res[0]);
-                    checkComplete();
+    
+            checkComplete();
+    
+            function checkComplete(){
+                cursor++;
+                if(cursor == numValues){
+                    resolve();
                 }
-            });
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numValues) {
-                resolve(productAttributes);
             }
-        }
+        });
     });
 }
 
-function createProductAttribute(value) {
+function resolveAttributeValue(attr, value) {
     return new Promise((resolve, reject) => {
-        let metadata = [{
-            key: "",
-            value: ""
-        }];
-        let private_metadata = [{
-            key: "",
-            value: ""
-        }];
+        productQueries.getAttributeValue([attr.id, value], "attribute_id=$1 AND (slug=$2 OR value=$2)", async result => {
+            if(result.err) return reject();
+            let attributeValue;
+            if(result.res.length == 0){
+                try{
+                    attributeValue = await createAttributeValue(attr, value);
+                }catch(err){
+                    reject(err);
+                }
+            }else{
+                attributeValue = result.res[0];
+            }
 
-        let values = [
+            resolve(attributeValue);
+        });
+    });
+}
+
+function createAttributeValue(attr, value) {
+    return new Promise((resolve, reject) => {
+        let attributeId = attr.id;
+        let file = attr.file;
+        let contentType = attr.contentType;
+        let references = attr.references;
+        let richText = attr.richText;
+        let boolean = attr.boolean;
+        let date = attr.date;
+        let dateTime = attr.dateTime;
+
+        let input = [
             value,
-            value.replace("-", " "),
-            JSON.stringify(metadata),
-            JSON.stringify(private_metadata),
-            "DROPDOWN",
-            false,
-            false,
-            false,
-            false,
-            false,
-            1,
-            false,
-            "PRODUCT_TYPE",
-            "PRODUCT",
+            attributeId,
+            value,
+            0,
+            value,
+            contentType,
+            file,
+            richText,
+            boolean,
+            dateTime,
+            null,
             null
         ];
-        productQueries.createAttribute(values, result => {
-            if (result.err || result.res.length == 0) { console.log(result.err); return reject("Failed to create attribute") };
+
+        productQueries.createAttributeValue(input, async result => {
+            if(result.err) return reject(JSON.stringify(result.err));
+            if(result.res.length == 0) return reject("Failed to create attribute value");
             resolve(result.res[0]);
         });
     });
 }
 
-function produceAttributeProductAssignment(attribute, product) {
+function resolveAssignedProductAttribute(productId, attributeProductId){
     return new Promise((resolve, reject) => {
-        productQueries.getAttributeProduct([attribute.id, product.product_type_id], "attribute_id=$1 AND product_type_id=$2", result => {
-            if (result.err) return reject("Failed to fetch product attributes");
-            if (result.res.length == 0) {
-                productQueries.createAttributeProduct([attribute.id, product.product_type_id, null], result => {
-                    if (result.err) return reject("Failed to create product attribute");
-                    resolve(result.res[0]);
-                });
-            } else {
-                resolve(result.res[0]);
+        productQueries.getAssignedProductAttribute([productId, attributeProductId], "product_id=$1 AND assignment_id=$2", async result => {
+            if(result.err) return reject();
+            let assignedProductAttribute;
+            if(result.res.length == 0){
+                assignedProductAttribute = await createAssignedProductAttribute(productId, attributeProductId);
+            }else{
+                assignedProductAttribute = result.res[0];
             }
+            resolve(assignedProductAttribute);
         });
     });
 }
 
-function assignAttributesToProduct(product, attributeProduct) {
+function createAssignedProductAttribute(productId, attributeProductId) {
     return new Promise((resolve, reject) => {
-        if (attributeProduct == null) return resolve();
-        productQueries.createAssignedProductAttribute([product.id, attributeProduct.id], result => {
-            if (result.err) { console.log(result.err); return reject("Failed to create assigned product attribute"); }
-            console.log("assigned attribute created");
+        productQueries.createAssignedProductAttribute([productId, attributeProductId], async result => {
+            if(result.err) return reject(JSON.stringify(result.err));
+            if(result.res.length == 0) return reject("Failed to create assigned product attribute");
+            resolve(result.res[0]);
+        });
+    });
+}
+
+function resolveAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId){
+    return new Promise((resolve, reject) => {
+        productQueries.getAssignedProductAttributeValue([assignedProductAttributeId, attributeValueId], "assignment_id=$1 AND value_id=$2", async result => {
+            if(result.err) return reject();
+            let assignedProductAttributeValue;
+            if(result.res.length == 0){
+                assignedProductAttributeValue = await createAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId);
+            }else{
+                assignedProductAttributeValue = result.res[0];
+            }
+            resolve(assignedProductAttributeValue);
+        });
+    });
+}
+
+function createAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId) {
+    return new Promise((resolve, reject) => {
+        productQueries.createAssignedProductAttributeValue([0, assignedProductAttributeId, attributeValueId], async result => {
+            if(result.err) return reject(JSON.stringify(result.err));
+            if(result.res.length == 0) return reject("Failed to create assigned product attribute value");
             resolve(result.res[0]);
         });
     });

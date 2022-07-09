@@ -467,6 +467,14 @@ type Mutation {
     """Id of product that variants order will be altered."""
     productId: ID!
   ): ProductVariantReorder
+
+   """
+  Creates a new variant for a product. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantCreate(
+    """Fields required to create a product variant."""
+    input: ProductVariantCreateInput!
+  ): ProductVariantCreate
 }
 
 """Return type for getShiftGroups"""
