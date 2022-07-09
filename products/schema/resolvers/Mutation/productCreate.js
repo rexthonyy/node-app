@@ -62,6 +62,7 @@ function productCreate(authUser, args) {
                     await addProductToCollections(product, args.input.collections ? args.input.collections : null);
                     await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
                     let graphQLProduct = await getGraphQLProductById(product.id);
+                    console.log(graphQLProduct);
                     resolve({
                         errors: [],
                         productErrors: [],
