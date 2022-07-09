@@ -53,20 +53,8 @@ function productTypeCreate(authUser, args) {
         let isDigital = args.input.isDigital || false;
         let weight = args.input.weight;
         let taxCode = args.input.taxCode || "";
-        let metadata = [{
-            key: "",
-            value: ""
-        }];
-
-        let private_metadata = [{
-                key: "vatlayer.code",
-                value: taxCode
-            },
-            {
-                key: "vatlayer.description",
-                value: "standard"
-            }
-        ];
+        let metadata = { "vatlayer.code": taxCode, "vatlayer.description": "standard" };
+        let private_metadata = {};
 
         let values = [
             name,
