@@ -82,6 +82,7 @@ function productVariantCreate(authUser, args) {
 }
 
 function createProductVariant(args) {
+    console.log(args);
     return new Promise((resolve, reject) => {
         productQueries.getProduct([args.product], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
