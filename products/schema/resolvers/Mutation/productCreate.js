@@ -51,7 +51,7 @@ function productCreate(authUser, args) {
             if (result.res.length == 0) return resolve(getGraphQLOutput("producttype", "Product type not found", "INVALID", null, null, null));
             let productType = result.res[0];
 
-            productQueries.getProduct([slug], "slug=$1", result => {
+            productQueries.getProduct([slug], "slug=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
                 if (result.res.length > 0) return resolve(getGraphQLOutput("product", "slug already being used", "GRAPHQL_ERROR", null, null, null));;
 
