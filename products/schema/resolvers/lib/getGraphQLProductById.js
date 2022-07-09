@@ -55,6 +55,9 @@ let getGraphQLProductById = (productId) => {
                 channelListings = null;
             }
 
+            console.log(product);
+            console.log(formatMetadata(product.private_metadata));
+            console.log(formatMetadata(product.metadata));
             let res = {
                 id: product.id,
                 privateMetadata: formatMetadata(product.private_metadata),

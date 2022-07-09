@@ -62,7 +62,11 @@ function productCreate(authUser, args) {
                     await addProductToCollections(product, args.input.collections ? args.input.collections : null);
                     await addProductAttributes(product, args.input.attributes ? args.input.attributes : null);
                     let graphQLProduct = await getGraphQLProductById(product.id);
-                    resolve(getGraphQLOutput("product", "Product created", "GRAPHQL_ERROR", null, null, graphQLProduct));
+                    resolve({
+                        errors: [],
+                        productErrors: [],
+                        product: graphQLProduct
+                    });
                 } catch (err) {
                     return resolve(getGraphQLOutput("product", err, "GRAPHQL_ERROR", null, null, null));
                 }
