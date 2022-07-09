@@ -42,14 +42,14 @@ function getGraphQLOutput(field, message, code, attributes, values, productVaria
 }
 
 function productVariantCreate(authUser, args) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         let errors = [];
         let product;
         let productVariant;
 
-        try{
+        try {
             { product, productVariant } = await createProductVariant(args);
-        }catch(err){
+        } catch (err) {
             return resolve({
                 errors: err,
                 productErrors: err,
@@ -57,19 +57,19 @@ function productVariantCreate(authUser, args) {
             });
         }
 
-        try{
+        try {
             await createProductVariantAttributes(args, product, productVariant);
-        }catch(err){
+        } catch (err) {
             errors.concat(err);
         }
 
-        try{
+        try {
             await createProductVariantStock(args, productVariant.id);
-        }catch(err){
+        } catch (err) {
             errors.concat(err);
         }
 
-        try{
+        try {
             let productVariant = await getGraphQLProductVariantById(productVariant.id);
             return resolve({
                 errors,
@@ -98,7 +98,7 @@ function createProductVariant(args) {
     });
 }
 
-function getCreateProductVariantInputValues(args){
+function getCreateProductVariantInputValues(args) {
     let sku = null;
     let trackInventory;
     let weight = null;
@@ -108,14 +108,14 @@ function getCreateProductVariantInputValues(args){
     let quantityLimitPerCustomer = null;
     let productId = args.product;
     let now = new Date().toUTCString();
-    
+
     sku = args.sku ? args.sku : null;
 
     trackInventory = args.trackInventory ? args.trackInventory : true;
 
     weight = args.weight ? args.weight : null;
 
-    if(isPreorder){
+    if (isPreorder) {
         preorderGlobalThreshold = args.preorder.globalThreshold ? args.preorder.globalThreshold : null;
         preorderEndDate = args.preorder.endDate ? new Date(args.preorder.endDate).toUTCString() : null;
     }
@@ -147,9 +147,9 @@ function createProductVariantAttributes(args, product, productVariant) {
         let errors = [];
 
         args.attributes.forEach(async attr => {
-            try{
+            try {
                 await addAttribute(product, productVariant, attr);
-            }catch(err){
+            } catch (err) {
                 console.log(err);
             }
             checkComplete();
@@ -167,33 +167,33 @@ function createProductVariantAttributes(args, product, productVariant) {
 }
 
 function addAttribute(product, productVariant, attr) {
-    return new Promise(async (resolve, reject) => {
-        if(attr.values == null) return reject();
+    return new Promise(async(resolve, reject) => {
+        if (attr.values == null) return reject();
 
         productQueries.getAttributeVariant([attr.id, product.product_type_id], "attribute_id=$1 AND product_type_id=$2", result => {
-            if(result.err) return reject();
-            if(result.res.length == 0) return reject();
+            if (result.err) return reject();
+            if (result.res.length == 0) return reject();
             let attributeVariant = result.res[0];
 
             const numValues = attr.values.length;
             let cursor = -1;
-    
+
             attr.values.forEach(async value => {
-                try{
+                try {
                     let attributeValue = await resolveAttributeValue(attr, value);
                     let assignedVariantAttribute = await resolveAssignedVariantAttribute(productVariant.id, attributeVariant.id);
                     let assignedVariantAttributeValue = await resolveAssignedVariantAttributeValue(assignedVariantAttribute.id, attributeValue.id);
-                }catch(err){
+                } catch (err) {
                     console.log(err);
                 }
                 checkComplete();
             });
-    
+
             checkComplete();
-    
-            function checkComplete(){
+
+            function checkComplete() {
                 cursor++;
-                if(cursor == numValues){
+                if (cursor == numValues) {
                     resolve();
                 }
             }
@@ -204,15 +204,15 @@ function addAttribute(product, productVariant, attr) {
 function resolveAttributeValue(attr, value) {
     return new Promise((resolve, reject) => {
         productQueries.getAttributeValue([attr.id, value], "attribute_id=$1 AND (slug=$2 OR value=$2)", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let attributeValue;
-            if(result.res.length == 0){
-                try{
+            if (result.res.length == 0) {
+                try {
                     attributeValue = await createAttributeValue(attr, value);
-                }catch(err){
+                } catch (err) {
                     reject(err);
                 }
-            }else{
+            } else {
                 attributeValue = result.res[0];
             }
 
@@ -248,21 +248,21 @@ function createAttributeValue(attr, value) {
         ];
 
         productQueries.createAttributeValue(input, async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create attribute value");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create attribute value");
             resolve(result.res[0]);
         });
     });
 }
 
-function resolveAssignedVariantAttribute(productVariantId, attributeVariantId){
+function resolveAssignedVariantAttribute(productVariantId, attributeVariantId) {
     return new Promise((resolve, reject) => {
         productQueries.getAssignedVariantAttribute([productVariantId, attributeVariantId], "variant_id=$1 AND assignment_id=$2", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let assignedVariantAttribute;
-            if(result.res.length == 0){
+            if (result.res.length == 0) {
                 assignedVariantAttribute = await createAssignedVariantAttribute(productVariantId, attributeVariantId);
-            }else{
+            } else {
                 assignedVariantAttribute = result.res[0];
             }
             resolve(assignedVariantAttribute);
@@ -273,21 +273,21 @@ function resolveAssignedVariantAttribute(productVariantId, attributeVariantId){
 function createAssignedVariantAttribute(productVariantId, attributeVariantId) {
     return new Promise((resolve, reject) => {
         productQueries.createAssignedVariantAttribute([productVariantId, attributeVariantId], async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create assigned variant attribute");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create assigned variant attribute");
             resolve(result.res[0]);
         });
     });
 }
 
-function resolveAssignedVariantAttributeValue(assignedVariantAttributeId, attributeValueId){
+function resolveAssignedVariantAttributeValue(assignedVariantAttributeId, attributeValueId) {
     return new Promise((resolve, reject) => {
         productQueries.getAssignedVariantAttributeValue([assignedVariantAttributeId, attributeValueId], "assignment_id=$1 AND value_id=$2", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let assignedVariantAttributeValue;
-            if(result.res.length == 0){
+            if (result.res.length == 0) {
                 assignedVariantAttributeValue = await createAssignedVariantAttributeValue(assignedVariantAttributeId, attributeValueId);
-            }else{
+            } else {
                 assignedVariantAttributeValue = result.res[0];
             }
             resolve(assignedVariantAttributeValue);
@@ -298,46 +298,46 @@ function resolveAssignedVariantAttributeValue(assignedVariantAttributeId, attrib
 function createAssignedVariantAttributeValue(assignedVariantAttributeId, attributeValueId) {
     return new Promise((resolve, reject) => {
         productQueries.createAssignedVariantAttributeValue([0, assignedVariantAttributeId, attributeValueId], async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create assigned product attribute value");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create assigned product attribute value");
             resolve(result.res[0]);
         });
     });
 }
 
-function createProductVariantStock(args, productVariantId){
+function createProductVariantStock(args, productVariantId) {
     return new Promise((resolve, reject) => {
-        if(args.stocks == null) return resolve();
+        if (args.stocks == null) return resolve();
         let stocks = args.stocks;
         const numStock = stocks.length;
         let cursor = -1;
 
         stocks.forEach(stock => {
-            try{
+            try {
                 await createWarehouseStock(stock, productVariantId);
-            }catch(err){}
+            } catch (err) {}
             checkComplete();
         });
 
         checkComplete();
 
-        function checkComplete(){
+        function checkComplete() {
             cursor++;
-            if(cursor == numStock){
+            if (cursor == numStock) {
                 resolve();
             }
         }
     });
 }
 
-function createWarehouseStock(stock, productVariantId){
+function createWarehouseStock(stock, productVariantId) {
     return new Promise((resolve, reject) => {
         productQueries.getWarehouse([stock.warehouse], "id=$1", result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Warehouse not found");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Warehouse not found");
             productQueries.createWarehouseStock([stock.quantity, productVariantId, stock.warehouse, 0], result => {
-                if(result.err) return reject(JSON.stringify(result.err));
-                if(result.res.length == 0) return reject("Warehouse stock not created");
+                if (result.err) return reject(JSON.stringify(result.err));
+                if (result.res.length == 0) return reject("Warehouse stock not created");
                 resolve();
             });
         });

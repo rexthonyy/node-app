@@ -100,7 +100,7 @@ function createProduct(args) {
         let productTypeId = args.input.productType;
         let now = new Date().toUTCString();
 
-        let metadata =  {"vatlayer.code": taxCode, "vatlayer.description": "standard"};
+        let metadata = { "vatlayer.code": taxCode, "vatlayer.description": "standard" };
         let private_metadata = {};
 
         let values = [
@@ -200,9 +200,9 @@ function addProductAttributes(product, attributes) {
         let cursor = -1;
 
         attributes.forEach(async attr => {
-            try{
+            try {
                 await addAttribute(product, attr);
-            }catch(err){}
+            } catch (err) {}
             checkComplete();
         });
 
@@ -218,33 +218,33 @@ function addProductAttributes(product, attributes) {
 }
 
 function addAttribute(product, attr) {
-    return new Promise(async (resolve, reject) => {
-        if(attr.values == null) return reject();
+    return new Promise(async(resolve, reject) => {
+        if (attr.values == null) return reject();
 
         productQueries.getAttributeProduct([attr.id, product.product_type_id], "attribute_id=$1 AND product_type_id=$2", result => {
-            if(result.err) return reject();
-            if(result.res.length == 0) return reject();
+            if (result.err) return reject();
+            if (result.res.length == 0) return reject();
             let attributeProduct = result.res[0];
 
             const numValues = attr.values.length;
             let cursor = -1;
-    
+
             attr.values.forEach(async value => {
-                try{
+                try {
                     let attributeValue = await resolveAttributeValue(attr, value);
                     let assignedProductAttribute = await resolveAssignedProductAttribute(product.id, attributeProduct.id);
                     let assignedProductAttributeValue = await resolveAssignedProductAttributeValue(assignedProductAttribute.id, attributeValue.id);
-                }catch(err){
+                } catch (err) {
                     console.log(err);
                 }
                 checkComplete();
             });
-    
+
             checkComplete();
-    
-            function checkComplete(){
+
+            function checkComplete() {
                 cursor++;
-                if(cursor == numValues){
+                if (cursor == numValues) {
                     resolve();
                 }
             }
@@ -255,15 +255,15 @@ function addAttribute(product, attr) {
 function resolveAttributeValue(attr, value) {
     return new Promise((resolve, reject) => {
         productQueries.getAttributeValue([attr.id, value], "attribute_id=$1 AND (slug=$2 OR value=$2)", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let attributeValue;
-            if(result.res.length == 0){
-                try{
+            if (result.res.length == 0) {
+                try {
                     attributeValue = await createAttributeValue(attr, value);
-                }catch(err){
+                } catch (err) {
                     reject(err);
                 }
-            }else{
+            } else {
                 attributeValue = result.res[0];
             }
 
@@ -299,21 +299,21 @@ function createAttributeValue(attr, value) {
         ];
 
         productQueries.createAttributeValue(input, async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create attribute value");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create attribute value");
             resolve(result.res[0]);
         });
     });
 }
 
-function resolveAssignedProductAttribute(productId, attributeProductId){
+function resolveAssignedProductAttribute(productId, attributeProductId) {
     return new Promise((resolve, reject) => {
         productQueries.getAssignedProductAttribute([productId, attributeProductId], "product_id=$1 AND assignment_id=$2", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let assignedProductAttribute;
-            if(result.res.length == 0){
+            if (result.res.length == 0) {
                 assignedProductAttribute = await createAssignedProductAttribute(productId, attributeProductId);
-            }else{
+            } else {
                 assignedProductAttribute = result.res[0];
             }
             resolve(assignedProductAttribute);
@@ -324,21 +324,21 @@ function resolveAssignedProductAttribute(productId, attributeProductId){
 function createAssignedProductAttribute(productId, attributeProductId) {
     return new Promise((resolve, reject) => {
         productQueries.createAssignedProductAttribute([productId, attributeProductId], async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create assigned product attribute");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create assigned product attribute");
             resolve(result.res[0]);
         });
     });
 }
 
-function resolveAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId){
+function resolveAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId) {
     return new Promise((resolve, reject) => {
         productQueries.getAssignedProductAttributeValue([assignedProductAttributeId, attributeValueId], "assignment_id=$1 AND value_id=$2", async result => {
-            if(result.err) return reject();
+            if (result.err) return reject();
             let assignedProductAttributeValue;
-            if(result.res.length == 0){
+            if (result.res.length == 0) {
                 assignedProductAttributeValue = await createAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId);
-            }else{
+            } else {
                 assignedProductAttributeValue = result.res[0];
             }
             resolve(assignedProductAttributeValue);
@@ -349,8 +349,8 @@ function resolveAssignedProductAttributeValue(assignedProductAttributeId, attrib
 function createAssignedProductAttributeValue(assignedProductAttributeId, attributeValueId) {
     return new Promise((resolve, reject) => {
         productQueries.createAssignedProductAttributeValue([0, assignedProductAttributeId, attributeValueId], async result => {
-            if(result.err) return reject(JSON.stringify(result.err));
-            if(result.res.length == 0) return reject("Failed to create assigned product attribute value");
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Failed to create assigned product attribute value");
             resolve(result.res[0]);
         });
     });
