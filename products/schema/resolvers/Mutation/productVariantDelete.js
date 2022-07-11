@@ -52,8 +52,6 @@ function productVariantDelete(args) {
             return resolve(getGraphQLOutput("productVariantId", err, "NOT_FOUND", null, null, null));
         }
 
-        console.log(productVariant);
-
         try {
             await deleteProductVariant(productVariant, productVariantId);
         } catch (err) {
@@ -124,7 +122,9 @@ function productVariantDelete(args) {
 
 function deleteProductVariant(productVariant, productVariantId) {
     return new Promise((resolve, reject) => {
-        if (productVariant.product.defaultVariant.id == productVariantId) return getGraphQLOutput("id", "Cannot delete default product variant", "CANNOT_MANAGE_PRODUCT_WITHOUT_VARIANT", null, null, productVariant);
+        console.log(productVariant.product.defaultVariant.id);
+        console.log(productVariantId);
+        if (productVariant.product.defaultVariant.id == productVariantId) return reject(getGraphQLOutput("id", "Cannot delete default product variant", "CANNOT_MANAGE_PRODUCT_WITHOUT_VARIANT", null, null, productVariant));
         productQueries.getProductVariant([productVariantId], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, productVariant));
             if (result.res.length == 0) return reject(getGraphQLOutput("id", "Product variant not found", "NOT_FOUND", null, null, productVariant));
