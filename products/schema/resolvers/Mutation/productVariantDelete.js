@@ -46,6 +46,8 @@ function productVariantDelete(authUser, args) {
         let productVariantId = args.id;
         let productVariant;
 
+        console.log(productVariantId);
+
         try {
             productVariant = await getGraphQLProductVariantById(productVariantId);
         } catch (err) {
