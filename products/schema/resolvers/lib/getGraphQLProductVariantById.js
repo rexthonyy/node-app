@@ -7,7 +7,6 @@ const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 const getGraphQLCollectionById = require("./getGraphQLCollectionById");
-const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
 
 let getGraphQLProductVariantById = (id, channel = "default-channel") => {
     return new Promise((resolve, reject) => {
