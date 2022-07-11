@@ -399,7 +399,7 @@ function getGroupMemberTimeoffs(channelId, shiftGroupId, userId, startDate, endD
                     color: timeOff.color,
                     startTime: timeOff.start_time,
                     endTime: timeOff.end_time,
-                    is24Hours: timeOff.is24Hours
+                    is24Hours: timeOff.is24hours
                 });
             }
 
