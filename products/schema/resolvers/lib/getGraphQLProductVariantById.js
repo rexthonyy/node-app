@@ -20,11 +20,13 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             let quantityOrdered;
             let defaultWeightUnit;
 
+            console.log(productVariant);
             try {
                 product = await getGraphQLProductById(productVariant.product_id);
             } catch (err) {
                 product = null;
             }
+            console.log(product);
 
             try {
                 channelListings = await getGraphQLProductVariantChannelListingsByVariantId(productVariant.id);
@@ -74,6 +76,8 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
                 created: productVariant.created,
                 updatedAt: productVariant.updated_at
             };
+
+            console.log(res);
 
             resolve(res);
         });

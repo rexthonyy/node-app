@@ -32,12 +32,14 @@ let getGraphQLProductById = (productId) => {
             } catch (err) {
                 category = null;
             }
+            console.log(product.default_variant_id);
             try {
                 defaultVariant = await getGraphQLProductVariantById(product.default_variant_id);
             } catch (err) {
                 console.log(err);
                 defaultVariant = null;
             }
+            console.log(defaultVariant);
             try {
                 attributes = await getGraphQLSelectedAttributesByProductId(product.id);
             } catch (err) {
