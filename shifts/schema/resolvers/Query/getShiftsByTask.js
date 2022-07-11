@@ -7,7 +7,7 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
         try {
-            let shiftsByPeople = await getShiftsByPeople(parent, args, context);
+            //Slet shiftsByPeople = await getShiftsByPeople(parent, args, context);
             shiftQueries.getShiftGroup([-1], "id<>$1", result => {
                 if (result.err) return getGraphQLOutput("getShiftGroup", JSON.stringify(result.err), null);
                 if (result.res.length == 0) return getGraphQLOutput("getShiftGroup", "Fetch successful", []);
