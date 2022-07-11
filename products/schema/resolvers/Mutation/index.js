@@ -13,6 +13,7 @@ const productTypeUpdate = require('./productTypeUpdate');
 const productTypeReorderAttributes = require('./productTypeReorderAttributes');
 const productReorderAttributeValues = require('./productReorderAttributeValues');
 const productVariantCreate = require('./productVariantCreate');
+const productVariantDelete = require('./productVariantDelete');
 
 module.exports = {
     productBulkDelete,
@@ -30,4 +31,5 @@ module.exports = {
     productTypeReorderAttributes,
     productReorderAttributeValues,
     productVariantCreate,
+    productVariantDelete,
 };

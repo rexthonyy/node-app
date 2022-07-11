@@ -475,6 +475,14 @@ type Mutation {
     """Fields required to create a product variant."""
     input: ProductVariantCreateInput!
   ): ProductVariantCreate
+
+  """
+  Deletes a product variant. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantDelete(
+    """ID of a product variant to delete."""
+    id: ID!
+  ): ProductVariantDelete
 }
 
 """Return type for getShiftGroups"""

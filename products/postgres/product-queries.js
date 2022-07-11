@@ -876,8 +876,6 @@ const getAssignedProductAttributeValue = (values, whereClause, response) => {
     });
 };
 
-
-
 const createProduct = (values, response) => {
     client.query(`INSERT INTO ${db.product_product} (name, description, updated_at, product_type_id, category_id, seo_description, seo_title, charge_taxes, weight, metadata, private_metadata, slug, default_variant_id, description_plaintext, rating, search_document) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -1331,7 +1329,7 @@ const deleteProductVariant = (values, whereClause, response) => {
 };
 
 const deleteAssignedVariantAttribute = (values, whereClause, response) => {
-    client.query(`DELETE FROM ${db.attribute_assignedvariantattribute} WHERE ${whereClause}`, values, (err, res) => {
+    client.query(`DELETE FROM ${db.attribute_assignedvariantattribute} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1687,6 +1685,159 @@ const deleteAttributeProduct = (values, whereClause, response) => {
     });
 };
 
+const deleteProductVariantMedia = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_variantmedia} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDigitalContentUrl = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_digitalcontenturl} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDigitalContent = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_digitalcontent} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDiscountVoucherVariants = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.discount_voucher_variants} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteDiscountSaleVariants = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.discount_sale_variants} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteWarehouseAllocation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_allocation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteWarehouseReservation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_reservation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteStock = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_stock} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteCheckoutLine = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.checkout_checkoutline} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     get,
     getProduct,
@@ -1788,4 +1939,13 @@ module.exports = {
     deleteProductType,
     deleteAttributeVariant,
     deleteAttributeProduct,
+    deleteProductVariantMedia,
+    deleteDigitalContentUrl,
+    deleteDigitalContent,
+    deleteDiscountVoucherVariants,
+    deleteDiscountSaleVariants,
+    deleteWarehouseAllocation,
+    deleteWarehouseReservation,
+    deleteStock,
+    deleteCheckoutLine,
 }
