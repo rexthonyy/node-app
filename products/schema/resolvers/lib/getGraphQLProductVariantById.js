@@ -23,13 +23,11 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
             let quantityOrdered;
             let defaultWeightUnit;
 
-            console.log(productVariant);
             try {
                 product = await getProductById(productVariant.product_id);
             } catch (err) {
                 product = null;
             }
-            console.log(product);
 
             try {
                 channelListings = await getGraphQLProductVariantChannelListingsByVariantId(productVariant.id);
@@ -79,8 +77,6 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
                 created: productVariant.created,
                 updatedAt: productVariant.updated_at
             };
-
-            console.log(res);
 
             resolve(res);
         });
@@ -146,8 +142,13 @@ function getProductById(productId) {
             }
 
             try {
-                channelListings = null;
+                defaultVariant = await getDefaultProductVariantById(product.default_variant_id);
+            } catch (err) {
                 defaultVariant = null;
+            }
+
+            try {
+                channelListings = null;
             } catch (err) {
                 channelListings = null;
             }
@@ -187,8 +188,6 @@ function getProductById(productId) {
                 availableForPurchase: null
             };
 
-            console.log(res);
-
             resolve(res);
         });
     });
@@ -225,6 +224,82 @@ function getCollectionsByProductId(productId) {
 function getDefaultWeightUnit() {
     return new Promise((resolve, reject) => {
         resolve("kg");;
+    });
+}
+
+
+function getDefaultProductVariantById(id, channel = "default-channel") {
+    return new Promise((resolve, reject) => {
+        productQueries.getProductVariant([id], "id=$1", async result => {
+            if (result.err || result.res.length == 0) {
+                return reject("Product variant not found");
+            }
+
+            let productVariant = result.res[0];
+            let product;
+            let channelListings;
+            let pricing;
+            let attributes;
+            let quantityOrdered;
+            let defaultWeightUnit;
+
+            try {
+                product = null;
+            } catch (err) {
+                product = null;
+            }
+
+            try {
+                channelListings = await getGraphQLProductVariantChannelListingsByVariantId(productVariant.id);
+            } catch (err) {
+                channelListings = null;
+            }
+
+            try {
+                quantityOrdered = await getQuantityOrdered(productVariant.id);
+            } catch (err) {
+                quantityOrdered = null;
+            }
+
+            try {
+                defaultWeightUnit = await getDefaultWeightUnit();
+            } catch (err) {
+                defaultWeightUnit = null;
+            }
+
+
+            let res = {
+                id: productVariant.id,
+                privateMetadata: formatMetadata(productVariant.private_metadata),
+                metadata: formatMetadata(productVariant.metadata),
+                name: productVariant.name,
+                sku: productVariant.sku,
+                product,
+                trackInventory: productVariant.track_inventory,
+                quantityLimitPerCustomer: productVariant.quantity_limit_per_customer,
+                weight: {
+                    unit: defaultWeightUnit,
+                    value: productVariant.weight
+                },
+                channel,
+                channelListings,
+                margin: null,
+                quantityOrdered,
+                media: null,
+                translation: null,
+                digitalContent: null,
+                quantityAvailable: null,
+                preorder: {
+                    globalThreshold: productVariant.preorder_global_threshold,
+                    globalSoldUnits: 0,
+                    endDate: productVariant.preorder_end_date
+                },
+                created: productVariant.created,
+                updatedAt: productVariant.updated_at
+            };
+
+            resolve(res);
+        });
     });
 }
 
