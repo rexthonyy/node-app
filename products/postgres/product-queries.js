@@ -1838,6 +1838,23 @@ const deleteCheckoutLine = (values, whereClause, response) => {
     });
 };
 
+const deleteProductVariantTranslation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.product_productvarianttranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     get,
     getProduct,
@@ -1948,4 +1965,5 @@ module.exports = {
     deleteWarehouseReservation,
     deleteStock,
     deleteCheckoutLine,
+    deleteProductVariantTranslation,
 }

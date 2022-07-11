@@ -122,8 +122,6 @@ function productVariantDelete(args) {
 
 function deleteProductVariant(productVariant, productVariantId) {
     return new Promise((resolve, reject) => {
-        console.log(productVariant.product.defaultVariant.id);
-        console.log(productVariantId);
         if (productVariant.product.defaultVariant.id == productVariantId) return reject(getGraphQLOutput("id", "Cannot delete default product variant", "CANNOT_MANAGE_PRODUCT_WITHOUT_VARIANT", null, null, productVariant));
         productQueries.getProductVariant([productVariantId], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, productVariant));
