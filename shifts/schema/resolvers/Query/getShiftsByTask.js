@@ -7,14 +7,39 @@ module.exports = async(parent, args, context) => {
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
         try {
-            //Slet shiftsByPeople = await getShiftsByPeople(parent, args, context);
-            shiftQueries.getShiftGroup([-1], "id<>$1", result => {
-                if (result.err) return getGraphQLOutput("getShiftGroup", JSON.stringify(result.err), null);
-                if (result.res.length == 0) return getGraphQLOutput("getShiftGroup", "Fetch successful", []);
-                console.log(result.res);
-            });
+            let channelId = args.channelId;
+            let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true };
+            let startDate = new Date(args.startDate);
+            let endDate = new Date(args.endDate);
 
-            //resolve(getShifts(shiftsByPeople));
+            shiftQueries.getShiftGroup([channelId], "channel_id=$1", result => {
+                if (result.err) return getGraphQLOutput("channelId", JSON.stringify(result.err), null);
+                let groups = result.res;
+                const numGroups = groups.length;
+                let cursor = -1;
+                let results = [];
+
+                groups.forEach(async group => {
+                    try {
+                        let shifts = await getShiftsByPeople(authUser, channelId, group.id, filter, startDate, endDate);
+                        results.push({
+                            groupId: group.id,
+                            groupName: group.name,
+                            shifts
+                        })
+                    } catch (err) {}
+                    checkComplete();
+                });
+
+                checkComplete();
+
+                function checkComplete() {
+                    cursor++;
+                    if (cursor == numGroups) {
+                        resolve(getGraphQLOutput("success", "Fetch successful", results));
+                    }
+                }
+            });
         } catch (err) {
             reject(err);
         }
