@@ -494,6 +494,16 @@ type Mutation {
     """Input list of product variants to create."""
     variants: [ProductVariantBulkCreateInput!]!
   ): ProductVariantBulkCreate
+
+  
+  """
+  Deletes product variants. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantBulkDelete(
+    """List of product variant IDs to delete."""
+    ids: [ID!]!
+  ): ProductVariantBulkDelete
+
 }
 
 """Return type for getShiftGroups"""
