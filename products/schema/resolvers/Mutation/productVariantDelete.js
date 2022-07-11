@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_PRODUCTS"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await productVariantDelete(authUser, args));
+            resolve(await productVariantDelete(args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null));
         }
@@ -41,7 +41,7 @@ function getGraphQLOutput(field, message, code, attributes, values, productVaria
     }
 }
 
-function productVariantDelete(authUser, args) {
+function productVariantDelete(args) {
     return new Promise(async resolve => {
         let productVariantId = args.id;
         let productVariant;
