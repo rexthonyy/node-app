@@ -38,7 +38,6 @@ module.exports = async(parent, args, context) => {
                 function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        console.log(results);
                         resolve(getGraphQLOutput("success", "Fetch successful", results));
                     }
                 }
