@@ -42,33 +42,35 @@ function getGraphQLOutput(field, message, code, attributes, values, count) {
 }
 
 function productVariantBulkDelete(args) {
-    let ids = args.ids;
-    let errors = [];
+    return new Promise(resolve => {
+        let ids = args.ids;
+        let errors = [];
 
-    const numIds = ids.length;
-    let cursor = -1;
+        const numIds = ids.length;
+        let cursor = -1;
 
-    ids.forEach(async id => {
-        try {
-            await productVariantDelete(id);
-        } catch (err) {
-            errors.concat(err);
-        }
+        ids.forEach(async id => {
+            try {
+                await productVariantDelete(id);
+            } catch (err) {
+                errors.concat(err);
+            }
+            checkComplete();
+        });
+
         checkComplete();
-    });
 
-    checkComplete();
-
-    function checkComplete() {
-        cursor++;
-        if (cursor == numIds) {
-            resolve({
-                errors,
-                productErrors: errors,
-                count: numIds
-            });
+        function checkComplete() {
+            cursor++;
+            if (cursor == numIds) {
+                resolve({
+                    errors,
+                    productErrors: errors,
+                    count: numIds
+                });
+            }
         }
-    }
+    });
 }
 
 function productVariantDelete(productVariantId) {
