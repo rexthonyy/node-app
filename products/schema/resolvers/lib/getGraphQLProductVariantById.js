@@ -66,7 +66,11 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
                 translation: null,
                 digitalContent: null,
                 quantityAvailable: null,
-                preorder: null,
+                preorder: {
+                    globalThreshold: productVariant.preorder_global_threshold,
+                    globalSoldUnits: 0,
+                    endDate: productVariant.preorder_end_date
+                },
                 created: product.created,
                 updatedAt: product.updated_at
             };

@@ -4,6 +4,7 @@ const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 const getGraphQLCollectionById = require("./getGraphQLCollectionById");
+const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
 
 let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
@@ -32,6 +33,11 @@ let getGraphQLProductById = (productId) => {
                 category = null;
             }
             try {
+                defaultVariant = await getGraphQLProductVariantById(product.default_variant_id);
+            } catch (err) {
+                defaultVariant = null;
+            }
+            try {
                 attributes = await getGraphQLSelectedAttributesByProductId(product.id);
             } catch (err) {
                 attributes = null;
@@ -48,10 +54,8 @@ let getGraphQLProductById = (productId) => {
             }
 
             try {
-                defaultVariant = null;
                 channelListings = null;
             } catch (err) {
-                defaultVariant = null;
                 channelListings = null;
             }
 
