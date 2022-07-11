@@ -1,7 +1,7 @@
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
 
 module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput(status, message, null));
 
