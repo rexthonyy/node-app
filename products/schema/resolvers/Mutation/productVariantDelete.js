@@ -174,7 +174,7 @@ function deleteProductVariantTranslation(productVariantId, productVariant) {
 
 function deleteProductVariantMedia(productVariantId, productVariant) {
     return new Promise((resolve, reject) => {
-        productQueries.deleteProductVariantMedia([productVariantId], "product_variant_id=$1", result => {
+        productQueries.deleteProductVariantMedia([productVariantId], "variant_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, productVariant));
             resolve();
         });
