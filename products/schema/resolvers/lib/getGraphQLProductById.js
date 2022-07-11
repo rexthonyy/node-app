@@ -35,6 +35,7 @@ let getGraphQLProductById = (productId) => {
             try {
                 defaultVariant = await getGraphQLProductVariantById(product.default_variant_id);
             } catch (err) {
+                console.log(err);
                 defaultVariant = null;
             }
             try {
@@ -93,6 +94,8 @@ let getGraphQLProductById = (productId) => {
                 images: null,
                 availableForPurchase: null
             };
+
+            console.log(res);
 
             resolve(res);
         });
