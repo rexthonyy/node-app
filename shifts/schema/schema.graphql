@@ -89,9 +89,6 @@ type Query {
    """ID of the channel."""
     channelId: ID!
 
-    """ID of the shift group."""
-    shiftGroupId: ID!
-
     """Filter the way you get shifts"""
     filter: getShiftsFilter
 
