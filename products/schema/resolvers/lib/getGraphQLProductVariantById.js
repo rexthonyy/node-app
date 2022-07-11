@@ -71,8 +71,8 @@ let getGraphQLProductVariantById = (id, channel = "default-channel") => {
                     globalSoldUnits: 0,
                     endDate: productVariant.preorder_end_date
                 },
-                created: product.created,
-                updatedAt: product.updated_at
+                created: productVariant.created,
+                updatedAt: productVariant.updated_at
             };
 
             resolve(res);
