@@ -52,6 +52,8 @@ function productVariantDelete(authUser, args) {
             return resolve(getGraphQLOutput("productVariantId", err, "NOT_FOUND", null, null, null));
         }
 
+        console.log(productVariant);
+
         try {
             await deleteProductVariant(productVariant, productVariantId);
         } catch (err) {
