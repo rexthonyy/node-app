@@ -172,7 +172,11 @@ function getShiftsByPeople(authUser, channelId, shiftGroupId, filter, startDate,
         }
 
         if (filter.includeShifts) {
-            assignedShifts = await getAssignedShifts(authUser, filter.includeRequests, channelId, shiftGroupId, startDate, endDate);
+            try {
+                assignedShifts = await getAssignedShifts(authUser, filter.includeRequests, channelId, shiftGroupId, startDate, endDate);
+            } catch (err) {
+                assignedShifts = [];
+            }
         }
 
         resolve({ openShifts, assignedShifts });
