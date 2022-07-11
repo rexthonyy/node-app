@@ -1,5 +1,4 @@
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
-const getShiftsByPeople = require("./getShiftsByPeople");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
