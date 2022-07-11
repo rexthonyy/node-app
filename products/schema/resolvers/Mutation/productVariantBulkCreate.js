@@ -14,14 +14,14 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_PRODUCTS"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await productVariantCreate(authUser, args));
+            resolve(await productVariantBulkCreate(authUser, args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null));
         }
     });
 }
 
-function getGraphQLOutput(field, message, code, attributes, values, productVariant) {
+function getGraphQLOutput(field, message, code, attributes, values, productVariants) {
     return {
         errors: [{
             field,
@@ -30,24 +30,60 @@ function getGraphQLOutput(field, message, code, attributes, values, productVaria
             attributes,
             values
         }],
-        productErrors: [{
+        bulkProductErrors: [{
             field,
             message,
             code,
             attributes,
             values
         }],
-        productVariant
+        productVariants,
+        count: productVariants.length
     }
 }
 
-function productVariantCreate(authUser, args) {
-    return new Promise(async resolve => {
+function productVariantBulkCreate(authUser, args) {
+    return new Promise((resolve) => {
+        let productId = args.product;
+        let variants = args.variants;
+        let errors = [];
+
+        const numVariants = variants.length;
+        let cursor = -1;
+        let graphQLProductVariants = [];
+
+        variants.forEach(async variant => {
+            try {
+                graphQLProductVariants.push(await productVariantCreate(productId, variant));
+            } catch (err) {
+                errors.concat(err);
+            }
+            checkComplete();
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            cursor++;
+            if (cursor == numVariants) {
+                resolve({
+                    errors,
+                    bulkProductErrors: errors,
+                    productVariants: graphQLProductVariants,
+                    count: graphQLProductVariants.length
+                });
+            }
+        }
+    });
+}
+
+function productVariantCreate(productId, variant) {
+    return new Promise(async(resolve, reject) => {
         let errors = [];
         let res;
 
         try {
-            res = await createProductVariant(args);
+            res = await createProductVariant(productId, variant);
         } catch (err) {
             return resolve({
                 errors: err,
@@ -57,38 +93,33 @@ function productVariantCreate(authUser, args) {
         }
 
         try {
-            await createProductVariantAttributes(args, res.product, res.productVariant);
+            await createProductVariantAttributes(productId, variant, res.product, res.productVariant);
         } catch (err) {
             errors.concat(err);
         }
 
         try {
-            await createProductVariantStock(args, res.productVariant.id);
+            await createProductVariantStock(productId, variant, res.productVariant.id);
         } catch (err) {
             errors.concat(err);
         }
 
         try {
-            let productVariant = await getGraphQLProductVariantById(res.productVariant.id);
-            return resolve({
-                errors,
-                productErrors: errors,
-                productVariant
-            });
+            resolve(await getGraphQLProductVariantById(res.productVariant.id));
         } catch (err) {
             resolve(getGraphQLOutput("productVariant", err, "GRAPHQL_ERROR", null, null, null));
         }
     });
 }
 
-function createProductVariant(args) {
+function createProductVariant(productId, variant) {
     return new Promise((resolve, reject) => {
-        productQueries.getProduct([args.input.product], "id=$1", result => {
+        productQueries.getProduct([productId], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("product", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("product", "Product not found", "NOT_FOUND", null, null, null).errors);
             let product = result.res[0];
 
-            let values = getCreateProductVariantInputValues(args);
+            let values = getCreateProductVariantInputValues(productId, variant);
             productQueries.createProductVariant(values, result => {
                 if (result.err) return reject(getGraphQLOutput("productVariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
                 if (result.res.length == 0) return reject(getGraphQLOutput("productVariant", "ProductVariant not created", "GRAPHQL_ERROR", null, null, null).errors);
@@ -99,29 +130,28 @@ function createProductVariant(args) {
     });
 }
 
-function getCreateProductVariantInputValues(args) {
+function getCreateProductVariantInputValues(productId, variant) {
     let sku = null;
     let trackInventory;
     let weight = null;
     let preorderGlobalThreshold = null;
-    let isPreorder = args.input.preorder != null;
+    let isPreorder = variant.preorder != null;
     let preorderEndDate = null;
     let quantityLimitPerCustomer = null;
-    let productId = args.input.product;
     let now = new Date().toUTCString();
 
-    sku = args.input.sku ? args.input.sku : null;
+    sku = variant.sku ? variant.sku : null;
 
-    trackInventory = args.input.trackInventory ? args.input.trackInventory : true;
+    trackInventory = variant.trackInventory ? variant.trackInventory : true;
 
-    weight = args.input.weight ? args.input.weight : null;
+    weight = variant.weight ? variant.weight : null;
 
     if (isPreorder) {
-        preorderGlobalThreshold = args.input.preorder.globalThreshold ? args.input.preorder.globalThreshold : null;
-        preorderEndDate = args.input.preorder.endDate ? new Date(args.input.preorder.endDate).toUTCString() : null;
+        preorderGlobalThreshold = variant.preorder.globalThreshold ? variant.preorder.globalThreshold : null;
+        preorderEndDate = variant.preorder.endDate ? new Date(variant.preorder.endDate).toUTCString() : null;
     }
 
-    quantityLimitPerCustomer = args.input.quantityLimitPerCustomer ? args.input.quantityLimitPerCustomer : null;
+    quantityLimitPerCustomer = variant.quantityLimitPerCustomer ? variant.quantityLimitPerCustomer : null;
 
     return [
         sku,
@@ -141,13 +171,13 @@ function getCreateProductVariantInputValues(args) {
     ];
 }
 
-function createProductVariantAttributes(args, product, productVariant) {
+function createProductVariantAttributes(productId, variant, product, productVariant) {
     return new Promise(resolve => {
-        const numVariantAttributes = args.input.attributes.length;
+        const numVariantAttributes = variant.attributes.length;
         let variantAttributeCursor = -1;
         let errors = [];
 
-        args.input.attributes.forEach(async attr => {
+        variant.attributes.forEach(async attr => {
             try {
                 await addAttribute(product, productVariant, attr);
             } catch (err) {
@@ -225,13 +255,11 @@ function resolveAttributeValue(attr, value) {
 function createAttributeValue(attr, value) {
     return new Promise((resolve, reject) => {
         let attributeId = attr.id;
-        let file = attr.file;
-        let contentType = attr.contentType;
-        let references = attr.references;
-        let richText = attr.richText;
+        let file = null;
+        let contentType = null;
+        let richText = null;
         let boolean = attr.boolean;
-        let date = attr.date;
-        let dateTime = attr.dateTime;
+        let dateTime = null;
 
         let input = [
             value,
@@ -306,10 +334,10 @@ function createAssignedVariantAttributeValue(assignedVariantAttributeId, attribu
     });
 }
 
-function createProductVariantStock(args, productVariantId) {
+function createProductVariantStock(productId, variant, productVariantId) {
     return new Promise((resolve, reject) => {
-        if (args.input.stocks == null) return resolve();
-        let stocks = args.input.stocks;
+        if (variant.stocks == null) return resolve();
+        let stocks = variant.stocks;
         const numStock = stocks.length;
         let cursor = -1;
 
