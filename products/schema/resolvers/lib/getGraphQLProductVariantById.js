@@ -141,17 +141,11 @@ function getProductById(productId) {
                 defaultWeightUnit = [];
             }
 
-            console.log(product.default_variant_id);
-
             try {
                 defaultVariant = await getDefaultProductVariantById(product.default_variant_id);
-                console.log(defaultVariant);
             } catch (err) {
-                console.log(err);
                 defaultVariant = null;
             }
-
-            console.log(defaultVariant);
 
             try {
                 channelListings = null;
@@ -236,7 +230,6 @@ function getDefaultWeightUnit() {
 
 function getDefaultProductVariantById(id, channel = "default-channel") {
     return new Promise((resolve, reject) => {
-        console.log(id);
         productQueries.getProductVariant([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
                 return reject("Product variant not found");
@@ -304,8 +297,6 @@ function getDefaultProductVariantById(id, channel = "default-channel") {
                 created: productVariant.created,
                 updatedAt: productVariant.updated_at
             };
-
-            console.log(res);
 
             resolve(res);
         });
