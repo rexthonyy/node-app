@@ -176,7 +176,7 @@ function getShiftsByPeople(authUser, channelId, shiftGroupId, filter, startDate,
             assignedShifts = await getAssignedShifts(authUser, filter.includeRequests, channelId, shiftGroupId, startDate, endDate);
         }
 
-        resolve(getGraphQLOutput("success", "Fetch successful", { openShifts, assignedShifts }));
+        resolve({ openShifts, assignedShifts });
     });
 }
 
