@@ -8,6 +8,7 @@ module.exports = async(parent, args, context) => {
         let productVariantId = parent.id;
         let variantSelection = args.variantSelection;
         console.log(args);
+        console.log(parent);
         resolve(getAttributes(productVariantId, variantSelection));
     });
 }
