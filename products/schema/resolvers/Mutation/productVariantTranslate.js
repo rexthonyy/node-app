@@ -42,7 +42,7 @@ function productVariantTranslate(authUser, args) {
         productQueries.getProductVariant([args.id], "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("productvariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("productvariant", "Product variant not found", "NOT_FOUND", null));
-            productQueries.getRowTranslation([args.id, args.languageCode], "product_variant_id=$1 AND language_code=$2", async result => {
+            productQueries.getProductVariantTranslation([args.id, args.languageCode], "product_variant_id=$1 AND language_code=$2", async result => {
                 if (result.err) return resolve(getGraphQLOutput("productvariant", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                 if (result.res.length == 0) {
                     try {
