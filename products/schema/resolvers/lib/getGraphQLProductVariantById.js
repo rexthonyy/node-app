@@ -286,7 +286,6 @@ function getDefaultProductVariantById(id, channel = "default-channel") {
                 margin: null,
                 quantityOrdered,
                 media: null,
-                translation: null,
                 digitalContent: null,
                 quantityAvailable: null,
                 preorder: {

@@ -7,6 +7,7 @@ module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let productVariantId = parent.id;
         let variantSelection = args.variantSelection;
+        console.log(args);
         resolve(getAttributes(productVariantId, variantSelection));
     });
 }
