@@ -133,6 +133,10 @@ const {
 } = require('./ShippingZone');
 
 const {
+    attributePrivateMetafield,
+    attributePrivateMetafields,
+    attributeMetafield,
+    attributeMetafields,
     attributeTranslation,
 } = require('./Attribute');
 
@@ -185,6 +189,10 @@ module.exports = {
         productVariantUpdate,
     },
     Attribute: {
+        privateMetafield: attributePrivateMetafield,
+        privateMetafields: attributePrivateMetafields,
+        metafield: attributeMetafield,
+        metafields: attributeMetafields,
         translation: attributeTranslation,
     },
     DigitalContent: {
