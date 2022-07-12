@@ -4,7 +4,7 @@ const { checkAuthorization } = require('../lib');
 const { sortByPosition } = require("../../../libs/util");
 
 module.exports = (parent, args, context) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
         try {
@@ -45,7 +45,7 @@ function getAllShiftGroups(channel) {
             if (result.res.length == 0) return reject("Channel not found");
             let channelId = result.res[0].id;
             shiftQueries.getShiftGroupsByChannelId([channelId], result => {
-                if (result.err) return reject("Failed to get shift groups");
+                if (result.err) { console.log(result.err); return reject("Failed to get shift groups"); }
                 let shiftGroups = result.res;
                 shiftGroups.sort(sortByPosition);
                 let edges = [];
