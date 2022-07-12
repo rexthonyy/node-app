@@ -81,11 +81,11 @@ function productVariantStocksCreate(authUser, args) {
 function createProductVariantStock(variantId, stock) {
     return new Promise((resolve, reject) => {
         productQueries.getWarehouse([stock.warehouse], "id=$1", result => {
-            if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return reject("Warehouse not found");
+            if (result.err) return reject(getGraphQLOutput("stock.warehouse", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("warehouse", "Warehouse not found", "GRAPHQL_ERROR", null, null, null).errors);
             productQueries.createWarehouseStock([stock.quantity, variantId, stock.warehouse, 0], result => {
-                if (result.err) return reject(JSON.stringify(result.err));
-                if (result.res.length == 0) return reject("Warehouse stock not created");
+                if (result.err) return reject(getGraphQLOutput("stock.warehouse", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
+                if (result.res.length == 0) return reject(getGraphQLOutput("warehouse", "Warehouse stock not created", "GRAPHQL_ERROR", null, null, null).errors);
                 resolve();
             });
         });
