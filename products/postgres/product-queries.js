@@ -876,6 +876,30 @@ const getAssignedProductAttributeValue = (values, whereClause, response) => {
     });
 };
 
+const getAttributeValueTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributevaluetranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+
+
+
+
+
+
+
 const createProduct = (values, response) => {
     client.query(`INSERT INTO ${db.product_product} (name, description, updated_at, product_type_id, category_id, seo_description, seo_title, charge_taxes, weight, metadata, private_metadata, slug, default_variant_id, description_plaintext, rating, search_document) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -1923,6 +1947,7 @@ module.exports = {
     getProductChannelListing,
     getAssignedProductAttribute,
     getAssignedProductAttributeValue,
+    getAttributeValueTranslation,
 
     createProduct,
     createProductType,

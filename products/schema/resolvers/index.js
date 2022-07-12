@@ -45,6 +45,7 @@ const {
     productVariantStocksDelete,
     productVariantStocksUpdate,
     productVariantUpdate,
+    productVariantSetDefault,
 } = require('./Mutation');
 
 const {
@@ -140,6 +141,10 @@ const {
     attributeTranslation,
 } = require('./Attribute');
 
+const {
+    attributeValueTranslation
+} = require('./AttributeValue');
+
 module.exports = {
     Query: {
         product,
@@ -187,6 +192,7 @@ module.exports = {
         productVariantStocksDelete,
         productVariantStocksUpdate,
         productVariantUpdate,
+        productVariantSetDefault,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
@@ -194,6 +200,9 @@ module.exports = {
         metafield: attributeMetafield,
         metafields: attributeMetafields,
         translation: attributeTranslation,
+    },
+    AttributeValue: {
+        translation: attributeValueTranslation,
     },
     DigitalContent: {
         privateMetafield: digitalContentPrivateMetafield,

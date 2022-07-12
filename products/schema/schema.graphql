@@ -548,6 +548,18 @@ type Mutation {
     """Fields required to update a product variant."""
     input: ProductVariantInput!
   ): ProductVariantUpdate
+
+  
+  """
+  Set default variant for a product. Mutation triggers PRODUCT_UPDATED webhook. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantSetDefault(
+    """Id of a product that will have the default variant set."""
+    productId: ID!
+
+    """Id of a variant that will be set as default."""
+    variantId: ID!
+  ): ProductVariantSetDefault
 }
 
 """Return type for getShiftGroups"""
