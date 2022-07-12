@@ -514,6 +514,17 @@ type Mutation {
     """ID of a product variant for which stocks will be created."""
     variantId: ID!
   ): ProductVariantStocksCreate
+
+  
+  """
+  Delete stocks from product variant. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantStocksDelete(
+    """ID of product variant for which stocks will be deleted."""
+    variantId: ID!
+    warehouseIds: [ID!]
+  ): ProductVariantStocksDelete
+
 }
 
 """Return type for getShiftGroups"""

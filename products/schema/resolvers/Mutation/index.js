@@ -17,6 +17,7 @@ const productVariantDelete = require('./productVariantDelete');
 const productVariantBulkCreate = require('./productVariantBulkCreate');
 const productVariantBulkDelete = require('./productVariantBulkDelete');
 const productVariantStocksCreate = require('./productVariantStocksCreate');
+const productVariantStocksDelete = require('./productVariantStocksDelete');
 
 module.exports = {
     productBulkDelete,
@@ -38,4 +39,5 @@ module.exports = {
     productVariantBulkCreate,
     productVariantBulkDelete,
     productVariantStocksCreate,
+    productVariantStocksDelete,
 };

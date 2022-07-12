@@ -56,7 +56,6 @@ function productVariantStocksCreate(authUser, args) {
                 await createProductVariantStock(variantId, stock);
             } catch (err) {
                 errors.push(err);
-                console.log(errors);
             }
             checkComplete();
         });
@@ -73,7 +72,6 @@ function productVariantStocksCreate(authUser, args) {
                         bulkStockErrors: errors,
                         productVariant
                     };
-                    console.log(res);
                     return resolve(res);
                 } catch (err) {
                     resolve(getGraphQLOutput("productVariant", err, "GRAPHQL_ERROR", null, null, 0, null));
@@ -87,7 +85,7 @@ function createProductVariantStock(variantId, stock) {
     return new Promise((resolve, reject) => {
         productQueries.getWarehouse([stock.warehouse], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("stock.warehouse", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, 0, null).errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("warehouse", "Warehouse not found", "GRAPHQL_ERROR", null, null, 0, null).errors[0]);
+            if (result.res.length == 0) return reject(getGraphQLOutput("warehouse", "Warehouse not found", "NOT_FOUND", null, null, 0, null).errors[0]);
             productQueries.createWarehouseStock([stock.quantity, variantId, stock.warehouse, 0], result => {
                 if (result.err) return reject(getGraphQLOutput("stock.warehouse", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, 0, null).errors[0]);
                 if (result.res.length == 0) return reject(getGraphQLOutput("warehouse", "Warehouse stock not created", "GRAPHQL_ERROR", null, null, 0, null).errors[0]);
