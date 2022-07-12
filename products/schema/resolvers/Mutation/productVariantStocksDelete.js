@@ -43,6 +43,7 @@ function productVariantStocksDelete(authUser, args) {
         let warehouseIds = args.warehouseIds;
         const numWarehouseIds = warehouseIds.length;
         let cursor = -1;
+        let errors = [];
 
         warehouseIds.forEach(async warehouseId => {
             try {
