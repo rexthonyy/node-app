@@ -1289,6 +1289,23 @@ const updateAttributeValue = (values, set, whereClause, response) => {
     });
 };
 
+const updateStock = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.warehouse_stock} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1932,6 +1949,7 @@ module.exports = {
     updateAttributeProduct,
     updateAttributeVariant,
     updateAttributeValue,
+    updateStock,
 
     deleteAttributeValue,
     deleteProductVariant,
