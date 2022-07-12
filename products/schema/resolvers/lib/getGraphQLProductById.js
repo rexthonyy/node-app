@@ -6,6 +6,7 @@ const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAtt
 const getGraphQLCollectionById = require("./getGraphQLCollectionById");
 const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
 const getGraphQLAttributeById = require("./getGraphQLAttributeById");
+const getGraphQLAttributeValueById = require("./getGraphQLAttributeValueById");
 
 let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
