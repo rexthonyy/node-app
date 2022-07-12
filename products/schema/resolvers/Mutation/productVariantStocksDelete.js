@@ -55,7 +55,7 @@ function productVariantStocksDelete(authUser, args) {
 
         checkComplete();
 
-        function checkComplete() {
+        async function checkComplete() {
             cursor++;
             if (cursor == numWarehouseIds) {
                 try {
