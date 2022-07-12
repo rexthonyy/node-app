@@ -30,7 +30,7 @@ function getGraphQLOutput(field, message, code, attributes, values, productVaria
             attributes,
             values
         }],
-        productErrors: [{
+        bulkStockErrors: [{
             field,
             message,
             code,
@@ -54,6 +54,7 @@ function productVariantStocksCreate(authUser, args) {
                 await createProductVariantStock(variantId, stock);
             } catch (err) {
                 errors.concat(err);
+                console.log(errors);
             }
             checkComplete();
         });
@@ -67,7 +68,7 @@ function productVariantStocksCreate(authUser, args) {
                     let productVariant = await getGraphQLProductVariantById(variantId);
                     return resolve({
                         errors,
-                        productErrors: errors,
+                        bulkStockErrors: errors,
                         productVariant
                     });
                 } catch (err) {
