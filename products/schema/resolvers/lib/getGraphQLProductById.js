@@ -5,6 +5,7 @@ const getGraphQLCategoryById = require('./getGraphQLCategoryById');
 const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 const getGraphQLCollectionById = require("./getGraphQLCollectionById");
 const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
+const getGraphQLAttributeById = require("./getGraphQLAttributeById");
 
 let getGraphQLProductById = (productId) => {
     return new Promise((resolve, reject) => {
@@ -32,16 +33,13 @@ let getGraphQLProductById = (productId) => {
             } catch (err) {
                 category = null;
             }
-            console.log(product.default_variant_id);
             try {
                 defaultVariant = await getGraphQLProductVariantById(product.default_variant_id);
             } catch (err) {
-                console.log(err);
                 defaultVariant = null;
             }
-            console.log(defaultVariant);
             try {
-                attributes = await getGraphQLSelectedAttributesByProductId(product.id);
+                attributes = await getSelectedAttributesByProductId(product.id);
             } catch (err) {
                 attributes = null;
             }
@@ -97,8 +95,6 @@ let getGraphQLProductById = (productId) => {
                 availableForPurchase: null
             };
 
-            console.log(res);
-
             resolve(res);
         });
     });
@@ -131,6 +127,93 @@ function getCollectionsByProductId(productId) {
         })
     });
 }
+
+function getSelectedAttributesByProductId(productId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAssignedProductAttribute([productId], "product_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let assignedProductAttributes = result.res;
+            const numAssignedProductAttributes = assignedProductAttributes.length;
+            let cursor = -1;
+            let graphQLSelectedAttributes = [];
+
+            assignedProductAttributes.forEach(async assignedProductAttribute => {
+                try {
+                    graphQLSelectedAttributes.push(await getSelectedAttribute(productId, assignedProductAttribute));
+                } catch (err) {}
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numAssignedProductAttributes) {
+                    resolve(graphQLSelectedAttributes);
+                }
+            }
+        })
+    });
+}
+
+
+function getSelectedAttribute(productId, assignedProductAttribute) {
+    return new Promise(async(resolve, reject) => {
+        let assignmentId = assignedProductAttribute.assignment_id;
+        productQueries.getAttributeProduct([assignmentId], "id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject();
+            let attributeProduct = result.res[0];
+            let attributeId = attributeProduct.attribute_id;
+            productQueries.getAttribute([attributeId], "id=$1", async result => {
+                if (result.err) return reject(JSON.stringify(result.err));
+                if (result.res.length == 0) return reject();
+                let graphQLAttribute;
+                let graphQLValues;
+                try {
+                    graphQLAttribute = await getGraphQLAttributeById(attributeId);
+                    graphQLValues = await getValues(attributeId);
+
+                    resolve({
+                        attribute: graphQLAttribute,
+                        values: graphQLValues
+                    });
+                } catch (err) {
+                    return resolve(null);
+                }
+            });
+        });
+    });
+}
+
+function getValues(attributeId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAttributeValue([attributeId], "attribute_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject(null);
+            let attributeValues = result.res;
+            const numAttributeValues = attributeValues.length;
+            let cursor = -1;
+            let graphQLAttributeValues = [];
+
+            attributeValues.forEach(async attributeValue => {
+                graphQLAttributeValues.push(await getGraphQLAttributeValueById(attributeValue.id));
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numAttributeValues) {
+                    resolve(graphQLAttributeValues);
+                }
+            }
+        });
+    });
+}
+
+
 
 function getDefaultWeightUnit() {
     return new Promise((resolve, reject) => {
