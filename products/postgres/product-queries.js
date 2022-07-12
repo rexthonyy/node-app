@@ -1155,6 +1155,23 @@ const createWarehouseStock = (values, response) => {
     });
 };
 
+const createProductVariantTranslation = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productvarianttranslation} (language_code, name, product_variant_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1315,6 +1332,23 @@ const updateAttributeValue = (values, set, whereClause, response) => {
 
 const updateStock = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.warehouse_stock} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateProductVariantTranslation = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_productvarianttranslation} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -1964,6 +1998,7 @@ module.exports = {
     createAssignedVariantAttribute,
     createAssignedVariantAttributeValue,
     createWarehouseStock,
+    createProductVariantTranslation,
 
     updateProduct,
     updateProductVariant,
@@ -1975,6 +2010,7 @@ module.exports = {
     updateAttributeVariant,
     updateAttributeValue,
     updateStock,
+    updateProductVariantTranslation,
 
     deleteAttributeValue,
     deleteProductVariant,

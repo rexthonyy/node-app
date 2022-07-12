@@ -560,6 +560,19 @@ type Mutation {
     """Id of a variant that will be set as default."""
     variantId: ID!
   ): ProductVariantSetDefault
+
+  
+  """
+  Creates/updates translations for a product variant. Requires one of the following permissions: MANAGE_TRANSLATIONS.
+  """
+  productVariantTranslate(
+    """ProductVariant ID or ProductVariantTranslatableContent ID."""
+    id: ID!
+    input: NameTranslationInput!
+
+    """Translation language code."""
+    languageCode: LanguageCodeEnum!
+  ): ProductVariantTranslate
 }
 
 """Return type for getShiftGroups"""

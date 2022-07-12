@@ -21,6 +21,7 @@ const productVariantStocksDelete = require('./productVariantStocksDelete');
 const productVariantStocksUpdate = require('./productVariantStocksUpdate');
 const productVariantUpdate = require('./productVariantUpdate');
 const productVariantSetDefault = require('./productVariantSetDefault');
+const productVariantTranslate = require('./productVariantTranslate');
 
 module.exports = {
     productBulkDelete,
@@ -46,4 +47,5 @@ module.exports = {
     productVariantStocksUpdate,
     productVariantUpdate,
     productVariantSetDefault,
+    productVariantTranslate,
 };
