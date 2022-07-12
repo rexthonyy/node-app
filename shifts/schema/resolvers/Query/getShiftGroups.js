@@ -3,8 +3,8 @@ const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization } = require('../lib');
 const { sortByPosition } = require("../../../libs/util");
 
-module.exports = async(parent, args, context) => {
-    return new Promise(async resolve => {
+module.exports = (parent, args, context) => {
+    return new Promise(async (resolve, reject) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
         try {
