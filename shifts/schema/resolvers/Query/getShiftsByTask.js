@@ -18,7 +18,7 @@ module.exports = async(parent, args, context) => {
             let result = await getShiftsByPeople(authUser, channelId, shiftGroupId, filter, startDate, endDate);
 
             let res = await getShifts(result);
-            console.log(res);
+
             resolve(getGraphQLOutput("success", "Fetch successful", res));
 
             /*shiftQueries.getShiftGroup([channelId], "channel_id=$1", result => {
