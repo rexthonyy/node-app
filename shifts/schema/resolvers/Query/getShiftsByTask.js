@@ -38,7 +38,9 @@ module.exports = async(parent, args, context) => {
                 function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        resolve(getGraphQLOutput("success", "Fetch successful", results));
+                        let res = getShifts(results);
+                        console.log(res);
+                        resolve(getGraphQLOutput("success", "Fetch successful", res));
                     }
                 }
             });
@@ -58,106 +60,111 @@ function getGraphQLOutput(status, message, result) {
 
 function getShifts(shiftsResponse) {
     return new Promise(async resolve => {
-        let assignedShifts = shiftsResponse.result.assignedShifts;
+        let shiftGroups = shiftsResponse.result;
+        let shiftGroupsData = [];
 
-        let userShifts = [];
+        for (let shiftGroup of shiftGroups) {
+            let assignedShifts = shiftGroup.shifts.assignedShifts;
 
-        for (let assignedShift of assignedShifts) {
-            for (let shift of assignedShift.shifts) {
-                if (shift.type == "shift") {
-                    userShifts.push({
-                        label: shift.label,
-                        break: shift.break,
-                        color: shift.color,
-                        startTime: shift.startTime,
-                        endTime: shift.endTime,
-                        is24Hours: shift.is24Hours,
-                        users: [assignedShift.userId]
-                    });
+            let userShifts = [];
+
+            for (let assignedShift of assignedShifts) {
+                for (let shift of assignedShift.shifts) {
+                    if (shift.type == "shift") {
+                        userShifts.push({
+                            label: shift.label,
+                            break: shift.break,
+                            color: shift.color,
+                            startTime: shift.startTime,
+                            endTime: shift.endTime,
+                            is24Hours: shift.is24Hours,
+                            users: [assignedShift.userId]
+                        });
+                    }
                 }
             }
-        }
 
 
-        let taskShiftsGroupByLabel = {};
+            let taskShiftsGroupByLabel = {};
 
-        for (let userShift of userShifts) {
-            if (taskShiftsGroupByLabel[userShift.label]) {
-                taskShiftsGroupByLabel[userShift.label].push(userShift);
-            } else {
-                taskShiftsGroupByLabel[userShift.label] = [];
-                taskShiftsGroupByLabel[userShift.label].push(userShift);
-            }
-        }
-
-        let taskShifts = [];
-
-        for (const [key, labelGroup] of Object.entries(taskShiftsGroupByLabel)) {
-            let taskShiftsGroupsByTime = {};
-            for (let g of labelGroup) {
-                if (taskShiftsGroupsByTime[(g.startTime + g.endTime)]) {
-                    taskShiftsGroupsByTime[(g.startTime + g.endTime)].push(g);
+            for (let userShift of userShifts) {
+                if (taskShiftsGroupByLabel[userShift.label]) {
+                    taskShiftsGroupByLabel[userShift.label].push(userShift);
                 } else {
-                    taskShiftsGroupsByTime[(g.startTime + g.endTime)] = [];
-                    taskShiftsGroupsByTime[(g.startTime + g.endTime)].push(g);
+                    taskShiftsGroupByLabel[userShift.label] = [];
+                    taskShiftsGroupByLabel[userShift.label].push(userShift);
                 }
             }
 
-            for (const [key, timeGroup] of Object.entries(taskShiftsGroupsByTime)) {
-                let taskShiftsGroupsByBreak = {};
-                for (let g of timeGroup) {
-                    if (taskShiftsGroupsByBreak[g.break]) {
-                        taskShiftsGroupsByBreak[g.break].push(g);
+            let taskShifts = [];
+
+            for (const [key, labelGroup] of Object.entries(taskShiftsGroupByLabel)) {
+                let taskShiftsGroupsByTime = {};
+                for (let g of labelGroup) {
+                    if (taskShiftsGroupsByTime[(g.startTime + g.endTime)]) {
+                        taskShiftsGroupsByTime[(g.startTime + g.endTime)].push(g);
                     } else {
-                        taskShiftsGroupsByBreak[g.break] = [];
-                        taskShiftsGroupsByBreak[g.break].push(g);
+                        taskShiftsGroupsByTime[(g.startTime + g.endTime)] = [];
+                        taskShiftsGroupsByTime[(g.startTime + g.endTime)].push(g);
                     }
                 }
 
-                for (const [key, breakGroup] of Object.entries(taskShiftsGroupsByBreak)) {
-                    let taskShiftsGroupsByColor = {};
-                    for (let g of breakGroup) {
-                        if (taskShiftsGroupsByColor[g.color]) {
-                            taskShiftsGroupsByColor[g.color].push(g);
+                for (const [key, timeGroup] of Object.entries(taskShiftsGroupsByTime)) {
+                    let taskShiftsGroupsByBreak = {};
+                    for (let g of timeGroup) {
+                        if (taskShiftsGroupsByBreak[g.break]) {
+                            taskShiftsGroupsByBreak[g.break].push(g);
                         } else {
-                            taskShiftsGroupsByColor[g.color] = [];
-                            taskShiftsGroupsByColor[g.color].push(g);
+                            taskShiftsGroupsByBreak[g.break] = [];
+                            taskShiftsGroupsByBreak[g.break].push(g);
                         }
                     }
 
-                    for (const [key, colorGroup] of Object.entries(taskShiftsGroupsByColor)) {
-                        let taskShiftsGroupsByUser = {};
+                    for (const [key, breakGroup] of Object.entries(taskShiftsGroupsByBreak)) {
+                        let taskShiftsGroupsByColor = {};
                         for (let g of breakGroup) {
-                            if (taskShiftsGroupsByUser[g.users[0]]) {
-                                taskShiftsGroupsByUser[g.users[0]].push(g);
+                            if (taskShiftsGroupsByColor[g.color]) {
+                                taskShiftsGroupsByColor[g.color].push(g);
                             } else {
-                                taskShiftsGroupsByUser[g.users[0]] = [];
-                                taskShiftsGroupsByUser[g.users[0]].push(g);
+                                taskShiftsGroupsByColor[g.color] = [];
+                                taskShiftsGroupsByColor[g.color].push(g);
                             }
                         }
 
-                        for (const [key, userGroup] of Object.entries(taskShiftsGroupsByColor)) {
-                            let users = [];
-                            for (let g of userGroup) {
-                                users.push(await getGraphQLUserById(g.users[0]))
+                        for (const [key, colorGroup] of Object.entries(taskShiftsGroupsByColor)) {
+                            let taskShiftsGroupsByUser = {};
+                            for (let g of breakGroup) {
+                                if (taskShiftsGroupsByUser[g.users[0]]) {
+                                    taskShiftsGroupsByUser[g.users[0]].push(g);
+                                } else {
+                                    taskShiftsGroupsByUser[g.users[0]] = [];
+                                    taskShiftsGroupsByUser[g.users[0]].push(g);
+                                }
                             }
-                            taskShifts.push({
-                                label: labelGroup[0].label,
-                                break: breakGroup[0].break,
-                                color: colorGroup[0].color,
-                                startTime: timeGroup[0].startTime,
-                                endTime: timeGroup[0].endTime,
-                                is24Hours: timeGroup[0].is24Hours,
-                                users
-                            });
+
+                            for (const [key, userGroup] of Object.entries(taskShiftsGroupsByColor)) {
+                                let users = [];
+                                for (let g of userGroup) {
+                                    users.push(await getGraphQLUserById(g.users[0]))
+                                }
+                                taskShifts.push({
+                                    label: labelGroup[0].label,
+                                    break: breakGroup[0].break,
+                                    color: colorGroup[0].color,
+                                    startTime: timeGroup[0].startTime,
+                                    endTime: timeGroup[0].endTime,
+                                    is24Hours: timeGroup[0].is24Hours,
+                                    users
+                                });
+                            }
                         }
                     }
                 }
             }
+
+            shiftGroupsData.push(taskShifts);
         }
-
-
-        resolve(getGraphQLOutput("success", "Fetch successful", taskShifts));
+        resolve(shiftGroupsData);
     });
 }
 
