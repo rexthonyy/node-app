@@ -39,7 +39,6 @@ module.exports = async(parent, args, context) => {
                     cursor++;
                     if (cursor == numGroups) {
                         let res = await getShifts(results);
-                        console.log(res);
                         resolve(getGraphQLOutput("success", "Fetch successful", res));
                     }
                 }

@@ -763,7 +763,13 @@ type GetShiftsResponse{
 type getShiftsByTaskResponse{
   status: String
   message: String
-  result: [ShiftGroups]
+  result: [ShiftGroupTasks]
+}
+
+type ShiftGroupTasks{
+  groupId: ID!
+  groupName: String!
+  tasks: [TaskShifts]
 }
 
 type ShiftGroups{
