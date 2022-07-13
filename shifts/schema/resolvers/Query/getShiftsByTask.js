@@ -60,6 +60,7 @@ function getGraphQLOutput(status, message, result) {
 
 function getShifts(shiftsResponse) {
     return new Promise(async resolve => {
+        console.log(shiftsResponse);
         let shiftGroups = shiftsResponse.result;
         let shiftGroupsData = [];
 
