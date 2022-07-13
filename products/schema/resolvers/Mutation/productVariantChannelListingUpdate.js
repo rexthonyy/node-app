@@ -91,6 +91,9 @@ function updateProductVariantChannelListing(variantId, input) {
                 if (result.err) return reject(getGraphQLOutput("input.channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
                 if (result.res.length == 0) return reject(getGraphQLOutput("input.channelId", "Channel not found", "NOT_FOUND", null, null, null, null).errors[0]);
                 let { values, set, whereClause } = getProductVariantChannelListingUpdateValues(variantId, input);
+                console.log(values);
+                console.log(set);
+                console.log(whereClause);
                 productQueries.updateProductVariantChannelListing(values, set, whereClause, result => {
                     if (result.err) return reject(getGraphQLOutput("updateProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
                     if (result.res.length == 0) return reject(getGraphQLOutput("updateProductVariantChannelListing", "Product Variant Channel Listing not updated", "GRAPHQL_ERROR", null, null, null, null).errors[0]);
