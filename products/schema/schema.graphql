@@ -573,6 +573,21 @@ type Mutation {
     """Translation language code."""
     languageCode: LanguageCodeEnum!
   ): ProductVariantTranslate
+
+  
+  """
+  Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantChannelListingUpdate(
+    """ID of a product variant to update."""
+    id: ID!
+
+    """
+    List of fields required to create or upgrade product variant channel listings.
+    """
+    input: [ProductVariantChannelListingAddInput!]!
+  ): ProductVariantChannelListingUpdate
+
 }
 
 """Return type for getShiftGroups"""
