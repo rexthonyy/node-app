@@ -91,7 +91,7 @@ type Query {
 
     """ID of the shift group."""
     shiftGroupId: ID!
-    
+
     """Filter the way you get shifts"""
     filter: getShiftsFilter
 
@@ -763,10 +763,10 @@ type GetShiftsResponse{
 }
 
 """Return type for getShiftsByTask"""
-type getaShiftsByTaskResponse{
+type getShiftsByTaskResponse{
   status: String
   message: String
-  result: [ShiftGroupTasks]
+  result: [ShiftGroups]
 }
 
 type ShiftGroupTasks{
@@ -782,7 +782,7 @@ type ShiftGroups{
 }
 
 """Return type for getShiftsByTask"""
-type getShiftsByTaskResponse{
+type getbShiftsByTaskResponse{
   status: String
   message: String
   result: [TaskShifts]
