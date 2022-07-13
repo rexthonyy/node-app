@@ -87,10 +87,9 @@ function updateProductVariantChannelListing(variantId, input) {
         productQueries.getProductVariant([variantId], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("variantId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
             if (result.res.length == 0) return reject(getGraphQLOutput("variantId", "Product variant not found", "NOT_FOUND", null, null, null, null).errors[0]);
-            console.log(input.channel);
-            kratosQueries.getChannel([input.channel], "id=$1", result => {
-                if (result.err) return reject(getGraphQLOutput("input.channel", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
-                if (result.res.length == 0) return reject(getGraphQLOutput("input.channel", "Channel not found", "NOT_FOUND", null, null, null, null).errors[0]);
+            kratosQueries.getChannel([input.channelId], "id=$1", result => {
+                if (result.err) return reject(getGraphQLOutput("input.channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                if (result.res.length == 0) return reject(getGraphQLOutput("input.channelId", "Channel not found", "NOT_FOUND", null, null, null, null).errors[0]);
                 let { values, set, whereClause } = getProductVariantChannelListingUpdateValues(variantId, input);
                 productQueries.updateProductVariantChannelListing(values, set, whereClause, result => {
                     if (result.err) return reject(getGraphQLOutput("updateProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
@@ -110,7 +109,7 @@ function getProductVariantChannelListingUpdateValues(variantId, input) {
 
     preorderThreshold = input.preorderThreshold ? input.preorderThreshold : true;
 
-    let values = [variantId, input.channel, input.price];
+    let values = [variantId, input.channelId, input.price];
     let whereClause = "variant_id=$1 AND channel_id=$2";
     let cursor = 2;
     let set = `price_amount=$${++cursor}`;
