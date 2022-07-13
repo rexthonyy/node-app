@@ -64,7 +64,7 @@ function getShifts(shiftsResponse) {
 
         for (let shiftGroup of shiftsResponse) {
             let assignedShifts = shiftGroup.shifts.assignedShifts;
-
+            if (assignedShifts.length == 0) continue;
             let userShifts = [];
 
             for (let assignedShift of assignedShifts) {
