@@ -87,6 +87,7 @@ function updateProductVariantChannelListing(variantId, input) {
         productQueries.getProductVariant([variantId], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("variantId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
             if (result.res.length == 0) return reject(getGraphQLOutput("variantId", "Product variant not found", "NOT_FOUND", null, null, null, null).errors[0]);
+            console.log(input.channel);
             kratosQueries.getChannel([input.channel], "id=$1", result => {
                 if (result.err) return reject(getGraphQLOutput("input.channel", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
                 if (result.res.length == 0) return reject(getGraphQLOutput("input.channel", "Channel not found", "NOT_FOUND", null, null, null, null).errors[0]);

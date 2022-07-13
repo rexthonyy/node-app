@@ -10,11 +10,17 @@ module.exports = async(parent, args, context) => {
 
         try {
             let channelId = args.channelId;
+            let shiftGroupId = args.shiftGroupId;
             let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true };
             let startDate = new Date(args.startDate);
             let endDate = new Date(args.endDate);
 
-            shiftQueries.getShiftGroup([channelId], "channel_id=$1", result => {
+            let result = await getShiftsByPeople(authUser, channelId, shiftGroupId, filter, startDate, endDate);
+
+            let res = await getShifts(result);
+            resolve(getGraphQLOutput("success", "Fetch successful", res));
+
+            /*shiftQueries.getShiftGroup([channelId], "channel_id=$1", result => {
                 if (result.err) return getGraphQLOutput("channelId", JSON.stringify(result.err), null);
                 let groups = result.res;
                 const numGroups = groups.length;
@@ -38,11 +44,10 @@ module.exports = async(parent, args, context) => {
                 async function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        let res = await getShifts(results);
-                        resolve(getGraphQLOutput("success", "Fetch successful", res));
+                        
                     }
                 }
-            });
+            });*/
         } catch (err) {
             reject(err);
         }
@@ -60,6 +65,9 @@ function getGraphQLOutput(status, message, result) {
 function getShifts(shiftsResponse) {
     return new Promise(async resolve => {
         let shiftGroupsData = [];
+        console.log(shiftsResponse);
+
+        return resolve(null);
 
         for (let shiftGroup of shiftsResponse) {
             let assignedShifts = shiftGroup.shifts.assignedShifts;
