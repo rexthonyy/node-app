@@ -161,7 +161,11 @@ function getShifts(shiftsResponse) {
                 }
             }
 
-            shiftGroupsData.push(taskShifts);
+            shiftGroupsData.push({
+                groupId: shiftGroup.groupId,
+                groupName: shiftGroup.groupName,
+                tasks: taskShifts
+            });
         }
 
         resolve(shiftGroupsData);
