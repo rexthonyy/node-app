@@ -48,7 +48,7 @@ function productVariantChannelListingUpdate(authUser, args) {
     return new Promise(async resolve => {
         let variantId = args.id;
         let inputs = args.input;
-        const numInputs = stocks.length;
+        const numInputs = inputs.length;
         let cursor = -1;
         let errors = [];
 
