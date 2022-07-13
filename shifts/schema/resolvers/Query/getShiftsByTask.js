@@ -35,10 +35,10 @@ module.exports = async(parent, args, context) => {
 
                 checkComplete();
 
-                function checkComplete() {
+                async function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        let res = getShifts(results);
+                        let res = await getShifts(results);
                         console.log(res);
                         resolve(getGraphQLOutput("success", "Fetch successful", res));
                     }
@@ -163,6 +163,7 @@ function getShifts(shiftsResponse) {
 
             shiftGroupsData.push(taskShifts);
         }
+
         resolve(shiftGroupsData);
     });
 }
