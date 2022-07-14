@@ -136,21 +136,21 @@ function getProductVariantChannelListingUpdateValues(variantId, input) {
     let costPrice = null;
     let preorderThreshold;
 
-    costPrice = input.costPrice ? input.costPrice : null;
+    costPrice = input.costPrice != undefined ? input.costPrice : undefined;
 
-    preorderThreshold = input.preorderThreshold ? input.preorderThreshold : true;
+    preorderThreshold = input.preorderThreshold != undefined ? input.preorderThreshold : undefined;
 
     let values = [variantId, input.channelId, input.price];
     let whereClause = "variant_id=$1 AND channel_id=$2";
     let cursor = 2;
     let set = `price_amount=$${++cursor}`;
 
-    if (costPrice != null) {
+    if (costPrice != undefined) {
         values.push(costPrice);
         set += set ? ", " : "";
         set += `cost_price_amount=$${++cursor}`;
     }
-    if (preorderThreshold != null) {
+    if (preorderThreshold != undefined) {
         values.push(preorderThreshold);
         set += set ? ", " : "";
         set += `preorder_quantity_threshold=$${++cursor}`;
