@@ -132,6 +132,7 @@ function getProductVariantChannelListingCreateValues(variantId, channel, input) 
 }
 
 function getProductVariantChannelListingUpdateValues(variantId, input) {
+    console.log(input);
     let costPrice = null;
     let preorderThreshold;
 
