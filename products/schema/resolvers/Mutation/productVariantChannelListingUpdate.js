@@ -102,9 +102,6 @@ function updateProductVariantChannelListing(variantId, input) {
                         });
                     } else {
                         let { values, set, whereClause } = getProductVariantChannelListingUpdateValues(variantId, input);
-                        console.log(values);
-                        console.log(set);
-                        console.log(whereClause);
                         productQueries.updateProductVariantChannelListing(values, set, whereClause, result => {
                             if (result.err) return reject(getGraphQLOutput("updateProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
                             if (result.res.length == 0) return reject(getGraphQLOutput("updateProductVariantChannelListing", "Product Variant Channel Listing not updated", "GRAPHQL_ERROR", null, null, null, null).errors[0]);
@@ -118,8 +115,8 @@ function updateProductVariantChannelListing(variantId, input) {
 }
 
 function getProductVariantChannelListingCreateValues(variantId, channel, input) {
-    let costPrice = input.costPrice ? input.costPrice : null;
-    let preorderThreshold = input.preorderThreshold ? input.preorderThreshold : true;
+    let costPrice = input.costPrice != undefined ? input.costPrice : null;
+    let preorderThreshold = input.preorderThreshold != undefined ? input.preorderThreshold : null;
 
     return [
         channel.currency_code,
@@ -132,7 +129,6 @@ function getProductVariantChannelListingCreateValues(variantId, channel, input) 
 }
 
 function getProductVariantChannelListingUpdateValues(variantId, input) {
-    console.log(input);
     let costPrice = null;
     let preorderThreshold;
 
