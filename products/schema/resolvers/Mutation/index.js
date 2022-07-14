@@ -24,6 +24,7 @@ const productVariantSetDefault = require('./productVariantSetDefault');
 const productVariantTranslate = require('./productVariantTranslate');
 const productVariantChannelListingUpdate = require('./productVariantChannelListingUpdate');
 const productVariantReorderAttributeValues = require('./productVariantReorderAttributeValues');
+const productVariantPreorderDeactivate = require('./productVariantPreorderDeactivate');
 
 module.exports = {
     productBulkDelete,
@@ -52,4 +53,5 @@ module.exports = {
     productVariantTranslate,
     productVariantChannelListingUpdate,
     productVariantReorderAttributeValues,
+    productVariantPreorderDeactivate,
 };

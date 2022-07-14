@@ -49,6 +49,7 @@ const {
     productVariantTranslate,
     productVariantChannelListingUpdate,
     productVariantReorderAttributeValues,
+    productVariantPreorderDeactivate,
 } = require('./Mutation');
 
 const {
@@ -199,6 +200,7 @@ module.exports = {
         productVariantTranslate,
         productVariantChannelListingUpdate,
         productVariantReorderAttributeValues,
+        productVariantPreorderDeactivate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
