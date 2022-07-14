@@ -1112,6 +1112,9 @@ input getShiftsFilter {
 
     """Lookup requests"""
     includeRequests: Boolean
+
+    """Shift group ids to return"""
+    shiftGroupIds: [ID!]
 }
 
 """Shifts."""

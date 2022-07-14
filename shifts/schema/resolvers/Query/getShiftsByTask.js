@@ -10,7 +10,7 @@ module.exports = async(parent, args, context) => {
 
         try {
             let channelId = args.channelId;
-            let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true };
+            let filter = args.filter ? args.filter : { includeShifts: true, includeOpenShifts: true, includeRequests: true, shiftGroupIds: null };
             let startDate = new Date(args.startDate);
             let endDate = new Date(args.endDate);
 
@@ -44,7 +44,17 @@ module.exports = async(parent, args, context) => {
                 async function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        //console.log(results);
+                        if (filter.shiftGroupIds) {
+                            let data = [];
+                            for (let result of results) {
+                                for (let shiftGroupId of filter.shiftGroupIds) {
+                                    if (result.groupId == shiftGroupId) {
+                                        data.push(result);
+                                    }
+                                }
+                            }
+                            return resolve(getGraphQLOutput("success", "Fetch successful", data))
+                        }
                         resolve(getGraphQLOutput("success", "Fetch successful", results))
                     }
                 }
