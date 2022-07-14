@@ -19,6 +19,7 @@ const stock = require('./stock');
 const stocks = require('./stocks');
 const warehouse = require('./warehouse');
 const warehouses = require('./warehouses');
+const translations = require('./translations');
 
 module.exports = {
     categories,
@@ -42,4 +43,5 @@ module.exports = {
     stocks,
     warehouse,
     warehouses,
+    translations,
 };

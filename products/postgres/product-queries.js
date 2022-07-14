@@ -893,6 +893,125 @@ const getAttributeValueTranslation = (values, whereClause, response) => {
     });
 };
 
+const getAttributeTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributetranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getMenu = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.menu_menu} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getMenuItem = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.menu_menuitem} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getMenuItemTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.menu_menuitemtranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getPage = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.page_page} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getPageTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.page_pagetranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getPageType = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.page_pagetype} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1999,6 +2118,13 @@ module.exports = {
     getAssignedProductAttribute,
     getAssignedProductAttributeValue,
     getAttributeValueTranslation,
+    getAttributeTranslation,
+    getMenu,
+    getMenuItem,
+    getMenuItemTranslation,
+    getPage,
+    getPageTranslation,
+    getPageType,
 
     createProduct,
     createProductType,

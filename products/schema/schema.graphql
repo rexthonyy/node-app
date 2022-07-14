@@ -323,6 +323,26 @@ type Query {
   Gift card related settings from site settings. Requires one of the following permissions: MANAGE_GIFT_CARD.
   """
   giftCardSettings: GiftCardSettings!
+
+  """
+  Returns a list of all translatable items of a given kind. Requires one of the following permissions: MANAGE_TRANSLATIONS.
+  """
+  translations(
+    """Kind of objects to retrieve."""
+    kind: TranslatableKinds!
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): TranslatableItemConnection
 }
 
 

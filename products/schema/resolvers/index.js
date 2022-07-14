@@ -20,6 +20,7 @@ const {
     collections,
     orderSettings,
     giftCardSettings,
+    translations,
 } = require('./Query');
 
 const {
@@ -149,6 +150,22 @@ const {
     attributeValueTranslation
 } = require('./AttributeValue');
 
+const {
+    attributeTranslatableContentTranslation
+} = require('./AttributeTranslatableContent');
+
+const {
+    categoryTranslatableContentTranslation
+} = require('./CategoryTranslatableContent');
+
+const {
+    menuitemTranslatableContentTranslation
+} = require('./MenuItemTranslatableContent');
+
+const {
+    pageTranslatableContentTranslation
+} = require('./PageTranslatableContent');
+
 module.exports = {
     Query: {
         product,
@@ -172,6 +189,7 @@ module.exports = {
         collections,
         orderSettings,
         giftCardSettings,
+        translations,
     },
     Mutation: {
         productCreate,
@@ -211,6 +229,27 @@ module.exports = {
     },
     AttributeValue: {
         translation: attributeValueTranslation,
+    },
+    AttributeValueTranslatableContent: {
+        translation: attributeValueTranslation,
+    },
+    AttributeTranslatatableContent: {
+        translation: attributeTranslatableContentTranslation,
+    },
+    CategoryTranslatableContent: {
+        translation: categoryTranslatableContentTranslation,
+    },
+    CollectionTranslatableContent: {
+        translation: collectionTranslation,
+    },
+    MenuItemTranslatableContent: {
+        translation: menuitemTranslatableContentTranslation,
+    },
+    PageTranslatableContent: {
+        translation: pageTranslatableContentTranslation,
+    },
+    ProductTranslatableContent: {
+        translation: productTranslation,
     },
     DigitalContent: {
         privateMetafield: digitalContentPrivateMetafield,
