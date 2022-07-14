@@ -588,6 +588,19 @@ type Mutation {
     input: [ProductVariantChannelListingAddInput!]!
   ): ProductVariantChannelListingUpdate
 
+  """
+  Reorder product variant attribute values. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productVariantReorderAttributeValues(
+    """ID of an attribute."""
+    attributeId: ID!
+
+    """The list of reordering operations for given attribute values."""
+    moves: [ReorderInput!]!
+
+    """ID of a product variant."""
+    variantId: ID!
+  ): ProductVariantReorderAttributeValues
 }
 
 """Return type for getShiftGroups"""
