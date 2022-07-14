@@ -233,7 +233,7 @@ module.exports = {
     AttributeValueTranslatableContent: {
         translation: attributeValueTranslation,
     },
-    AttributeTranslatatableContent: {
+    AttributeTranslatableContent: {
         translation: attributeTranslatableContentTranslation,
     },
     CategoryTranslatableContent: {
