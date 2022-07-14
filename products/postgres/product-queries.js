@@ -1172,6 +1172,23 @@ const createProductVariantTranslation = (values, response) => {
     });
 };
 
+const createProductVariantChannelListing = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productvariantchannellisting} (currency, price_amount, channel_id, variant_id, cost_price_amount, preorder_quantity_threshold) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1999,6 +2016,7 @@ module.exports = {
     createAssignedVariantAttributeValue,
     createWarehouseStock,
     createProductVariantTranslation,
+    createProductVariantChannelListing,
 
     updateProduct,
     updateProductVariant,

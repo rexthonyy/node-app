@@ -90,18 +90,42 @@ function updateProductVariantChannelListing(variantId, input) {
             kratosQueries.getChannel([input.channelId], "id=$1", result => {
                 if (result.err) return reject(getGraphQLOutput("input.channelId", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
                 if (result.res.length == 0) return reject(getGraphQLOutput("input.channelId", "Channel not found", "NOT_FOUND", null, null, null, null).errors[0]);
-                let { values, set, whereClause } = getProductVariantChannelListingUpdateValues(variantId, input);
-                console.log(values);
-                console.log(set);
-                console.log(whereClause);
-                productQueries.updateProductVariantChannelListing(values, set, whereClause, result => {
-                    if (result.err) return reject(getGraphQLOutput("updateProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
-                    if (result.res.length == 0) return reject(getGraphQLOutput("updateProductVariantChannelListing", "Product Variant Channel Listing not updated", "GRAPHQL_ERROR", null, null, null, null).errors[0]);
-                    resolve();
+                let channel = result.res[0];
+                productQueries.getProductVariantChannelListing([variantId, input.channelId], "variant_id=$1 AND channel_id=$2", async result => {
+                    if (result.err) return reject(getGraphQLOutput("getProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                    if (result.res.length == 0) {
+                        let values = getProductVariantChannelListingCreateValues(variantId, channel, input);
+                        productQueries.createProductVariantChannelListing(values, result => {
+                            if (result.err) return reject(getGraphQLOutput("createProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                            if (result.res.length == 0) return reject(getGraphQLOutput("createProductVariantChannelListing", "Product Variant Channel Listing not created", "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                            resolve();
+                        });
+                    } else {
+                        let { values, set, whereClause } = getProductVariantChannelListingUpdateValues(variantId, input);
+                        productQueries.updateProductVariantChannelListing(values, set, whereClause, result => {
+                            if (result.err) return reject(getGraphQLOutput("updateProductVariantChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                            if (result.res.length == 0) return reject(getGraphQLOutput("updateProductVariantChannelListing", "Product Variant Channel Listing not updated", "GRAPHQL_ERROR", null, null, null, null).errors[0]);
+                            resolve();
+                        });
+                    }
                 });
             });
         });
     });
+}
+
+function getProductVariantChannelListingCreateValues(variantId, channel, input) {
+    let costPrice = input.costPrice ? input.costPrice : null;
+    let preorderThreshold = input.preorderThreshold ? input.preorderThreshold : true;
+
+    return [
+        channel.currency_code,
+        input.price,
+        channel.id,
+        variantId,
+        costPrice,
+        preorderThreshold
+    ];
 }
 
 function getProductVariantChannelListingUpdateValues(variantId, input) {
