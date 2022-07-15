@@ -29,9 +29,10 @@ client.connect();
 const stop = () => {
     client.end().then(() => {
         console.log("disconnected");
+        process.exit(-1);
     }).catch(err => {
-        console.log(err);
         console.log("Error during disconnection");
+        process.exit(-1);
     });
 };
 
