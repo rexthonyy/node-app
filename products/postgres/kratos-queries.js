@@ -28,11 +28,10 @@ client.connect();
 
 const stop = () => {
     client.end().then(() => {
-        console.log("disconnected");
-        process.exit(-1);
+        console.log(`${process.env.POSTGRES_USER_DB} database disconnection successful!!!`);
     }).catch(err => {
-        console.log("Error during disconnection");
-        process.exit(-1);
+        console.log(`${process.env.POSTGRES_USER_DB} database disconnection failed!!!`);
+        console.log(err);
     });
 };
 

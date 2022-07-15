@@ -28,9 +28,9 @@ client.connect();
 
 const stop = () => {
     client.end().then(() => {
-        console.log("disconnected");
+        console.log(`${process.env.POSTGRES_SHIFTS_DB} database disconnection successful!!!`);
     }).catch(err => {
-        console.log("Error during disconnection");
+        console.log(`${process.env.POSTGRES_SHIFTS_DB} database disconnection failed!!!`);
         console.log(err);
     });
 };
