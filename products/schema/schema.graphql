@@ -343,6 +343,16 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): TranslatableItemConnection
+
+  
+  """ Requires one of the following permissions: MANAGE_TRANSLATIONS."""
+  translation(
+    """ID of the object to retrieve."""
+    id: ID!
+
+    """Kind of the object to retrieve."""
+    kind: TranslatableKinds!
+  ): TranslatableItem
 }
 
 

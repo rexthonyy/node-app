@@ -12,9 +12,9 @@ const {
     getGraphQLShippingMethodTypeById,
     getGraphQLProductVariantById,
     getGraphQLVoucherById,
+    getGraphQLAttributeValueById,
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
-const getGraphQLAttributeValueById = require('../lib/getGraphQLAttributeValueById');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
