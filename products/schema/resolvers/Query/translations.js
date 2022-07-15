@@ -161,7 +161,8 @@ function getAllAttributeTranslations() {
                     let node = {
                         id: translation.attribute_id,
                         name: translation.name,
-                        attribute
+                        attribute,
+                        __typename: "AttributeTranslatableContent"
                     }
                     edges.push({
                         cursor: "",
@@ -202,7 +203,8 @@ function getAllAttributeValueTranslations() {
                         id: translation.attribute_value_id,
                         name: translation.name,
                         richText: translation.rich_text,
-                        attributeValue
+                        attributeValue,
+                        __typename: "AttributeValueTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -247,7 +249,8 @@ function getAllCategoryTranslations() {
                         name: translation.name,
                         description: translation.description,
                         descriptionJson: translation.description,
-                        category
+                        category,
+                        __typename: "CategoryTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -292,7 +295,8 @@ function getAllCollectionTranslations() {
                         name: translation.name,
                         description: translation.description,
                         descriptionJson: translation.description,
-                        collection
+                        collection,
+                        __typename: "CollectionTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -333,7 +337,8 @@ function getAllMenuItemTranslations() {
                     let node = {
                         id: translation.menu_item_id,
                         name: translation.name,
-                        menuItem
+                        menuItem,
+                        __typename: "MenuItemTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -576,7 +581,8 @@ function getAllSaleTranslations() {
                     let node = {
                         id: translation.sale_id,
                         name: translation.name,
-                        sale
+                        sale,
+                        __typename: "SaleTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -624,7 +630,8 @@ function getAllShippingMethodTranslations() {
                         id: translation.shipping_method_id,
                         name: translation.name,
                         description: translation.description,
-                        shippingMethod
+                        shippingMethod,
+                        __typename: "ShippingMethodTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -675,10 +682,11 @@ function getAllVariantTranslations() {
 
                 try {
                     let node = {
-                        id: translation.shipping_method_id,
+                        id: translation.product_variant_id,
                         name: translation.name,
                         attributeValues,
-                        productVariant
+                        productVariant,
+                        __typename: "ProductVariantTranslatableContent"
                     };
                     edges.push({
                         cursor: "",
@@ -807,7 +815,8 @@ function getAllVoucherTranslations() {
                     let node = {
                         id: translation.voucher_id,
                         name: translation.name,
-                        voucher
+                        voucher,
+                        __typename: "VoucherTranslatableContent"
                     };
                     edges.push({
                         cursor: "",

@@ -389,8 +389,7 @@ module.exports = {
     },
     TranslatableItem: {
         __resolveType: parent => {
-            console.log(parent.__typename);
-            return "ProductTranslatableContent";
+            return parent.__typename;
         }
     }
 };
