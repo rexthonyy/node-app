@@ -21,10 +21,9 @@ var lesServer = app.listen(port, function() {
     console.log("Listening on port %s...", lesServer.address().port);
 });
 
-
 events.forEach(event => {
-    process.on(event, () => {
-        stop();
+    process.on(event, async() => {
+        await stop();
         process.exit(-1);
     });
 })
