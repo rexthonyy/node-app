@@ -27,9 +27,12 @@ const client = new Client({
 client.connect();
 
 const stop = () => {
-    console.log("releasing...");
-    client.release();
-    console.log("released");
+    client.end().then(() => {
+        console.log(disconnected);
+    }).catch(err => {
+        console.log(err);
+        console.log("Error during disconnection");
+    });
 };
 
 const get = (table, columns, values, whereClause, response) => {

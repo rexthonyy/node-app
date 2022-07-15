@@ -27,7 +27,12 @@ const client = new Client({
 client.connect();
 
 const stop = () => {
-    client.release();
+    client.end().then(() => {
+        console.log(disconnected);
+    }).catch(err => {
+        console.log("Error during disconnection");
+        console.log(err);
+    });
 };
 
 const getShiftGroupById = (values, response) => {
