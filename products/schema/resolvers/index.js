@@ -388,6 +388,9 @@ module.exports = {
         translation: voucherTranslation,
     },
     TranslatableItem: {
-        ProductTranslatableContent: translations
+        __resolveType: parent => {
+            console.log(parent);
+            return "ProductTranslatableContent";
+        }
     }
 };
