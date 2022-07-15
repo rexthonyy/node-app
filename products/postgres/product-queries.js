@@ -27,11 +27,15 @@ const client = new Client({
 client.connect();
 
 const stop = () => {
-    client.end().then(() => {
-        console.log(`${process.env.POSTGRES_PRODUCTS_DB} database disconnection successful!!!`);
-    }).catch(err => {
-        console.log(`${process.env.POSTGRES_PRODUCTS_DB} database disconnection failed!!!`);
-        console.log(err);
+    return new Promise(resolve => {
+        client.end().then(() => {
+            console.log(`${process.env.POSTGRES_PRODUCTS_DB} database disconnection successful!!!`);
+            resolve();
+        }).catch(err => {
+            console.log(`${process.env.POSTGRES_PRODUCTS_DB} database disconnection failed!!!`);
+            console.log(err);
+            resolve();
+        });
     });
 };
 

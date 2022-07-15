@@ -4,10 +4,10 @@ const productQueries = require("./product-queries");
 const shiftQueries = require("./shift-queries");
 
 module.exports = {
-    stop: () => {
-        kratosQueries.stop();
-        permissionsdbQueries.stop();
-        productQueries.stop();
-        shiftQueries.stop();
+    stop: async() => {
+        await kratosQueries.stop();
+        await permissionsdbQueries.stop();
+        await productQueries.stop();
+        await shiftQueries.stop();
     }
 }
