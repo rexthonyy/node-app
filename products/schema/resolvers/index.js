@@ -389,9 +389,7 @@ module.exports = {
     },
     TranslatableItem: {
         __resolveType: (parent, args, context, info) => {
-            console.log(args);
-            console.log(context);
-            console.log(info);
+            console.log(parent.typename);
             return "ProductTranslatableContent";
         }
     }

@@ -393,6 +393,7 @@ function getAllPageTranslations() {
                         attributeValues,
                         contentJson: translation.content,
                         page,
+                        __typename: "PageTranslatableContent",
                     };
                     edges.push({
                         cursor: "",
@@ -488,7 +489,8 @@ function getAllProductTranslations() {
                         description: translation.description,
                         attributeValues,
                         descriptionJson: translation.description,
-                        product
+                        product,
+                        __typename: "ProductTranslatableContent",
                     };
                     edges.push({
                         cursor: "",
