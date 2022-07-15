@@ -22,8 +22,8 @@ var lesServer = app.listen(port, function() {
 });
 
 events.forEach(event => {
-    process.on(event, () => {
-        stop();
+    process.on(event, async() => {
+        await stop();
         process.exit(-1);
     });
 })
