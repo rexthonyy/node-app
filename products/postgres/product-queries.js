@@ -26,6 +26,12 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    console.log("releasing...");
+    client.release();
+    console.log("released");
+};
+
 const get = (table, columns, values, whereClause, response) => {
     pool.query(`SELECT ${columns} from ${table} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -2271,6 +2277,7 @@ const deleteProductVariantTranslation = (values, whereClause, response) => {
 };
 
 module.exports = {
+    stop,
     get,
     getProduct,
     getProductType,

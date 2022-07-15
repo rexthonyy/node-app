@@ -26,6 +26,9 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    client.release();
+};
 
 const getShiftGroupById = (values, response) => {
     pool.query(`SELECT * from ${db.shift_groups} WHERE id=$1`, values, (err, res) => {
@@ -947,6 +950,8 @@ const deleteOpenShift = (values, whereClause, response) => {
 };
 
 module.exports = {
+    stop,
+
     getShiftGroupById,
     getShiftGroupsByChannelId,
     getShiftGroupMemberByUserId,

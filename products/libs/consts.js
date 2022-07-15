@@ -151,11 +151,21 @@ const settingsType = {
     copying_shifts: "copying_shifts"
 }
 
+const events = [
+    "exit",
+    "SIGINT",
+    "SIGUSR1",
+    "SIGUSR2",
+    "SIGTERM",
+    "uncaughtExecption"
+];
+
 module.exports = {
     db,
     colorValue,
     unpaidBreakValue,
     requestType,
     requestStatus,
-    settingsType
+    settingsType,
+    events
 };

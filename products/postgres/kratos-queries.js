@@ -26,6 +26,9 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    client.release();
+};
 
 const getUserByEmail = (values, response) => {
     pool.query(`SELECT * from ${db.account_user} WHERE email=$1`, values, (err, res) => {
@@ -404,6 +407,8 @@ const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
 };
 
 module.exports = {
+    stop,
+
     getUserByEmail,
     getUserById,
     getUserByIsStaff,
