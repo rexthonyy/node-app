@@ -6,9 +6,6 @@ const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
-        let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return reject(message);
-
         let productId = parent.id;
         let languageCode = args.languageCode;
         resolve(getTranslation(productId, languageCode));
