@@ -127,7 +127,7 @@ function getTranslation(args) {
 
 function getAttributeTranslation(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getAttributeTranslation([id], "id=$1", result => {
+        productQueries.getAttributeTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Attribute translation not found");
             let translation = result.res[0];
@@ -149,7 +149,7 @@ function getAttributeTranslation(id) {
 
 function getAttributeValueTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getAttributeValueTranslation([id], "id=$1", result => {
+        productQueries.getAttributeValueTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Attribute value translation not found");
             let translation = result.res[0];
@@ -172,7 +172,7 @@ function getAttributeValueTranslations(id) {
 
 function getCategoryTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getCategoryTranslation([id], "id=$1", result => {
+        productQueries.getCategoryTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Category translation not found");
             let translation = result.res[0];
@@ -197,7 +197,7 @@ function getCategoryTranslations(id) {
 
 function getCollectionTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getCollectionTranslation([id], "id=$1", result => {
+        productQueries.getCollectionTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Collection translation not found");
             let translation = result.res[0];
@@ -222,7 +222,7 @@ function getCollectionTranslations(id) {
 
 function getMenuItemTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getMenuItemTranslation([id], "id=$1", result => {
+        productQueries.getMenuItemTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("MenuItem translation not found");
             let translation = result.res[0];
@@ -243,7 +243,7 @@ function getMenuItemTranslations(id) {
 
 function getPageTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getPageTranslation([id], "id=$1", result => {
+        productQueries.getPageTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Page translation not found");
             let translation = result.res[0];
@@ -320,7 +320,7 @@ function getAttributeValuesByPageId(pageId) {
 
 function getProductTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductTranslation([id], "id=$1", result => {
+        productQueries.getProductTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Product translation not found");
             let translation = result.res[0];
@@ -397,7 +397,7 @@ function getAttributeValuesByProductId(productId) {
 
 function getSaleTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getDiscountSaleTranslation([id], "id=$1", result => {
+        productQueries.getDiscountSaleTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Sale translation not found");
             let translation = result.res[0];
@@ -424,7 +424,7 @@ function getSaleTranslations(id) {
 
 function getShippingMethodTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getShippingMethodTranslation([id], "id=$1", result => {
+        productQueries.getShippingMethodTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Shipping method translation not found");
             let translation = result.res[0];
@@ -452,7 +452,7 @@ function getShippingMethodTranslations(id) {
 
 function getVariantTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getProductVariantTranslation([-1], "id=$1", result => {
+        productQueries.getProductVariantTranslation([-1], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Variant translation not found");
             let translation = result.res[0];
@@ -545,7 +545,7 @@ function getAttributeValuesFromAssignedAttributeValues(variantAttribute) {
 
 function getAttributeValueById(valueId) {
     return new Promise((resolve, reject) => {
-        productQueries.getAttributeValue([valueId], "id=$1", async result => {
+        productQueries.getAttributeValue([valueId], "id=$1", async async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Attribute value not found");
             let av = result.res[0];
@@ -568,7 +568,7 @@ function getAttributeValueById(valueId) {
 
 function getVoucherTranslations(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getDiscountVoucherTranslation([id], "id=$1", result => {
+        productQueries.getDiscountVoucherTranslation([id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Discount voucher translation not found");
             let translation = result.res[0];
