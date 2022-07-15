@@ -389,7 +389,7 @@ module.exports = {
     },
     TranslatableItem: {
         __resolveType: (parent, args) => {
-            console.log(args);
+            console.log(args.kind);
             return "ProductTranslatableContent";
         }
     }
