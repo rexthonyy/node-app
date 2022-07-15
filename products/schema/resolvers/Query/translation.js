@@ -545,7 +545,7 @@ function getAttributeValuesFromAssignedAttributeValues(variantAttribute) {
 
 function getAttributeValueById(valueId) {
     return new Promise((resolve, reject) => {
-        productQueries.getAttributeValue([valueId], "id=$1", async async result => {
+        productQueries.getAttributeValue([valueId], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));
             if (result.res.length == 0) return reject("Attribute value not found");
             let av = result.res[0];
