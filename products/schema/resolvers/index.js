@@ -280,7 +280,7 @@ module.exports = {
         translation: productTranslation,
     },
     ProductVariantTranslatableContent: {
-        translation: productVariantTranslate,
+        translation: productVariantTranslation,
     },
     DigitalContent: {
         privateMetafield: digitalContentPrivateMetafield,
