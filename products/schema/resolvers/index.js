@@ -387,4 +387,7 @@ module.exports = {
     VoucherTranslatableContent: {
         translation: voucherTranslation,
     },
+    TranslatableItem: {
+        ProductTranslatableContent: translations
+    }
 };
