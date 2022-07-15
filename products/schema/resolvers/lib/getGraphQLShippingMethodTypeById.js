@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLShippingMethodChannelListingById = require("./getGraphQLShippingMethodChannelListingById");
 const getGraphQLShippingMethodPostalCodeRuleById = require("./getGraphQLShippingMethodPostalCodeRuleById");
@@ -29,12 +30,8 @@ let getGraphQLShippingMethodTypeById = (id) => {
 
                 let res = {
                     id: shippingMethod.id,
-                    privateMetadata: shippingMethod.private_metadata,
-                    privateMetafield: JSON.stringify(shippingMethod.private_metadata),
-                    privateMetafields: null,
-                    metadata: shippingMethod.metadata,
-                    metadatafield: JSON.stringify(shippingMethod.metadata),
-                    metadatafields: null,
+                    privateMetadata: formatMetadata(shippingMethod.private_metadata),
+                    metadata: formatMetadata(shippingMethod.metadata),
                     name: shippingMethod.name,
                     description: shippingMethod.description,
                     type: shippingMethod.type,

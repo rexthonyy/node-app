@@ -147,6 +147,30 @@ const {
 } = require('./Attribute');
 
 const {
+    salePrivateMetafield,
+    salePrivateMetafields,
+    saleMetafield,
+    saleMetafields,
+    saleCategories,
+    saleCollections,
+    saleProducts,
+    saleVariants,
+    saleTranslation,
+} = require('./Sale');
+
+const {
+    voucherPrivateMetafield,
+    voucherPrivateMetafields,
+    voucherMetafield,
+    voucherMetafields,
+    voucherCategories,
+    voucherCollections,
+    voucherProducts,
+    voucherVariants,
+    voucherTranslation,
+} = require('./Voucher');
+
+const {
     attributeValueTranslation
 } = require('./AttributeValue');
 
@@ -165,6 +189,10 @@ const {
 const {
     pageTranslatableContentTranslation
 } = require('./PageTranslatableContent');
+
+const {
+    shippingMethodTranslatableContentTranslation
+} = require('./ShippingMethodTranslatableContent');
 
 module.exports = {
     Query: {
@@ -251,6 +279,9 @@ module.exports = {
     ProductTranslatableContent: {
         translation: productTranslation,
     },
+    ProductVariantTranslatableContent: {
+        translation: productVariantTranslate,
+    },
     DigitalContent: {
         privateMetafield: digitalContentPrivateMetafield,
         privateMetafields: digitalContentPrivateMetafields,
@@ -324,5 +355,36 @@ module.exports = {
         privateMetafields: userPrivateMetafields,
         metafield: userMetafield,
         metafields: userMetafields,
+    },
+    Sale: {
+        privateMetafield: salePrivateMetafield,
+        privateMetafields: salePrivateMetafields,
+        metafield: saleMetafield,
+        metafields: saleMetafields,
+        categories: saleCategories,
+        collections: saleCollections,
+        products: saleProducts,
+        variants: saleVariants,
+        translation: saleTranslation,
+    },
+    SaleTranslatableContent: {
+        translation: saleTranslation,
+    },
+    ShippingMethodTranslatableContent: {
+        translation: shippingMethodTranslatableContentTranslation,
+    },
+    Voucher: {
+        privateMetafield: voucherPrivateMetafield,
+        privateMetafields: voucherPrivateMetafields,
+        metafield: voucherMetafield,
+        metafields: voucherMetafields,
+        categories: voucherCategories,
+        collections: voucherCollections,
+        products: voucherProducts,
+        variants: voucherVariants,
+        translation: voucherTranslation,
+    },
+    VoucherTranslatableContent: {
+        translation: voucherTranslation,
     },
 };

@@ -16,6 +16,10 @@ const getGraphQLSelectedAttributeByProductVariantId = require('./getGraphQLSelec
 const getGraphQLAttributeById = require('./getGraphQLAttributeById');
 const getGraphQLMenuItemById = require('./getGraphQLMenuItemById');
 const getGraphQLPageById = require('./getGraphQLPageById');
+const getGraphQLSaleById = require('./getGraphQLSaleById');
+const getGraphQLShippingMethodById = require('./getGraphQLShippingMethodById');
+const getGraphQLShippingMethodTypeById = require('./getGraphQLShippingMethodTypeById');
+const getGraphQLVoucherById = require('./getGraphQLVoucherById');
 const checkAuthorization = require('./checkAuthorization');
 const { userPermissionGroupHasAccess, userHasAccess } = require('./checkUserHasAccess');
 
@@ -38,6 +42,10 @@ module.exports = {
     getGraphQLAttributeById,
     getGraphQLMenuItemById,
     getGraphQLPageById,
+    getGraphQLSaleById,
+    getGraphQLShippingMethodById,
+    getGraphQLShippingMethodTypeById,
+    getGraphQLVoucherById,
     checkAuthorization,
     userHasAccess,
     userPermissionGroupHasAccess

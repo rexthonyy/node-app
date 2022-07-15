@@ -332,6 +332,23 @@ const getDiscountSale = (values, whereClause, response) => {
     });
 };
 
+const getDiscountSaleCategories = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_sale_categories} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getDiscountSaleChannelListing = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.discount_salechannellisting} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -401,6 +418,23 @@ const getShippingMethod = (values, whereClause, response) => {
 };
 
 const getShippingMethodTranslationByShippingMethodId = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingmethodtranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getShippingMethodTranslation = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.shipping_shippingmethodtranslation} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
             response({
@@ -997,6 +1031,176 @@ const getPageTranslation = (values, whereClause, response) => {
 
 const getPageType = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.page_pagetype} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountSaleTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_saletranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountSaleCollection = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_sale_collections} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountSaleProducts = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_sale_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucher = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucher} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherTranslation = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_vouchertranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherChannelListing = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucherchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherCategories = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucher_categories} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherCollection = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucher_collections} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherProduct = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucher_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getDiscountVoucherVariant = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.discount_voucher_variants} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
             response({
                 err: err,
@@ -2085,11 +2289,23 @@ module.exports = {
     getAssignedVariantAttributeValue,
     getDiscountSaleVariants,
     getDiscountSale,
+    getDiscountSaleCategories,
     getDiscountSaleChannelListing,
+    getDiscountSaleTranslation,
+    getDiscountSaleCollection,
+    getDiscountSaleProducts,
+    getDiscountVoucher,
+    getDiscountVoucherTranslation,
+    getDiscountVoucherChannelListing,
+    getDiscountVoucherCategories,
+    getDiscountVoucherCollection,
+    getDiscountVoucherProduct,
+    getDiscountVoucherVariant,
     getPayment,
     getCheckout,
     getShippingMethod,
     getShippingMethodTranslationByShippingMethodId,
+    getShippingMethodTranslation,
     getWarehouse,
     getGiftCardTags,
     getGiftCardTag,

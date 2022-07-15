@@ -8,6 +8,10 @@ const {
     getGraphQLMenuItemById,
     getGraphQLPageById,
     getGraphQLProductById,
+    getGraphQLSaleById,
+    getGraphQLShippingMethodTypeById,
+    getGraphQLProductVariantById,
+    getGraphQLVoucherById,
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLAttributeValueById = require('../lib/getGraphQLAttributeValueById');
@@ -541,6 +545,285 @@ function getAttributeValuesByProductId(productId) {
                 cursor++;
                 if (cursor == numAttributeValues) {
                     resolve(attributeValues);
+                }
+            }
+        });
+    });
+}
+
+
+function getAllSaleTranslations() {
+    return new Promise((resolve, reject) => {
+        productQueries.getDiscountSaleTranslation([-1], "id <> $1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let translations_ = result.res;
+
+            const numTranslations = translations_.length;
+            let cursor = -1;
+            let edges = [];
+
+            translations_.forEach(async translation => {
+                let sale;
+                try {
+                    sale = await getGraphQLSaleById(translation.sale_id);
+                } catch (err) {
+                    sale = null;
+                }
+
+                try {
+                    let node = {
+                        id: translation.sale_id,
+                        name: translation.name,
+                        sale
+                    };
+                    edges.push({
+                        cursor: "",
+                        node
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numTranslations) {
+                    resolve(edges);
+                }
+            }
+        });
+    });
+}
+
+function getAllShippingMethodTranslations() {
+    return new Promise((resolve, reject) => {
+        productQueries.getShippingMethodTranslation([-1], "id <> $1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let translations_ = result.res;
+
+            const numTranslations = translations_.length;
+            let cursor = -1;
+            let edges = [];
+
+            translations_.forEach(async translation => {
+                let shippingMethod;
+                try {
+                    shippingMethod = await getGraphQLShippingMethodTypeById(translation.shipping_method_id);
+                } catch (err) {
+                    shippingMethod = null;
+                }
+
+                try {
+                    let node = {
+                        id: translation.shipping_method_id,
+                        name: translation.name,
+                        description: translation.description,
+                        shippingMethod
+                    };
+                    edges.push({
+                        cursor: "",
+                        node
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numTranslations) {
+                    resolve(edges);
+                }
+            }
+        });
+    });
+}
+
+function getAllVariantTranslations() {
+    return new Promise((resolve, reject) => {
+        productQueries.getProductVariantTranslation([-1], "id <> $1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let translations_ = result.res;
+
+            const numTranslations = translations_.length;
+            let cursor = -1;
+            let edges = [];
+
+            translations_.forEach(async translation => {
+                let productVariant;
+                let attributeValues;
+                try {
+                    productVariant = await getGraphQLProductVariantById(translation.product_variant_id);
+                } catch (err) {
+                    productVariant = null;
+                }
+                try {
+                    attributeValues = await getAttributeValuesByVariantId(translation.product_variant_id);
+                } catch (err) {
+                    attributeValues = null;
+                }
+
+                try {
+                    let node = {
+                        id: translation.shipping_method_id,
+                        name: translation.name,
+                        attributeValues,
+                        productVariant
+                    };
+                    edges.push({
+                        cursor: "",
+                        node
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numTranslations) {
+                    resolve(edges);
+                }
+            }
+        });
+    });
+}
+
+function getAttributeValuesByVariantId(productVariantId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAssignedVariantAttribute([productVariantId], "variant_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+
+            let assignedVariantAttributes_ = result.res;
+            let attributeValues = [];
+            const numAssignedVariantAttributes = assignedVariantAttributes_.length;
+            let cursor = -1;
+
+            assignedVariantAttributes_.forEach(async variantAttribute => {
+                try {
+                    attributeValues.concat(await getAttributeValuesFromAssignedAttributeValues(variantAttribute));
+                } catch (err) {}
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numAssignedVariantAttributes) {
+                    resolve(attributeValues);
+                }
+            }
+        });
+    });
+}
+
+
+function getAttributeValuesFromAssignedAttributeValues(variantAttribute) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAssignedVariantAttributeValue([variantAttribute.id], "assignment_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let assignedVariantAttributeValues_ = result.res;
+            let attributeValues = [];
+            const numAssignedVariantAttributes = assignedVariantAttributeValues_.length;
+            let cursor = -1;
+
+            assignedVariantAttributeValues_.forEach(async variantAttributes => {
+                try {
+                    attributeValues.push(await getAttributeValueById(variantAttributes.value_id));
+                } catch (err) {}
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numAssignedVariantAttributes) {
+                    resolve(attributeValues);
+                }
+            }
+        });
+    });
+}
+
+
+function getAttributeValueById(valueId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAttributeValue([valueId], "id=$1", async result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            if (result.res.length == 0) return reject("Attribute value not found");
+            let av = result.res[0];
+            let attributeValue;
+            try {
+                attributeValue = await getGraphQLAttributeValueById(av.id);
+            } catch (err) {
+                attributeValue = null;
+            }
+
+            resolve({
+                id: av.id,
+                name: av.name,
+                richText: av.rich_text,
+                attributeValue
+            });
+        });
+    });
+}
+
+function getAllVoucherTranslations() {
+    return new Promise((resolve, reject) => {
+        productQueries.getDiscountVoucherTranslation([-1], "id <> $1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let translations_ = result.res;
+
+            const numTranslations = translations_.length;
+            let cursor = -1;
+            let edges = [];
+
+            translations_.forEach(async translation => {
+                let voucher;
+                try {
+                    voucher = await getGraphQLVoucherById(translation.voucher_id);
+                } catch (err) {
+                    voucher = null;
+                }
+
+                try {
+                    let node = {
+                        id: translation.voucher_id,
+                        name: translation.name,
+                        voucher
+                    };
+                    edges.push({
+                        cursor: "",
+                        node
+                    });
+                } catch (err) {
+                    console.log(err);
+                }
+
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numTranslations) {
+                    resolve(edges);
                 }
             }
         });
