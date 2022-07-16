@@ -9,7 +9,7 @@ module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null));
-        attributeCreate(args);
+        resolve(attributeCreate(args));
     });
 }
 
@@ -128,7 +128,7 @@ function createAttributeValue(attributeId, value) {
     return new Promise((resolve, reject) => {
         let file = value.fileUrl;
         let contentType = value.contentType;
-        let richText = value.richText;
+        let richText = value.richText || null;
         let name = value.name;
 
         let input = [
