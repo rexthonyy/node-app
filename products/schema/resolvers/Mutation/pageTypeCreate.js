@@ -80,10 +80,11 @@ function pageTypeCreate(args) {
 function addAttributes(pageTypeId, args) {
     return new Promise(resolve => {
         if (args == undefined) return resolve();
-        const numPageAttributes = args.addAttributes.length;
+        let attributes = args.input.addAttributes ? args.input.addAttributes : [];
+        const numPageAttributes = attributes.length;
         let cursor = -1;
 
-        args.addAttributes.forEach(attributeId => {
+        attributes.forEach(attributeId => {
             productQueries.getAttributePage([attributeId, pageTypeId], "attribute_id=$1 AND page_type_id=$2", async result => {
                 if (!result.err) {
                     if (result.res.length == 0) {
