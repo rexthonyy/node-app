@@ -1,4 +1,4 @@
-const { formatMetadata } = require('../../../libs/util');
+const { formatMetadata } = require('../../../lib/util');
 const pgKratosQueries = require('../../../postgres/kratos-queries');
 const getUserPermissions = require('./getUserPermissions');
 const getUserPermissionGroups = require('./getUserPermissionGroups');
