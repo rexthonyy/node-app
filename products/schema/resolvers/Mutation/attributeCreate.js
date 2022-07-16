@@ -47,7 +47,7 @@ function attributeCreate(args) {
             let visibleInStorefront = args.input.visibleInStorefront || false;
             let filterableInStorefront = args.input.filterableInStorefront || false;
             let filterableInDashboard = args.input.filterableInDashboard || false;
-            let storefrontSearchPosition = args.input.storefrontSearchPosition || false;
+            let storefrontSearchPosition = args.input.storefrontSearchPosition || 0;
             let availableInGrid = args.input.availableInGrid || false;
 
             let values = [
