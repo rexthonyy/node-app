@@ -57,7 +57,7 @@ function pageTypeCreate(args) {
             ];
             productQueries.createPageType(values, async result => {
                 if (result.err) return resolve(getGraphQLOutput("createPageType", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
-                if (result.res.length > 0) return resolve(getGraphQLOutput("createPageType", "Page type not created", "GRAPHQL_ERROR", null, null, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("createPageType", "Page type not created", "GRAPHQL_ERROR", null, null, null));
                 let pageType_ = result.res[0];
 
                 await addAttributes(pageType_.id, args);
