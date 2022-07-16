@@ -53,6 +53,7 @@ const {
     productVariantChannelListingUpdate,
     productVariantReorderAttributeValues,
     productVariantPreorderDeactivate,
+    attributeCreate,
     pageCreate,
     pageTypeCreate,
 } = require('./Mutation');
@@ -261,6 +262,7 @@ module.exports = {
         productVariantChannelListingUpdate,
         productVariantReorderAttributeValues,
         productVariantPreorderDeactivate,
+        attributeCreate,
         pageCreate,
         pageTypeCreate,
     },

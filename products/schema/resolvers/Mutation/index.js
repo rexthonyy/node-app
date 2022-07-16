@@ -27,6 +27,7 @@ const productVariantReorderAttributeValues = require('./productVariantReorderAtt
 const productVariantPreorderDeactivate = require('./productVariantPreorderDeactivate');
 const pageCreate = require('./pageCreate');
 const pageTypeCreate = require('./pageTypeCreate');
+const attributeCreate = require('./attributeCreate');
 
 module.exports = {
     productBulkDelete,
@@ -58,4 +59,5 @@ module.exports = {
     productVariantPreorderDeactivate,
     pageCreate,
     pageTypeCreate,
+    attributeCreate,
 };

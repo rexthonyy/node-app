@@ -614,6 +614,12 @@ type Mutation {
     languageCode: LanguageCodeEnum!
   ): ProductVariantTranslate
 
+
+  """Creates an attribute."""
+  attributeCreate(
+    """Fields required to create an attribute."""
+    input: AttributeCreateInput!
+  ): AttributeCreate
   
   """
   Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
