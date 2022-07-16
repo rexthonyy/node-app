@@ -1059,6 +1059,40 @@ const getPageType = (values, whereClause, response) => {
     });
 };
 
+const getAttributePage = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_attributepage} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const getAssignedPageAttribute = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.attribute_assignedpageattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getDiscountSaleTranslation = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.discount_saletranslation} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -1510,6 +1544,57 @@ const createProductVariantTranslation = (values, response) => {
 
 const createProductVariantChannelListing = (values, response) => {
     client.query(`INSERT INTO ${db.product_productvariantchannellisting} (currency, price_amount, channel_id, variant_id, cost_price_amount, preorder_quantity_threshold) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedPageAttribute = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedpageattribute} (assignment_id, page_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createAssignedPageAttributeValue = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_assignedpageattributevalue} (sort_order, assignment_id, value_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createPage = (values, response) => {
+    client.query(`INSERT INTO ${db.page_page} (slug, title, content, created, is_published, publication_date, seo_description, seo_title, metadata, private_metadata, page_type_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -2355,7 +2440,10 @@ module.exports = {
     getPage,
     getPageTranslation,
     getPageType,
+    getAttributePage,
+    getAssignedPageAttribute,
 
+    createPage,
     createProduct,
     createProductType,
     createAssignedProductAttribute,
@@ -2373,6 +2461,8 @@ module.exports = {
     createWarehouseStock,
     createProductVariantTranslation,
     createProductVariantChannelListing,
+    createAssignedPageAttribute,
+    createAssignedPageAttributeValue,
 
     updateProduct,
     updateProductVariant,

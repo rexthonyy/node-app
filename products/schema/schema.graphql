@@ -649,6 +649,14 @@ type Mutation {
     """ID of a variant which preorder should be deactivated."""
     id: ID!
   ): ProductVariantPreorderDeactivate
+  
+  """
+  Creates a new page. Requires one of the following permissions: MANAGE_PAGES.
+  """
+  pageCreate(
+    """Fields required to create a page."""
+    input: PageCreateInput!
+  ): PageCreate
 }
 
 """Return type for getShiftGroups"""
