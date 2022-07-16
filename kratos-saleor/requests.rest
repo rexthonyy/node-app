@@ -45,9 +45,9 @@ mutation{
 
 
 ###
-POST http://88.208.199.175:4000/graphql
+POST http://88.208.199.175:1410/graphql
 Content-Type: application/json
-authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hNREV3TENKbGJXRnBiQ0k2SW5KbGVIUm9iMjU1ZVVCbmJXRnBiQzVqYjIwaUxDSnBZWFFpT2pFMk5UUTROakF5TWpWOS5pdVd2MUY5cnpYMXhta1l5ZWlqZFpBRWx4eWFMaTZJZnBpZjMzUGFZMkdnIiwiaWF0IjoxNjU0ODYwMjI1LCJleHAiOjE2NTQ4NjA1MjUsInN1YiI6IjEwMTAifQ.zbHHK0Goe7xltkyfO74S9qdd7ifuB_AzaiwOmvxMYvs
+authorization-bearer: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hMQ0psYldGcGJDSTZJbkpsZUhSb2IyNTVlVUJuYldGcGJDNWpiMjBpTENKcFlYUWlPakUyTlRZMU1UZzJNVGg5Lk1jVmVweFhkT2VlZF9NT3FnRFo1TURGZG9lbHFjTFNPVWx3T19BaEtFVmsiLCJpYXQiOjE2NTY1MTg2MTgsImV4cCI6MjYwMzI0NjYxOCwic3ViIjoiMSJ9.zCL6Kg400zPkJkIvcJx0-eKL6-3k_A_t4w1PAr9bnJU
 X-Request-Type: GraphQL
 
 query {
@@ -58,6 +58,14 @@ query {
     lastName
     isStaff
     isActive
+    userPermissions{
+      code
+    }
+    permissionGroups{
+      permissions{
+        code
+      }
+    }
   }
 }
 
