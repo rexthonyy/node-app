@@ -353,6 +353,16 @@ type Query {
     """Kind of the object to retrieve."""
     kind: TranslatableKinds!
   ): TranslatableItem
+
+  """Look up a page by ID or slug."""
+  page(
+    """ID of the page."""
+    id: ID
+
+    """The slug of the page."""
+    slug: String
+  ): Page
+
 }
 
 
