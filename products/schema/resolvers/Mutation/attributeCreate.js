@@ -83,7 +83,7 @@ function attributeCreate(args) {
 
                 checkComplete();
 
-                function checkComplete() {
+                async function checkComplete() {
                     cursor++;
                     if (cursor == numValues) {
                         try {
