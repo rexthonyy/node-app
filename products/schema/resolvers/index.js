@@ -54,6 +54,7 @@ const {
     productVariantReorderAttributeValues,
     productVariantPreorderDeactivate,
     pageCreate,
+    pageTypeCreate,
 } = require('./Mutation');
 
 const {
@@ -197,6 +198,14 @@ const {
     shippingMethodTranslatableContentTranslation
 } = require('./ShippingMethodTranslatableContent');
 
+const {
+    pageTypePrivateMetafield,
+    pageTypePrivateMetafields,
+    pageTypeMetafield,
+    pageTypeMetafields,
+    pageTypeAvailableAttributes
+} = require('./PageType');
+
 module.exports = {
     Query: {
         product,
@@ -253,6 +262,7 @@ module.exports = {
         productVariantReorderAttributeValues,
         productVariantPreorderDeactivate,
         pageCreate,
+        pageTypeCreate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
@@ -397,5 +407,12 @@ module.exports = {
         __resolveType: parent => {
             return parent.__typename;
         }
+    },
+    PageType: {
+        privateMetafield: pageTypePrivateMetafield,
+        privateMetafields: pageTypePrivateMetafields,
+        metafield: pageTypeMetafield,
+        metafields: pageTypeMetafields,
+        availableAttributes: pageTypeAvailableAttributes,
     }
 };

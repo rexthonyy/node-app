@@ -26,6 +26,7 @@ const productVariantChannelListingUpdate = require('./productVariantChannelListi
 const productVariantReorderAttributeValues = require('./productVariantReorderAttributeValues');
 const productVariantPreorderDeactivate = require('./productVariantPreorderDeactivate');
 const pageCreate = require('./pageCreate');
+const pageTypeCreate = require('./pageTypeCreate');
 
 module.exports = {
     productBulkDelete,
@@ -56,4 +57,5 @@ module.exports = {
     productVariantReorderAttributeValues,
     productVariantPreorderDeactivate,
     pageCreate,
+    pageTypeCreate,
 };

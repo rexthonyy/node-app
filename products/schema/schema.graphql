@@ -650,6 +650,15 @@ type Mutation {
     id: ID!
   ): ProductVariantPreorderDeactivate
   
+  
+  """
+  Create a new page type. Requires one of the following permissions: MANAGE_PAGE_TYPES_AND_ATTRIBUTES.
+  """
+  pageTypeCreate(
+    """Fields required to create page type."""
+    input: PageTypeCreateInput!
+  ): PageTypeCreate
+  
   """
   Creates a new page. Requires one of the following permissions: MANAGE_PAGES.
   """
