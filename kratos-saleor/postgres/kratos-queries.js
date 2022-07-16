@@ -11,9 +11,9 @@ const pool = new Pool({
 
 pool.query('SELECT NOW()', (err, res) => {
     if (err) {
-        console.log("KratosSaleor database initialization failed!!!");
+        console.log(`${process.env.POSTGRES_DB} database initialization failed!!!`);
     } else {
-        console.log("KratosSaleor database initialized successfully!!!");
+        console.log(`${process.env.POSTGRES_DB} database initialized successfully!!!`);
     }
 });
 
@@ -26,6 +26,18 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    return new Promise(resolve => {
+        client.end().then(() => {
+            console.log(`${process.env.POSTGRES_DB} database disconnection successful!!!`);
+            resolve();
+        }).catch(err => {
+            console.log(`${process.env.POSTGRES_DB} database disconnection failed!!!`);
+            console.log(err);
+            resolve();
+        });
+    });
+};
 
 const getUserByEmail = (values, response) => {
     pool.query(`SELECT * from ${db.account_user} WHERE email=$1`, values, (err, res) => {
@@ -352,6 +364,7 @@ const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
 };
 
 module.exports = {
+    stop,
     getUserByEmail,
     getUserById,
     getUserByIsStaff,

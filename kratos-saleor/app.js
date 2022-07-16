@@ -21,7 +21,17 @@ require('./postgres/initialize_dbs').init()
         const accountRegister = require('./schema/resolvers/accountRegister');
         const schema = require('./schema');
         const schemaWithMiddleware = applyMiddleware(schema, middleware)
+        const { stop } = require('./postgres');
+        const { events } = require("./libs/consts");
         const app = express();
+
+
+        events.forEach(event => {
+            process.on(event, async() => {
+                await stop();
+                process.exit(-1);
+            });
+        });
 
         app.set('view engine', 'ejs');
 

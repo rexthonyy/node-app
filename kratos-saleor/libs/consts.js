@@ -10,6 +10,16 @@ const db = {
     account_user_user_permissions: "account_user_user_permissions"
 };
 
+const events = [
+    "exit",
+    "SIGINT",
+    "SIGUSR1",
+    "SIGUSR2",
+    "SIGTERM",
+    "uncaughtExecption"
+];
+
 module.exports = {
-    db
+    db,
+    events
 };
