@@ -1593,6 +1593,23 @@ const createAssignedPageAttributeValue = (values, response) => {
     });
 };
 
+const createAttributePage = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attributepage} (sort_order, attribute_id, page_type_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const createPage = (values, response) => {
     client.query(`INSERT INTO ${db.page_page} (slug, title, content, created, is_published, publication_date, seo_description, seo_title, metadata, private_metadata, page_type_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`, values, (err, res) => {
         if (err) {
@@ -2463,6 +2480,7 @@ module.exports = {
     createProductVariantChannelListing,
     createAssignedPageAttribute,
     createAssignedPageAttributeValue,
+    createAttributePage,
 
     updateProduct,
     updateProductVariant,

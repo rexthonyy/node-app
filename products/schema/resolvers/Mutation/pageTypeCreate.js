@@ -59,6 +59,9 @@ function pageTypeCreate(args) {
                 if (result.err) return resolve(getGraphQLOutput("createPageType", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null));
                 if (result.res.length > 0) return resolve(getGraphQLOutput("createPageType", "Page type not created", "GRAPHQL_ERROR", null, null, null));
                 let pageType_ = result.res[0];
+
+                await addAttributes(pageType_.id, args);
+
                 try {
                     let pageType = await getGraphQLPageTypeById(pageType_.id);
                     resolve({
@@ -70,6 +73,48 @@ function pageTypeCreate(args) {
                     return resolve(getGraphQLOutput("getGraphQLPageTypeById", err, "GRAPHQL_ERROR", null, null, null));
                 }
             });
+        });
+    });
+}
+
+function addAttributes(pageTypeId, args) {
+    return new Promise(resolve => {
+        if (args == undefined) return resolve();
+        const numPageAttributes = args.addAttributes.length;
+        let cursor = -1;
+
+        args.addAttributes.forEach(attributeId => {
+            productQueries.getAttributePage([attributeId, pageTypeId], "attribute_id=$1 AND page_type_id=$2", async result => {
+                if (!result.err) {
+                    if (result.res.length == 0) {
+                        try {
+                            await createAttributePage(pageTypeId, attributeId);
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    }
+                }
+
+                checkComplete();
+            });
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            cursor++;
+            if (cursor == numPageAttributes) {
+                resolve();
+            }
+        }
+    });
+}
+
+function createAttributePage(pageTypeId, attributeId) {
+    return new Promise((resolve, reject) => {
+        productQueries.createAttributePage([0, attributeId, pageTypeId], result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            resolve();
         });
     });
 }
