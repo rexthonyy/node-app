@@ -5,7 +5,7 @@ const {
     getGraphQLPageTypeById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
-
+//.
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
