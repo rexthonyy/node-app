@@ -73,7 +73,7 @@ X-Request-Type: GraphQL
 
 mutation {
   permissionGroupUpdate(id: 4, input: {
-    addPermissions: [MANAGE_GIFT_CARD]
+    addPermissions: [MANAGE_PAGE_TYPES_AND_ATTRIBUTES]
   }){
     errors{
       field

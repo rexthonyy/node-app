@@ -26,6 +26,19 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    return new Promise(resolve => {
+        client.end().then(() => {
+            console.log(`${process.env.POSTGRES_USER_DB} database disconnection successful!!!`);
+            resolve();
+        }).catch(err => {
+            console.log(`${process.env.POSTGRES_USER_DB} database disconnection failed!!!`);
+            console.log(err);
+            resolve();
+        });
+    });
+};
+
 
 const getUserByEmail = (values, response) => {
     pool.query(`SELECT * from ${db.account_user} WHERE email=$1`, values, (err, res) => {
@@ -352,6 +365,7 @@ const deleteAccountUserAddressesByUserIdAndAddressId = (values, response) => {
 };
 
 module.exports = {
+    stop,
     getUserByEmail,
     getUserById,
     getUserByIsStaff,

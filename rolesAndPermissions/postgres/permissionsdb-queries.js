@@ -26,6 +26,18 @@ const client = new Client({
 });
 client.connect();
 
+const stop = () => {
+    return new Promise(resolve => {
+        client.end().then(() => {
+            console.log(`${process.env.POSTGRES_PERMISSIONS_DB} database disconnection successful!!!`);
+            resolve();
+        }).catch(err => {
+            console.log(`${process.env.POSTGRES_PERMISSIONS_DB} database disconnection failed!!!`);
+            console.log(err);
+            resolve();
+        });
+    });
+};
 
 const getAuthGroups = (response) => {
     pool.query(`SELECT * from ${db.auth_group}`, (err, res) => {
@@ -334,6 +346,7 @@ const updateAuthGroupById = (values, response) => {
 };
 
 module.exports = {
+    stop,
     getAuthGroups,
     getAuthGroupById,
     createAuthGroup,
