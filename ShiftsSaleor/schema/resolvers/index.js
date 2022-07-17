@@ -1,14 +1,20 @@
+const path = require('path');
+const fs = require('fs');
+
 module.exports = {
     Query: {
-        getUser() {
-            return "rex";
-        }
+        hello: () => "Hello World!"
     },
     Mutation: {
-        userCreate: (parent, args) => {
-            console.log(args);
+        uploadFile: (parent, { file }) => {
+            const { createReadStream, filename, mimetype, encoding } = await file;
+
+            const stream = createReadStream();
+            const pathname = path.join(__dirname, `/public/images/${filename}`);
+            await stream.pipe(fs.createWriteStream(pathname));
+
             return {
-                name: args.name
+                url: `http://localhost:4000/images/${filename}`
             };
         },
     }

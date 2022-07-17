@@ -1,15 +1,11 @@
-type User {
-  name: String!
+type File {
+  url: String!
 }
 
 type Query {
-  getUser: String
+  hello: String!
 }
 
 type Mutation {
-  """Create shift group. Requires permission MANAGE_STAFF"""
-  userCreate(
-    """Name of the user"""
-    name: String
-  ): User
+  singleUpload(file: Upload!): File!
 }
