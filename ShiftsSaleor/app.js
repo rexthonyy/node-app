@@ -12,6 +12,7 @@ const server = new ApolloServer(schema);
 
 // This middleware should be added before calling `applyMiddleware`.
 app.use(graphqlUploadExpress());
+app.use(express.urlencoded({ extended: true }));
 server.applyMiddleware({ app });
 app.use(express.static('public'));
 
