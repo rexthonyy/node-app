@@ -7,6 +7,7 @@ const app = express();
 const server = new ApolloServer(schema);
 
 server.applyMiddleware({ app });
+app.use(express.static('public'));
 
 app.listen({ port: process.env.PORT }, () => {
     console.log("SERVER LISTENING ON PORT " + process.env.PORT);
