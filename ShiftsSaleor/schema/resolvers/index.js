@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const { GraphQLUpload } = require('graphql-upload');
+//const { GraphQLUpload } = require('graphql-upload');
 
 module.exports = {
     Query: {
