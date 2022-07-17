@@ -6,7 +6,7 @@ module.exports = {
         hello: () => "Hello World!"
     },
     Mutation: {
-        uploadFile: async(parent, { file }) => {
+        singleUpload: async(parent, { file }) => {
             const { createReadStream, filename, mimetype, encoding } = await file;
 
             const stream = createReadStream();
