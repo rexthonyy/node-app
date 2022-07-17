@@ -15,7 +15,9 @@ module.exports = {
 
             const stream = createReadStream();
             const pathname = path.join(__dirname, `../../public/images/${filename}`);
-            await stream.pipe(fs.createWriteStream(pathname));
+            let out = fs.createWriteStream(pathname);
+            await stream.pipe(out);
+            await finished(out);
 
             return {
                 url: `http://localhost:4000/images/${filename}`

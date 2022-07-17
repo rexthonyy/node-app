@@ -1,9 +1,6 @@
 require("dotenv").config();
 const { ApolloServer } = require("apollo-server-express");
-const {
-    GraphQLUpload,
-    graphqlUploadExpress, // A Koa implementation is also exported.
-} = require('graphql-upload');
+const { graphqlUploadExpress } = require('graphql-upload');
 const express = require('express');
 const schema = require('./schema');
 
