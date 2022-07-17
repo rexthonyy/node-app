@@ -11,7 +11,7 @@ const server = new ApolloServer(schema);
 app.use(graphqlUploadExpress());
 server.applyMiddleware({ app });
 app.use(express.static('public'));
-//app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 
 app.listen({ port: process.env.PORT }, () => {
