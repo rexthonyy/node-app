@@ -3,7 +3,6 @@ const fs = require('fs');
 const { GraphQLUpload } = require('graphql-upload');
 
 module.exports = {
-    Upload: GraphQLUpload,
     Query: {
         hello: () => "Hello World!"
     },
