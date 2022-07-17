@@ -4,6 +4,5 @@ const resolvers = require("./resolvers");
 module.exports = {
     typeDefs,
     resolvers,
-    csrfPrevention: true,
-    cache: 'bounded',
+    csrfPrevention: true
 };
