@@ -1,7 +1,10 @@
 const path = require('path');
 const fs = require('fs');
+const { finished } = require('stream/promises');
+const { GraphQLUpload } = require('graphql-upload');
 
 module.exports = {
+    Upload: GraphQLUpload,
     Query: {
         hello: () => "Hello World!"
     },
