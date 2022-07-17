@@ -12,6 +12,7 @@ module.exports = {
 
             const stream = createReadStream();
             const pathname = path.join(__dirname, `../../public/images/${filename}`);
+            console.log(stream);
             await stream.pipe(fs.createWriteStream(pathname));
 
             return {
