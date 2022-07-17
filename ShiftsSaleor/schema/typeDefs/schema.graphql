@@ -9,3 +9,5 @@ type Query {
 type Mutation {
   singleUpload(file: Upload!): File!
 }
+
+scalar Upload
