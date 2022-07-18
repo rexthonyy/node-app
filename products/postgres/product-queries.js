@@ -2011,6 +2011,23 @@ const deleteAssignedPageAttributeValue = (values, whereClause, response) => {
     });
 };
 
+const deleteAttribute = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const deleteDiscountVoucherProduct = (values, whereClause, response) => {
     client.query(`DELETE FROM ${db.discount_voucher_products} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -2419,6 +2436,57 @@ const deleteProductVariantTranslation = (values, whereClause, response) => {
     });
 };
 
+const deleteAttributeTranslation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributetranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAttributePage = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_attributepage} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteAssignedPageAttribute = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.attribute_assignedpageattribute} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -2563,4 +2631,8 @@ module.exports = {
     deleteStock,
     deleteCheckoutLine,
     deleteProductVariantTranslation,
+    deleteAttributeTranslation,
+    deleteAttributePage,
+    deleteAssignedPageAttribute,
+    deleteAttribute,
 }

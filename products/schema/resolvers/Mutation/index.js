@@ -29,6 +29,7 @@ const pageCreate = require('./pageCreate');
 const pageTypeCreate = require('./pageTypeCreate');
 const attributeCreate = require('./attributeCreate');
 const attributeUpdate = require('./attributeUpdate');
+const attributeDelete = require('./attributeDelete');
 
 module.exports = {
     productBulkDelete,
@@ -62,4 +63,5 @@ module.exports = {
     pageTypeCreate,
     attributeCreate,
     attributeUpdate,
+    attributeDelete,
 };

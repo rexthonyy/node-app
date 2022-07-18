@@ -633,6 +633,15 @@ type Mutation {
   ): AttributeUpdate
 
   """
+  Deletes an attribute. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  attributeDelete(
+    """ID of an attribute to delete."""
+    id: ID!
+  ): AttributeDelete
+
+
+  """
   Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productVariantChannelListingUpdate(
