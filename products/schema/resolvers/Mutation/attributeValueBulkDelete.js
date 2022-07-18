@@ -69,6 +69,8 @@ function attributeValueDelete(id) {
             if (result.res.length == 0) return resolve(getGraphQLOutput("getAttributeValue", "Attribute value not found", "NOT_FOUND", null, null));
             let attributeValue_ = result.res[0];
 
+            console.log(attributeValue_);
+
             let errors = [];
 
             try {
@@ -110,6 +112,7 @@ function attributeValueDelete(id) {
 function deleteAssignedProductAttributeValue(attributeValueId) {
     return new Promise(resolve => {
         productQueries.deleteAssignedProductAttributeValue([attributeValueId], "value_id=$1", result => {
+            if (result.err) console.log(result.err);
             resolve();
         });
     });
@@ -118,6 +121,7 @@ function deleteAssignedProductAttributeValue(attributeValueId) {
 function deleteAttributeValueTranslation(attributeValueId) {
     return new Promise(resolve => {
         productQueries.deleteAttributeValueTranslation([attributeValueId], "attribute_value_id=$1", result => {
+            if (result.err) console.log(result.err);
             resolve();
         });
     });
@@ -126,6 +130,7 @@ function deleteAttributeValueTranslation(attributeValueId) {
 function deleteAssignedPageAttributeValue(attributeValueId) {
     return new Promise(resolve => {
         productQueries.deleteAssignedPageAttributeValue([attributeValueId], "value_id=$1", async result => {
+            if (result.err) console.log(result.err);
             resolve();
         });
     });
@@ -136,6 +141,7 @@ function deleteAssignedPageAttributeValue(attributeValueId) {
 function deleteAssignedVariantAttributeValue(attributeValueId) {
     return new Promise(resolve => {
         productQueries.deleteAssignedVariantAttributeValue([attributeValueId], "value_id=$1", async result => {
+            if (result.err) console.log(result.err);
             resolve();
         });
     });
