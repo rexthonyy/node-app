@@ -65,6 +65,7 @@ const {
     attributeValueCreate,
     attributeValueDelete,
     attributeValueBulkDelete,
+    attributeValueUpdate,
 } = require('./Mutation');
 
 const {
@@ -283,6 +284,7 @@ module.exports = {
         attributeValueCreate,
         attributeValueDelete,
         attributeValueBulkDelete,
+        attributeValueUpdate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

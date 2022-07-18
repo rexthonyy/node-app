@@ -773,6 +773,17 @@ type Mutation {
     ids: [ID!]!
   ): AttributeValueBulkDelete
 
+
+  """
+  Updates value of an attribute. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  attributeValueUpdate(
+    """ID of an AttributeValue to update."""
+    id: ID!
+
+    """Fields required to update an AttributeValue."""
+    input: AttributeValueUpdateInput!
+  ): AttributeValueUpdate
 }
 
 """Return type for getShiftGroups"""

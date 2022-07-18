@@ -69,8 +69,6 @@ function attributeValueDelete(id) {
             if (result.res.length == 0) return resolve(getGraphQLOutput("getAttributeValue", "Attribute value not found", "NOT_FOUND", null, null));
             let attributeValue_ = result.res[0];
 
-            console.log(attributeValue_);
-
             let errors = [];
 
             try {
@@ -108,8 +106,6 @@ function attributeValueDelete(id) {
                 console.log(err);
                 errors.push(err.errors[0]);
             }
-
-            console.log(errors);
 
             resolve();
         });
