@@ -24,6 +24,7 @@ const {
     translation,
     page,
     attribute,
+    attributes,
 } = require('./Query');
 
 const {
@@ -239,6 +240,7 @@ module.exports = {
         translation,
         page,
         attribute,
+        attributes,
     },
     Mutation: {
         productCreate,

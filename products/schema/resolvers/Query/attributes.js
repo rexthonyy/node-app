@@ -1,8 +1,6 @@
 const {
     checkAuthorization,
-    getGraphQLStockById,
-    userPermissionGroupHasAccess,
-    userHasAccess
+    getGraphQLAttributeById,
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
@@ -11,20 +9,14 @@ module.exports = async(parent, args, context) => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
         if (!isAuthorized) return reject(message);
 
-        let permissions = ["MANAGE_PRODUCTS"];
-
-        if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            resolve(await stocks(args));
-        } else {
-            reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS");
-        }
+        resolve(await attributes(args));
     });
 }
 
-function stocks(args) {
+function attributes(args) {
     return new Promise(async(resolve, reject) => {
         try {
-            let edges = await getAllStocks();
+            let edges = await getAllAttributes();
             resolve({
                 pageInfo: {
                     hasNextPage: false,
@@ -41,18 +33,18 @@ function stocks(args) {
     });
 }
 
-function getAllStocks() {
+function getAllAttributes() {
     return new Promise((resolve, reject) => {
-        productQueries.getStock([-1], "id <> $1", result => {
+        productQueries.getAttribute([-1], "id <> $1", result => {
             if (result.err) { console.log(JSON.stringify(result.err)); return reject(JSON.stringify(result.err)); }
-            let stocks = result.res;
+            let attributes = result.res;
 
-            const numStocks = stocks.length;
+            const numAttributes = attributes.length;
             let cursor = -1;
             let edges = [];
 
-            stocks.forEach(async stock => {
-                let node = await getGraphQLStockById(stock.id);
+            attributes.forEach(async attribute => {
+                let node = await getGraphQLAttributeById(attribute.id);
                 edges.push({
                     cursor: "",
                     node
@@ -65,7 +57,7 @@ function getAllStocks() {
 
             function checkComplete() {
                 cursor++;
-                if (cursor == numStocks) {
+                if (cursor == numAttributes) {
                     resolve(edges);
                 }
             }

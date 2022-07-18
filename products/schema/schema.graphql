@@ -371,6 +371,32 @@ type Query {
     """Slug of the attribute."""
     slug: String
   ): Attribute
+
+  
+  """List of the shop's attributes."""
+  attributes(
+    """Filtering options for attributes."""
+    filter: AttributeFilterInput
+
+    """Sorting options for attributes."""
+    sortBy: AttributeSortingInput
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): AttributeCountableConnection
+
 }
 
 
