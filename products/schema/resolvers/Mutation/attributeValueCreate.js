@@ -1,7 +1,8 @@
 const {
     checkAuthorization,
-    getGraphQLPageById,
     getGraphQLAttributeById,
+    userPermissionGroupHasAccess,
+    userHasAccess,
     getGraphQLAttributeValueById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
