@@ -23,6 +23,7 @@ const {
     translations,
     translation,
     page,
+    attribute,
 } = require('./Query');
 
 const {
@@ -236,7 +237,8 @@ module.exports = {
         giftCardSettings,
         translations,
         translation,
-        page
+        page,
+        attribute,
     },
     Mutation: {
         productCreate,

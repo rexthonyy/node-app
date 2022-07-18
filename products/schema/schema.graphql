@@ -363,6 +363,14 @@ type Query {
     slug: String
   ): Page
 
+  """Look up an attribute by ID."""
+  attribute(
+    """ID of the attribute."""
+    id: ID
+
+    """Slug of the attribute."""
+    slug: String
+  ): Attribute
 }
 
 
