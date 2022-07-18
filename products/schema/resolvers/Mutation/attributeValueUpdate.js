@@ -102,14 +102,14 @@ function attributeValueUpdate(authUser, args) {
             }
 
             try {
-                attribute = await getGraphQLAttributeById(id);
+                attribute = await getGraphQLAttributeById(attributeValue_.attribute_id);
             } catch (err) {
                 console.log(err);
                 errors.push(getGraphQLOutput("getGraphQLAttributeById", err, "NOT_FOUND", null, null).errors[0]);
             }
 
             try {
-                attributeValue = await getGraphQLAttributeValueById(attributeValue_.attribute_id);
+                attributeValue = await getGraphQLAttributeValueById(attributeValue_.id);
             } catch (err) {
                 console.log(err);
                 errors.push(getGraphQLOutput("getGraphQLAttributeValueById", err, "NOT_FOUND", null, null).errors[0]);
