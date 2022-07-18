@@ -784,6 +784,19 @@ type Mutation {
     """Fields required to update an AttributeValue."""
     input: AttributeValueUpdateInput!
   ): AttributeValueUpdate
+
+  
+  """
+  Creates/updates translations for an attribute value. Requires one of the following permissions: MANAGE_TRANSLATIONS.
+  """
+  attributeValueTranslate(
+    """AttributeValue ID or AttributeValueTranslatableContent ID."""
+    id: ID!
+    input: AttributeValueTranslationInput!
+
+    """Translation language code."""
+    languageCode: LanguageCodeEnum!
+  ): AttributeValueTranslate
 }
 
 """Return type for getShiftGroups"""
