@@ -209,7 +209,7 @@ function getDeleteAttributeValues(id, removeValues) {
         if (i > 1) {
             whereClause += ",";
         }
-        whereClause += `$${i}`;
+        whereClause += `$${i+1}`;
     }
     whereClause += ")";
     return { values, whereClause };
