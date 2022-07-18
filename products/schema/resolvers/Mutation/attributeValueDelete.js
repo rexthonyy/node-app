@@ -40,10 +40,10 @@ function getGraphQLOutput(field, message, code, attribute, attributeValue) {
 }
 
 function attributeValueDelete(authUser, args) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         let id = args.id;
 
-        productQueries.getAttributeValue([id], "id=$1", result => {
+        productQueries.getAttributeValue([id], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("getAttributeValue", JSON.stringify(resule.err), "GRAPHQL_ERROR", null, null));
             if (result.res.length == 0) return resolve(getGraphQLOutput("getAttributeValue", "Attribute value not found", "NOT_FOUND", null, null));
             let attributeValue_ = result.res[0];
