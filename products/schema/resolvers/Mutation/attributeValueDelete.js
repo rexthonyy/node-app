@@ -94,6 +94,13 @@ function attributeValueDelete(authUser, args) {
                 errors.push(err.errors[0]);
             }
 
+            try {
+                await deleteAttributeValue(attributeValue_.id);
+            } catch (err) {
+                console.log(err);
+                errors.push(err.errors[0]);
+            }
+
             let res = {
                 errors,
                 attributeErrors: errors,
@@ -131,11 +138,17 @@ function deleteAssignedPageAttributeValue(attributeValueId) {
     });
 }
 
-
-
 function deleteAssignedVariantAttributeValue(attributeValueId) {
     return new Promise(resolve => {
         productQueries.deleteAssignedVariantAttributeValue([attributeValueId], "value_id=$1", async result => {
+            resolve();
+        });
+    });
+}
+
+function deleteAttributeValue(attributeValueId) {
+    return new Promise(resolve => {
+        productQueries.deleteAttributeValue([attributeValueId], "id=$1", async result => {
             resolve();
         });
     });
