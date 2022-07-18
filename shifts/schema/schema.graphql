@@ -1115,6 +1115,9 @@ input getShiftsFilter {
 
     """Shift group ids to return"""
     shiftGroupIds: [ID!]
+
+    """Shift group member ids to return"""
+    shiftGroupMemberIds: [ID!]
 }
 
 """Shifts."""
