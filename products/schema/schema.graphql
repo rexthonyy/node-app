@@ -765,6 +765,14 @@ type Mutation {
     id: ID!
   ): AttributeValueDelete
 
+  """
+  Deletes values of attributes. Requires one of the following permissions: MANAGE_PAGE_TYPES_AND_ATTRIBUTES.
+  """
+  attributeValueBulkDelete(
+    """List of attribute value IDs to delete."""
+    ids: [ID!]!
+  ): AttributeValueBulkDelete
+
 }
 
 """Return type for getShiftGroups"""
