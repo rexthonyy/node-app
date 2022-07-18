@@ -192,8 +192,6 @@ function updateAttributeUnit(id, unit) {
 function removeAttributeValues(id, removeValues) {
     return new Promise((resolve, reject) => {
         let { values, whereClause } = getDeleteAttributeValues(id, removeValues);
-        console.log(values);
-        console.log(whereClause);
         productQueries.deleteAttributeValue(values, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("deleteAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length == 0) return reject(getGraphQLOutput("deleteAttributeValue", "Failed to remove attribute values", "GRAPHQL_ERROR", null));

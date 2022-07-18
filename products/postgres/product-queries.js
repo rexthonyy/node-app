@@ -1859,7 +1859,7 @@ const updateAttribute = (values, set, whereClause, response) => {
 
 
 const deleteAttributeValue = (values, whereClause, response) => {
-    client.query(`DELETE FROM ${db.attribute_attributevalue} WHERE ${whereClause}`, values, (err, res) => {
+    client.query(`DELETE FROM ${db.attribute_attributevalue} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
