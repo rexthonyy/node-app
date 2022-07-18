@@ -2,8 +2,6 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLAttributeValueById,
-    getGraphQLAttributeById,
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
@@ -72,22 +70,6 @@ function attributeValueDelete(id) {
             let attributeValue_ = result.res[0];
 
             let errors = [];
-            let attributeValue = null;
-            let attribute = null;
-
-            try {
-                attributeValue = await getGraphQLAttributeValueById(attributeValue_.id);
-            } catch (err) {
-                console.log(err);
-                errors.push(getGraphQLOutput("getGraphQLAttributeValueById", err, "NOT_FOUND", null).errors[0]);
-            }
-
-            try {
-                attribute = await getGraphQLAttributeById(attributeValue_.attribute_id);
-            } catch (err) {
-                console.log(err);
-                errors.push(getGraphQLOutput("getGraphQLAttributeById", err, "NOT_FOUND", null).errors[0]);
-            }
 
             try {
                 await deleteAssignedProductAttributeValue(attributeValue_.id);
@@ -117,14 +99,9 @@ function attributeValueDelete(id) {
                 errors.push(err.errors[0]);
             }
 
-            let res = {
-                errors,
-                attributeErrors: errors,
-                attribute,
-                attributeValue
-            };
+            console.log(errors);
 
-            resolve(res);
+            resolve();
         });
     });
 }
