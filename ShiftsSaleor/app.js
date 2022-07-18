@@ -12,7 +12,7 @@ async function startServer() {
     app.use(graphqlUploadExpress());
     server.applyMiddleware({ app });
     app.use(express.static('public'));
-    //app.use(express.urlencoded({ extended: true }));
+
     app.listen({ port: process.env.PORT }, () => {
         console.log("SERVER LISTENING ON PORT " + process.env.PORT);
     });
