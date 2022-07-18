@@ -247,25 +247,30 @@ function createAttributeValue(attributeId, value) {
         let richText = value.richText || null;
         let name = value.name;
 
-        let input = [
-            name,
-            attributeId,
-            name,
-            0,
-            value.value,
-            contentType,
-            file,
-            richText,
-            null,
-            null,
-            null,
-            null
-        ];
+        productQueries.getAttributeValue([name], "slug=$1", async result => {
+            if (result.err) return reject(getGraphQLOutput("getAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+            if (result.res.length > 0) return reject(getGraphQLOutput("getAttributeValue", "Attribute value already exists", "ALREADY_EXISTS", null));
 
-        productQueries.createAttributeValue(input, async result => {
-            if (result.err) return reject(getGraphQLOutput("createAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("createAttributeValue", "Failed to create attribute value", "REQUIRED", null));
-            resolve(result.res[0]);
+            let input = [
+                name,
+                attributeId,
+                name,
+                0,
+                value.value,
+                contentType,
+                file,
+                richText,
+                null,
+                null,
+                null,
+                null
+            ];
+
+            productQueries.createAttributeValue(input, async result => {
+                if (result.err) return reject(getGraphQLOutput("createAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
+                if (result.res.length == 0) return reject(getGraphQLOutput("createAttributeValue", "Failed to create attribute value", "REQUIRED", null));
+                resolve(result.res[0]);
+            });
         });
     });
 }
