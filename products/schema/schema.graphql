@@ -397,6 +397,17 @@ type Query {
     last: Int
   ): AttributeCountableConnection
 
+
+  """
+  Creates a value for an attribute. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  attributeValueCreate(
+    """Attribute to which value will be assigned."""
+    attribute: ID!
+
+    """Fields required to create an AttributeValue."""
+    input: AttributeValueCreateInput!
+  ): AttributeValueCreate
 }
 
 

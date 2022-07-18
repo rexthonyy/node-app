@@ -62,6 +62,7 @@ const {
     pageCreate,
     pageTypeCreate,
     attributeTranslate,
+    attributeValueCreate,
 } = require('./Mutation');
 
 const {
@@ -277,6 +278,7 @@ module.exports = {
         pageCreate,
         pageTypeCreate,
         attributeTranslate,
+        attributeValueCreate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
