@@ -48,8 +48,8 @@ module.exports = async(parent, args, context) => {
                                 }
                             }
                             if (filter.shiftGroupMemberIds) {
-                                let assignedShifts = [];
                                 for (let data_ of data) {
+                                    let assignedShifts = [];
                                     for (let assignedShift of data_.shifts.assignedShifts) {
                                         for (let memberId of filter.shiftGroupMemberIds) {
                                             if (assignedShift.userId == memberId) {
@@ -57,8 +57,8 @@ module.exports = async(parent, args, context) => {
                                             }
                                         }
                                     }
+                                    data_.shifts.assignedShift = assignedShifts;
                                 }
-                                data.shifts.assignedShift = assignedShifts;
                             }
                             return resolve(getGraphQLOutput("success", "Fetch successful", data))
                         }
