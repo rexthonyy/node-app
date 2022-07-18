@@ -1644,6 +1644,23 @@ const createPage = (values, response) => {
     });
 };
 
+const createAttributeTranslation = (values, response) => {
+    client.query(`INSERT INTO ${db.attribute_attributetranslation} (language_code, name, attribute_id) VALUES($1, $2, $3) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1838,6 +1855,23 @@ const updateProductVariantTranslation = (values, set, whereClause, response) => 
 
 const updateAttribute = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.attribute_attribute} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateAttributeTranslation = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.attribute_attributetranslation} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -2584,6 +2618,7 @@ module.exports = {
     createAssignedPageAttributeValue,
     createAttributePage,
     createPageType,
+    createAttributeTranslation,
 
     updateProduct,
     updateProductVariant,
@@ -2597,6 +2632,7 @@ module.exports = {
     updateStock,
     updateProductVariantTranslation,
     updateAttribute,
+    updateAttributeTranslation,
 
     deleteAttributeValue,
     deleteProductVariant,

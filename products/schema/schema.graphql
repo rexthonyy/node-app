@@ -648,6 +648,19 @@ type Mutation {
     ids: [ID!]!
   ): AttributeBulkDelete
 
+  
+  """
+  Creates/updates translations for an attribute. Requires one of the following permissions: MANAGE_TRANSLATIONS.
+  """
+  attributeTranslate(
+    """Attribute ID or AttributeTranslatableContent ID."""
+    id: ID!
+    input: NameTranslationInput!
+
+    """Translation language code."""
+    languageCode: LanguageCodeEnum!
+  ): AttributeTranslate
+
   """
   Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """

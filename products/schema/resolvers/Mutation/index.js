@@ -31,6 +31,7 @@ const attributeCreate = require('./attributeCreate');
 const attributeUpdate = require('./attributeUpdate');
 const attributeDelete = require('./attributeDelete');
 const attributeBulkDelete = require('./attributeBulkDelete');
+const attributeTranslate = require('./attributeTranslate');
 
 module.exports = {
     productBulkDelete,
@@ -66,4 +67,5 @@ module.exports = {
     attributeUpdate,
     attributeDelete,
     attributeBulkDelete,
+    attributeTranslate,
 };
