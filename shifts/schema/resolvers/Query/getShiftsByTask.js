@@ -38,7 +38,7 @@ module.exports = async(parent, args, context) => {
                 async function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        if (filter.shiftGroupIds && results.shifts.length > 0) {
+                        if (filter.shiftGroupIds) {
                             let data = [];
                             for (let result of results) {
                                 for (let shiftGroupId of filter.shiftGroupIds) {
@@ -47,12 +47,14 @@ module.exports = async(parent, args, context) => {
                                     }
                                 }
                             }
-                            if (filter.shiftGroupMemberIds && data.shifts.length > 0) {
+                            if (filter.shiftGroupMemberIds) {
                                 let assignedShifts = [];
-                                for (let assignedShift of data.shifts.assignedShifts) {
-                                    for (let memberId of filter.shiftGroupMemberIds) {
-                                        if (assignedShift.userId == memberId) {
-                                            assignedShifts.push(assignedShift);
+                                for (let data_ of data) {
+                                    for (let assignedShift of data_.shifts.assignedShifts) {
+                                        for (let memberId of filter.shiftGroupMemberIds) {
+                                            if (assignedShift.userId == memberId) {
+                                                assignedShifts.push(assignedShift);
+                                            }
                                         }
                                     }
                                 }
