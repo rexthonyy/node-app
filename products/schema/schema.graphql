@@ -622,6 +622,17 @@ type Mutation {
   ): AttributeCreate
   
   """
+  Updates attribute. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  attributeUpdate(
+    """ID of an attribute to update."""
+    id: ID!
+
+    """Fields required to update an attribute."""
+    input: AttributeUpdateInput!
+  ): AttributeUpdate
+
+  """
   Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productVariantChannelListingUpdate(

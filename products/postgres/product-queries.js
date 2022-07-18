@@ -1836,6 +1836,23 @@ const updateProductVariantTranslation = (values, set, whereClause, response) => 
     });
 };
 
+const updateAttribute = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.attribute_attribute} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2511,6 +2528,7 @@ module.exports = {
     updateAttributeValue,
     updateStock,
     updateProductVariantTranslation,
+    updateAttribute,
 
     deleteAttributeValue,
     deleteProductVariant,
