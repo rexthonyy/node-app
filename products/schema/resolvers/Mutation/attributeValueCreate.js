@@ -76,7 +76,7 @@ function createAttributeValue(attributeId, value) {
         let contentType = value.contentType;
         let richText = value.richText || null;
         let name = value.name;
-        let slug = value.slug;
+        let slug = value.name.toLowerCase();
 
         let input = [
             name,
