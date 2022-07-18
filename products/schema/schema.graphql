@@ -640,6 +640,13 @@ type Mutation {
     id: ID!
   ): AttributeDelete
 
+  """
+  Deletes attributes. Requires one of the following permissions: MANAGE_PAGE_TYPES_AND_ATTRIBUTES.
+  """
+  attributeBulkDelete(
+    """List of attribute IDs to delete."""
+    ids: [ID!]!
+  ): AttributeBulkDelete
 
   """
   Manage product variant prices in channels. Requires one of the following permissions: MANAGE_PRODUCTS.

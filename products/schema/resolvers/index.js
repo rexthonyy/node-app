@@ -56,6 +56,7 @@ const {
     attributeCreate,
     attributeUpdate,
     attributeDelete,
+    attributeBulkDelete,
     pageCreate,
     pageTypeCreate,
 } = require('./Mutation');
@@ -267,6 +268,7 @@ module.exports = {
         attributeCreate,
         attributeUpdate,
         attributeDelete,
+        attributeBulkDelete,
         pageCreate,
         pageTypeCreate,
     },
