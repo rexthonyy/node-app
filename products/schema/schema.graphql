@@ -396,18 +396,6 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): AttributeCountableConnection
-
-
-  """
-  Creates a value for an attribute. Requires one of the following permissions: MANAGE_PRODUCTS.
-  """
-  attributeValueCreate(
-    """Attribute to which value will be assigned."""
-    attribute: ID!
-
-    """Fields required to create an AttributeValue."""
-    input: AttributeValueCreateInput!
-  ): AttributeValueCreate
 }
 
 
@@ -757,6 +745,17 @@ type Mutation {
     """Fields required to create a page."""
     input: PageCreateInput!
   ): PageCreate
+
+  """
+  Creates a value for an attribute. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  attributeValueCreate(
+    """Attribute to which value will be assigned."""
+    attribute: ID!
+
+    """Fields required to create an AttributeValue."""
+    input: AttributeValueCreateInput!
+  ): AttributeValueCreate
 }
 
 """Return type for getShiftGroups"""
