@@ -225,6 +225,7 @@ function addAttributeValues(id, addValues) {
             } catch (err) {
                 error = err;
             }
+            checkComplete();
         });
 
         checkComplete();
@@ -263,7 +264,7 @@ function createAttributeValue(attributeId, value) {
 
         productQueries.createAttributeValue(input, async result => {
             if (result.err) return reject(getGraphQLOutput("createAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
-            if (result.res.length == 0) return reject(getGraphQLOutput("updateAttribute", "Failed to create attribute value", "REQUIRED", null));
+            if (result.res.length == 0) return reject(getGraphQLOutput("createAttributeValue", "Failed to create attribute value", "REQUIRED", null));
             resolve(result.res[0]);
         });
     });
