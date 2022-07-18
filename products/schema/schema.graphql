@@ -756,6 +756,15 @@ type Mutation {
     """Fields required to create an AttributeValue."""
     input: AttributeValueCreateInput!
   ): AttributeValueCreate
+
+  """
+  Deletes a value of an attribute. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
+  """
+  attributeValueDelete(
+    """ID of a value to delete."""
+    id: ID!
+  ): AttributeValueDelete
+
 }
 
 """Return type for getShiftGroups"""
