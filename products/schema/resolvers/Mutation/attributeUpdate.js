@@ -247,14 +247,14 @@ function createAttributeValue(attributeId, value) {
         let richText = value.richText || null;
         let name = value.name;
 
-        productQueries.getAttributeValue([name], "slug=$1", async result => {
+        productQueries.getAttributeValue([value.value], "slug=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
             if (result.res.length > 0) return reject(getGraphQLOutput("getAttributeValue", "Attribute value already exists", "ALREADY_EXISTS", null));
 
             let input = [
                 name,
                 attributeId,
-                name,
+                value.value,
                 0,
                 value.value,
                 contentType,
@@ -266,7 +266,7 @@ function createAttributeValue(attributeId, value) {
                 null
             ];
 
-            productQueries.createAttributeValue(input, async result => {
+            productQueries.createAttributeValue(input, result => {
                 if (result.err) return reject(getGraphQLOutput("createAttributeValue", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                 if (result.res.length == 0) return reject(getGraphQLOutput("createAttributeValue", "Failed to create attribute value", "REQUIRED", null));
                 resolve(result.res[0]);
