@@ -57,7 +57,7 @@ module.exports = async(parent, args, context) => {
                                             }
                                         }
                                     }
-                                    data_.shifts.assignedShift = assignedShifts;
+                                    data_.shifts.assignedShifts = assignedShifts;
                                 }
                             }
                             return resolve(getGraphQLOutput("success", "Fetch successful", data))
