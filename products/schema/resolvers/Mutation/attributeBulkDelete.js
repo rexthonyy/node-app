@@ -45,6 +45,7 @@ function attributeBulkDelete(authUser, args) {
 
         ids.forEach(async id => {
             await attributeDelete(id);
+            checkComplete();
         });
 
         checkComplete();
