@@ -74,7 +74,7 @@ function attributeValueUpdate(authUser, args) {
             }
 
             try {
-                if (richText) await updateAttributeValueRichText(id, unit);
+                if (richText) await updateAttributeValueRichText(id, richText);
             } catch (err) {
                 console.log(err);
                 errors.push(err.errors[0]);
