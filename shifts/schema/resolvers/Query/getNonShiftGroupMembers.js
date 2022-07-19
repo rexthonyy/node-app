@@ -1,3 +1,4 @@
+const kratosQueries = require("../../../postgres/kratos-queries");
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
 
@@ -23,7 +24,7 @@ function getGraphQLOutput(status, message, result) {
 
 function getNonShiftGroupMembers(channelId, shiftGroupId) {
     return new Promise(resolve => {
-        shiftQueries.getShiftGroupMembersByChannelId([channelId], result => {
+        kratosQueries.getUserByIsStaff([true], result => {
             if (result.err) return resolve(getGraphQLOutput("graphql error", "Failed to get shift group members", null));
             let channelGroupMembers = result.res;
             shiftQueries.getShiftGroupMembersByChannelIdAndShiftGroupId([channelId, shiftGroupId], async result => {
@@ -34,7 +35,7 @@ function getNonShiftGroupMembers(channelId, shiftGroupId) {
                 for (let channelGroupMember of channelGroupMembers) {
                     let isFound = false;
                     for (let shiftGroupMember of shiftGroupMembers) {
-                        if (channelGroupMember.user_id == shiftGroupMember.user_id) {
+                        if (channelGroupMember.id == shiftGroupMember.user_id) {
                             isFound = true;
                             break;
                         }
@@ -42,13 +43,13 @@ function getNonShiftGroupMembers(channelId, shiftGroupId) {
                     if (!isFound) {
                         let isAdded = false;
                         for (let groupMember of data) {
-                            if (groupMember.id == channelGroupMember.user_id) {
+                            if (groupMember.id == channelGroupMember.id) {
                                 isAdded = true;
                                 break;
                             }
                         }
                         if (!isAdded) {
-                            data.push(await getGraphQLUserById(channelGroupMember.user_id));
+                            data.push(await getGraphQLUserById(channelGroupMember.id));
                         }
                     }
                 }
