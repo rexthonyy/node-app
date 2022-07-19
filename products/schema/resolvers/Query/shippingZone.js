@@ -14,14 +14,14 @@ module.exports = async(parent, args, context) => {
         let permissions = ["MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            resolve(shippingZone(args));
+            resolve(getShippingZone(args));
         } else {
             reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING");
         }
     });
 }
 
-function shippingZone(args) {
+function getShippingZone(args) {
     return new Promise((resolve, reject) => {
         productQueries.getShippingZone([args.id], "id=$1", async result => {
             if (result.err) return reject(JSON.stringify(result.err));

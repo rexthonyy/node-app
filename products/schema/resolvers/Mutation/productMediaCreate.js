@@ -4,25 +4,27 @@ const {
     userHasAccess,
     getGraphQLProductById
 } = require('../lib');
+const path = require('path');
+const fs = require('fs');
 const kratosQueries = require("../../../postgres/kratos-queries");
 const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
         let { isAuthorized, authUser, status, message } = checkAuthorization(context);
-        if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null, null, null));
+        if (!isAuthorized) return resolve(getGraphQLOutput("authorization-header", message, "INVALID", null, null, null, null));
 
         let accessPermissions = ["MANAGE_PRODUCTS"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await productChannelListingUpdate(authUser, args));
+            resolve(await productMediaCreate(authUser, args));
         } else {
-            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null, null, null));
+            resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_PRODUCTS", "INVALID", null, null, null, null));
         }
     });
 }
 
-function getGraphQLOutput(field, message, code, attributes, values, channels, variants, product) {
+function getGraphQLOutput(field, message, code, attributes, values, product, media) {
     return {
         errors: [{
             field,
@@ -30,28 +32,45 @@ function getGraphQLOutput(field, message, code, attributes, values, channels, va
             code,
             attributes,
             values,
-            channels,
-            variants
         }],
-        productChannelListingErrors: [{
+        productErrors: [{
             field,
             message,
             code,
             attributes,
             values,
-            channels,
-            variants
         }],
-        product
+        product,
+        media
     }
 }
 
-function productChannelListingUpdate(authUser, args) {
+function productMediaCreate(authUser, args) {
     return new Promise(resolve => {
-        let id = args.id;
-        productQueries.getProduct([id], "id=$1", async result => {
-            if (result.err) return resolve(getGraphQLOutput("id", JSON.stringify(result.err), "GRAPHQL_ERROR", [], [], [], [], null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("id", `Cannot resolve id:${id}`, "NOT_FOUND", [], [], [], [], null));
+        let productId = args.input.product;
+        productQueries.getProduct([productId], "id=$1", async result => {
+            if (result.err) return resolve(getGraphQLOutput("getProduct", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("getProduct", `Cannot resolve product:${productId}`, "NOT_FOUND", null, null, null, null));
+
+            let alt = args.input.alt;
+            let mediaUrl = args.input.mediaUrl;
+            let image = args.input.image;
+            let type = "IMAGE";
+            let imageUrl = "";
+
+            if (image) {
+                const { createReadStream, filename, mimetype, encoding } = await image;
+
+                const stream = createReadStream();
+                const pathname = path.join(__dirname, `../../public/images/${filename}`);
+                let out = fs.createWriteStream(pathname);
+                await stream.pipe(out);
+
+            }
+
+            return {
+                url: `http://localhost:4000/images/${filename}`
+            };
 
             let updateChannels = args.input.updateChannels;
             let removeChannels = args.input.removeChannels;

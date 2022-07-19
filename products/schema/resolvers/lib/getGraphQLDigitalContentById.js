@@ -12,11 +12,18 @@ let getGraphQLDigitalContentById = (id) => {
             let digitalContent = result.res[0];
 
             let productVariant;
+            let urls;
 
             try {
                 productVariant = await getGraphQLProductVariantById(digitalContent.product_variant_id);
             } catch (err) {
                 productVariant = null;
+            }
+
+            try {
+                urls = await getUrlsByDigitalContentId(digitalContent.id);
+            } catch (err) {
+                urls = null;
             }
 
             let res = {
@@ -28,7 +35,7 @@ let getGraphQLDigitalContentById = (id) => {
                 contentFile: digitalContent.content_file,
                 maxDownloads: digitalContent.max_downloads,
                 urlValidDays: digitalContent.url_valid_days,
-                urls: null,
+                urls,
                 productVariant
             };
 
@@ -37,4 +44,44 @@ let getGraphQLDigitalContentById = (id) => {
     });
 };
 
+function getUrlsByDigitalContentId(id) {
+    return new Promise((resolve) => {
+        productQueries.getDigitalContentUrl([id], "content_id=$1", result => {
+            if (result.err) return reject(JSON.stringify(result.err));
+            let digitalContentUrls = result.res;
+            const numDigitalContentUrls = digitalContentUrls.length;
+            let cursor = -1;
+            let urls = [];
+
+            digitalContentUrls.forEach(url => {
+                try {
+                    urls.push(await getDigitalContentUrl(url));
+                } catch (err) {}
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numDigitalContentUrls) {
+                    resolve(urls);
+                }
+            }
+        });
+    });
+}
+
+function getDigitalContentUrl(url) {
+    return new Promise((resolve, reject) => {
+        let res = {
+            id: url.id,
+            created: url.created,
+            downloadNum: url.download_num,
+            token: url.token
+        };
+
+        resolve(res);
+    });
+}
 module.exports = getGraphQLDigitalContentById;

@@ -396,6 +396,18 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): AttributeCountableConnection
+
+  
+  """
+  Look up a shipping zone by ID. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZone(
+    """ID of the shipping zone."""
+    id: ID!
+
+    """Slug of a channel for which the data should be returned."""
+    channel: String
+  ): ShippingZone
 }
 
 
@@ -795,6 +807,29 @@ type Mutation {
     """Translation language code."""
     languageCode: LanguageCodeEnum!
   ): AttributeValueTranslate
+
+
+"""
+Create a media object (image or video URL) associated with product. For image, this mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https://github.com/jaydenseric/graphql-multipart-request-spec Requires one of the following permissions: MANAGE_PRODUCTS.
+"""
+type ProductMediaCreate {
+  product: Product
+  media: ProductMedia
+  productErrors: [ProductError!]! @deprecated(reason: "This field will be removed in Saleor 4.0. Use `errors` field instead.")
+  errors: [ProductError!]!
+}
+  
+  """
+  Create new digital content. This mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https://github.com/jaydenseric/graphql-multipart-request-spec Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContentCreate(
+    """Fields required to create a digital content."""
+    input: DigitalContentUploadInput!
+
+    """ID of a product variant to upload digital content."""
+    variantId: ID!
+  ): DigitalContentCreate
+
 }
 
 """Return type for getShiftGroups"""
