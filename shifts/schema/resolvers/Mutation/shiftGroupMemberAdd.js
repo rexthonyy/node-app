@@ -44,7 +44,7 @@ function shiftGroupMemberAdd(channelId, shiftGroupId, userId) {
                 shiftQueries.getShiftGroupById([shiftGroupId], result => {
                     if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                     if (result.res.length == 0) return resolve(getGraphQLOutput("shiftGroupId", "Shift group not found", "NOT_FOUND", null));
-                    shiftQueries.getShiftGroupMemberByUserId([userId], result => {
+                    shiftQueries.getShiftGroupMember([userId, shiftGroupId], "user_id=$1 AND shift_group_id=$2", result => {
                         if (result.err) return resolve(getGraphQLOutput("shiftGroupId", JSON.stringify(result.err), "GRAPHQL_ERROR", null));
                         if (result.res.length != 0) return resolve(getGraphQLOutput("failed", "Member already in group", "INVALID", null));
                         shiftQueries.createShiftGroupMember([channelId, shiftGroupId, userId, -1], async result => {
