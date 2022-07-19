@@ -55,7 +55,7 @@ function productMediaCreate(authUser, args) {
             let mediaUrl = args.input.mediaUrl;
             let image = args.input.image;
             let type = "IMAGE";
-            let imageUrl = "";
+            let imageUrl = null;
 
             if (image) {
                 try {

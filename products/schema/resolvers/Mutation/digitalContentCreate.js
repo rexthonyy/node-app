@@ -2,7 +2,8 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLProductById
+    getGraphQLDigitalContentById,
+    getGraphQLProductVariantById
 } = require('../lib');
 const path = require('path');
 const fs = require('fs');
@@ -56,6 +57,8 @@ function digitalContentCreate(authUser, args) {
             let urlValidDays = args.input.urlValidDays;
             let automaticFulfillment = args.input.automaticFulfillment;
             let contentFile = args.input.contentFile;
+            let contentType;
+            let contentFileUrl;
 
             try {
                 const { createReadStream, filename, mimetype, encoding } = await contentFile;
@@ -63,44 +66,45 @@ function digitalContentCreate(authUser, args) {
                 const pathname = path.join(__dirname, `../../../public/images/digitalcontent/${filename}`);
                 let out = fs.createWriteStream(pathname);
                 await stream.pipe(out);
-                imageUrl = `digitalcontent/${filename}`;
+                contentFileUrl = `digitalcontent/${filename}`;
+                contentType = mimetype;
             } catch (err) {
                 return resolve(getGraphQLOutput("steam.pipe(out)", err, "GRAPHQL_ERROR", null, null, null, null));
             }
 
             let values = [
-                0,
-                imageUrl,
-                "0.5x0.5",
-                alt,
-                type,
-                mediaUrl,
+                useDefaultSettings,
+                automaticFulfillment,
+                contentType,
+                contentFileUrl,
+                maxDownloads,
+                urlValidDays,
+                variantId,
                 JSON.stringify({}),
-                productId,
-                false
+                JSON.stringify({})
             ];
 
-            productQueries.createProductMedia(values, async result => {
-                if (result.err) return resolve(getGraphQLOutput("createProductMedia", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("createProductMedia", "Media not created", "GRAPHQL_ERROR", null, null, null, null));
-                let productMedia_ = result.res[0];
+            productQueries.createDigitalContent(values, async result => {
+                if (result.err) return resolve(getGraphQLOutput("createDigitalContent", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("createDigitalContent", "Digital content not created", "GRAPHQL_ERROR", null, null, null, null));
+                let digitalContent_ = result.res[0];
 
-                let product;
-                let media;
+                let variant;
+                let content;
                 try {
-                    product = await getGraphQLProductById(productId);
+                    variant = await getGraphQLProductVariantById(variantId);
                 } catch (err) {
-                    product = null;
+                    variant = null;
                 }
                 try {
-                    media = await getGraphQLProductMediaById(productMedia_.id);
+                    content = await getGraphQLDigitalContentById(digitalContent_.id);
                 } catch (err) {
-                    media = null;
+                    content = null;
                 }
 
                 resolve({
-                    product,
-                    media,
+                    variant,
+                    content,
                     errors: [],
                     productErrors: []
                 });

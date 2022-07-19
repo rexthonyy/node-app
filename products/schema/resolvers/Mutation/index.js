@@ -38,6 +38,7 @@ const attributeValueBulkDelete = require('./attributeValueBulkDelete');
 const attributeValueUpdate = require('./attributeValueUpdate');
 const attributeValueTranslate = require('./attributeValueTranslate');
 const digitalContentCreate = require('./digitalContentCreate');
+const productMediaDelete = require('./productMediaDelete');
 
 module.exports = {
     productBulkDelete,
@@ -80,4 +81,5 @@ module.exports = {
     attributeValueUpdate,
     attributeValueTranslate,
     digitalContentCreate,
+    productMediaDelete,
 };

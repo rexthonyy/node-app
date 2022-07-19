@@ -1695,6 +1695,23 @@ const createProductMedia = (values, response) => {
     });
 };
 
+const createDigitalContent = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productmedia} (use_default_settings, automatic_fulfillment, content_type, content_file, max_downloads, url_valid_days, product_variant_id, metadata, private_metadata) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2672,6 +2689,7 @@ module.exports = {
     createAttributeTranslation,
     createAttributeValueTranslation,
     createProductMedia,
+    createDigitalContent,
 
     updateProduct,
     updateProductVariant,
