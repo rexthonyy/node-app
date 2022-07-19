@@ -60,11 +60,13 @@ function productMediaDelete(authUser, args) {
                 product = await getGraphQLProductById(productMedia_.product_id);
             } catch (err) {
                 product = null;
+                errors.push(getGraphQLOutput("getGraphQLProductById", err, "NOT_FOUND", null, null, null, null).errors[0]);
             }
             try {
                 media = await getGraphQLProductMediaById(productMedia_.id);
             } catch (err) {
                 media = null;
+                errors.push(getGraphQLOutput("getGraphQLProductMediaById", err, "NOT_FOUND", null, null, null, null).errors[0]);
             }
 
             try {

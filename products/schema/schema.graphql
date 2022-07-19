@@ -815,6 +815,15 @@ type Mutation {
     """ID of a product media to delete."""
     id: ID!
   ): ProductMediaDelete
+
+  """
+  Deletes product media. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productMediaBulkDelete(
+    """List of product media IDs to delete."""
+    ids: [ID!]!
+  ): ProductMediaBulkDelete
+
 }
 
 """Return type for getShiftGroups"""
