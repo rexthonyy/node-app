@@ -1,27 +1,66 @@
+const {
+    checkAuthorization,
+    getGraphQLAttributeById,
+    getGraphQLAttributeValueById,
+    getGraphQLProductTypeById,
+} = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
         let attributeId = parent.id;
-        let languageCode = args.languageCode;
-        resolve(getTranslation(attributeId, languageCode));
+        resolve(await productVariantTypes(args, attributeId));
     });
 }
 
-function getTranslation(attributeId, languageCode) {
-    return new Promise((resolve, reject) => {
-        productQueries.getAttributeTranslation([attributeId, languageCode], "attribute_id=$1 AND language_code=$2", async result => {
-            if (result.err) return reject(JSON.stringify(result.err));
-            if (result.res.length == 0) return resolve(null);
-            let translation = result.res[0];
+function productVariantTypes(args, attributeId) {
+    return new Promise(async(resolve, reject) => {
+        try {
+            let edges = await getAllProductVariantTypes(attributeId);
             resolve({
-                id: translation.id,
-                language: {
-                    code: translation.language_code,
-                    language: translation.name
+                pageInfo: {
+                    hasNextPage: false,
+                    hasPreviousPage: false,
+                    startCursor: "",
+                    endCursor: ""
                 },
-                name: translation.name
-            })
-        });
+                edges,
+                totalCount: edges.length
+            });
+        } catch (err) {
+            reject(err);
+        }
     });
+}
+
+function getAllProductVariantTypes(attributeId) {
+    return new Promise((resolve, reject) => {
+        productQueries.getAttributeVariant([attributeId], "attribute_id=$1", result => {
+            if (result.err) { console.log(JSON.stringify(result.err)); return reject(JSON.stringify(result.err)); }
+            let attributeVariants = result.res;
+
+            const numAttributeVariants = attributeVariants.length;
+            let cursor = -1;
+            let edges = [];
+
+            attributeVariants.forEach(async attributeVariant => {
+                let node = await getGraphQLProductTypeById(attributeVariant.product_type_id);
+                edges.push({
+                    cursor: "",
+                    node
+                });
+
+                checkComplete();
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numAttributeVariants) {
+                    resolve(edges);
+                }
+            }
+        });
+    })
 }
