@@ -53,7 +53,7 @@ function getUrlsByDigitalContentId(id) {
             let cursor = -1;
             let urls = [];
 
-            digitalContentUrls.forEach(url => {
+            digitalContentUrls.forEach(async url => {
                 try {
                     urls.push(await getDigitalContentUrl(url));
                 } catch (err) {}
