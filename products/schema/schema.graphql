@@ -808,6 +808,13 @@ type Mutation {
     variantId: ID!
   ): DigitalContentCreate
 
+  """
+  Deletes a product media. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productMediaDelete(
+    """ID of a product media to delete."""
+    id: ID!
+  ): ProductMediaDelete
 }
 
 """Return type for getShiftGroups"""
