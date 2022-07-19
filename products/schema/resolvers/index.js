@@ -160,6 +160,9 @@ const {
     attributeMetafield,
     attributeMetafields,
     attributeTranslation,
+    attributeChoices,
+    attributeProductTypes,
+    attributeProductVariantTypes,
 } = require('./Attribute');
 
 const {
@@ -294,6 +297,9 @@ module.exports = {
         metafield: attributeMetafield,
         metafields: attributeMetafields,
         translation: attributeTranslation,
+        choices: attributeChoices,
+        productTypes: attributeProductTypes,
+        productVariantTypes: attributeProductVariantTypes,
     },
     AttributeValue: {
         translation: attributeValueTranslation,

@@ -773,7 +773,6 @@ type Mutation {
     ids: [ID!]!
   ): AttributeValueBulkDelete
 
-
   """
   Updates value of an attribute. Requires one of the following permissions: MANAGE_PRODUCT_TYPES_AND_ATTRIBUTES.
   """
@@ -785,7 +784,6 @@ type Mutation {
     input: AttributeValueUpdateInput!
   ): AttributeValueUpdate
 
-  
   """
   Creates/updates translations for an attribute value. Requires one of the following permissions: MANAGE_TRANSLATIONS.
   """
