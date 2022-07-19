@@ -9,6 +9,8 @@ const schema = require('./schema');
 const schemaWithMiddleware = applyMiddleware(schema, middleware)
 const app = express();
 
+app.use(express.static('public'));
+
 app.use('/graphql',
     graphqlHTTP(req => ({
         schema: schemaWithMiddleware,

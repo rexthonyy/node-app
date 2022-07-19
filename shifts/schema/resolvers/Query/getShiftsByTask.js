@@ -48,6 +48,7 @@ module.exports = async(parent, args, context) => {
                                 }
                             }
                             if (filter.shiftGroupMemberIds) {
+                                let filteredData = [];
                                 for (let data_ of data) {
                                     let assignedShifts = [];
                                     for (let assignedShift of data_.shifts.assignedShifts) {
@@ -58,11 +59,14 @@ module.exports = async(parent, args, context) => {
                                         }
                                     }
                                     data_.shifts.assignedShifts = assignedShifts;
+                                    if (assignedShifts.length > 0) filteredData.push(data_);
                                 }
+                                data = filteredData;
                             }
                             return resolve(getGraphQLOutput("success", "Fetch successful", data));
                         }
                         if (filter.shiftGroupMemberIds) {
+                            let filteredData = [];
                             for (let data_ of results) {
                                 let assignedShifts = [];
                                 for (let assignedShift of data_.shifts.assignedShifts) {
@@ -73,7 +77,9 @@ module.exports = async(parent, args, context) => {
                                     }
                                 }
                                 data_.shifts.assignedShifts = assignedShifts;
+                                if (assignedShifts.length > 0) filteredData.push(data_);
                             }
+                            results = filteredData;
                         }
                         resolve(getGraphQLOutput("success", "Fetch successful", results))
                     }

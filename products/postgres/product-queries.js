@@ -1678,6 +1678,23 @@ const createAttributeValueTranslation = (values, response) => {
     });
 };
 
+const createProductMedia = (values, response) => {
+    client.query(`INSERT INTO ${db.product_productmedia} (sort_order, image, ppoi, alt, type, external_url, oembed_data, product_id, to_remove) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2654,6 +2671,7 @@ module.exports = {
     createPageType,
     createAttributeTranslation,
     createAttributeValueTranslation,
+    createProductMedia,
 
     updateProduct,
     updateProductVariant,
