@@ -40,7 +40,16 @@ function getNonShiftGroupMembers(channelId, shiftGroupId) {
                         }
                     }
                     if (!isFound) {
-                        data.push(await getGraphQLUserById(channelGroupMember.user_id));
+                        let isAdded = false;
+                        for (let groupMember of data) {
+                            if (groupMember.id == channelGroupMember.user_id) {
+                                isAdded = true;
+                                break;
+                            }
+                        }
+                        if (!isAdded) {
+                            data.push(await getGraphQLUserById(channelGroupMember.user_id));
+                        }
                     }
                 }
                 resolve(getGraphQLOutput("success", `${data.length} non shift group members`, data));
