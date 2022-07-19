@@ -521,14 +521,6 @@ type Mutation {
     """Fields required to create or update product channel listings."""
     input: ProductChannelListingUpdateInput!
   ): ProductChannelListingUpdate
-
-  """
-  Create a media object (image or video URL) associated with product. For image, this mutation must be sent as a `multipart` request. More detailed specs of the upload format can be found here: https://github.com/jaydenseric/graphql-multipart-request-spec Requires one of the following permissions: MANAGE_PRODUCTS.
-  """
-  productMediaCreate(
-    """Fields required to create a product media."""
-    input: ProductMediaCreateInput!
-  ): ProductMediaCreate
   
   """
   Reorder the variants of a product. Mutation updates updated_at on product and triggers PRODUCT_UPDATED webhook. Requires one of the following permissions: MANAGE_PRODUCTS.
