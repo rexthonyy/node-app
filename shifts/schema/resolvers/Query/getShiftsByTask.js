@@ -38,49 +38,9 @@ module.exports = async(parent, args, context) => {
                 async function checkComplete() {
                     cursor++;
                     if (cursor == numGroups) {
-                        if (filter.shiftGroupIds) {
-                            let data = [];
-                            for (let result of results) {
-                                for (let shiftGroupId of filter.shiftGroupIds) {
-                                    if (result.groupId == shiftGroupId) {
-                                        data.push(result);
-                                    }
-                                }
-                            }
-                            if (filter.shiftGroupMemberIds) {
-                                //let filteredData = [];
-                                for (let data_ of data) {
-                                    let assignedShifts = [];
-                                    for (let assignedShift of data_.shifts.assignedShifts) {
-                                        for (let memberId of filter.shiftGroupMemberIds) {
-                                            if (assignedShift.userId == memberId) {
-                                                assignedShifts.push(assignedShift);
-                                            }
-                                        }
-                                    }
-                                    data_.shifts.assignedShifts = assignedShifts;
-                                    //if (assignedShifts.length > 0) filteredData.push(data_);
-                                }
-                                //data = filteredData;
-                            }
-                            return resolve(getGraphQLOutput("success", "Fetch successful", data));
-                        }
-                        if (filter.shiftGroupMemberIds) {
-                            //let filteredData = [];
-                            for (let data_ of results) {
-                                let assignedShifts = [];
-                                for (let assignedShift of data_.shifts.assignedShifts) {
-                                    for (let memberId of filter.shiftGroupMemberIds) {
-                                        if (assignedShift.userId == memberId) {
-                                            assignedShifts.push(assignedShift);
-                                        }
-                                    }
-                                }
-                                data_.shifts.assignedShifts = assignedShifts;
-                                //if (assignedShifts.length > 0) filteredData.push(data_);
-                            }
-                            //results = filteredData;
-                        }
+                        let filterByShiftGroupsResults = filterByShiftGroups(filter, results);
+                        let filterByGroupMembersResults = filterByGroupMembers(filter, results);
+                        results = mergeResults(filterByShiftGroupsResults, filterByGroupMembersResults);
                         resolve(getGraphQLOutput("success", "Fetch successful", results))
                     }
                 }
@@ -89,6 +49,55 @@ module.exports = async(parent, args, context) => {
             reject(err);
         }
     });
+}
+
+function filterByShiftGroups(filter, results) {
+    if (!filter.shiftGroupIds) return results;
+    let data = [];
+    for (let result of results) {
+        for (let shiftGroupId of filter.shiftGroupIds) {
+            if (result.groupId == shiftGroupId) {
+                data.push(result);
+            }
+        }
+    }
+    return data;
+}
+
+function filterByGroupMembers(filter, results) {
+    if (!filter.shiftGroupMemberIds) return results;
+    let data = [...results];
+    let filteredData = [];
+    for (let data_ of data) {
+        let assignedShifts = [];
+        for (let assignedShift of data_.shifts.assignedShifts) {
+            for (let memberId of filter.shiftGroupMemberIds) {
+                if (assignedShift.userId == memberId) {
+                    assignedShifts.push(assignedShift);
+                }
+            }
+        }
+        data_.shifts.assignedShifts = assignedShifts;
+        if (assignedShifts.length > 0) filteredData.push(data_);
+    }
+    return filteredData;
+}
+
+function mergeResults(filterByShiftGroupsResults, filterByGroupMembersResults) {
+    for (let memberFilter of filterByGroupMembersResults) {
+        let isFound = false;
+        for (let groupFilter of filterByShiftGroupsResults) {
+            if (memberFilter.groupId == groupFilter.groupId) {
+                isFound = true;
+                break;
+            }
+        }
+        if (!isFound) {
+            filterByShiftGroupsResults.push(memberFilter);
+        }
+    }
+
+    return filterByShiftGroupsResults;
 }
 
 function getGraphQLOutput(status, message, result) {

@@ -70,6 +70,7 @@ const {
     digitalContentCreate,
     productMediaDelete,
     productMediaBulkDelete,
+    productMediaReorder,
 } = require('./Mutation');
 
 const {
@@ -296,6 +297,7 @@ module.exports = {
         digitalContentCreate,
         productMediaDelete,
         productMediaBulkDelete,
+        productMediaReorder,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

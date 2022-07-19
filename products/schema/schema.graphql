@@ -824,6 +824,17 @@ type Mutation {
     ids: [ID!]!
   ): ProductMediaBulkDelete
 
+
+  """
+  Changes ordering of the product media. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productMediaReorder(
+    """IDs of a product media in the desired order."""
+    mediaIds: [ID!]!
+
+    """ID of product that media order will be altered."""
+    productId: ID!
+  ): ProductMediaReorder
 }
 
 """Return type for getShiftGroups"""

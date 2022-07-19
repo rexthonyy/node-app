@@ -1955,6 +1955,23 @@ const updateAttributeValueTranslation = (values, set, whereClause, response) => 
     });
 };
 
+const updateProductMedia = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_productmedia} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2705,6 +2722,7 @@ module.exports = {
     updateAttribute,
     updateAttributeTranslation,
     updateAttributeValueTranslation,
+    updateProductMedia,
 
     deleteAttributeValue,
     deleteProductVariant,
