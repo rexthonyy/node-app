@@ -830,6 +830,15 @@ type Mutation {
 
 
   """
+  Generate new URL to digital content. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContentUrlCreate(
+    """Fields required to create a new url."""
+    input: DigitalContentUrlCreateInput!
+  ): DigitalContentUrlCreate
+
+
+  """
   Deletes a product media. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productMediaDelete(

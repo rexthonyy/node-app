@@ -1696,7 +1696,24 @@ const createProductMedia = (values, response) => {
 };
 
 const createDigitalContent = (values, response) => {
-    client.query(`INSERT INTO ${db.product_productmedia} (use_default_settings, automatic_fulfillment, content_type, content_file, max_downloads, url_valid_days, product_variant_id, metadata, private_metadata) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.product_digitalcontent} (use_default_settings, automatic_fulfillment, content_type, content_file, max_downloads, url_valid_days, product_variant_id, metadata, private_metadata) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createDigitalContentUrl = (values, response) => {
+    client.query(`INSERT INTO ${db.product_digitalcontenturl} (token, created, download_num, content_id, line_id) VALUES($1, $2, $3, $4, $5) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -2724,6 +2741,7 @@ module.exports = {
     createAttributeValueTranslation,
     createProductMedia,
     createDigitalContent,
+    createDigitalContentUrl,
 
     updateProduct,
     updateProductVariant,

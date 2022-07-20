@@ -2,7 +2,9 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLProductById
+    getGraphQLProductById,
+    getGraphQLProductVariantById,
+    getGraphQLDigitalContentById
 } = require('../lib');
 const path = require('path');
 const fs = require('fs');
@@ -52,28 +54,29 @@ function digitalContentUpdate(authUser, args) {
             if (result.res.length == 0) return resolve(getGraphQLOutput("getProductVariant", `Cannot resolve productVariant:${id}`, "NOT_FOUND", null, null, null, null));
 
             let { values, set, whereClause } = getUpdateDigitalContentInput(args);
-            productQueries.updateDigitalContent([variantId, useDefaultSettings, maxDownloads, ], "alt=$2", "id=$1", async result => {
-                if (result.err) return resolve(getGraphQLOutput("updateProductMedia", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("updateProductMedia", "Product media not updated", "GRAPHQL_ERROR", null, null, null, null));
+            productQueries.updateDigitalContent(values, set, whereClause, async result => {
+                if (result.err) return resolve(getGraphQLOutput("updateDigitalContent", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("updateDigitalContent", "Digital content not updated", "GRAPHQL_ERROR", null, null, null, null));
 
-                let productMedia_ = result.res[0];
+                let digitalContent_ = result.res[0];
 
-                let product;
-                let media;
+                let variant;
+                let content;
+
                 try {
-                    product = await getGraphQLProductById(productMedia_.product_id);
+                    variant = await getGraphQLProductVariantById(digitalContent_.product_variant_id);
                 } catch (err) {
-                    product = null;
+                    variant = null;
                 }
                 try {
-                    media = await getGraphQLProductMediaById(productMedia_.id);
+                    content = await getGraphQLDigitalContentById(digitalContent_.id);
                 } catch (err) {
-                    media = null;
+                    content = null;
                 }
 
                 resolve({
-                    product,
-                    media,
+                    variant,
+                    content,
                     errors: [],
                     productErrors: []
                 });

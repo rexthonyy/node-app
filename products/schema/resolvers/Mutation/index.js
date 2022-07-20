@@ -44,6 +44,7 @@ const productMediaDelete = require('./productMediaDelete');
 const productMediaBulkDelete = require('./productMediaBulkDelete');
 const productMediaReorder = require('./productMediaReorder');
 const productMediaUpdate = require('./productMediaUpdate');
+const digitalContentUrlCreate = require('./digitalContentUrlCreate');
 
 module.exports = {
     productBulkDelete,
@@ -92,4 +93,5 @@ module.exports = {
     productMediaBulkDelete,
     productMediaReorder,
     productMediaUpdate,
+    digitalContentUrlCreate,
 };
