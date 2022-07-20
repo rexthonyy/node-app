@@ -122,7 +122,7 @@ function resolveShippingZoneAvailable(args) {
     return new Promise(async resolve => {
         let shippingZone = args.input.shippingZone;
         if (!shippingZone) return resolve(await assignDefaultShippingZone(args));
-        productQueries.getShippingZone([shippingZone], "id=$1", result => {
+        productQueries.getShippingZone([shippingZone], "id=$1", async result => {
             if (result.err) return resolve(await assignDefaultShippingZone(args));
             if (result.res.length == 0) return resolve(await assignDefaultShippingZone(args));
             resolve();
@@ -131,7 +131,7 @@ function resolveShippingZoneAvailable(args) {
 }
 
 function assignDefaultShippingZone(args) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         productQueries.getShippingZone([true], "default=$1", result => {
             if (result.err) return resolve();
             if (result.res.length == 0) return resolve();
@@ -181,7 +181,7 @@ function createShippingMethodPostalCodeRule(args, shippingMethod_) {
 }
 
 function createAddPostalCodeRules(args, shippingMethod_) {
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let rules = args.input.addPostalCodeRules;
         const numRules = rules.length;
         let cursor = -1;
@@ -222,7 +222,7 @@ function createAddPostalCodeRules(args, shippingMethod_) {
 }
 
 function deletePostalCodeRules(args) {
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
         let ruleIds = args.input.deletePostalCodeRules;
         const numRules = ruleIds.length;
         let cursor = -1;
