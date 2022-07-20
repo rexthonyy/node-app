@@ -240,58 +240,53 @@ function getOpenShifts(channelId, shiftGroupId, startDate, endDate) {
             let title = "Open shifts";
             let numberOfShifts = 0;
             let shifts = [];
-            if (!result.err && result.res.length > 0) {
-                let openShifts = result.res;
-                numberOfShifts = openShifts.length;
-                let cursor = -1;
+            if (result.err || result.res.length == 0) return resolve({ title, numberOfShifts, shifts });
+            let openShifts = result.res;
+            numberOfShifts = openShifts.length;
+            let cursor = -1;
 
-                openShifts.forEach(openShift => {
-                    shiftQueries.getOpenShiftActivities([openShift.id], "open_shift_id=$1", result => {
-                        let openShiftActivities = [];
-                        if (!result.err && result.res.length > 0) {
-                            let activities = result.res;
-                            for (let activity of activities) {
-                                openShiftActivities.push({
-                                    id: activity.id,
-                                    name: activity.name,
-                                    code: activity.code,
-                                    color: activity.color,
-                                    startTime: formatDate(activity.start_time),
-                                    endTime: formatDate(activity.end_time),
-                                    isPaid: activity.is_paid
-                                });
-                            }
+            openShifts.forEach(openShift => {
+                shiftQueries.getOpenShiftActivities([openShift.id], "open_shift_id=$1", result => {
+                    let openShiftActivities = [];
+                    if (!result.err && result.res.length > 0) {
+                        let activities = result.res;
+                        for (let activity of activities) {
+                            openShiftActivities.push({
+                                id: activity.id,
+                                name: activity.name,
+                                code: activity.code,
+                                color: activity.color,
+                                startTime: formatDate(activity.start_time),
+                                endTime: formatDate(activity.end_time),
+                                isPaid: activity.is_paid
+                            });
                         }
-
-                        shifts.push({
-                            id: openShift.id,
-                            label: openShift.label,
-                            note: openShift.note,
-                            color: openShift.color,
-                            startTime: formatDate(openShift.start_time),
-                            endTime: formatDate(openShift.end_time),
-                            break: openShift.unpaid_break_time,
-                            is24Hours: openShift.is24hours,
-                            subshifts: openShiftActivities,
-                            slots: openShift.slots
-                        });
-
-                        checkComplete();
-                    });
-                });
-
-                checkComplete();
-
-                function checkComplete() {
-                    cursor++;
-                    if (cursor == numberOfShifts) {
-                        console.log("---open shifts--");
-                        console.log(shifts);
-                        resolve({ title, numberOfShifts, shifts });
                     }
+
+                    shifts.push({
+                        id: openShift.id,
+                        label: openShift.label,
+                        note: openShift.note,
+                        color: openShift.color,
+                        startTime: formatDate(openShift.start_time),
+                        endTime: formatDate(openShift.end_time),
+                        break: openShift.unpaid_break_time,
+                        is24Hours: openShift.is24hours,
+                        subshifts: openShiftActivities,
+                        slots: openShift.slots
+                    });
+
+                    checkComplete();
+                });
+            });
+
+            checkComplete();
+
+            function checkComplete() {
+                cursor++;
+                if (cursor == numberOfShifts) {
+                    resolve({ title, numberOfShifts, shifts });
                 }
-            } else {
-                resolve({ title, numberOfShifts, shifts });
             }
         });
     });
@@ -334,7 +329,7 @@ function getAssignedShifts(authUser, includeRequests, channelId, shiftGroupId, s
                 cursor++;
                 if (cursor == numShiftGroupMembers) {
                     console.log("---assigned shifts--");
-                    console.log(shifts);
+                    console.log(assignedShifts);
                     resolve(assignedShifts);
                 }
             }
