@@ -61,6 +61,23 @@ type Query {
 
   ): getNonShiftGroupMembersResponse
 
+  """
+  List of all staff users
+  """
+  getAllShiftMembers(
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): GetShiftGroupMembersResponse
+
 
   """
   Look up the shifts in a channel at the range specified.

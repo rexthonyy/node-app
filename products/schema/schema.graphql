@@ -835,6 +835,18 @@ type Mutation {
     """ID of product that media order will be altered."""
     productId: ID!
   ): ProductMediaReorder
+
+  """
+  Updates a product media. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  productMediaUpdate(
+    """ID of a product media to update."""
+    id: ID!
+
+    """Fields required to update a product media."""
+    input: ProductMediaUpdateInput!
+  ): ProductMediaUpdate
+
 }
 
 """Return type for getShiftGroups"""

@@ -7,6 +7,7 @@ const {
     queryGetSettings,
     queryGetSharedSchedules,
     queryGetShiftGroupMembers,
+    queryGetAllShiftMembers,
     queryGetShiftGroups,
     queryGetShiftsByPeople,
     queryGetShiftsByTask,
@@ -53,6 +54,7 @@ module.exports = {
     Query: {
         getShiftGroups: queryGetShiftGroups,
         getShiftGroupMembers: queryGetShiftGroupMembers,
+        getAllShiftMembers: queryGetAllShiftMembers,
         getNonShiftGroupMembers: queryGetNonShiftGroupMembers,
         getShiftsByPeople: queryGetShiftsByPeople,
         getShiftsByTask: queryGetShiftsByTask,
