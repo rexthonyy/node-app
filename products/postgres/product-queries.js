@@ -1763,6 +1763,57 @@ const createShippingMethodPostalCodeRule = (values, response) => {
     });
 };
 
+const createShippingZone = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingzone} (name, countries, default, metadata, private_metadata, description) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createWarehouseShippingZone = (values, response) => {
+    client.query(`INSERT INTO ${db.warehouse_warehouse_shipping_zones} (warehouse_id, shippingzone_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createShippingZoneChannel = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingzone_channels} (shippingzone_id, channel_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2795,6 +2846,9 @@ module.exports = {
     createDigitalContentUrl,
     createShippingMethod,
     createShippingMethodPostalCodeRule,
+    createShippingZone,
+    createWarehouseShippingZone,
+    createShippingZoneChannel,
 
     updateProduct,
     updateProductVariant,

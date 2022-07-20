@@ -46,6 +46,7 @@ const productMediaReorder = require('./productMediaReorder');
 const productMediaUpdate = require('./productMediaUpdate');
 const digitalContentUrlCreate = require('./digitalContentUrlCreate');
 const shippingPriceCreate = require('./shippingPriceCreate');
+const shippingZoneCreate = require('./shippingZoneCreate');
 
 module.exports = {
     productBulkDelete,
@@ -96,4 +97,5 @@ module.exports = {
     productMediaUpdate,
     digitalContentUrlCreate,
     shippingPriceCreate,
+    shippingZoneCreate,
 };

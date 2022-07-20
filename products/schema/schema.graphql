@@ -884,6 +884,15 @@ type Mutation {
     """Fields required to create a shipping price."""
     input: ShippingPriceInput!
   ): ShippingPriceCreate
+
+  
+  """
+  Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZoneCreate(
+    """Fields required to create a shipping zone."""
+    input: ShippingZoneCreateInput!
+  ): ShippingZoneCreate
 }
 
 """Return type for getShiftGroups"""
