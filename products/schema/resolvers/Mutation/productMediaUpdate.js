@@ -52,49 +52,16 @@ function productMediaUpdate(authUser, args) {
             if (result.res.length == 0) return resolve(getGraphQLOutput("getProductMedia", `Cannot resolve productMedia:${id}`, "NOT_FOUND", null, null, null, null));
 
             let alt = args.input.alt;
-            productQueries.updateProductMedia([id, alt], "alt=$2", "id=$1", result => {
+            productQueries.updateProductMedia([id, alt], "alt=$2", "id=$1", async result => {
+                if (result.err) return resolve(getGraphQLOutput("updateProductMedia", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("updateProductMedia", "Product media not updated", "GRAPHQL_ERROR", null, null, null, null));
 
-            });
-            let mediaUrl = args.input.mediaUrl;
-            let image = args.input.image;
-            let type = "IMAGE";
-            let imageUrl = null;
-
-            if (image) {
-                try {
-                    const { createReadStream, filename, mimetype, encoding } = await image;
-
-                    const stream = createReadStream();
-                    const pathname = path.join(__dirname, `../../../public/images/products/${filename}`);
-                    let out = fs.createWriteStream(pathname);
-                    await stream.pipe(out);
-                    imageUrl = `products/${filename}`;
-                } catch (err) {
-                    return resolve(getGraphQLOutput("steam.pipe(out)", err, "GRAPHQL_ERROR", null, null, null, null));
-                }
-            }
-
-            let values = [
-                0,
-                imageUrl,
-                "0.5x0.5",
-                alt,
-                type,
-                mediaUrl,
-                JSON.stringify({}),
-                productId,
-                false
-            ];
-
-            productQueries.createProductMedia(values, async result => {
-                if (result.err) return resolve(getGraphQLOutput("createProductMedia", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("createProductMedia", "Media not created", "GRAPHQL_ERROR", null, null, null, null));
                 let productMedia_ = result.res[0];
 
                 let product;
                 let media;
                 try {
-                    product = await getGraphQLProductById(productId);
+                    product = await getGraphQLProductById(productMedia_.product_id);
                 } catch (err) {
                     product = null;
                 }
