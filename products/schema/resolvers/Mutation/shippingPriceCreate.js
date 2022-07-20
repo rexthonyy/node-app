@@ -126,7 +126,7 @@ function resolveShippingZoneAvailable(args) {
         productQueries.getShippingZone([shippingZone], "id=$1", async result => {
             if (result.err) return resolve(await assignDefaultShippingZone(args));
             if (result.res.length == 0) return resolve(await assignDefaultShippingZone(args));
-            resolve();
+            resolve(true);
         });
     });
 }
@@ -134,11 +134,11 @@ function resolveShippingZoneAvailable(args) {
 function assignDefaultShippingZone(args) {
     return new Promise(resolve => {
         productQueries.getShippingZone([true], "default=$1", result => {
-            if (result.err) return resolve();
-            if (result.res.length == 0) return resolve();
+            if (result.err) return resolve(false);
+            if (result.res.length == 0) return resolve(false);
             let shippingZone = result.res[0];
             args.input.shippingZone = shippingZone.id;
-            resolve();
+            resolve(true);
         });
     });
 }
