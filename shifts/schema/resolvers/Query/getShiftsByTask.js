@@ -1,7 +1,7 @@
 const shiftQueries = require("../../../postgres/shift-queries");
 const { checkAuthorization, getGraphQLUserById } = require('../lib');
 const { formatDate, sortByStartTime, diffHours, paginate } = require("../../../libs/util");
-const { color } = require("../../../libs/consts");
+const { colorValue } = require("../../../libs/consts");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
@@ -481,7 +481,7 @@ function getGroupMemberRequests(authUser, channelId, shiftGroupId, userId, start
                                     type: "requestTimeOff",
                                     label: timeOffRequest.reason,
                                     note: timeOffRequest.note,
-                                    color: color.gray,
+                                    color: colorValue.GRAY,
                                     startTime: formatDate(timeOffRequest.start_time),
                                     endTime: formatDate(timeOffRequest.end_time),
                                     is24Hours: timeOffRequest.is_all_day
@@ -500,7 +500,7 @@ function getGroupMemberRequests(authUser, channelId, shiftGroupId, userId, start
                                 shifts.push({
                                     id: swapRequest.id,
                                     type: "requestSwap",
-                                    color: color.gray,
+                                    color: colorValue.GRAY,
                                     note: swapRequest.request_note,
                                     shiftToSwap,
                                     toSwapWith
@@ -518,7 +518,7 @@ function getGroupMemberRequests(authUser, channelId, shiftGroupId, userId, start
                                 shifts.push({
                                     id: offerRequest.id,
                                     type: "requestOffer",
-                                    color: color.gray,
+                                    color: colorValue.GRAY,
                                     note: offerRequest.request_note,
                                     shiftToOffer
                                 });
