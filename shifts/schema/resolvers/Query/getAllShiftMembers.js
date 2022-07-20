@@ -41,7 +41,7 @@ function getAllShiftMembers(args) {
 
 function getAllShiftGroupMembers({ channel, shiftGroupId }) {
     return new Promise((resolve, reject) => {
-        kratosQueries.getUserByIsStaff([true], result => {
+        kratosQueries.getUserByIsStaff([true], async result => {
             if (result.err) return reject("Failed to get shift group members");
             let shiftGroupMembers = result.res;
             let edges = [];
