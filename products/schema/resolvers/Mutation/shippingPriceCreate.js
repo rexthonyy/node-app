@@ -2,7 +2,8 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLProductVariantById
+    getGraphQLShippingMethodTypeById,
+    getGraphQLShippingZoneById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
@@ -67,15 +68,29 @@ function shippingPriceCreate(authUser, args) {
         }
 
         try {
-            let productVariant = await getGraphQLProductVariantById(res.productVariant.id);
-            return resolve({
-                errors,
-                productErrors: errors,
-                productVariant
-            });
+            shippingMethod = await getGraphQLShippingMethodTypeById(shippingMethod_.id);
         } catch (err) {
-            resolve(getGraphQLOutput("productVariant", err, "GRAPHQL_ERROR", null, null, null));
+            errors.concat(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "GRAPHQL_ERROR", null, null, null).errors);
+            shippingMethod = null;
         }
+
+        if (shippingMethod_.shipping_zone_id) {
+            try {
+                shippingZone = await getGraphQLShippingZoneById(shippingMethod_.shipping_zone_id);
+            } catch (err) {
+                errors.concat(getGraphQLOutput("getGraphQLShippingZoneById", err, "GRAPHQL_ERROR", null, null, null).errors);
+                shippingZone = null;
+            }
+        } else {
+            shippingZone = null;
+        }
+
+        return resolve({
+            shippingZone,
+            shippingMethod,
+            errors,
+            shippingErrors: errors
+        });
     });
 }
 
