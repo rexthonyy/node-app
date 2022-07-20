@@ -144,16 +144,16 @@ function assignDefaultShippingZone(args) {
 
 function getShippingMethodInputValues(args) {
     return [
-        args.name,
-        args.maximumOrderWeight,
-        args.minimumOrderWeight,
-        args.type,
-        args.shippingZone,
+        args.input.name,
+        args.input.maximumOrderWeight,
+        args.input.minimumOrderWeight,
+        args.input.type,
+        args.input.shippingZone,
         JSON.stringify({}),
         JSON.stringify({}),
-        args.maximumDeliveryDays,
-        args.minimumDeliveryDays,
-        args.description
+        args.input.maximumDeliveryDays,
+        args.input.minimumDeliveryDays,
+        args.input.description
     ];
 }
 
