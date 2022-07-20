@@ -328,8 +328,6 @@ function getAssignedShifts(authUser, includeRequests, channelId, shiftGroupId, s
             function checkComplete() {
                 cursor++;
                 if (cursor == numShiftGroupMembers) {
-                    console.log("---assigned shifts--");
-                    console.log(assignedShifts);
                     resolve(assignedShifts);
                 }
             }
@@ -357,8 +355,8 @@ function getGroupMemberAssignedShifts(channelId, shiftGroupId, userId, startDate
                                 name: activity.name,
                                 code: activity.code,
                                 color: activity.color,
-                                startTime: formatDate(activity.start_time),
-                                endTime: formatDate(activity.end_time),
+                                startTime: activity.start_time,
+                                endTime: activity.end_time,
                                 isPaid: activity.is_paid
                             });
                         }
@@ -370,8 +368,8 @@ function getGroupMemberAssignedShifts(channelId, shiftGroupId, userId, startDate
                         label: assignedShift.label,
                         note: assignedShift.note,
                         color: assignedShift.color,
-                        startTime: formatDate(assignedShift.start_time),
-                        endTime: formatDate(assignedShift.end_time),
+                        startTime: assignedShift.start_time,
+                        endTime: assignedShift.end_time,
                         break: assignedShift.unpaid_break_time,
                         is24Hours: assignedShift.is24hours,
                         subshifts: assignedShiftActivities
@@ -449,8 +447,8 @@ function getGroupMemberTimeoffs(channelId, shiftGroupId, userId, startDate, endD
                     label: timeOff.label,
                     note: timeOff.note,
                     color: timeOff.color,
-                    startTime: formatDate(timeOff.start_time),
-                    endTime: formatDate(timeOff.end_time),
+                    startTime: timeOff.start_time,
+                    endTime: timeOff.end_time,
                     is24Hours: timeOff.is24hours
                 });
             }
@@ -481,8 +479,8 @@ function getGroupMemberRequests(authUser, channelId, shiftGroupId, userId, start
                                     label: timeOffRequest.reason,
                                     note: timeOffRequest.note,
                                     color: colorValue.GRAY,
-                                    startTime: formatDate(timeOffRequest.start_time),
-                                    endTime: formatDate(timeOffRequest.end_time),
+                                    startTime: timeOffRequest.start_time,
+                                    endTime: timeOffRequest.end_time,
                                     is24Hours: timeOffRequest.is_all_day
                                 });
                             }
