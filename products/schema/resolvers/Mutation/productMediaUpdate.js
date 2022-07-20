@@ -46,12 +46,15 @@ function getGraphQLOutput(field, message, code, attributes, values, product, med
 
 function productMediaUpdate(authUser, args) {
     return new Promise(resolve => {
-        let productId = args.input.product;
-        productQueries.getProduct([productId], "id=$1", async result => {
-            if (result.err) return resolve(getGraphQLOutput("getProduct", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("getProduct", `Cannot resolve product:${productId}`, "NOT_FOUND", null, null, null, null));
+        let id = args.id;
+        productQueries.getProductMedia([id], "id=$1", async result => {
+            if (result.err) return resolve(getGraphQLOutput("getProductMedia", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null, null));
+            if (result.res.length == 0) return resolve(getGraphQLOutput("getProductMedia", `Cannot resolve productMedia:${id}`, "NOT_FOUND", null, null, null, null));
 
             let alt = args.input.alt;
+            productQueries.updateProductMedia([id, alt], "alt=$2", "id=$1", result => {
+
+            });
             let mediaUrl = args.input.mediaUrl;
             let image = args.input.image;
             let type = "IMAGE";
