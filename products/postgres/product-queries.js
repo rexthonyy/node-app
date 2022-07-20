@@ -1764,7 +1764,7 @@ const createShippingMethodPostalCodeRule = (values, response) => {
 };
 
 const createShippingZone = (values, response) => {
-    client.query(`INSERT INTO ${db.shipping_shippingzone} (name, countries, default, metadata, private_metadata, description) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.shipping_shippingzone} (name, countries, "default", metadata, private_metadata, description) VALUES($1, $2, $3, $4, $5, $6) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
