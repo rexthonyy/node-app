@@ -96,7 +96,8 @@ function shippingPriceCreate(authUser, args) {
 
 function createShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
-        await resolveShippingZoneAvailable(args);
+        let isShippingZone = await resolveShippingZoneAvailable(args);
+        if (!isShippingZone) return reject(getGraphQLOutput("resolveShippingZone", "Default Shipping zone not available", "REQUIRED", null, null, null).errors);
 
         if (args.input.minimumOrderWeight && args.input.maximumOrderWeight) {
             if (args.input.minimumOrderWeight > args.input.maximumOrderWeight) {
