@@ -809,6 +809,14 @@ type Mutation {
   ): DigitalContentCreate
 
   """
+  Remove digital content assigned to given variant. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContentDelete(
+    """ID of a product variant with digital content to remove."""
+    variantId: ID!
+  ): DigitalContentDelete
+  
+  """
   Deletes a product media. Requires one of the following permissions: MANAGE_PRODUCTS.
   """
   productMediaDelete(
