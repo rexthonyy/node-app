@@ -285,6 +285,8 @@ function getOpenShifts(channelId, shiftGroupId, startDate, endDate) {
                 function checkComplete() {
                     cursor++;
                     if (cursor == numberOfShifts) {
+                        console.log("---open shifts--");
+                        console.log(shifts);
                         resolve({ title, numberOfShifts, shifts });
                     }
                 }
@@ -331,6 +333,8 @@ function getAssignedShifts(authUser, includeRequests, channelId, shiftGroupId, s
             function checkComplete() {
                 cursor++;
                 if (cursor == numShiftGroupMembers) {
+                    console.log("---assigned shifts--");
+                    console.log(shifts);
                     resolve(assignedShifts);
                 }
             }

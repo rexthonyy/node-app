@@ -815,7 +815,20 @@ type Mutation {
     """ID of a product variant with digital content to remove."""
     variantId: ID!
   ): DigitalContentDelete
+
   
+  """
+  Update digital content. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  digitalContentUpdate(
+    """Fields required to update a digital content."""
+    input: DigitalContentInput!
+
+    """ID of a product variant with digital content to update."""
+    variantId: ID!
+  ): DigitalContentUpdate
+
+
   """
   Deletes a product media. Requires one of the following permissions: MANAGE_PRODUCTS.
   """

@@ -1972,6 +1972,23 @@ const updateProductMedia = (values, set, whereClause, response) => {
     });
 };
 
+const updateDigitalContent = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.product_digitalcontent} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2723,6 +2740,7 @@ module.exports = {
     updateAttributeTranslation,
     updateAttributeValueTranslation,
     updateProductMedia,
+    updateDigitalContent,
 
     deleteAttributeValue,
     deleteProductVariant,
