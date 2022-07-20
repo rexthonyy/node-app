@@ -877,6 +877,13 @@ type Mutation {
     input: ProductMediaUpdateInput!
   ): ProductMediaUpdate
 
+  """
+  Creates a new shipping price. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceCreate(
+    """Fields required to create a shipping price."""
+    input: ShippingPriceInput!
+  ): ShippingPriceCreate
 }
 
 """Return type for getShiftGroups"""

@@ -75,6 +75,7 @@ const {
     productMediaBulkDelete,
     productMediaReorder,
     productMediaUpdate,
+    shippingPriceCreate,
 } = require('./Mutation');
 
 const {
@@ -306,6 +307,7 @@ module.exports = {
         productMediaBulkDelete,
         productMediaReorder,
         productMediaUpdate,
+        shippingPriceCreate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

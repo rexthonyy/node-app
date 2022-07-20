@@ -1729,6 +1729,40 @@ const createDigitalContentUrl = (values, response) => {
     });
 };
 
+const createShippingMethod = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingmethod} (name, maximum_order_weight, minimum_order_weight, type, shipping_zone_id, metadata, private_metadata, maximum_delivery_days, minimum_delivery_days, description) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createShippingMethodPostalCodeRule = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingmethodpostalcoderule} (start, end, shipping_method_id, inclusion_type) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2640,6 +2674,23 @@ const deleteAssignedPageAttribute = (values, whereClause, response) => {
     });
 };
 
+const deleteShippingMethodPostalCodeRule = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingmethodpostalcoderule} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -2742,6 +2793,8 @@ module.exports = {
     createProductMedia,
     createDigitalContent,
     createDigitalContentUrl,
+    createShippingMethod,
+    createShippingMethodPostalCodeRule,
 
     updateProduct,
     updateProductVariant,
@@ -2797,4 +2850,5 @@ module.exports = {
     deleteAttributePage,
     deleteAssignedPageAttribute,
     deleteAttribute,
+    deleteShippingMethodPostalCodeRule,
 }

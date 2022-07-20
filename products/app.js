@@ -1,4 +1,6 @@
 require("dotenv").config();
+const Sentry = require("@sentry/node");
+Sentry.init({ dsn: "http://735995b162b54d169b08731617273be9@88.208.212.249:8000/7" });
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { applyMiddleware } = require('graphql-middleware');
@@ -18,6 +20,8 @@ app.use('/graphql',
         context: req
     })));
 
+app.use(Sentry.Handlers.requestHandler());
+
 let port = process.env.PORT || 1000;
 var lesServer = app.listen(port, function() {
     console.log("Listening on port %s...", lesServer.address().port);
@@ -29,3 +33,5 @@ events.forEach(event => {
         process.exit(-1);
     });
 })
+
+app.use(Sentry.Handlers.errorHandler());
