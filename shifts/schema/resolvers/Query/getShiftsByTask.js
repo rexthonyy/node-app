@@ -319,9 +319,6 @@ function getAssignedShifts(authUser, includeRequests, channelId, shiftGroupId, s
                     numberOfHours += diffHours(new Date(shift.endTime), new Date(shift.startTime));
                 }
 
-                if (userId == 1) {
-                    console.log({ userId, name, image, numberOfHours, shifts: groupMemberShifts });
-                }
                 assignedShifts.push({ userId, name, image, numberOfHours, shifts: groupMemberShifts });
                 checkComplete();
             });
