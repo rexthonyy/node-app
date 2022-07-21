@@ -885,6 +885,13 @@ type Mutation {
     input: ShippingPriceInput!
   ): ShippingPriceCreate
 
+  """
+  Deletes a shipping price. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceDelete(
+    """ID of a shipping price to delete."""
+    id: ID!
+  ): ShippingPriceDelete
   
   """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.

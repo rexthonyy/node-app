@@ -112,28 +112,36 @@ function deleteShippingMethod(shippingZoneId) {
             let cursor = -1;
             let errors = [];
 
-            shippingMethods_.forEach(async _shippingMethod => {
-                try {
-                    await deleteShippingMethodPostalCodeRule(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodTranslation(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodChannelListing(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodExcludedProducts(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                checkComplete();
+            shippingMethods_.forEach(_shippingMethod => {
+                productQueries.deleteShippingMethod([_shippingMethod.id], "id=$1", async result => {
+                    if (result.err) {
+                        errors.push(getGraphQLOutput("deleteShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
+                    } else if (result.res.length == 0) {
+                        errors.push(getGraphQLOutput("deleteShippingMethod", `Shipping method not deleted:${_shippingMethod.id}`, "GRAPHQL_ERROR").errors[0]);
+                    } else {
+                        try {
+                            await deleteShippingMethodPostalCodeRule(_shippingMethod.id);
+                        } catch (err) {
+                            errors.push(err);
+                        }
+                        try {
+                            await deleteShippingMethodTranslation(_shippingMethod.id);
+                        } catch (err) {
+                            errors.push(err);
+                        }
+                        try {
+                            await deleteShippingMethodChannelListing(_shippingMethod.id);
+                        } catch (err) {
+                            errors.push(err);
+                        }
+                        try {
+                            await deleteShippingMethodExcludedProducts(_shippingMethod.id);
+                        } catch (err) {
+                            errors.push(err);
+                        }
+                    }
+                    checkComplete();
+                });
             });
 
             checkComplete();

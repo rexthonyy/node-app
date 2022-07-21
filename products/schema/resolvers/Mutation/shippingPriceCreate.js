@@ -64,13 +64,13 @@ function shippingPriceCreate(authUser, args) {
         try {
             await createShippingMethodPostalCodeRule(args, shippingMethod_);
         } catch (err) {
-            errors.concat(err);
+            errors = errors.concat(err);
         }
 
         try {
             shippingMethod = await getGraphQLShippingMethodTypeById(shippingMethod_.id);
         } catch (err) {
-            errors.concat(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "GRAPHQL_ERROR", null, null, null).errors);
+            errors = errors.concat(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "GRAPHQL_ERROR", null, null, null).errors);
             shippingMethod = null;
         }
 
@@ -78,7 +78,7 @@ function shippingPriceCreate(authUser, args) {
             try {
                 shippingZone = await getGraphQLShippingZoneById(shippingMethod_.shipping_zone_id);
             } catch (err) {
-                errors.concat(getGraphQLOutput("getGraphQLShippingZoneById", err, "GRAPHQL_ERROR", null, null, null).errors);
+                errors = errors.concat(getGraphQLOutput("getGraphQLShippingZoneById", err, "GRAPHQL_ERROR", null, null, null).errors);
                 shippingZone = null;
             }
         } else {
