@@ -132,7 +132,8 @@ function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
         if (!isUpdateShippingMethod(args)) return resolve();
         updateShippingPrice(args, err => {
-            if (!err) {
+            console.log(err);
+            if (err) {
                 return reject(err);
             } else {
                 return resolve();
