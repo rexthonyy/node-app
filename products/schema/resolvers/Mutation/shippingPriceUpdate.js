@@ -141,11 +141,11 @@ function updateShippingMethod(args) {
         console.log(resolve); //.
         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
         productQueries.updateShippingMethod(values, set, whereClause, result => {
-            if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
-            console.log(result.res);
-            console.log(resolve);
-            resolve();
+            // if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            // if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
+            //console.log(result.res);
+            //console.log(resolve);
+            //resolve();
         });
     });
 }
