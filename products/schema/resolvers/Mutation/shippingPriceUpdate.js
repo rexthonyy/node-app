@@ -139,7 +139,7 @@ function updateShippingMethod(args) {
             }
         }
 
-        let resolve_ = resolve();
+        let resolve_ = resolve;
         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
         productQueries.updateShippingMethod(values, set, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
