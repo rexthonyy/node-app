@@ -6,7 +6,6 @@ const {
     getGraphQLShippingMethodTypeById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
-const kratosQueries = require("../../../postgres/kratos-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -139,6 +138,17 @@ function updateShippingMethod(args) {
                 return reject(err);
             }
         }
+
+        try {
+            resolve(await updateShippingPrice(args));
+        } catch (err) {
+            return reject(err);
+        }
+    });
+}
+
+function updateShippingPrice(args) {
+    return new Promise((resolve, reject) => {
         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
         productQueries.updateShippingMethod(values, set, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
