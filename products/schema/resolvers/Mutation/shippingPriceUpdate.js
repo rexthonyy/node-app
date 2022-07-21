@@ -147,13 +147,13 @@ function isUpdateShippingMethod(args) {
 }
 
 function updateShippingPrice(args, response) {
-    // if (args.input.shippingZone) {
-    //     try {
-    //         await getShippingZone(args.input.shippingZone);
-    //     } catch (err) {
-    //         return response(err);
-    //     }
-    // }
+    if (args.input.shippingZone) {
+        try {
+            await getShippingZone(args.input.shippingZone);
+        } catch (err) {
+            return response(err);
+        }
+    }
 
     let { values, set, whereClause } = getShippingMethodUpdateInput(args);
     productQueries.updateShippingMethod(values, set, whereClause, result => {
