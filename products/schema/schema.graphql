@@ -910,6 +910,16 @@ type Mutation {
     ids: [ID!]!
   ): ShippingZoneBulkDelete
 
+  """
+  Updates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZoneUpdate(
+    """ID of a shipping zone to update."""
+    id: ID!
+
+    """Fields required to update a shipping zone."""
+    input: ShippingZoneUpdateInput!
+  ): ShippingZoneUpdate
 }
 
 """Return type for getShiftGroups"""

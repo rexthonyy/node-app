@@ -2091,6 +2091,23 @@ const updateDigitalContent = (values, set, whereClause, response) => {
     });
 };
 
+const updateShippingZone = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.shipping_shippingzone} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2968,6 +2985,7 @@ module.exports = {
     updateAttributeValueTranslation,
     updateProductMedia,
     updateDigitalContent,
+    updateShippingZone,
 
     deleteAttributeValue,
     deleteProductVariant,
