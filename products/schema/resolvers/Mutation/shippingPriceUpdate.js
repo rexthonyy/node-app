@@ -145,7 +145,7 @@ function updateShippingMethod(args) {
             // if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
             console.log(result.res);
             console.log(resolve);
-            resolve();
+            //resolve();
         });
     });
 }
