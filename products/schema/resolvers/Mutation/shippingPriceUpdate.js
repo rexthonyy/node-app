@@ -146,7 +146,7 @@ function isUpdateShippingMethod(args) {
     return args.input.name || args.input.description || args.input.minimumOrderWeight || args.input.maximumOrderWeight || args.input.minimumDeliveryDays || args.input.type || args.input.shippingZone;
 }
 
-function updateShippingPrice(args, response) {
+async function updateShippingPrice(args, response) {
     if (args.input.shippingZone) {
         try {
             await getShippingZone(args.input.shippingZone);
