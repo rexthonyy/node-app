@@ -81,6 +81,7 @@ const {
     shippingZoneBulkDelete,
     shippingZoneUpdate,
     shippingPriceDelete,
+    shippingPriceBulkDelete,
 } = require('./Mutation');
 
 const {
@@ -318,6 +319,7 @@ module.exports = {
         shippingZoneBulkDelete,
         shippingZoneUpdate,
         shippingPriceDelete,
+        shippingPriceBulkDelete,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

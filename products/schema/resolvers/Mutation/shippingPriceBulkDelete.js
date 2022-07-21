@@ -2,7 +2,8 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLShippingZoneById
+    getGraphQLShippingZoneById,
+    getGraphQLShippingMethodTypeById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
@@ -14,7 +15,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await shippingZoneBulkDelete(args));
+            resolve(await shippingPriceBulkDelete(args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING", "INVALID"));
         }
@@ -41,7 +42,7 @@ function getGraphQLOutput(field, message, code, warehouses, channels, count = 0)
     }
 }
 
-function shippingZoneBulkDelete({ ids }) {
+function shippingPriceBulkDelete({ ids }) {
     return new Promise(resolve => {
         const numIds = ids.length;
         let cursor = -1;
@@ -49,7 +50,7 @@ function shippingZoneBulkDelete({ ids }) {
 
         ids.forEach(async id => {
             try {
-                await shippingZoneDelete(id);
+                await shippingPriceDelete(id);
             } catch (err) {
                 errors = errors.concat(err);
             }
@@ -70,96 +71,43 @@ function shippingZoneBulkDelete({ ids }) {
     });
 }
 
-function shippingZoneDelete(shippingZoneId) {
+function shippingPriceDelete(shippingMethodId) {
     return new Promise((resolve, reject) => {
-        productQueries.getShippingZone([shippingZoneId], "id=$1", async result => {
-            if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", `Cannot resolve id:${shippingZoneId}`, "NOT_FOUND").errors);
-            let shippingZone_ = result.res[0];
+        productQueries.getShippingMethod([shippingMethodId], "id=$1", async result => {
+            if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", `Cannot resolve id:${shippingMethodId}`, "NOT_FOUND").errors);
+            let shippingMethod_ = result.res[0];
 
             let errors = [];
 
             try {
-                await deleteShippingZoneWarehouse(shippingZone_.id);
+                await deleteShippingMethodPostalCodeRule(shippingMethod_.id);
             } catch (err) {
                 errors.push(err);
             }
-
             try {
-                await deleteShippingMethod(shippingZone_.id);
-            } catch (err) {
-                errors.concat(err);
-            }
-
-            try {
-                await deleteShippingZoneChannels(shippingZone_.id);
+                await deleteShippingMethodTranslation(shippingMethod_.id);
             } catch (err) {
                 errors.push(err);
             }
-
             try {
-                await deleteShippingZone(shippingZone_.id);
+                await deleteShippingMethodChannelListing(shippingMethod_.id);
+            } catch (err) {
+                errors.push(err);
+            }
+            try {
+                await deleteShippingMethodExcludedProducts(shippingMethod_.id);
+            } catch (err) {
+                errors.push(err);
+            }
+            try {
+                await deleteShippingMethod(shippingMethod_.id);
             } catch (err) {
                 errors.push(err);
             }
 
             if (errors.length > 0) return reject(errors);
             resolve();
-        });
-    });
-}
-
-function deleteShippingZoneWarehouse(shippingZoneId) {
-    return new Promise((resolve, reject) => {
-        productQueries.deleteShippingZoneWarehouse([shippingZoneId], "shippingzone_id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            resolve();
-        });
-    });
-}
-
-function deleteShippingMethod(shippingZoneId) {
-    return new Promise((resolve, reject) => {
-        productQueries.getShippingMethod([shippingZoneId], "shipping_zone_id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            let shippingMethods_ = result.res;
-            const numShippingMethods = shippingMethods_.length;
-            let cursor = -1;
-            let errors = [];
-
-            shippingMethods_.forEach(async _shippingMethod => {
-                try {
-                    await deleteShippingMethodPostalCodeRule(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodTranslation(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodChannelListing(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                try {
-                    await deleteShippingMethodExcludedProducts(_shippingMethod.id);
-                } catch (err) {
-                    errors.push(err);
-                }
-                checkComplete();
-            });
-
-            checkComplete();
-
-            function checkComplete() {
-                cursor++;
-                if (cursor == numShippingMethods) {
-                    if (errors.length > 0) return reject(errors);
-                    resolve();
-                }
-            }
         });
     });
 }
@@ -200,19 +148,10 @@ function deleteShippingMethodExcludedProducts(shippingMethodId) {
     });
 }
 
-function deleteShippingZoneChannels(shippingZoneId) {
+function deleteShippingMethod(shippingMethodId) {
     return new Promise(async(resolve, reject) => {
-        productQueries.deleteShippingZoneChannels([shippingZoneId], "shippingzone_id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneChannels", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            resolve();
-        });
-    });
-}
-
-function deleteShippingZone(shippingZoneId) {
-    return new Promise(async(resolve, reject) => {
-        productQueries.deleteShippingZone([shippingZoneId], "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
+        productQueries.deleteShippingMethod([shippingMethodId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("deleteShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });

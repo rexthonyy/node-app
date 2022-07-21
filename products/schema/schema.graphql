@@ -894,6 +894,14 @@ type Mutation {
   ): ShippingPriceDelete
   
   """
+  Deletes shipping prices. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceBulkDelete(
+    """List of shipping price IDs to delete."""
+    ids: [ID!]!
+  ): ShippingPriceBulkDelete
+  
+  """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
   """
   shippingZoneCreate(
