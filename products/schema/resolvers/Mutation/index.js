@@ -48,6 +48,7 @@ const digitalContentUrlCreate = require('./digitalContentUrlCreate');
 const shippingPriceCreate = require('./shippingPriceCreate');
 const shippingZoneCreate = require('./shippingZoneCreate');
 const shippingZoneDelete = require('./shippingZoneDelete');
+const shippingZoneBulkDelete = require('./shippingZoneBulkDelete');
 
 module.exports = {
     productBulkDelete,
@@ -100,4 +101,5 @@ module.exports = {
     shippingPriceCreate,
     shippingZoneCreate,
     shippingZoneDelete,
+    shippingZoneBulkDelete,
 };

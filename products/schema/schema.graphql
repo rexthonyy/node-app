@@ -901,6 +901,15 @@ type Mutation {
     """ID of a shipping zone to delete."""
     id: ID!
   ): ShippingZoneDelete
+  
+  """
+  Deletes shipping zones. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZoneBulkDelete(
+    """List of shipping zone IDs to delete."""
+    ids: [ID!]!
+  ): ShippingZoneBulkDelete
+
 }
 
 """Return type for getShiftGroups"""
