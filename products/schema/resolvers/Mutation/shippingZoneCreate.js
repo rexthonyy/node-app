@@ -93,7 +93,6 @@ function shippingZoneCreate(authUser, args) {
 function createShippingZone(args) {
     return new Promise(async(resolve, reject) => {
         let values = getShippingZoneInputValues(args);
-        console.log(values);
         productQueries.createShippingZone(values, result => {
             if (result.err) return reject(getGraphQLOutput("createShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("createShippingZone", "Shipping zone not created", "GRAPHQL_ERROR", null, null, null).errors);

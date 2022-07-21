@@ -29,7 +29,6 @@ let getGraphQLWarehouseById = (id) => {
                     isPrivate: warehouse.is_private,
                     address,
                     clickAndCollectionOption: warehouse.click_and_collection_option,
-                    shippingZones: null,
                     companyName
                 };
 

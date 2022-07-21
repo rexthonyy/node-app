@@ -2742,6 +2742,91 @@ const deleteShippingMethodPostalCodeRule = (values, whereClause, response) => {
     });
 };
 
+const deleteShippingZoneWarehouse = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_warehouse_shipping_zones} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShippingMethodTranslation = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingmethodtranslation} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShippingMethodChannelListing = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingmethodchannellisting} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShippingMethodExcludedProducts = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingmethod_excluded_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteShippingZoneChannels = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingzone_channels} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -2905,4 +2990,9 @@ module.exports = {
     deleteAssignedPageAttribute,
     deleteAttribute,
     deleteShippingMethodPostalCodeRule,
+    deleteShippingZoneWarehouse,
+    deleteShippingMethodTranslation,
+    deleteShippingMethodChannelListing,
+    deleteShippingMethodExcludedProducts,
+    deleteShippingZoneChannels,
 }

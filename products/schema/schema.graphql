@@ -893,6 +893,14 @@ type Mutation {
     """Fields required to create a shipping zone."""
     input: ShippingZoneCreateInput!
   ): ShippingZoneCreate
+
+  """
+  Deletes a shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingZoneDelete(
+    """ID of a shipping zone to delete."""
+    id: ID!
+  ): ShippingZoneDelete
 }
 
 """Return type for getShiftGroups"""
