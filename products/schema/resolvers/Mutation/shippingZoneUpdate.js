@@ -53,31 +53,31 @@ function shippingZoneUpdate(args) {
             try {
                 await updateShippingZone(args);
             } catch (err) {
-                errors.concat(err);
+                errors = errors.concat(err);
             }
 
             try {
                 await addWarehouses(args);
             } catch (err) {
-                errors.concat(err);
+                errors = errors.concat(err);
             }
 
             try {
                 await addChannels(args);
             } catch (err) {
-                errors.concat(err);
+                errors = errors.concat(err);
             }
 
             try {
                 await removeWarehouses(args);
             } catch (err) {
-                errors.concat(err);
+                errors = errors.concat(err);
             }
 
             try {
                 await removeChannels(args);
             } catch (err) {
-                errors.concat(err);
+                errors = errors.concat(err);
             }
 
             try {
@@ -163,7 +163,6 @@ function addWarehouses(args) {
         function checkComplete() {
             cursor++;
             if (cursor == numWarehouses) {
-                console.log(errors);
                 if (errors.length > 0) return reject(errors);
                 resolve();
             }
