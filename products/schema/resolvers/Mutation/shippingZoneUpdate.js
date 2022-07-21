@@ -153,8 +153,9 @@ function addWarehouses(args) {
             try {
                 await addWarehouseById(warehouseId, args);
             } catch (err) {
-                console.log(errors);
+                console.log(err);
                 errors.concat(err);
+                console.log(errors);
             }
             checkComplete();
         });
