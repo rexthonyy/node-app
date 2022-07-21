@@ -140,12 +140,9 @@ function updateShippingMethod(args) {
             }
         }
         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
-        console.log(values);
-        console.log(set);
-        console.log(whereClause);
         productQueries.updateShippingMethod(values, set, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
             resolve();
         });
     });
@@ -273,129 +270,5 @@ function deletePostalCodeRules(args) {
                 resolve();
             }
         }
-    });
-}
-
-function deletePostalCodeRules(args) {
-    return new Promise((resolve, reject) => {
-        if (!args.input.deletePostalCodeRules) return resolve();
-        let channelIds = args.input.deletePostalCodeRules;
-        const numChannels = channelIds.length;
-        let cursor = -1;
-        let errors = [];
-
-        channelIds.forEach(async channelId => {
-            try {
-                await addChannelById(channelId, args);
-            } catch (err) {
-                errors.push(err[0]);
-            }
-            checkComplete();
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numChannels) {
-                if (errors.length > 0) return reject(errors);
-                resolve();
-            }
-        }
-    });
-}
-
-function addChannelById(channelId, args) {
-    return new Promise((resolve, reject) => {
-        kratosQueries.getChannel([channelId], "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("getChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("getChannel", "Channel not found", "NOT_FOUND").errors);
-            productQueries.getShippingZoneChannel([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
-                if (result.err) return reject(getGraphQLOutput("getShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length > 0) return reject(getGraphQLOutput("getShippingZoneChannel", "Shipping zone channel already exists", "ALREADY_EXISTS").errors);
-                productQueries.createShippingZoneChannel([args.id, channelId], result => {
-                    if (result.err) return reject(getGraphQLOutput("createShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                    if (result.res.length == 0) return reject(getGraphQLOutput("createShippingZoneChannel", "Shipping zone channel not created", "GRAPHQL_ERROR").errors);
-                    resolve();
-                });
-            });
-        });
-    });
-}
-
-
-function removeWarehouses(args) {
-    return new Promise((resolve, reject) => {
-        if (!args.input.removeWarehouses) return resolve();
-        let warehouseIds = args.input.removeWarehouses;
-        const numWarehouses = warehouseIds.length;
-        let cursor = -1;
-        let errors = [];
-
-        warehouseIds.forEach(async warehouseId => {
-            try {
-                await removeWarehouseById(warehouseId, args);
-            } catch (err) {
-                errors.push(err[0]);
-            }
-            checkComplete();
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numWarehouses) {
-                if (errors.length > 0) return reject(errors);
-                resolve();
-            }
-        }
-    });
-}
-
-function removeWarehouseById(warehouseId, args) {
-    return new Promise((resolve, reject) => {
-        productQueries.deleteShippingZoneWarehouse([warehouseId, args.id], "warehouse_id=$1 AND shippingzone_id=$2", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            resolve();
-        });
-    });
-}
-
-function removeChannels(args) {
-    return new Promise((resolve, reject) => {
-        if (!args.input.removeChannels) return resolve();
-        let channelIds = args.input.removeChannels;
-        const numChannels = channelIds.length;
-        let cursor = -1;
-        let errors = [];
-
-        channelIds.forEach(async channelId => {
-            try {
-                await removeChannelById(channelId, args);
-            } catch (err) {
-                errors.push(err[0]);
-            }
-            checkComplete();
-        });
-
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == numChannels) {
-                if (errors.length > 0) return reject(errors);
-                resolve();
-            }
-        }
-    });
-}
-
-function removeChannelById(channelId, args) {
-    return new Promise((resolve, reject) => {
-        productQueries.deleteShippingZoneChannels([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneChannels", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            resolve();
-        });
     });
 }
