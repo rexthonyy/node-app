@@ -119,10 +119,30 @@ function getShippingMethod(id) {
     })
 }
 
-function updateShippingMethod(args) {
+function getShippingZone(id) {
     return new Promise((resolve, reject) => {
+        productQueries.getShippingZone([id], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
+            resolve(result.res[0]);
+        });
+    })
+}
+
+function updateShippingMethod(args) {
+    return new Promise(async(resolve, reject) => {
         if (!isUpdateShippingMethod(args)) return resolve();
+        if (args.input.shippingZone) {
+            try {
+                await getShippingZone(args.input.shippingZone);
+            } catch (err) {
+                return reject(err);
+            }
+        }
         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
+        console.log(values);
+        console.log(set);
+        console.log(whereClause);
         productQueries.updateShippingMethod(values, set, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
