@@ -133,7 +133,7 @@ function resolveShippingZoneAvailable(args) {
 
 function assignDefaultShippingZone(args) {
     return new Promise(resolve => {
-        productQueries.getShippingZone([true], "default=$1", result => {
+        productQueries.getShippingZone([true], `"default"=$1`, result => {
             if (result.err) return resolve(false);
             if (result.res.length == 0) return resolve(false);
             let shippingZone = result.res[0];
