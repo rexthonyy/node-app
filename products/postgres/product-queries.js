@@ -2827,6 +2827,23 @@ const deleteShippingZoneChannels = (values, whereClause, response) => {
     });
 };
 
+const deleteShippingZone = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.shipping_shippingzone} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -2995,4 +3012,5 @@ module.exports = {
     deleteShippingMethodChannelListing,
     deleteShippingMethodExcludedProducts,
     deleteShippingZoneChannels,
+    deleteShippingZone,
 }

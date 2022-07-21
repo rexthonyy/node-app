@@ -64,7 +64,7 @@ function shippingZoneDelete(authUser, args) {
             try {
                 await deleteShippingZoneWarehouse(shippingZone_.id);
             } catch (err) {
-                errors.push(err.errors[0]);
+                errors.push(err);
             }
 
             try {
@@ -76,7 +76,13 @@ function shippingZoneDelete(authUser, args) {
             try {
                 await deleteShippingZoneChannels(shippingZone_.id);
             } catch (err) {
-                errors.push(err.errors[0]);
+                errors.push(err);
+            }
+
+            try {
+                await deleteShippingZone(shippingZone_.id);
+            } catch (err) {
+                errors.push(err);
             }
 
             resolve({
@@ -91,8 +97,7 @@ function shippingZoneDelete(authUser, args) {
 function deleteShippingZoneWarehouse(shippingZoneId) {
     return new Promise((resolve, reject) => {
         productQueries.deleteShippingZoneWarehouse([shippingZoneId], "shippingzone_id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", "Failed to delete shipping zone warehouse", "GRAPHQL_ERROR"));
+            if (result.err) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
@@ -148,7 +153,6 @@ function deleteShippingMethodPostalCodeRule(shippingMethodId) {
     return new Promise(async(resolve, reject) => {
         productQueries.deleteShippingMethodPostalCodeRule([shippingMethodId], "shipping_method_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingMethodPostalCodeRule", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingMethodPostalCodeRule", "Failed to delete shipping method postal code rule", "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
@@ -158,7 +162,6 @@ function deleteShippingMethodTranslation(shippingMethodId) {
     return new Promise(async(resolve, reject) => {
         productQueries.deleteShippingMethodTranslation([shippingMethodId], "shipping_method_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingMethodTranslation", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingMethodTranslation", "Failed to delete shipping method postal code rule", "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
@@ -168,7 +171,6 @@ function deleteShippingMethodChannelListing(shippingMethodId) {
     return new Promise(async(resolve, reject) => {
         productQueries.deleteShippingMethodChannelListing([shippingMethodId], "shipping_method_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingMethodChannelListing", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingMethodChannelListing", "Failed to delete shipping method channel listing", "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
@@ -178,7 +180,6 @@ function deleteShippingMethodExcludedProducts(shippingMethodId) {
     return new Promise(async(resolve, reject) => {
         productQueries.deleteShippingMethodExcludedProducts([shippingMethodId], "shippingmethod_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingMethodExcludedProducts", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingMethodExcludedProducts", "Failed to delete shipping method excluded products", "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
@@ -188,7 +189,15 @@ function deleteShippingZoneChannels(shippingZoneId) {
     return new Promise(async(resolve, reject) => {
         productQueries.deleteShippingZoneChannels([shippingZoneId], "shippingzone_id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingZoneChannels", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
-            if (result.res.length == 0) return reject(getGraphQLOutput("deleteShippingZoneChannels", "Failed to delete shipping channels", "GRAPHQL_ERROR").errors[0]);
+            resolve();
+        });
+    });
+}
+
+function deleteShippingZone(shippingZoneId) {
+    return new Promise(async(resolve, reject) => {
+        productQueries.deleteShippingZone([shippingZoneId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("deleteShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors[0]);
             resolve();
         });
     });
