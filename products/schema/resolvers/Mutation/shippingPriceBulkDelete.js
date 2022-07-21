@@ -2,8 +2,6 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLShippingZoneById,
-    getGraphQLShippingMethodTypeById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 
