@@ -109,9 +109,9 @@ function shippingPriceUpdate(args) {
     });
 }
 
-function getShippingMethod(args) {
+function getShippingMethod(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getShippingMethod([args.id], "id=$1", result => {
+        productQueries.getShippingMethod([id], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", "Shipping price not found", "NOT_FOUND").errors);
             resolve(result.res[0]);
