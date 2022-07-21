@@ -233,8 +233,6 @@ function deletePostalCodeRules(args) {
             productQueries.deleteShippingMethodPostalCodeRule([id], "id=$1", result => {
                 if (result.err) {
                     errors.push(getGraphQLOutput("deleteShippingMethodPostalCodeRule", JSON.stringify(result.err), "GRAPHQL_ERROR", null, null, null).errors);
-                } else if (result.res.length == 0) {
-                    errors.push(getGraphQLOutput("deleteShippingMethodPostalCodeRule", "Shipping method postal code rule not deleted", "GRAPHQL_ERROR", null, null, null).errors);
                 }
                 checkComplete();
             });

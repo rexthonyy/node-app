@@ -900,7 +900,18 @@ type Mutation {
     """List of shipping price IDs to delete."""
     ids: [ID!]!
   ): ShippingPriceBulkDelete
-  
+
+  """
+  Updates a new shipping price. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceUpdate(
+    """ID of a shipping price to update."""
+    id: ID!
+
+    """Fields required to update a shipping price."""
+    input: ShippingPriceInput!
+  ): ShippingPriceUpdate
+
   """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
   """
