@@ -153,9 +153,7 @@ function addWarehouses(args) {
             try {
                 await addWarehouseById(warehouseId, args);
             } catch (err) {
-                console.log(err);
-                errors.concat(err);
-                console.log(errors);
+                errors.push(err[0]);
             }
             checkComplete();
         });
@@ -203,7 +201,7 @@ function addChannels(args) {
             try {
                 await addChannelById(channelId, args);
             } catch (err) {
-                errors.concat(err);
+                errors.push(err[0]);
             }
             checkComplete();
         });
@@ -251,7 +249,7 @@ function removeWarehouses(args) {
             try {
                 await removeWarehouseById(warehouseId, args);
             } catch (err) {
-                errors.concat(err);
+                errors.push(err[0]);
             }
             checkComplete();
         });
@@ -289,7 +287,7 @@ function removeChannels(args) {
             try {
                 await removeChannelById(channelId, args);
             } catch (err) {
-                errors.concat(err);
+                errors.push(err[0]);
             }
             checkComplete();
         });
