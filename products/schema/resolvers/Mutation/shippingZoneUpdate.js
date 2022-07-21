@@ -170,7 +170,7 @@ function addWarehouses(args) {
 }
 
 function addWarehouseById(warehouseId, args) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.getWarehouseShippingZones([warehouseId, args.id], "warehouse_id=$1 AND shippingzone_id=$2", result => {
             if (result.err) return reject(getGraphQLOutput("getWarehouseShippingZones", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length > 0) return reject(getGraphQLOutput("getWarehouseShippingZones", "Warehouse shipping zone already exists", "ALREADY_EXISTS").errors);
@@ -213,7 +213,7 @@ function addChannels(args) {
 }
 
 function addChannelById(channelId, args) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.getShippingZoneChannel([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length > 0) return reject(getGraphQLOutput("getShippingZoneChannel", "Shipping zone channel already exists", "ALREADY_EXISTS").errors);
@@ -257,7 +257,7 @@ function removeWarehouses(args) {
 }
 
 function removeWarehouseById(warehouseId, args) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.deleteShippingZoneWarehouse([warehouseId, args.id], "warehouse_id=$1 AND shippingzone_id=$2", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingZoneWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             resolve();
@@ -295,7 +295,7 @@ function removeChannels(args) {
 }
 
 function removeChannelById(channelId, args) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.deleteShippingZoneChannels([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
             if (result.err) return reject(getGraphQLOutput("deleteShippingZoneChannels", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             resolve();
