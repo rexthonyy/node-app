@@ -131,27 +131,35 @@ function getShippingZone(id) {
 function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
         if (!isUpdateShippingMethod(args)) return resolve();
-        if (args.input.shippingZone) {
-            try {
-                await getShippingZone(args.input.shippingZone);
-            } catch (err) {
+        updateShippingPrice(args, err => {
+            if (!err) {
                 return reject(err);
+            } else {
+                return resolve();
             }
-        }
-
-        let resolve_ = resolve;
-        let { values, set, whereClause } = getShippingMethodUpdateInput(args);
-        productQueries.updateShippingMethod(values, set, whereClause, result => {
-            if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
-            console.log(resolve_);
-            return resolve_();
         });
     });
 }
 
 function isUpdateShippingMethod(args) {
     return args.input.name || args.input.description || args.input.minimumOrderWeight || args.input.maximumOrderWeight || args.input.minimumDeliveryDays || args.input.type || args.input.shippingZone;
+}
+
+async function updateShippingPrice(args, response) {
+    if (args.input.shippingZone) {
+        try {
+            await getShippingZone(args.input.shippingZone);
+        } catch (err) {
+            return response(err);
+        }
+    }
+
+    let { values, set, whereClause } = getShippingMethodUpdateInput(args);
+    productQueries.updateShippingMethod(values, set, whereClause, result => {
+        if (result.err) return response(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+        if (result.res.length == 0) return response(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
+        response();
+    });
 }
 
 function getShippingMethodUpdateInput({ id, input }) {
