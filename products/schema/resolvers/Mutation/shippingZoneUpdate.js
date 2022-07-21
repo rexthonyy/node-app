@@ -5,6 +5,7 @@ const {
     getGraphQLShippingZoneById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
+const kratosQueries = require("../../../postgres/kratos-queries");
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -152,7 +153,6 @@ function addWarehouses(args) {
             try {
                 await addWarehouseById(warehouseId, args);
             } catch (err) {
-                console.log(err);
                 errors.concat(err);
             }
             checkComplete();
@@ -163,6 +163,7 @@ function addWarehouses(args) {
         function checkComplete() {
             cursor++;
             if (cursor == numWarehouses) {
+                console.log(errors);
                 if (errors.length > 0) return reject(errors);
                 resolve();
             }
@@ -172,13 +173,17 @@ function addWarehouses(args) {
 
 function addWarehouseById(warehouseId, args) {
     return new Promise((resolve, reject) => {
-        productQueries.getWarehouseShippingZones([warehouseId, args.id], "warehouse_id=$1 AND shippingzone_id=$2", result => {
-            if (result.err) return reject(getGraphQLOutput("getWarehouseShippingZones", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length > 0) return reject(getGraphQLOutput("getWarehouseShippingZones", "Warehouse shipping zone already exists", "ALREADY_EXISTS").errors);
-            productQueries.createWarehouseShippingZone([warehouseId, args.id], result => {
-                if (result.err) return reject(getGraphQLOutput("createWarehouseShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length == 0) return reject(getGraphQLOutput("createWarehouseShippingZone", "Warehouse shipping zone not created", "GRAPHQL_ERROR").errors);
-                resolve();
+        productQueries.getWarehouse([warehouseId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getWarehouse", "Warehouse not found", "NOT_FOUND").errors);
+            productQueries.getWarehouseShippingZones([warehouseId, args.id], "warehouse_id=$1 AND shippingzone_id=$2", result => {
+                if (result.err) return reject(getGraphQLOutput("getWarehouseShippingZones", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                if (result.res.length > 0) return reject(getGraphQLOutput("getWarehouseShippingZones", "Warehouse shipping zone already exists", "ALREADY_EXISTS").errors);
+                productQueries.createWarehouseShippingZone([warehouseId, args.id], result => {
+                    if (result.err) return reject(getGraphQLOutput("createWarehouseShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                    if (result.res.length == 0) return reject(getGraphQLOutput("createWarehouseShippingZone", "Warehouse shipping zone not created", "GRAPHQL_ERROR").errors);
+                    resolve();
+                });
             });
         });
     });
@@ -215,13 +220,17 @@ function addChannels(args) {
 
 function addChannelById(channelId, args) {
     return new Promise((resolve, reject) => {
-        productQueries.getShippingZoneChannel([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
-            if (result.err) return reject(getGraphQLOutput("getShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length > 0) return reject(getGraphQLOutput("getShippingZoneChannel", "Shipping zone channel already exists", "ALREADY_EXISTS").errors);
-            productQueries.createShippingZoneChannel([args.id, channelId], result => {
-                if (result.err) return reject(getGraphQLOutput("createShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length == 0) return reject(getGraphQLOutput("createShippingZoneChannel", "Shipping zone channel not created", "GRAPHQL_ERROR").errors);
-                resolve();
+        kratosQueries.getChannel([channelId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getChannel", "Channel not found", "NOT_FOUND").errors);
+            productQueries.getShippingZoneChannel([channelId, args.id], "channel_id=$1 AND shippingzone_id=$2", result => {
+                if (result.err) return reject(getGraphQLOutput("getShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                if (result.res.length > 0) return reject(getGraphQLOutput("getShippingZoneChannel", "Shipping zone channel already exists", "ALREADY_EXISTS").errors);
+                productQueries.createShippingZoneChannel([args.id, channelId], result => {
+                    if (result.err) return reject(getGraphQLOutput("createShippingZoneChannel", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                    if (result.res.length == 0) return reject(getGraphQLOutput("createShippingZoneChannel", "Shipping zone channel not created", "GRAPHQL_ERROR").errors);
+                    resolve();
+                });
             });
         });
     });
