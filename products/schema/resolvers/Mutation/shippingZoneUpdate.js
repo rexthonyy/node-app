@@ -96,6 +96,7 @@ function shippingZoneUpdate(args) {
 
 function updateShippingZone(args) {
     return new Promise((resolve, reject) => {
+        if (!isUpdateShippingZone(args)) return resolve();
         let { values, set, whereClause } = getShippingZoneUpdateInput(args);
         productQueries.updateShippingZone(values, set, whereClause, result => {
             if (result.err) return reject(getGraphQLOutput("updateShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
@@ -103,6 +104,10 @@ function updateShippingZone(args) {
             resolve();
         });
     });
+}
+
+function isUpdateShippingZone(args) {
+    return args.input.name || args.input.description || args.input.countries || args.input.default;
 }
 
 function getShippingZoneUpdateInput({ id, input }) {
