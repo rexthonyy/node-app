@@ -129,7 +129,7 @@ function getShippingZone(id) {
 }
 
 function updateShippingMethod(args) {
-    return new Promise(async(resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (!isUpdateShippingMethod(args)) return resolve();
         updateShippingPrice(args, err => {
             console.log(err);
@@ -146,14 +146,14 @@ function isUpdateShippingMethod(args) {
     return args.input.name || args.input.description || args.input.minimumOrderWeight || args.input.maximumOrderWeight || args.input.minimumDeliveryDays || args.input.type || args.input.shippingZone;
 }
 
-async function updateShippingPrice(args, response) {
-    if (args.input.shippingZone) {
-        try {
-            await getShippingZone(args.input.shippingZone);
-        } catch (err) {
-            return response(err);
-        }
-    }
+function updateShippingPrice(args, response) {
+    // if (args.input.shippingZone) {
+    //     try {
+    //         await getShippingZone(args.input.shippingZone);
+    //     } catch (err) {
+    //         return response(err);
+    //     }
+    // }
 
     let { values, set, whereClause } = getShippingMethodUpdateInput(args);
     productQueries.updateShippingMethod(values, set, whereClause, result => {
