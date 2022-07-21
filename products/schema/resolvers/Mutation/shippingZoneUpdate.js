@@ -43,7 +43,7 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingZo
 
 function shippingZoneUpdate(args) {
     return new Promise(async resolve => {
-        productQueries.getShippingZone([args.id], "id=$1", result => {
+        productQueries.getShippingZone([args.id], "id=$1", async result => {
             if (result.err) return resolve(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return resolve(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND"));
 
