@@ -159,6 +159,16 @@ function getShippingMethod(id) {
 }
 
 function getShippingZone(id, cb) {
+    return new Promise((resolve, reject) => {
+        productQueries.getShippingZone([id], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
+            resolve();
+        });
+    });
+}
+
+function getShippingZonea(id, cb) {
     productQueries.getShippingZone([id], "id=$1", result => {
         if (result.err) return cb(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
         if (result.res.length == 0) return cb(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
