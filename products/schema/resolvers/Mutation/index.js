@@ -54,6 +54,7 @@ const shippingPriceDelete = require('./shippingPriceDelete');
 const shippingPriceBulkDelete = require('./shippingPriceBulkDelete');
 const shippingPriceUpdate = require('./shippingPriceUpdate');
 const shippingPriceTranslate = require('./shippingPriceTranslate');
+const shippingPriceExcludeProducts = require('./shippingPriceExcludeProducts');
 
 module.exports = {
     productBulkDelete,
@@ -112,4 +113,5 @@ module.exports = {
     shippingPriceBulkDelete,
     shippingPriceUpdate,
     shippingPriceTranslate,
+    shippingPriceExcludeProducts,
 };

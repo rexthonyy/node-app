@@ -1263,6 +1263,23 @@ const getDiscountVoucherVariant = (values, whereClause, response) => {
     });
 };
 
+const getShippingMethodExcludedProducts = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.shipping_shippingmethod_excluded_products} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -1816,6 +1833,23 @@ const createShippingZoneChannel = (values, response) => {
 
 const createShippingMethodTranslation = (values, response) => {
     client.query(`INSERT INTO ${db.shipping_shippingmethodtranslation} (language_code, name, shipping_method_id, description) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createShippingMethodExcludedProduct = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingmethod_excluded_products} (shippingmethod_id, product_id) VALUES($1, $2) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -3003,6 +3037,7 @@ module.exports = {
     getPageType,
     getAttributePage,
     getAssignedPageAttribute,
+    getShippingMethodExcludedProducts,
 
     createPage,
     createProduct,
@@ -3037,6 +3072,7 @@ module.exports = {
     createWarehouseShippingZone,
     createShippingZoneChannel,
     createShippingMethodTranslation,
+    createShippingMethodExcludedProduct,
 
     updateProduct,
     updateProductVariant,

@@ -925,6 +925,19 @@ type Mutation {
     languageCode: LanguageCodeEnum!
   ): ShippingPriceTranslate
 
+
+  """
+  Exclude products from shipping price. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceExcludeProducts(
+    """ID of a shipping price."""
+    id: ID!
+
+    """Exclude products input."""
+    input: ShippingPriceExcludeProductsInput!
+  ): ShippingPriceExcludeProducts
+
+
   """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
   """
