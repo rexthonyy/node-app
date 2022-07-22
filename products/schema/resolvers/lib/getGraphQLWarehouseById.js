@@ -28,7 +28,7 @@ let getGraphQLWarehouseById = (id) => {
                     email: warehouse.email,
                     isPrivate: warehouse.is_private,
                     address,
-                    clickAndCollectionOption: warehouse.click_and_collection_option,
+                    clickAndCollectOption: warehouse.click_and_collect_option.toUpperCase(),
                     companyName
                 };
 

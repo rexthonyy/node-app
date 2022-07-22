@@ -2210,6 +2210,23 @@ const updateShippingMethodTranslation = (values, set, whereClause, response) => 
     });
 };
 
+const updateWarehouse = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.warehouse_warehouse} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -3111,6 +3128,7 @@ module.exports = {
     updateShippingZone,
     updateShippingMethod,
     updateShippingMethodTranslation,
+    updateWarehouse,
 
     deleteAttributeValue,
     deleteProductVariant,

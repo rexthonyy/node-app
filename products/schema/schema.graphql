@@ -993,6 +993,17 @@ type Mutation {
     """Fields required to create warehouse."""
     input: WarehouseCreateInput!
   ): WarehouseCreate
+
+  """
+  Updates given warehouse. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  updateWarehouse(
+    """ID of a warehouse to update."""
+    id: ID!
+
+    """Fields required to update warehouse."""
+    input: WarehouseUpdateInput!
+  ): WarehouseUpdate
 }
 
 """Return type for getShiftGroups"""
