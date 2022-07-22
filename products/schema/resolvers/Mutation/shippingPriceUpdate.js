@@ -107,7 +107,7 @@ function shippingPriceUpdate(args) {
                 shippingZone,
                 shippingMethod
             });
-        })().catch( e => { console.error(e) });
+        })().catch(e => { console.error(e) });
     });
 }
 
