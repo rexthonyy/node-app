@@ -44,76 +44,70 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingZo
 }
 
 function shippingPriceUpdate(args) {
-    return new Promise(async resolve => {
-        try {
-            await getShippingMethod(args.id);
-        } catch (err) {
-            return resolve({
-                errors: err,
-                shippingErrors: err,
-                shippingMethod: null,
-                shippingZone: null
-            });
-        }
+    return new Promise(resolve => {
+        (async() => {
+            try {
+                await getShippingMethod(args.id);
+            } catch (err) {
+                return resolve({
+                    errors: err,
+                    shippingErrors: err,
+                    shippingMethod: null,
+                    shippingZone: null
+                });
+            }
 
-        let shippingMethod;
-        let shippingZone;
-        let shippingMethod_;
-        let errors = [];
+            let shippingMethod;
+            let shippingZone;
+            let shippingMethod_;
+            let errors = [];
 
-        updateShippingMethod(args)
-            .then(() => {
-                console.log("update");
-            }).catch(err => {
+            try {
+                await updateShippingMethod(args);
+            } catch (err) {
                 console.log(err);
                 errors = errors.concat(err);
+            }
+
+            try {
+                await addPostalCodeRules(args);
+            } catch (err) {
+                errors = errors.concat(err);
+            }
+
+            try {
+                await deletePostalCodeRules(args);
+            } catch (err) {
+                errors = errors.concat(err);
+            }
+
+            try {
+                shippingMethod_ = await getShippingMethod(args.id);
+            } catch (err) {
+                errors = errors.concat(err);
+            }
+
+            try {
+                shippingMethod = getGraphQLShippingMethodTypeById(shippingMethod_.id);
+            } catch (err) {
+                shippingMethod = null;
+                errors.push(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "NOT_FOUND").errors[0]);
+            }
+
+            try {
+                shippingZone = getGraphQLShippingZoneById(shippingMethod.shipping_zone_id);
+            } catch (err) {
+                shippingZone = null;
+                errors.push(getGraphQLOutput("getGraphQLShippingZoneById", err, "NOT_FOUND").errors[0]);
+            }
+
+            resolve({
+                errors,
+                shippingErrors: errors,
+                shippingZone,
+                shippingMethod
             });
-
-        // try {
-        //     await updateShippingMethod(args);
-        // } catch (err) {
-        //     console.log(err);
-        //     errors = errors.concat(err);
-        // }
-
-        try {
-            await addPostalCodeRules(args);
-        } catch (err) {
-            errors = errors.concat(err);
-        }
-
-        try {
-            await deletePostalCodeRules(args);
-        } catch (err) {
-            errors = errors.concat(err);
-        }
-
-        try {
-            shippingMethod_ = await getShippingMethod(args.id);
-        } catch (err) {
-            errors = errors.concat(err);
-        }
-
-        try {
-            shippingMethod = getGraphQLShippingMethodTypeById(shippingMethod_.id);
-        } catch (err) {
-            shippingMethod = null;
-            errors.push(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "NOT_FOUND").errors[0]);
-        }
-
-        try {
-            shippingZone = getGraphQLShippingZoneById(shippingMethod.shipping_zone_id);
-        } catch (err) {
-            shippingZone = null;
-            errors.push(getGraphQLOutput("getGraphQLShippingZoneById", err, "NOT_FOUND").errors[0]);
-        }
-
-        resolve({
-            errors,
-            shippingErrors: errors,
-            shippingZone,
-            shippingMethod
-        });
+        })();
     });
 }
 
