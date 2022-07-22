@@ -129,7 +129,7 @@ function getShippingZone(id) {
 }
 
 function updateShippingMethod(args) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         return reject(getGraphQLOutput("getShippingZone", "JSON.stringify(result.err)", "GRAPHQL_ERROR").errors)
         if (!isUpdateShippingMethod(args)) return resolve();
         if (args.input.shippingZone) {
@@ -151,10 +151,6 @@ function updateShippingMethod(args) {
 
 function isUpdateShippingMethod(args) {
     return args.input.name || args.input.description || args.input.minimumOrderWeight || args.input.maximumOrderWeight || args.input.minimumDeliveryDays || args.input.type || args.input.shippingZone;
-}
-
-async function updateShippingPrice(args, response) {
-
 }
 
 function getShippingMethodUpdateInput({ id, input }) {
