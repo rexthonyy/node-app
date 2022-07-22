@@ -52,7 +52,7 @@ function shippingPriceExcludeProducts(authUser, args) {
             let cursor = -1;
             let errors = [];
 
-            productIds.forEach(productId => {
+            productIds.forEach(async productId => {
                 try {
                     await addExcludeProduct(shippingMethodId, productId);
                 } catch (err) {
