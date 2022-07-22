@@ -84,6 +84,7 @@ function createWarehouse(args) {
 
                 try {
                     let warehouse = await getGraphQLWarehouseById(warehouseId);
+                    console.log(warehouse);
                     resolve({
                         errors,
                         warehouseErrors: errors,
