@@ -16,7 +16,7 @@ module.exports = async(parent, args, context) => {
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
             try {
-                resolve(await shippingPriceUpdate(args));
+                resolve(await shippingPriceUpdatea(args));
             } catch (err) {
                 console.log(err);
                 resolve(err);
@@ -116,6 +116,7 @@ function shippingPriceUpdate(args) {
 
 function shippingPriceUpdatea(args) {
     return new Promise((resolve, reject) => {
+        console.log(args);
         productQueries.getShippingMethod([args.id], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", "Shipping price not found", "NOT_FOUND"));
@@ -129,14 +130,21 @@ function shippingPriceUpdatea(args) {
             if (!isUpdateShippingMethod(args)) {
 
                 if (args.input.shippingZone) {
-                    getShippingZone(args.input.shippingZone, err => {
+                    console.log(args.input.shippingZone)
+                    getShippingZonea(args.input.shippingZone, err => {
+                        console.log(err);
                         if (err) {
                             return reject(err);
                         }
 
                         let { values, set, whereClause } = getShippingMethodUpdateInput(args);
+                        console.log(values);
+                        console.log(set);
+                        console.log(whereClause);
                         productQueries.updateShippingMethod(values, set, whereClause, result => {
+                            console.log(result.err);
                             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
+                            console.log(result.res);
                             if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR"));
                             console.log(result.res[0]);
                             return resolve(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.res[0]), "REQUIRED"));
