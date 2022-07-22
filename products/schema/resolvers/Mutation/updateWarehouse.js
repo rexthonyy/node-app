@@ -40,9 +40,9 @@ function getGraphQLOutput(field, message, code, warehouse) {
 }
 
 function updateWarehouse(authUser, args) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         let warehouseId = args.id;
-        productQueries.getWarehouse([warehouseId], "id=$1", result => {
+        productQueries.getWarehouse([warehouseId], "id=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("getWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return reject(getGraphQLOutput("getWarehouse", "Warehouse not found", "NOT_FOUND"));
             let warehouse_ = result.res[0];
@@ -158,7 +158,7 @@ function updateWarehouseIsPrivate(warehouseId, isPrivate) {
 }
 
 function updateWarehouseAddress(warehouse, address) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
 
         let firstName = address.firstName;
         let lastName = address.lastName;
