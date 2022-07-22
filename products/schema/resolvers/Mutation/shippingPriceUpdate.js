@@ -61,12 +61,20 @@ function shippingPriceUpdate(args) {
         let shippingMethod_;
         let errors = [];
 
-        try {
-            await updateShippingMethod(args);
-        } catch (err) {
-            console.log(err);
-            errors = errors.concat(err);
-        }
+        updateShippingMethod(args)
+            .then(() => {
+                console.log("update");
+            }).catch(err => {
+                console.log(err);
+                errors = errors.concat(err);
+            });
+
+        // try {
+        //     await updateShippingMethod(args);
+        // } catch (err) {
+        //     console.log(err);
+        //     errors = errors.concat(err);
+        // }
 
         try {
             await addPostalCodeRules(args);
