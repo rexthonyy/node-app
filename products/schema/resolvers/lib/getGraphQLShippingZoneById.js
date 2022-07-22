@@ -7,7 +7,7 @@ let getGraphQLShippingZoneById = (id) => {
     return new Promise((resolve, reject) => {
         productQueries.getShippingZone([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
-                reject(null);
+                reject("Shipping zone not found");
             } else {
                 let shippingZone = result.res[0];
                 let shippingMethods;

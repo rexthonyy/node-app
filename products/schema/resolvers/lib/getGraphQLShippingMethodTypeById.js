@@ -7,7 +7,7 @@ let getGraphQLShippingMethodTypeById = (id) => {
     return new Promise((resolve, reject) => {
         productQueries.getShippingMethod([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
-                reject(null);
+                reject("Shipping method type not found");
             } else {
                 let shippingMethod = result.res[0];
                 let channelListings = null;
