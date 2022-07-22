@@ -132,7 +132,8 @@ function shippingPriceUpdate(args) {
                         productQueries.updateShippingMethod(values, set, whereClause, result => {
                             if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
                             if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR"));
-                            return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.res[0]), "REQUIRED"));
+                            console.log(result.res[0]);
+                            return resolve(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.res[0]), "REQUIRED"));
                         });
                     });
                 }
