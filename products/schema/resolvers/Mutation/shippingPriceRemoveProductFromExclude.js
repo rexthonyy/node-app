@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await shippingPriceExcludeProducts(authUser, args));
+            resolve(await shippingPriceRemoveProductFromExclude(authUser, args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING", "INVALID", null, null, null));
         }
@@ -41,20 +41,20 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingMe
     }
 }
 
-function shippingPriceExcludeProducts(authUser, args) {
+function shippingPriceRemoveProductFromExclude(authUser, args) {
     return new Promise(async resolve => {
         let shippingMethodId = args.id;
         productQueries.getShippingMethod([shippingMethodId], "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return resolve(getGraphQLOutput("getShippingMethod", `Shipping price not found:${shippingMethodId}`, "NOT_FOUND"));
-            let productIds = args.input.products;
+            let productIds = args.products;
             const numProducts = productIds.length;
             let cursor = -1;
             let errors = [];
 
             productIds.forEach(async productId => {
                 try {
-                    await addExcludeProduct(shippingMethodId, productId);
+                    await removeExcludeProduct(shippingMethodId, productId);
                 } catch (err) {
                     errors = errors.concat(err);
                 }
@@ -81,30 +81,10 @@ function shippingPriceExcludeProducts(authUser, args) {
     });
 }
 
-function addExcludeProduct(shippingMethodId, productId) {
+function removeExcludeProduct(shippingMethodId, productId) {
     return new Promise(async(resolve, reject) => {
-        productQueries.getProduct([productId], "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("getProduct", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("getProduct", `Product not found:${productId}`, "NOT_FOUND").errors);
-
-            productQueries.getShippingMethodExcludedProducts([shippingMethodId, productId], "shippingmethod_id=$1 AND product_id=$2", async result => {
-                if (result.err) return reject(getGraphQLOutput("getShippingMethodExcludedProducts", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length > 0) return reject(getGraphQLOutput("getShippingMethodExcludedProducts", "Product already excluded", "ALREADY_EXISTS").errors);
-                try {
-                    resolve(await createShippingMethodExcludedProducts(shippingMethodId, productId));
-                } catch (err) {
-                    return reject(err);
-                }
-            });
-        });
-    });
-}
-
-function createShippingMethodExcludedProducts(shippingMethodId, productId) {
-    return new Promise(async resolve => {
-        productQueries.createShippingMethodExcludedProduct([shippingMethodId, productId], result => {
-            if (result.err) return reject(getGraphQLOutput("createShippingMethodExcludedProduct", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("createShippingMethodExcludedProduct", "Failed to create shipping method excluded product", "GRAPHQL_ERROR").errors);
+        productQueries.deleteShippingMethodExcludedProducts([shippingMethodId, productId], "shippingmethod_id=$1 AND product_id=$2", async result => {
+            if (result.err) return reject(getGraphQLOutput("deleteShippingMethodExcludedProducts", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             resolve();
         });
     });

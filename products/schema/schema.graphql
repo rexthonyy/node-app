@@ -939,6 +939,18 @@ type Mutation {
 
 
   """
+  Remove product from excluded list for shipping price. Requires one of the following permissions: MANAGE_SHIPPING.
+  """
+  shippingPriceRemoveProductFromExclude(
+    """ID of a shipping price."""
+    id: ID!
+
+    """List of products which will be removed from excluded list."""
+    products: [ID!]!
+  ): ShippingPriceRemoveProductFromExclude
+
+
+  """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
   """
   shippingZoneCreate(
