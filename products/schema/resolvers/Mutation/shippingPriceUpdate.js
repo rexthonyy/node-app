@@ -15,7 +15,12 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await shippingPriceUpdate(args));
+            try {
+                resolve(await shippingPriceUpdate(args));
+            } catch (err) {
+                console.log(err);
+                resolve(err);
+            }
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING", "INVALID"));
         }
@@ -43,7 +48,7 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingZo
     }
 }
 
-function shippingPriceUpdatea(args) {
+function shippingPriceUpdate(args) {
     return new Promise(async(resolve, reject) => {
         try {
             await getShippingMethod(args.id);
@@ -109,11 +114,12 @@ function shippingPriceUpdatea(args) {
     });
 }
 
-function shippingPriceUpdate(args) {
+function shippingPriceUpdatea(args) {
     return new Promise((resolve, reject) => {
         productQueries.getShippingMethod([args.id], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", "Shipping price not found", "NOT_FOUND"));
+            console.log(result.res[0]);
 
             let shippingMethod;
             let shippingZone;
