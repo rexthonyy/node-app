@@ -89,7 +89,7 @@ function addExcludeProduct(shippingMethodId, productId) {
 
             productQueries.getShippingMethodExcludedProducts([shippingMethodId, productId], "shippingmethod_id=$1 AND product_id=$2", async result => {
                 if (result.err) return reject(getGraphQLOutput("getShippingMethodExcludedProducts", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length > 0) return reject(getGraphQLOutput("getShippingMethodExcludedProducts", "Product already excluded", "ALREADY_EXISTS").errors);
+                if (result.res.length > 0) return reject(getGraphQLOutput("getShippingMethodExcludedProducts", `Product already excluded:${productId}`, "ALREADY_EXISTS").errors);
                 try {
                     resolve(await createShippingMethodExcludedProducts(shippingMethodId, productId));
                 } catch (err) {

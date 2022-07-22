@@ -1865,6 +1865,23 @@ const createShippingMethodExcludedProduct = (values, response) => {
     });
 };
 
+const createWarehouse = (values, response) => {
+    client.query(`INSERT INTO ${db.warehouse_warehouse} (name, email, address_id, slug, metadata, private_metadata, click_and_collect_option, is_private) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -3073,6 +3090,7 @@ module.exports = {
     createShippingZoneChannel,
     createShippingMethodTranslation,
     createShippingMethodExcludedProduct,
+    createWarehouse,
 
     updateProduct,
     updateProductVariant,

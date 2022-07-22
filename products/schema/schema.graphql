@@ -984,6 +984,15 @@ type Mutation {
     """Fields required to update a shipping zone."""
     input: ShippingZoneUpdateInput!
   ): ShippingZoneUpdate
+
+  
+  """
+  Creates new warehouse. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  createWarehouse(
+    """Fields required to create warehouse."""
+    input: WarehouseCreateInput!
+  ): WarehouseCreate
 }
 
 """Return type for getShiftGroups"""
