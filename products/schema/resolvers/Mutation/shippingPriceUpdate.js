@@ -43,71 +43,101 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingZo
     }
 }
 
+function shippingPriceUpdatea(args) {
+    return new Promise((resolve, reject) => {
+        try {
+            await getShippingMethod(args.id);
+        } catch (err) {
+            return resolve({
+                errors: err,
+                shippingErrors: err,
+                shippingMethod: null,
+                shippingZone: null
+            });
+        }
+
+        let shippingMethod;
+        let shippingZone;
+        let shippingMethod_;
+        let errors = [];
+
+        try {
+            await updateShippingMethod(args);
+        } catch (err) {
+            console.log(err);
+            errors = errors.concat(err);
+        }
+
+        try {
+            await addPostalCodeRules(args);
+        } catch (err) {
+            errors = errors.concat(err);
+        }
+
+        try {
+            await deletePostalCodeRules(args);
+        } catch (err) {
+            errors = errors.concat(err);
+        }
+
+        try {
+            shippingMethod_ = await getShippingMethod(args.id);
+        } catch (err) {
+            errors = errors.concat(err);
+        }
+
+        try {
+            shippingMethod = getGraphQLShippingMethodTypeById(shippingMethod_.id);
+        } catch (err) {
+            shippingMethod = null;
+            errors.push(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "NOT_FOUND").errors[0]);
+        }
+
+        try {
+            shippingZone = getGraphQLShippingZoneById(shippingMethod.shipping_zone_id);
+        } catch (err) {
+            shippingZone = null;
+            errors.push(getGraphQLOutput("getGraphQLShippingZoneById", err, "NOT_FOUND").errors[0]);
+        }
+
+        resolve({
+            errors,
+            shippingErrors: errors,
+            shippingZone,
+            shippingMethod
+        });
+    });
+}
+
 function shippingPriceUpdate(args) {
-    return new Promise(resolve => {
-        (async() => {
-            try {
-                await getShippingMethod(args.id);
-            } catch (err) {
-                return resolve({
-                    errors: err,
-                    shippingErrors: err,
-                    shippingMethod: null,
-                    shippingZone: null
-                });
-            }
+    return new Promise((resolve, reject) => {
+        productQueries.getShippingMethod([args.id], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
+            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", "Shipping price not found", "NOT_FOUND"));
 
             let shippingMethod;
             let shippingZone;
             let shippingMethod_;
             let errors = [];
 
-            try {
-                await updateShippingMethod(args);
-            } catch (err) {
-                console.log(err);
-                errors = errors.concat(err);
-            }
+            if (!isUpdateShippingMethod(args)) {
 
-            try {
-                await addPostalCodeRules(args);
-            } catch (err) {
-                errors = errors.concat(err);
-            }
+                if (args.input.shippingZone) {
+                    getShippingZone(args.input.shippingZone, err => {
+                        if (err) {
+                            return reject(err);
+                        }
 
-            try {
-                await deletePostalCodeRules(args);
-            } catch (err) {
-                errors = errors.concat(err);
+                        let { values, set, whereClause } = getShippingMethodUpdateInput(args);
+                        productQueries.updateShippingMethod(values, set, whereClause, result => {
+                            if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
+                            if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR"));
+                            console.log(result.res[0]);
+                        });
+                    });
+                }
             }
-
-            try {
-                shippingMethod_ = await getShippingMethod(args.id);
-            } catch (err) {
-                errors = errors.concat(err);
-            }
-
-            try {
-                shippingMethod = getGraphQLShippingMethodTypeById(shippingMethod_.id);
-            } catch (err) {
-                shippingMethod = null;
-                errors.push(getGraphQLOutput("getGraphQLShippingMethodTypeById", err, "NOT_FOUND").errors[0]);
-            }
-
-            try {
-                shippingZone = getGraphQLShippingZoneById(shippingMethod.shipping_zone_id);
-            } catch (err) {
-                shippingZone = null;
-                errors.push(getGraphQLOutput("getGraphQLShippingZoneById", err, "NOT_FOUND").errors[0]);
-            }
-
-            resolve({
-                errors,
-                shippingErrors: errors,
-                shippingZone,
-                shippingMethod
-            });
-        })().catch(e => { console.error(e) });
+        });
     });
 }
 
@@ -121,21 +151,17 @@ function getShippingMethod(id) {
     })
 }
 
-function getShippingZone(id) {
-    return new Promise((resolve, reject) => {
-        productQueries.getShippingZone([id], "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
-            resolve(result.res[0]);
-        });
-    })
+function getShippingZone(id, cb) {
+    productQueries.getShippingZone([id], "id=$1", result => {
+        if (result.err) return cb(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+        if (result.res.length == 0) return cb(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
+        cb();
+    });
 }
 
 function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
-        console.log("updateShippingMethod");
-        return reject(getGraphQLOutput("getShippingZone", "JSON.stringify(result.err)", "GRAPHQL_ERROR").errors)
-        if (!isUpdateShippingMethod(args)) return resolve();
+
         if (args.input.shippingZone) {
             try {
                 await getShippingZone(args.input.shippingZone);
