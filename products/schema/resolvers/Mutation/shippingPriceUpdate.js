@@ -93,7 +93,7 @@ function shippingPriceUpdate(args) {
         }
 
         try {
-            shippingZone = await getGraphQLShippingZoneById(shippingMethod.shipping_zone_id);
+            shippingZone = await getGraphQLShippingZoneById(shippingMethod_.shipping_zone_id);
         } catch (err) {
             shippingZone = null;
             errors.push(getGraphQLOutput("getGraphQLShippingZoneById", err, "NOT_FOUND").errors[0]);
@@ -123,7 +123,6 @@ function getShippingZone(id) {
         productQueries.getShippingZone([id], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
-            console.log(result.res[0]);
             resolve();
         });
     });
@@ -133,7 +132,6 @@ function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
         if (!isUpdateShippingMethod) return resolve();
         if (args.input.shippingZone) {
-            console.log(args.input.shippingZone);
             try {
                 await getShippingZone(args.input.shippingZone);
             } catch (err) {
