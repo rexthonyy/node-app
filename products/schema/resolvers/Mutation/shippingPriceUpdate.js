@@ -264,7 +264,7 @@ function updateShippingMethod(args) {
 
         if (args.input.shippingZone) {
             try {
-                await getShippingZone(args.input.shippingZone);
+                await getShippingZonea(args.input.shippingZone);
             } catch (err) {
                 return reject(err);
             }
