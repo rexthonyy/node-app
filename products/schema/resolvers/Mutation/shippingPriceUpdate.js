@@ -74,7 +74,7 @@ function shippingPriceUpdate(args) {
         }
 
         try {
-            await addPostalCodeRulesa(args);
+            await addPostalCodeRules(args);
         } catch (err) {
             errors = errors.concat(err);
         }
@@ -114,123 +114,6 @@ function shippingPriceUpdate(args) {
     });
 }
 
-function shippingPriceUpdatea(args) {
-    return new Promise((resolve, reject) => {
-        productQueries.getShippingMethod([args.id], "id=$1", result => {
-            if (result.err) return reject(getGraphQLOutput("getShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingMethod", "Shipping price not found", "NOT_FOUND"));
-
-            let shippingMethod;
-            let shippingZone;
-            let shippingMethod_;
-            let errors = [];
-
-            if (isUpdateShippingMethod(args)) {
-
-                if (args.input.shippingZone) {
-
-                    getShippingZone(args.input.shippingZone, err => {
-                        if (err) {
-                            return reject(err);
-                        }
-
-                        updateShippingPrice(args, err => {
-                            if (err) {
-                                return reject(err);
-                            }
-                            addPostalCodeRules(args, err => {
-                                if (err) {
-                                    return reject({
-                                        errors: err,
-                                        shippingErrors: err,
-                                        shippingMethod: null,
-                                        shippingZone: null
-                                    });
-                                }
-
-                                deletePostalCodeRules(args, err => {
-                                    if (err) {
-                                        return reject({
-                                            errors: err,
-                                            shippingErrors: err,
-                                            shippingMethod: null,
-                                            shippingZone: null
-                                        });
-                                    }
-
-
-                                });
-                            });
-                        });
-                    });
-                } else {
-                    updateShippingPrice(args, err => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        addPostalCodeRules(args, err => {
-                            if (err) {
-                                return reject({
-                                    errors: err,
-                                    shippingErrors: err,
-                                    shippingMethod: null,
-                                    shippingZone: null
-                                });
-                            }
-
-                            deletePostalCodeRules(args, err => {
-                                if (err) {
-                                    return reject({
-                                        errors: err,
-                                        shippingErrors: err,
-                                        shippingMethod: null,
-                                        shippingZone: null
-                                    });
-                                }
-
-
-                            });
-                        });
-                    });
-                }
-            } else {
-                addPostalCodeRules(args, err => {
-                    if (err) {
-                        return reject({
-                            errors: err,
-                            shippingErrors: err,
-                            shippingMethod: null,
-                            shippingZone: null
-                        });
-                    }
-
-                    deletePostalCodeRules(args, err => {
-                        if (err) {
-                            return reject({
-                                errors: err,
-                                shippingErrors: err,
-                                shippingMethod: null,
-                                shippingZone: null
-                            });
-                        }
-
-
-                    });
-                });
-            }
-        });
-    });
-}
-
-function updateShippingPrice(args, cb) {
-    let { values, set, whereClause } = getShippingMethodUpdateInput(args);
-    productQueries.updateShippingMethod(values, set, whereClause, result => {
-        if (result.err) return cb(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-        if (result.res.length == 0) return cb(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR"));
-        return cb();
-    });
-}
-
 function getShippingMethod(id) {
     return new Promise((resolve, reject) => {
         productQueries.getShippingMethod([id], "id=$1", result => {
@@ -251,17 +134,9 @@ function getShippingZonea(id) {
     });
 }
 
-function getShippingZone(id, cb) {
-    productQueries.getShippingZone([id], "id=$1", result => {
-        if (result.err) return cb(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-        if (result.res.length == 0) return cb(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
-        cb();
-    });
-}
-
 function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
-
+        if (!isUpdateShippingMethod) return resolve();
         if (args.input.shippingZone) {
             try {
                 await getShippingZonea(args.input.shippingZone);
@@ -333,7 +208,7 @@ function getShippingMethodUpdateInput({ id, input }) {
     return { values, set, whereClause };
 }
 
-function addPostalCodeRulesa(args) {
+function addPostalCodeRules(args) {
     return new Promise((resolve, reject) => {
         if (!args.input.addPostalCodeRules) return resolve();
         let rules = args.input.addPostalCodeRules;
@@ -373,46 +248,6 @@ function addPostalCodeRulesa(args) {
             }
         }
     });
-}
-
-function addPostalCodeRules(args, cb) {
-    if (!args.input.addPostalCodeRules) return cb();
-    let rules = args.input.addPostalCodeRules;
-    const numRules = rules.length;
-    let cursor = -1;
-    let errors = [];
-
-    rules.forEach(rule => {
-        let start = rule.start;
-        let end = rule.end;
-        let inclusionType = args.input.inclusionType || "INCLUDE";
-        let shippingMethodId = args.id;
-
-        let values = [
-            start,
-            end,
-            shippingMethodId,
-            inclusionType
-        ];
-        productQueries.createShippingMethodPostalCodeRule(values, result => {
-            if (result.err) {
-                errors.push(getGraphQLOutput("createShippingMethodPostalCodeRule", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            } else if (result.res.length == 0) {
-                errors.push(getGraphQLOutput("createShippingMethodPostalCodeRule", "Shipping method postal code rule not created", "GRAPHQL_ERROR").errors);
-            }
-            checkComplete();
-        });
-    });
-
-    checkComplete();
-
-    function checkComplete() {
-        cursor++;
-        if (cursor == numRules) {
-            if (errors.length > 0) return cb(errors);
-            cb();
-        }
-    }
 }
 
 function deletePostalCodeRules(args) {
