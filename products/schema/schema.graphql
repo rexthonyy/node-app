@@ -1004,6 +1004,15 @@ type Mutation {
     """Fields required to update warehouse."""
     input: WarehouseUpdateInput!
   ): WarehouseUpdate
+
+  
+  """
+  Deletes selected warehouse. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  deleteWarehouse(
+    """ID of a warehouse to delete."""
+    id: ID!
+  ): WarehouseDelete
 }
 
 """Return type for getShiftGroups"""

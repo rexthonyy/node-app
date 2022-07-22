@@ -88,6 +88,7 @@ const {
     shippingPriceRemoveProductFromExclude,
     createWarehouse,
     updateWarehouse,
+    deleteWarehouse,
 } = require('./Mutation');
 
 const {
@@ -332,6 +333,7 @@ module.exports = {
         shippingPriceRemoveProductFromExclude,
         createWarehouse,
         updateWarehouse,
+        deleteWarehouse,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
