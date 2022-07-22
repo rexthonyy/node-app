@@ -69,8 +69,8 @@ function createWarehouse(args) {
             ];
 
             productQueries.createWarehouse(values, async result => {
-                if (result.err) return reject(getGraphQLOutput("createWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-                if (result.res.length == 0) return reject(getGraphQLOutput("createWarehouse", "Warehouse not created", "GRAPHQL_ERROR"));
+                if (result.err) return resolve(getGraphQLOutput("createWarehouse", JSON.stringify(result.err), "GRAPHQL_ERROR"));
+                if (result.res.length == 0) return resolve(getGraphQLOutput("createWarehouse", "Warehouse not created", "GRAPHQL_ERROR"));
                 let warehouseId = result.res[0].id;
                 let shippingZones = args.input.shippingZones;
                 let errors = [];
