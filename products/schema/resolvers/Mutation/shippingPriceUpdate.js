@@ -44,7 +44,7 @@ function getGraphQLOutput(field, message, code, warehouses, channels, shippingZo
 }
 
 function shippingPriceUpdatea(args) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             await getShippingMethod(args.id);
         } catch (err) {
