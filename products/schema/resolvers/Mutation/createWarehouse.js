@@ -56,8 +56,10 @@ function createWarehouse(args) {
                 return resolve(getGraphQLOutput("createAccountAddress", err, "GRAPHQL_ERROR"));
             }
 
+            let id = uuid();
+            console.log(id);
             let values = [
-                uuid(),
+                id,
                 name,
                 email,
                 addressId,
