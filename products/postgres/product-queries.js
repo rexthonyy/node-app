@@ -1814,6 +1814,23 @@ const createShippingZoneChannel = (values, response) => {
     });
 };
 
+const createShippingMethodTranslation = (values, response) => {
+    client.query(`INSERT INTO ${db.shipping_shippingmethodtranslation} (language_code, name, shipping_method_id, description) VALUES($1, $2, $3, $4) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -2110,6 +2127,23 @@ const updateShippingZone = (values, set, whereClause, response) => {
 
 const updateShippingMethod = (values, set, whereClause, response) => {
     client.query(`UPDATE ${db.shipping_shippingmethod} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 229
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const updateShippingMethodTranslation = (values, set, whereClause, response) => {
+    client.query(`UPDATE ${db.shipping_shippingmethodtranslation} SET ${set} WHERE ${whereClause} RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,
@@ -3002,6 +3036,7 @@ module.exports = {
     createShippingZone,
     createWarehouseShippingZone,
     createShippingZoneChannel,
+    createShippingMethodTranslation,
 
     updateProduct,
     updateProductVariant,
@@ -3021,6 +3056,7 @@ module.exports = {
     updateDigitalContent,
     updateShippingZone,
     updateShippingMethod,
+    updateShippingMethodTranslation,
 
     deleteAttributeValue,
     deleteProductVariant,

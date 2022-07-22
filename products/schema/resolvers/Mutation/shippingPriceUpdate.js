@@ -135,7 +135,6 @@ function updateShippingMethod(args) {
             try {
                 await getShippingZone(args.input.shippingZone);
             } catch (err) {
-                console.log(err);
                 return reject(err);
             }
         }

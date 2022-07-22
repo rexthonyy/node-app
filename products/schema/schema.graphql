@@ -912,6 +912,19 @@ type Mutation {
     input: ShippingPriceInput!
   ): ShippingPriceUpdate
 
+  
+  """
+  Creates/updates translations for a shipping method. Requires one of the following permissions: MANAGE_TRANSLATIONS.
+  """
+  shippingPriceTranslate(
+    """ShippingMethodType ID or ShippingMethodTranslatableContent ID."""
+    id: ID!
+    input: ShippingPriceTranslationInput!
+
+    """Translation language code."""
+    languageCode: LanguageCodeEnum!
+  ): ShippingPriceTranslate
+
   """
   Creates a new shipping zone. Requires one of the following permissions: MANAGE_SHIPPING.
   """
