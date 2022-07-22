@@ -13,7 +13,7 @@ let getGraphQLWarehouseById = (id) => {
 
                 try {
                     address = await getGraphQLAddressById(warehouse.address_id);
-                    companyName = address.company_name;
+                    companyName = address.companyName;
                 } catch (err) {
                     address = null;
                     companyName = "";
