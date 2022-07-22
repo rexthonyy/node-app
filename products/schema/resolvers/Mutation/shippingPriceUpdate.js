@@ -130,14 +130,21 @@ function getShippingZone(id) {
 
 function updateShippingMethod(args) {
     return new Promise((resolve, reject) => {
-        return resolve();
+        return reject(getGraphQLOutput("getShippingZone", "JSON.stringify(result.err)", "GRAPHQL_ERROR").errors)
         if (!isUpdateShippingMethod(args)) return resolve();
-        updateShippingPrice(args, err => {
-            if (err) {
+        if (args.input.shippingZone) {
+            try {
+                await getShippingZone(args.input.shippingZone);
+            } catch (err) {
                 return reject(err);
-            } else {
-                return resolve();
             }
+        }
+
+        let { values, set, whereClause } = getShippingMethodUpdateInput(args);
+        productQueries.updateShippingMethod(values, set, whereClause, result => {
+            if (result.err) return reject(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
+            resolve();
         });
     });
 }
@@ -147,20 +154,7 @@ function isUpdateShippingMethod(args) {
 }
 
 async function updateShippingPrice(args, response) {
-    if (args.input.shippingZone) {
-        try {
-            await getShippingZone(args.input.shippingZone);
-        } catch (err) {
-            return response(err);
-        }
-    }
 
-    let { values, set, whereClause } = getShippingMethodUpdateInput(args);
-    productQueries.updateShippingMethod(values, set, whereClause, result => {
-        if (result.err) return response(getGraphQLOutput("updateShippingMethod", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-        if (result.res.length == 0) return response(getGraphQLOutput("updateShippingMethod", "Failed to update shipping method", "GRAPHQL_ERROR").errors);
-        response();
-    });
 }
 
 function getShippingMethodUpdateInput({ id, input }) {
