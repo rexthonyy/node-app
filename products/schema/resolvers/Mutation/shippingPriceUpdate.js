@@ -130,9 +130,9 @@ function getShippingZone(id) {
 
 function updateShippingMethod(args) {
     return new Promise((resolve, reject) => {
+        return resolve();
         if (!isUpdateShippingMethod(args)) return resolve();
         updateShippingPrice(args, err => {
-            console.log(err);
             if (err) {
                 return reject(err);
             } else {
