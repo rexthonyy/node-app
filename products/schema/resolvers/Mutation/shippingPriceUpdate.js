@@ -64,6 +64,7 @@ function shippingPriceUpdate(args) {
         try {
             await updateShippingMethod(args);
         } catch (err) {
+            console.log(err);
             errors = errors.concat(err);
         }
 
@@ -130,6 +131,7 @@ function getShippingZone(id) {
 
 function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
+        console.log("updateShippingMethod");
         return reject(getGraphQLOutput("getShippingZone", "JSON.stringify(result.err)", "GRAPHQL_ERROR").errors)
         if (!isUpdateShippingMethod(args)) return resolve();
         if (args.input.shippingZone) {
