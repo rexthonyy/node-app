@@ -1866,7 +1866,7 @@ const createShippingMethodExcludedProduct = (values, response) => {
 };
 
 const createWarehouse = (values, response) => {
-    client.query(`INSERT INTO ${db.warehouse_warehouse} (name, email, address_id, slug, metadata, private_metadata, click_and_collect_option, is_private) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, values, (err, res) => {
+    client.query(`INSERT INTO ${db.warehouse_warehouse} (id, name, email, address_id, slug, metadata, private_metadata, click_and_collect_option, is_private) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, values, (err, res) => {
         if (err) {
             response({
                 err: err.stack,

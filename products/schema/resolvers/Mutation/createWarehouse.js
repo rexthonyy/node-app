@@ -1,13 +1,12 @@
 const {
     checkAuthorization,
-    getGraphQLProductById,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLPageById,
     getGraphQLWarehouseById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
 const kratosQueries = require('../../../postgres/kratos-queries');
+const { uuid } = require('uuidv4');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -58,6 +57,7 @@ function createWarehouse(args) {
             }
 
             let values = [
+                uuid(),
                 name,
                 email,
                 addressId,
