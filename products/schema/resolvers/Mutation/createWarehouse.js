@@ -135,7 +135,7 @@ function createAccountAddress(address) {
 }
 
 function addWarehouseShippingZones(warehouseId, shippingZones) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const numShippingZones = shippingZones.length;
         let cursor = -1;
         let errors = [];
