@@ -15,12 +15,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_SHIPPING"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            try {
-                resolve(await shippingPriceUpdate(args));
-            } catch (err) {
-                console.log(err);
-                resolve(err);
-            }
+            resolve(await shippingPriceUpdate(args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_SHIPPING", "INVALID"));
         }
@@ -69,7 +64,6 @@ function shippingPriceUpdate(args) {
         try {
             await updateShippingMethod(args);
         } catch (err) {
-            console.log(err);
             errors = errors.concat(err);
         }
 
@@ -124,11 +118,12 @@ function getShippingMethod(id) {
     })
 }
 
-function getShippingZonea(id) {
+function getShippingZone(id) {
     return new Promise((resolve, reject) => {
         productQueries.getShippingZone([id], "id=$1", result => {
             if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", "Shipping zone not found", "NOT_FOUND").errors);
+            console.log(result.res[0]);
             resolve();
         });
     });
@@ -138,9 +133,11 @@ function updateShippingMethod(args) {
     return new Promise(async(resolve, reject) => {
         if (!isUpdateShippingMethod) return resolve();
         if (args.input.shippingZone) {
+            console.log(args.input.shippingZone);
             try {
-                await getShippingZonea(args.input.shippingZone);
+                await getShippingZone(args.input.shippingZone);
             } catch (err) {
+                console.log(err);
                 return reject(err);
             }
         }
