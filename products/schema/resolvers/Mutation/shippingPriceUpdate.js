@@ -128,7 +128,7 @@ function shippingPriceUpdatea(args) {
             let errors = [];
 
             if (isUpdateShippingMethod(args)) {
-
+                //.
                 if (args.input.shippingZone) {
                     console.log(args.input.shippingZone)
                     getShippingZonea(args.input.shippingZone, err => {
