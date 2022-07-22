@@ -62,7 +62,7 @@ function shippingPriceExcludeProducts(authUser, args) {
             });
             checkComplete();
 
-            function checkComplete() {
+            async function checkComplete() {
                 cursor++;
                 if (cursor == numProducts) {
                     try {
@@ -102,7 +102,7 @@ function addExcludeProduct(shippingMethodId, productId) {
 
 function createShippingMethodExcludedProducts(shippingMethodId, productId) {
     return new Promise(async resolve => {
-        productQueries.createShippingMethodExcludedProduct([shippingMethodId, productId], async result => {
+        productQueries.createShippingMethodExcludedProduct([shippingMethodId, productId], result => {
             if (result.err) return reject(getGraphQLOutput("createShippingMethodExcludedProduct", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return reject(getGraphQLOutput("createShippingMethodExcludedProduct", "Failed to create shipping method excluded product", "GRAPHQL_ERROR"));
             resolve();
