@@ -1,9 +1,7 @@
 const {
     checkAuthorization,
-    getGraphQLProductById,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLPageById,
     getGraphQLGiftCardById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
@@ -16,7 +14,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_GIFT_CARD"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await giftCardCreate(args));
+            resolve(await giftCardCreate(authUser, args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_GIFT_CARD", "INVALID"));
         }
@@ -41,12 +39,9 @@ function getGraphQLOutput(field, message, code, tags, giftCard) {
     }
 }
 
-function giftCardCreate(args) {
+function giftCardCreate(authUser, args) {
     return new Promise(resolve => {
-        let { values, entry, holder } = getGiftCardCreateInput(args.input);
-        console.log(values);
-        console.log(entry);
-        console.log(holder);
+        let { values, entry, holder } = getGiftCardCreateInput(authUser, args.input);
         productQueries.createGiftCard(values, entry, holder, async result => {
             if (result.err) return resolve(getGraphQLOutput("createGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return resolve(getGraphQLOutput("createGiftCard", "GiftCard not created", "GRAPHQL_ERROR"));
@@ -74,7 +69,7 @@ function giftCardCreate(args) {
     });
 }
 
-function getGiftCardCreateInput(input) {
+function getGiftCardCreateInput(authUser, input) {
     let expiryDate = input.expiryDate;
     let startDate = input.startDate;
     let endDate = input.endDate;
@@ -85,6 +80,7 @@ function getGiftCardCreateInput(input) {
     let code = input.code;
 
     expiryDate = (expiryDate ? expiryDate : endDate) || new Date().toUTCString();
+    userEmail = userEmail ? userEmail : authUser.email;
 
     let values = [];
     let entry = "";
@@ -147,6 +143,12 @@ function getGiftCardCreateInput(input) {
         entry += "code";
         holder += `$${++cursor}`;
     }
+
+    values.push(authUser.id);
+    entry += entry ? ", " : "";
+    holder += holder ? ", " : "";
+    entry += "created_by_id";
+    holder += `$${++cursor}`;
 
     values.push(JSON.stringify({}));
     entry += entry ? ", " : "";
@@ -211,7 +213,7 @@ function resolveGiftCardTag(giftCardId, tag) {
                 if (result.res.length > 0) return reject(getGraphQLOutput("getGiftCardTag", `Gift card already exists: ${tag}`, "ALREADY_EXISTS").errors);
                 productQueries.createGiftCardTags([giftCardId, giftCardTag_.id], "giftcard_id, giftcardtag_id", "$1, $2", result => {
                     if (result.err) return reject(getGraphQLOutput("createGiftCardTags", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                    if (result.res.length > 0) return reject(getGraphQLOutput("createGiftCardTags", `Gift card tag not assigned : ${tag}`, "GRAPHQL_ERROR").errors);
+                    if (result.res.length == 0) return reject(getGraphQLOutput("createGiftCardTags", `Gift card tag not assigned : ${tag}`, "GRAPHQL_ERROR").errors);
                     resolve();
                 });
             });
