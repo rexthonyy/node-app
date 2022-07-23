@@ -92,6 +92,7 @@ const {
     deleteWarehouse,
     assignWarehouseShippingZone,
     unassignWarehouseShippingZone,
+    giftCardCreate,
 } = require('./Mutation');
 
 const {
@@ -340,6 +341,7 @@ module.exports = {
         deleteWarehouse,
         assignWarehouseShippingZone,
         unassignWarehouseShippingZone,
+        giftCardCreate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

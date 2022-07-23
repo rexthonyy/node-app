@@ -1046,6 +1046,14 @@ type Mutation {
     shippingZoneIds: [ID!]!
   ): WarehouseShippingZoneUnassign
 
+
+  """
+  Creates a new gift card. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardCreate(
+    """Fields required to create a gift card."""
+    input: GiftCardCreateInput!
+  ): GiftCardCreate
 }
 
 """Return type for getShiftGroups"""

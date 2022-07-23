@@ -1882,6 +1882,57 @@ const createWarehouse = (values, response) => {
     });
 };
 
+const createGiftCard = (values, entry, holder, response) => {
+    client.query(`INSERT INTO ${db.giftcard_giftcard} (${entry}) VALUES(${holder}) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createGiftCardTag = (values, entry, holder, response) => {
+    client.query(`INSERT INTO ${db.giftcard_giftcardtag} (${entry}) VALUES(${holder}) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const createGiftCardTags = (values, entry, holder, response) => {
+    client.query(`INSERT INTO ${db.giftcard_giftcard_tags} (${entry}) VALUES(${holder}) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -3142,6 +3193,9 @@ module.exports = {
     createShippingMethodTranslation,
     createShippingMethodExcludedProduct,
     createWarehouse,
+    createGiftCard,
+    createGiftCardTag,
+    createGiftCardTags,
 
     updateProduct,
     updateProductVariant,
