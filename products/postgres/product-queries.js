@@ -2997,6 +2997,40 @@ const deleteShippingMethod = (values, whereClause, response) => {
     });
 };
 
+const deleteWarehouseShippingZones = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_warehouse_shipping_zones} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
+const deleteWarehouse = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.warehouse_warehouse} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -3175,4 +3209,6 @@ module.exports = {
     deleteShippingZoneChannels,
     deleteShippingZone,
     deleteShippingMethod,
+    deleteWarehouseShippingZones,
+    deleteWarehouse,
 }
