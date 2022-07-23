@@ -18,8 +18,6 @@ module.exports = async(parent, args, context) => {
 function getGiftCardEvents(args, giftCardId) {
     return new Promise(async(resolve, reject) => {
         let { values, whereClause } = getGiftCardEventInput(giftCardId, args);
-        console.log(values);
-        console.log(whereClause);
         productQueries.getGiftCardEvents(values, whereClause, result => {
             if (result.err) return reject(JSON.stringify(result.err));
             let giftCardEvents_ = result.res;
@@ -28,7 +26,7 @@ function getGiftCardEvents(args, giftCardId) {
             let giftCardEvents = [];
 
             giftCardEvents_.forEach(ge => {
-                productQueries.getGiftCard([ge.id], "id=$1", async result => {
+                productQueries.getGiftCard([ge.gift_card_id], "id=$1", async result => {
                     if (result.err == null && result.res.length > 0) {
                         let giftCard_ = result.res[0];
                         let user;
