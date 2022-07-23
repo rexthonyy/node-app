@@ -1013,6 +1013,18 @@ type Mutation {
     """ID of a warehouse to delete."""
     id: ID!
   ): WarehouseDelete
+
+  """
+  Add shipping zone to given warehouse. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  assignWarehouseShippingZone(
+    """ID of a warehouse to update."""
+    id: ID!
+
+    """List of shipping zone IDs."""
+    shippingZoneIds: [ID!]!
+  ): WarehouseShippingZoneAssign
+
 }
 
 """Return type for getShiftGroups"""
