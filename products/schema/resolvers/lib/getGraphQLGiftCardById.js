@@ -18,6 +18,8 @@ let getGraphQLGiftCardById = (id) => {
                 let app;
                 let product;
                 let tags;
+                let initialBalance;
+                let currentBalance;
 
                 try {
                     createdBy = await getGraphQLUserById(giftcard.created_by_id);
@@ -55,6 +57,18 @@ let getGraphQLGiftCardById = (id) => {
                     tags = null;
                 }
 
+                try {
+                    initialBalance = await getInitialBalance(giftcard);
+                } catch (err) {
+                    initialBalance = null;
+                }
+
+                try {
+                    currentBalance = await getCurrentBalance(giftcard);
+                } catch (err) {
+                    currentBalance = null;
+                }
+
                 resolve({
                     id: giftcard.id,
                     privateMetadata: formatMetadata(giftcard.private_metadata),
@@ -71,15 +85,14 @@ let getGraphQLGiftCardById = (id) => {
                     expiryDate: giftcard.expiry_date,
                     app,
                     product,
-                    events: null,
                     tags,
                     boughtInChannel: "",
                     isActive: giftcard.is_active,
-                    initialBalance: null,
-                    currentBalance: null,
+                    initialBalance,
+                    currentBalance,
                     user,
-                    endDate: null,
-                    startDate: null
+                    endDate: giftcard.expiry_date,
+                    startDate: giftcard.created
                 });
             }
         });
@@ -122,6 +135,24 @@ function getGiftCardTag(id) {
                 id: tag.id,
                 name: tag.name
             });
+        });
+    });
+}
+
+function getInitialBalance(giftCard) {
+    return new Promise(resolve => {
+        return resolve({
+            currency: giftCard.currency,
+            amount: giftCard.initial_balance_amount
+        });
+    });
+}
+
+function getCurrentBalance(giftCard) {
+    return new Promise(resolve => {
+        return resolve({
+            currency: giftCard.currency,
+            amount: giftCard.current_balance_amount
         });
     });
 }
