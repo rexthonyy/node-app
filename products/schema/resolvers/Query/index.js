@@ -26,6 +26,7 @@ const attribute = require('./attribute');
 const attributes = require('./attributes');
 const giftCard = require('./giftCard');
 const giftCards = require('./giftCards');
+const giftCardCurrencies = require('./giftCardCurrencies');
 
 module.exports = {
     categories,
@@ -56,4 +57,5 @@ module.exports = {
     attributes,
     giftCard,
     giftCards,
+    giftCardCurrencies,
 };
