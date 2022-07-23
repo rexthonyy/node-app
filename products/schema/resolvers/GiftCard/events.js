@@ -18,6 +18,8 @@ module.exports = async(parent, args, context) => {
 function getGiftCardEvents(args, giftCardId) {
     return new Promise(async(resolve, reject) => {
         let { values, whereClause } = getGiftCardEventInput(giftCardId, args);
+        console.log(values);
+        console.log(whereClause);
         productQueries.getGiftCardEvents(values, whereClause, result => {
             if (result.err) return reject(JSON.stringify(result.err));
             let giftCardEvents_ = result.res;

@@ -7,7 +7,7 @@ let getGraphQLAppById = (id) => {
     return new Promise((resolve, reject) => {
         kratosQueries.getApp([id], "id=$1", async result => {
             if (result.err || result.res.length == 0) {
-                reject(null);
+                reject("App not found");
             } else {
                 let app = result.res[0];
                 let permissions;
