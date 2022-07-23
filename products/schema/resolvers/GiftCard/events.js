@@ -21,7 +21,7 @@ function getGiftCardEvents(args, giftCardId) {
         productQueries.getGiftCardEvents(values, whereClause, result => {
             if (result.err) return reject(JSON.stringify(result.err));
             let giftCardEvents_ = result.res;
-            const numGiftCardEvents = giftCardEvents.length;
+            const numGiftCardEvents = giftCardEvents_.length;
             let cursor = -1;
             let giftCardEvents = [];
 
