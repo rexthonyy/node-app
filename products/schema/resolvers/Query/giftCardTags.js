@@ -84,7 +84,7 @@ function getGiftCardTagsInput(filter) {
     if (filter.search != null) {
         values.push(filter.search);
         whereClause += whereClause ? " AND " : "";
-        whereClause += `name ILIKE '%($${++cursor})%'`;
+        whereClause += `name ILIKE %($${++cursor})%`;
     }
 
     return { values, whereClause };
