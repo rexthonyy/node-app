@@ -28,6 +28,7 @@ const {
     giftCard,
     giftCards,
     giftCardCurrencies,
+    giftCardTags,
 } = require('./Query');
 
 const {
@@ -288,6 +289,7 @@ module.exports = {
         giftCard,
         giftCards,
         giftCardCurrencies,
+        giftCardTags,
     },
     Mutation: {
         productCreate,

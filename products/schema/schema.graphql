@@ -438,6 +438,27 @@ type Query {
   Added in Saleor 3.1. List of gift card currencies. Note: this feature is in a preview state and can be subject to changes at later point. Requires one of the following permissions: MANAGE_GIFT_CARD.
   """
   giftCardCurrencies: [String!]!
+
+  
+  """
+  Added in Saleor 3.1. List of gift card tags. Note: this feature is in a preview state and can be subject to changes at later point. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardTags(
+    """Filtering options for gift card tags."""
+    filter: GiftCardTagFilterInput
+
+    """Return the elements in the list that come before the specified cursor."""
+    before: String
+
+    """Return the elements in the list that come after the specified cursor."""
+    after: String
+
+    """Return the first n elements from the list."""
+    first: Int
+
+    """Return the last n elements from the list."""
+    last: Int
+  ): GiftCardTagCountableConnection
 }
 
 
