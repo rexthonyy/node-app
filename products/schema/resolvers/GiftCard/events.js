@@ -1,12 +1,8 @@
 const {
-    checkAuthorization,
-    getGraphQLShippingZoneById,
-    userPermissionGroupHasAccess,
-    userHasAccess,
+    getGraphQLAppById,
     getGraphQLUserById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
-const getGraphQLAppById = require('../lib/getGraphQLAppById');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async(resolve, reject) => {
@@ -34,14 +30,14 @@ function getGiftCardEvents(args, giftCardId) {
                         let email;
                         let tags;
                         try {
-                            user = await getGraphQLUserById(giftCard_.user_id);
+                            user = await getGraphQLUserById(ge.user_id);
                             email = user.email;
                         } catch (err) {
                             user = null;
                             email = null;
                         }
                         try {
-                            app = await getGraphQLAppById(giftCard_.app_id);
+                            app = await getGraphQLAppById(ge.app_id);
                         } catch (err) {
                             app = null;
                         }
