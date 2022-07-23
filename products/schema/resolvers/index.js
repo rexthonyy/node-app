@@ -90,6 +90,7 @@ const {
     updateWarehouse,
     deleteWarehouse,
     assignWarehouseShippingZone,
+    unassignWarehouseShippingZone,
 } = require('./Mutation');
 
 const {
@@ -336,6 +337,7 @@ module.exports = {
         updateWarehouse,
         deleteWarehouse,
         assignWarehouseShippingZone,
+        unassignWarehouseShippingZone,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

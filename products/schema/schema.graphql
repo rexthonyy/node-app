@@ -1025,6 +1025,18 @@ type Mutation {
     shippingZoneIds: [ID!]!
   ): WarehouseShippingZoneAssign
 
+
+  """
+  Remove shipping zone from given warehouse. Requires one of the following permissions: MANAGE_PRODUCTS.
+  """
+  unassignWarehouseShippingZone(
+    """ID of a warehouse to update."""
+    id: ID!
+
+    """List of shipping zone IDs."""
+    shippingZoneIds: [ID!]!
+  ): WarehouseShippingZoneUnassign
+
 }
 
 """Return type for getShiftGroups"""
