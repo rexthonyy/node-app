@@ -83,13 +83,17 @@ function assignWarehouseShippingZone(args) {
 
 function resolveWarehouseShippingZone(warehouseId, shippingZoneId) {
     return new Promise((resolve, reject) => {
-        productQueries.getWarehouseShippingZones([warehouseId, shippingZoneId], "warehouse_id=$1 AND shippingzone_id=$2", result => {
-            if (result.err) return reject(getGraphQLOutput("getWarehouseShippingZones", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length > 0) return reject(getGraphQLOutput("getWarehouseShippingZones", `Warehouse shipping zone already defined : ${shippingZoneId}`, "ALREADY_EXISTS").errors);
-            productQueries.createWarehouseShippingZone([warehouseId, shippingZoneId], result => {
-                if (result.err) return reject(getGraphQLOutput("createWarehouseShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length == 0) return reject(getGraphQLOutput("createWarehouseShippingZone", `Warehouse shipping zone not created : ${shippingZoneId}`, "GRAPHQL_ERROR").errors);
-                resolve();
+        productQueries.getShippingZone([shippingZoneId], "id=$1", result => {
+            if (result.err) return reject(getGraphQLOutput("getShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getShippingZone", `Shipping zone not found : ${shippingZoneId}`, "NOT_FOUND").errors);
+            productQueries.getWarehouseShippingZones([warehouseId, shippingZoneId], "warehouse_id=$1 AND shippingzone_id=$2", result => {
+                if (result.err) return reject(getGraphQLOutput("getWarehouseShippingZones", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                if (result.res.length > 0) return reject(getGraphQLOutput("getWarehouseShippingZones", `Warehouse shipping zone already defined : ${shippingZoneId}`, "ALREADY_EXISTS").errors);
+                productQueries.createWarehouseShippingZone([warehouseId, shippingZoneId], result => {
+                    if (result.err) return reject(getGraphQLOutput("createWarehouseShippingZone", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                    if (result.res.length == 0) return reject(getGraphQLOutput("createWarehouseShippingZone", `Warehouse shipping zone not created : ${shippingZoneId}`, "GRAPHQL_ERROR").errors);
+                    resolve();
+                });
             });
         });
     });
