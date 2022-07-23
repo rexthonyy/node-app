@@ -44,6 +44,7 @@ function getGiftCardTags(args) {
 function getAllGiftCardTags(filter) {
     return new Promise((resolve, reject) => {
         let { values, whereClause } = getGiftCardTagsInput(filter);
+        console.log(values, whereClause);
         productQueries.getGiftCardTag(values, whereClause, result => {
             if (result.err) return reject(JSON.stringify(result.err));
             let giftCardTags_ = result.res;
