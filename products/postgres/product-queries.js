@@ -532,6 +532,23 @@ const getGiftCardTag = (values, whereClause, response) => {
     });
 };
 
+const searchGiftCardTag = (whereClause, response) => {
+    pool.query(`SELECT * from ${db.giftcard_giftcardtag} WHERE ${whereClause}`, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 const getAppExtensions = (values, whereClause, response) => {
     pool.query(`SELECT * from ${db.app_appextension} WHERE ${whereClause}`, values, (err, res) => {
         if (err) {
@@ -3156,6 +3173,7 @@ module.exports = {
     getWarehouse,
     getGiftCardTags,
     getGiftCardTag,
+    searchGiftCardTag,
     getGiftCard,
     getAppExtensions,
     getOrder,
