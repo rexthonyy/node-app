@@ -396,6 +396,15 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): AttributeCountableConnection
+
+  
+  """
+  Look up a gift card by ID. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCard(
+    """ID of the gift card."""
+    id: ID!
+  ): GiftCard
 }
 
 

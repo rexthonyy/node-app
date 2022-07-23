@@ -25,6 +25,7 @@ const {
     page,
     attribute,
     attributes,
+    giftCard,
 } = require('./Query');
 
 const {
@@ -273,6 +274,7 @@ module.exports = {
         page,
         attribute,
         attributes,
+        giftCard,
     },
     Mutation: {
         productCreate,

@@ -1,3 +1,4 @@
+const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLUserById = require("./getGraphQLUserById");
 const getGraphQLProductById = require("./getGraphQLProductById");
@@ -56,12 +57,8 @@ let getGraphQLGiftCardById = (id) => {
 
                 resolve({
                     id: giftcard.id,
-                    privateMetadata: giftcard.private_metadata,
-                    privateMetafield: JSON.stringify(giftcard.private_metadata),
-                    privateMetafields: null,
-                    metadata: [giftcard.metadata],
-                    metadatafield: JSON.stringify(giftcard.metadata),
-                    metadatafields: null,
+                    privateMetadata: formatMetadata(giftcard.private_metadata),
+                    metadata: formatMetadata(giftcard.metadata),
                     displayCode: giftcard.code,
                     last4CodeChars: giftcard.last_change,
                     code: giftcard.code,

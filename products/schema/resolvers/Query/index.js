@@ -24,6 +24,7 @@ const translation = require('./translation');
 const page = require('./page');
 const attribute = require('./attribute');
 const attributes = require('./attributes');
+const giftCard = require('./giftCard');
 
 module.exports = {
     categories,
@@ -52,4 +53,5 @@ module.exports = {
     page,
     attribute,
     attributes,
+    giftCard,
 };
