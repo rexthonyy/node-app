@@ -1280,6 +1280,23 @@ const getShippingMethodExcludedProducts = (values, whereClause, response) => {
     });
 };
 
+const getGiftCardEvents = (values, whereClause, response) => {
+    pool.query(`SELECT * from ${db.giftcard_giftcardevent} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err,
+                res: null,
+                code: 201
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -3174,6 +3191,7 @@ module.exports = {
     getAttributePage,
     getAssignedPageAttribute,
     getShippingMethodExcludedProducts,
+    getGiftCardEvents,
 
     createPage,
     createProduct,

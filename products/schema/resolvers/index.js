@@ -118,6 +118,14 @@ const {
 } = require('./DigitalContent');
 
 const {
+    giftCardPrivateMetafield,
+    giftCardPrivateMetafields,
+    giftCardMetafield,
+    giftCardMetafields,
+    giftCardEvents,
+} = require('./GiftCard');
+
+const {
     paymentPrivateMetafield,
     paymentPrivateMetafields,
     paymentMetafield,
@@ -496,5 +504,12 @@ module.exports = {
         metafield: pageTypeMetafield,
         metafields: pageTypeMetafields,
         availableAttributes: pageTypeAvailableAttributes,
+    },
+    GiftCard: {
+        privateMetafield: giftCardPrivateMetafield,
+        privateMetafields: giftCardPrivateMetafields,
+        metafield: giftCardMetafield,
+        metafields: giftCardMetafields,
+        events: giftCardEvents,
     }
 };
