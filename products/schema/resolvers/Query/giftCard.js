@@ -14,7 +14,11 @@ module.exports = async(parent, args, context) => {
         let permissions = ["MANAGE_GIFT_CARD"];
 
         if (userHasAccess(authUser.userPermissions, permissions) || userPermissionGroupHasAccess(authUser.permissionGroups, permissions)) {
-            resolve(getGiftCard(args));
+            try {
+                resolve(getGiftCard(args));
+            } catch (err) {
+                reject(err);
+            }
         } else {
             reject("You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_GIFT_CARD");
         }
