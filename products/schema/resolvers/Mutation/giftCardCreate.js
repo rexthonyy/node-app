@@ -55,6 +55,12 @@ function giftCardCreate(authUser, args) {
                 errors = errors.concat(err);
             }
             try {
+                await addEvent(authUser, giftCard_.id, args);
+            } catch (err) {
+                errors = errors.concat(err);
+            }
+
+            try {
                 giftCard = await getGraphQLGiftCardById(giftCard_.id);
             } catch (err) {
                 errors.push(getGraphQLOutput("getGraphQLGiftCardById", err, "NOT_FOUND", tags).errors[0]);
@@ -71,7 +77,7 @@ function giftCardCreate(authUser, args) {
 
 function getGiftCardCreateInput(authUser, input) {
     let expiryDate = input.expiryDate;
-    let startDate = input.startDate;
+    let startDate = input.startDate || new Date().toUTCString();
     let endDate = input.endDate;
     let currency = input.balance.currency;
     let amount = input.balance.amount;
@@ -79,7 +85,7 @@ function getGiftCardCreateInput(authUser, input) {
     let isActive = input.isActive;
     let code = input.code;
 
-    expiryDate = (expiryDate ? expiryDate : endDate) || new Date().toUTCString();
+    expiryDate = expiryDate ? expiryDate : endDate;
     userEmail = userEmail ? userEmail : authUser.email;
 
     let values = [];
@@ -229,4 +235,44 @@ function createGiftCardTag(tag) {
             resolve(result.res[0]);
         });
     });
+}
+
+function addEvent(authUser, giftCardId, args) {
+    return new Promise(async(resolve, reject) => {
+        let { values, entry, holder } = getGiftCardCreateEventInput(authUser, giftCardId, args.input);
+        productQueries.createGiftCardEvent(values, entry, holder, async result => {
+            if (result.err) return reject(getGraphQLOutput("createGiftCardEvent", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("createGiftCardEvent", "GiftCard event not created", "GRAPHQL_ERROR").errors);
+            resolve();
+        });
+    });
+}
+
+
+function getGiftCardCreateEventInput(authUser, giftCardId, input) {
+
+    let expiryDate = input.expiryDate;
+    let endDate = input.endDate;
+
+    expiryDate = expiryDate ? expiryDate : endDate;
+
+    let parameters = {
+        balance: {
+            currency: input.balance.currency,
+            current_balance: input.balance.amount,
+            initial_balance: input.balance.amount
+        },
+        expiry_date: expiryDate
+    };
+
+    let values = [
+        new Date().toUTCString(),
+        "ISSUED",
+        JSON.stringify(parameters),
+        giftCardId,
+        authUser.id
+    ];
+    let entry = `"date",type,parameters,gift_card_id,user_id`;
+    let holder = "$1,$2,$3,$4,$5";
+    return { values, entry, holder };
 }

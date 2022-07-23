@@ -1933,6 +1933,23 @@ const createGiftCardTags = (values, entry, holder, response) => {
     });
 };
 
+const createGiftCardEvent = (values, entry, holder, response) => {
+    client.query(`INSERT INTO ${db.giftcard_giftcardevent} (${entry}) VALUES(${holder}) RETURNING *`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                code: 218
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 
 
 
@@ -3196,6 +3213,7 @@ module.exports = {
     createGiftCard,
     createGiftCardTag,
     createGiftCardTags,
+    createGiftCardEvent,
 
     updateProduct,
     updateProductVariant,
