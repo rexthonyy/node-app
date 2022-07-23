@@ -407,8 +407,20 @@ type Query {
   ): GiftCard
 
   
-  """List of the user gift cards."""
+  """
+  List of gift cards. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
   giftCards(
+    """
+    Added in Saleor 3.1. Sort gift cards. Note: this feature is in a preview state and can be subject to changes at later point.
+    """
+    sortBy: GiftCardSortingInput
+
+    """
+    Added in Saleor 3.1. Filtering options for gift cards. Note: this feature is in a preview state and can be subject to changes at later point.
+    """
+    filter: GiftCardFilterInput
+
     """Return the elements in the list that come before the specified cursor."""
     before: String
 
@@ -421,6 +433,7 @@ type Query {
     """Return the last n elements from the list."""
     last: Int
   ): GiftCardCountableConnection
+
 }
 
 
