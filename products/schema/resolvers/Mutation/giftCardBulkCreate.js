@@ -48,11 +48,13 @@ function giftCardBulkCreate(authUser, args) {
                 errors = errors.concat(err);
             }
         }
-        resolve({
+        let res = {
             errors,
             giftCards,
             count: giftCards.length
-        });
+        };
+        console.log(res);
+        resolve(res);
     });
 }
 
