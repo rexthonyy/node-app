@@ -53,6 +53,7 @@ function giftCardUpdate(authUser, args) {
             let addTags = args.input.addTags;
             let expiryDate = args.input.expiryDate;
             let startDate = args.input.startDate;
+            let endDate = args.input.endDate;
             let removeTags = args.input.removeTags;
             let balanceAmount = args.input.balanceAmount;
 
@@ -177,9 +178,9 @@ function createGiftCardTag(tag) {
     });
 }
 
-function updateGiftCardExpiryDate(giftCardId, expiryDate) {
+function updateGiftCardExpiryDate(authUser, giftCard, expiryDate) {
     return new Promise((resolve, reject) => {
-        productQueries.updateGiftCard([giftCardId, expiryDate], "expiry_date=$2", "id=$1", async result => {
+        productQueries.updateGiftCard([giftCard.id, expiryDate], "expiry_date=$2", "id=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("updateGiftCard", `GiftCard expiryDate not updated: ${expiryDate}`, "GRAPHQL_ERROR").errors);
             let errors = [];
@@ -194,9 +195,9 @@ function updateGiftCardExpiryDate(giftCardId, expiryDate) {
     });
 }
 
-function updateGiftCardStartDate(giftCardId, startDate) {
+function updateGiftCardStartDate(authUser, giftCard, startDate) {
     return new Promise((resolve, reject) => {
-        productQueries.updateGiftCard([giftCardId, startDate], "created=$2", "id=$1", async result => {
+        productQueries.updateGiftCard([giftCard.id, startDate], "created=$2", "id=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("updateGiftCard", `GiftCard startDate not updated: ${startDate}`, "GRAPHQL_ERROR").errors);
             let errors = [];
@@ -211,9 +212,9 @@ function updateGiftCardStartDate(giftCardId, startDate) {
     });
 }
 
-function updateGiftCardEndDate(giftCardId, endDate) {
+function updateGiftCardEndDate(authUser, giftCard, endDate) {
     return new Promise((resolve, reject) => {
-        productQueries.updateGiftCard([giftCardId, endDate], "expiry_date=$2", "id=$1", async result => {
+        productQueries.updateGiftCard([giftCard.id, endDate], "expiry_date=$2", "id=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("updateGiftCard", `GiftCard endDate not updated: ${endDate}`, "GRAPHQL_ERROR").errors);
             let errors = [];
@@ -228,7 +229,7 @@ function updateGiftCardEndDate(giftCardId, endDate) {
     });
 }
 
-function removeGiftCardTags(giftCardId, tags) {
+function removeGiftCardTags(authUser, giftCard, tags) {
     return new Promise((resolve, reject) => {
         const numTags = tags.length;
         let errors = [];
@@ -236,7 +237,7 @@ function removeGiftCardTags(giftCardId, tags) {
 
         tags.forEach(async tag => {
             try {
-                await resolveRemoveGiftCardTag(giftCardId, tag);
+                await resolveRemoveGiftCardTag(authUser, giftCard, tag);
             } catch (err) {
                 errors = errors.concat(err);
             }
@@ -256,17 +257,17 @@ function removeGiftCardTags(giftCardId, tags) {
 }
 
 
-function resolveRemoveGiftCardTag(giftCardId, tag) {
+function resolveRemoveGiftCardTag(authUser, giftCard, tag) {
     return new Promise((resolve, reject) => {
         productQueries.getGiftCardTag([tag], "name=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("getGiftCardTag", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("getGiftCardTag", `GiftCard tag not found: ${tag}`, "NOT_FOUND").errors);
             let giftCardTagId = result.res[0].id;
 
-            productQueries.getGiftCardTags([giftCardId, giftCardTagId], "giftcard_id=$1 AND giftcardtag_id=$2", result => {
+            productQueries.getGiftCardTags([giftCard.id, giftCardTagId], "giftcard_id=$1 AND giftcardtag_id=$2", result => {
                 if (result.err) return reject(getGraphQLOutput("getGiftCardTags", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
                 if (result.res.length == 0) return reject(getGraphQLOutput("getGiftCardTags", `Gift card tags not found: ${tag}`, "NOT_FOUND").errors);
-                productQueries.deleteGiftCardTags([giftCardId, giftCardTagId], "giftcard_id, giftcardtag_id", "$1,$2", async result => {
+                productQueries.deleteGiftCardTags([giftCard.id, giftCardTagId], "giftcard_id, giftcardtag_id", "$1,$2", async result => {
                     if (result.err) return reject(getGraphQLOutput("deleteGiftCardTags", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
                     if (result.res.length > 0) return reject(getGraphQLOutput("deleteGiftCardTags", `Gift card tag not removed: ${tag}`, "GRAPHQL_ERROR").errors);
                     let errors = [];
@@ -283,9 +284,9 @@ function resolveRemoveGiftCardTag(giftCardId, tag) {
     });
 }
 
-function updateGiftCardBalanceAmount(giftCardId, balanceAmount) {
+function updateGiftCardBalanceAmount(authUser, giftCard, balanceAmount) {
     return new Promise((resolve, reject) => {
-        productQueries.updateGiftCard([giftCardId, balanceAmount], "initial_balance_amount=$2, current_balance_amount=$2", "id=$1", async result => {
+        productQueries.updateGiftCard([giftCard.id, balanceAmount], "initial_balance_amount=$2, current_balance_amount=$2", "id=$1", async result => {
             if (result.err) return reject(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("updateGiftCard", `Gift card balance not updated: ${balanceAmount}`, "GRAPHQL_ERROR").errors);
             let errors = [];
