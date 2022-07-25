@@ -76,7 +76,7 @@ function giftCardCreate(authUser, args) {
     });
 }
 
-function getGiftCardCreateInput(authUser, input) {
+async function getGiftCardCreateInput(authUser, input) {
     let expiryDate = input.expiryDate;
     let startDate = input.startDate || new Date().toUTCString();
     let endDate = input.endDate;
@@ -144,10 +144,14 @@ function getGiftCardCreateInput(authUser, input) {
         holder += `$${++cursor}`;
     }
     if (code == null) {
-        code = voucher_codes.generate({
-            length: 10,
-            count: 1
-        })[0].toUpperCase();
+        do {
+            try {
+                code = await getGiftCardCode();
+                break;
+            } catch (err) {
+                continue;
+            }
+        } while (true);
     }
     if (code != null) {
         values.push(code);
@@ -176,6 +180,21 @@ function getGiftCardCreateInput(authUser, input) {
     holder += `$${++cursor}`;
 
     return { values, entry, holder };
+}
+
+function getGiftCardCode() {
+    return new Promise((resolve, reject) => {
+        let code = voucher_codes.generate({
+            length: 10,
+            count: 1
+        })[0].toUpperCase();
+
+        productQueries.getGiftCard([code], "code=$1", result => {
+            if (result.err) return reject(code);
+            if (result.res.length > 0) return reject(code);
+            resolve(code);
+        });
+    });
 }
 
 function addTags(giftCardId, giftCardTags) {
