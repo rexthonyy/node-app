@@ -36,7 +36,7 @@ function getGraphQLOutput(field, message, code, tags, giftCards, count = 0) {
 }
 
 function giftCardBulkCreate(authUser, args) {
-    return new Promise(async resolve => {
+    return new Promise(resolve => {
         let cards = [];
         for (let i = 0; i < args.input.count; i++) {
             cards.push(i);
@@ -46,7 +46,7 @@ function giftCardBulkCreate(authUser, args) {
         let errors = [];
         let cursor = -1;
 
-        cards.forEach(() => {
+        cards.forEach(async() => {
             try {
                 let { err, giftCard_ } = await giftCardCreate(authUser, args);
                 errors = errors.concat(err);
