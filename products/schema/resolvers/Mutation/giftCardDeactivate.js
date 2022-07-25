@@ -14,7 +14,7 @@ module.exports = async(parent, args, context) => {
         let accessPermissions = ["MANAGE_GIFT_CARD"];
 
         if (userHasAccess(authUser.userPermissions, accessPermissions) || userPermissionGroupHasAccess(authUser.permissionGroups, accessPermissions)) {
-            resolve(await giftCardActivate(authUser, args));
+            resolve(await giftCardDeactivate(authUser, args));
         } else {
             resolve(getGraphQLOutput("No access", "You do not have the necessary permissions required to perform this operation. Permissions required MANAGE_GIFT_CARD", "INVALID"));
         }
@@ -39,15 +39,15 @@ function getGraphQLOutput(field, message, code, tags, giftCard) {
     }
 }
 
-function giftCardActivate(authUser, args) {
+function giftCardDeactivate(authUser, args) {
     return new Promise(resolve => {
         let giftCardId = args.id;
         productQueries.getGiftCard([giftCardId], "id=$1", result => {
             if (result.err) return resolve(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return resolve(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND"));
             let giftCard_ = result.res[0];
-            if (giftCard_.is_active) return resolve(getGraphQLOutput("giftCard", "GiftCard already activated", "ALREADY_EXISTS"));
-            productQueries.updateGiftCard([giftCardId, true], "is_active=$2", "id=$1", async result => {
+            if (!giftCard_.is_active) return resolve(getGraphQLOutput("giftCard", "GiftCard already deactivated", "ALREADY_EXISTS"));
+            productQueries.updateGiftCard([giftCardId, false], "is_active=$2", "id=$1", async result => {
                 if (result.err) return resolve(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
                 if (result.res.length == 0) return resolve(getGraphQLOutput("updateGiftCard", "GiftCard not updated", "GRAPHQL_ERROR"));
 
@@ -100,7 +100,7 @@ function getGiftCardCreateEventInput(authUser, giftCardId, input) {
 
     let values = [
         new Date().toUTCString(),
-        "ACTIVATED",
+        "DEACTIVATED",
         JSON.stringify(parameters),
         giftCardId,
         authUser.id

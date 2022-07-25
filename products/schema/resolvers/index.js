@@ -97,6 +97,7 @@ const {
     unassignWarehouseShippingZone,
     giftCardCreate,
     giftCardActivate,
+    giftCardDeactivate,
 } = require('./Mutation');
 
 const {
@@ -359,6 +360,7 @@ module.exports = {
         unassignWarehouseShippingZone,
         giftCardCreate,
         giftCardActivate,
+        giftCardDeactivate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,

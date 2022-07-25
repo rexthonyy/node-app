@@ -63,6 +63,7 @@ const assignWarehouseShippingZone = require('./assignWarehouseShippingZone');
 const unassignWarehouseShippingZone = require('./unassignWarehouseShippingZone');
 const giftCardCreate = require('./giftCardCreate');
 const giftCardActivate = require('./giftCardActivate');
+const giftCardDeactivate = require('./giftCardDeactivate');
 
 module.exports = {
     productBulkDelete,
@@ -130,4 +131,5 @@ module.exports = {
     unassignWarehouseShippingZone,
     giftCardCreate,
     giftCardActivate,
+    giftCardDeactivate,
 };

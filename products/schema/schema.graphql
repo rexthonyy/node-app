@@ -1117,6 +1117,13 @@ type Mutation {
     id: ID!
   ): GiftCardActivate
 
+  """
+  Deactivate a gift card. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardDeactivate(
+    """ID of a gift card to deactivate."""
+    id: ID!
+  ): GiftCardDeactivate
 }
 
 """Return type for getShiftGroups"""
