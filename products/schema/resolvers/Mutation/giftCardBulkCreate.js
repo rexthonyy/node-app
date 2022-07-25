@@ -48,9 +48,9 @@ function giftCardBulkCreate(authUser, args) {
 
         cards.forEach(async() => {
             try {
-                let { err, giftCard_ } = await giftCardCreate(authUser, args);
-                errors = errors.concat(err);
-                giftCards.push(giftCard_);
+                let { e, g } = await giftCardCreate(authUser, args);
+                errors = errors.concat(e);
+                giftCards.push(g);
             } catch (err) {
                 errors = errors.concat(err);
             }
@@ -102,8 +102,8 @@ function giftCardCreate(authUser, args) {
             }
 
             resolve({
-                errors,
-                giftCard
+                e: errors,
+                g: giftCard
             });
         });
     });
