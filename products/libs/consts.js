@@ -68,6 +68,7 @@ const db = {
     order_orderline: "order_orderline",
     order_fulfillment: "order_fulfillment",
     order_fulfillmentline: "order_fulfillmentline",
+    order_order_gift_cards: "order_order_gift_cards",
     payment_payment: "payment_payment",
     payment_transaction: "payment_transaction",
     page_page: "page_page",

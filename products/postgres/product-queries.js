@@ -3150,6 +3150,23 @@ const deleteWarehouse = (values, whereClause, response) => {
     });
 };
 
+const deleteOrderGiftCards = (values, whereClause, response) => {
+    client.query(`DELETE FROM ${db.order_order_gift_cards} WHERE ${whereClause}`, values, (err, res) => {
+        if (err) {
+            response({
+                err: err.stack,
+                res: null,
+                test: 8
+            });
+        } else {
+            response({
+                err: null,
+                res: res.rows
+            });
+        }
+    });
+};
+
 module.exports = {
     stop,
     get,
@@ -3337,4 +3354,5 @@ module.exports = {
     deleteShippingMethod,
     deleteWarehouseShippingZones,
     deleteWarehouse,
+    deleteOrderGiftCards,
 }

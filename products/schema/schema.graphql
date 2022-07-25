@@ -1160,6 +1160,14 @@ type Mutation {
     """Fields required to update a gift card."""
     input: GiftCardUpdateInput!
   ): GiftCardUpdate
+
+  """
+  Added in Saleor 3.1. Delete gift card. Note: this feature is in a preview state and can be subject to changes at later point. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardDelete(
+    """ID of the gift card to delete."""
+    id: ID!
+  ): GiftCardDelete
 }
 
 """Return type for getShiftGroups"""
