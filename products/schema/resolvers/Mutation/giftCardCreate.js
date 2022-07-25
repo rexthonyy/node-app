@@ -5,6 +5,7 @@ const {
     getGraphQLGiftCardById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
+const voucher_codes = require('voucher-code-generator');
 
 module.exports = async(parent, args, context) => {
     return new Promise(async resolve => {
@@ -141,6 +142,12 @@ function getGiftCardCreateInput(authUser, input) {
         holder += holder ? ", " : "";
         entry += "is_active";
         holder += `$${++cursor}`;
+    }
+    if (code == null) {
+        code = voucher_codes.generate({
+            length: 10,
+            count: 1
+        })[0].toUpperCase();
     }
     if (code != null) {
         values.push(code);
