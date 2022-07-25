@@ -1108,6 +1108,15 @@ type Mutation {
     """Fields required to create a gift card."""
     input: GiftCardCreateInput!
   ): GiftCardCreate
+  
+  """
+  Activate a gift card. Requires one of the following permissions: MANAGE_GIFT_CARD.
+  """
+  giftCardActivate(
+    """ID of a gift card to activate."""
+    id: ID!
+  ): GiftCardActivate
+
 }
 
 """Return type for getShiftGroups"""
