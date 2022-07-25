@@ -31,7 +31,7 @@ function giftCards(parent, args) {
 
 function getAllGiftCards(parent) {
     return new Promise((resolve, reject) => {
-        productQueries.getGiftCard([parent.id], "created_by_id=$1", result => {
+        productQueries.getGiftCard([parent.id], "used_by_id=$1", result => {
             if (result.err) { console.log(JSON.stringify(result.err)); return reject(JSON.stringify(result.err)); }
             let giftCards_ = result.res;
 
