@@ -2,7 +2,6 @@ const { formatMetadata } = require("../../../libs/util");
 const productQueries = require("../../../postgres/product-queries");
 const getGraphQLProductTypeById = require('./getGraphQLProductTypeById');
 const getGraphQLCategoryById = require('./getGraphQLCategoryById');
-const getGraphQLSelectedAttributesByProductId = require('./getGraphQLSelectedAttributesByProductId');
 const getGraphQLCollectionById = require("./getGraphQLCollectionById");
 const getGraphQLProductVariantById = require("./getGraphQLProductVariantById");
 const getGraphQLAttributeById = require("./getGraphQLAttributeById");

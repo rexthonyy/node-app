@@ -58,6 +58,13 @@ query {
     lastName
     isStaff
     isActive
+    giftCards{
+      edges{
+        node{
+          id
+        }
+      }
+    }
     userPermissions{
       code
     }
