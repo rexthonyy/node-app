@@ -67,15 +67,15 @@ function giftCardBulkActivate(authUser, args) {
 }
 
 function giftCardActivate(authUser, giftCardId) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         productQueries.getGiftCard([giftCardId], "id=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-            if (result.res.length == 0) return resolve(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND").errors);
+            if (result.err) return reject(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return reject(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND").errors);
             let giftCard_ = result.res[0];
-            if (giftCard_.is_active) return resolve(getGraphQLOutput("giftCard", "GiftCard already activated", "ALREADY_EXISTS").errors);
+            if (giftCard_.is_active) return reject(getGraphQLOutput("giftCard", "GiftCard already activated", "ALREADY_EXISTS").errors);
             productQueries.updateGiftCard([giftCardId, true], "is_active=$2", "id=$1", async result => {
-                if (result.err) return resolve(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
-                if (result.res.length == 0) return resolve(getGraphQLOutput("updateGiftCard", "GiftCard not updated", "GRAPHQL_ERROR").errors);
+                if (result.err) return reject(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                if (result.res.length == 0) return reject(getGraphQLOutput("updateGiftCard", "GiftCard not updated", "GRAPHQL_ERROR").errors);
 
                 let errors = [];
                 try {
