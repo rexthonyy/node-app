@@ -67,6 +67,7 @@ const giftCardActivate = require('./giftCardActivate');
 const giftCardDeactivate = require('./giftCardDeactivate');
 const giftCardUpdate = require('./giftCardUpdate');
 const giftCardBulkActivate = require('./giftCardBulkActivate');
+const giftCardBulkDeactivate = require('./giftCardBulkDeactivate');
 
 module.exports = {
     productBulkDelete,
@@ -138,4 +139,5 @@ module.exports = {
     giftCardDeactivate,
     giftCardUpdate,
     giftCardBulkActivate,
+    giftCardBulkDeactivate,
 };

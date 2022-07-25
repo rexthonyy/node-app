@@ -101,6 +101,7 @@ const {
     giftCardDeactivate,
     giftCardUpdate,
     giftCardBulkActivate,
+    giftCardBulkDeactivate,
 } = require('./Mutation');
 
 const {
@@ -367,6 +368,7 @@ module.exports = {
         giftCardDeactivate,
         giftCardUpdate,
         giftCardBulkActivate,
+        giftCardBulkDeactivate,
     },
     Attribute: {
         privateMetafield: attributePrivateMetafield,
