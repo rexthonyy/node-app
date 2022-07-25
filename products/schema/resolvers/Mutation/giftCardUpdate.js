@@ -267,7 +267,7 @@ function resolveRemoveGiftCardTag(authUser, giftCard, tag) {
             productQueries.getGiftCardTags([giftCard.id, giftCardTagId], "giftcard_id=$1 AND giftcardtag_id=$2", result => {
                 if (result.err) return reject(getGraphQLOutput("getGiftCardTags", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
                 if (result.res.length == 0) return reject(getGraphQLOutput("getGiftCardTags", `Gift card tags not found: ${tag}`, "NOT_FOUND").errors);
-                productQueries.deleteGiftCardTags([giftCard.id, giftCardTagId], "giftcard_id, giftcardtag_id", "$1,$2", async result => {
+                productQueries.deleteGiftCardTags([giftCard.id, giftCardTagId], "giftcard_id=$1 AND giftcardtag_id=$2", async result => {
                     if (result.err) return reject(getGraphQLOutput("deleteGiftCardTags", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
                     if (result.res.length > 0) return reject(getGraphQLOutput("deleteGiftCardTags", `Gift card tag not removed: ${tag}`, "GRAPHQL_ERROR").errors);
                     let errors = [];
