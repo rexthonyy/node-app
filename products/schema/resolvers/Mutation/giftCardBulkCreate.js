@@ -67,7 +67,6 @@ function giftCardBulkCreate(authUser, args) {
                     giftCards,
                     count: giftCards.length
                 };
-                console.log(res);
                 resolve(res);
             }
         }
