@@ -39,6 +39,22 @@ function giftCardBulkCreate(authUser, args) {
     return new Promise(async resolve => {
         let giftCards = [];
         let errors = [];
+        let cursor = -1;
+
+        checkComplete();
+
+        function checkComplete() {
+            cursor++;
+            if (cursor == args.input.count) {
+                let res = {
+                    errors,
+                    giftCards,
+                    count: giftCards.length
+                };
+                resolve(res);
+            }
+        }
+
         for (let i = 0; i < args.input.count; i++) {
             try {
                 let { err, giftCard_ } = await giftCardCreate(authUser, args);
@@ -47,14 +63,8 @@ function giftCardBulkCreate(authUser, args) {
             } catch (err) {
                 errors = errors.concat(err);
             }
+            checkComplete();
         }
-        let res = {
-            errors,
-            giftCards,
-            count: giftCards.length
-        };
-        console.log(res);
-        resolve(res);
     });
 }
 
