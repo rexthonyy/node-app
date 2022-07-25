@@ -35,6 +35,14 @@ const userAvatarUpdate = require("./userAvatarUpdate");
 const userAvatarDelete = require("./userAvatarDelete");
 const userBulkSetActive = require("./userBulkSetActive");
 
+const {
+    userPrivateMetafield,
+    userPrivateMetafields,
+    userMetafield,
+    userMetafields,
+    userGiftCards,
+} = require('./User');
+
 module.exports = {
     Query: {
         me,
@@ -75,5 +83,12 @@ module.exports = {
         userAvatarUpdate,
         userAvatarDelete,
         userBulkSetActive,
+    },
+    User: {
+        privateMetafield: userPrivateMetafield,
+        privateMetafields: userPrivateMetafields,
+        metafield: userMetafield,
+        metafields: userMetafields,
+        giftCards: userGiftCards,
     }
 };
