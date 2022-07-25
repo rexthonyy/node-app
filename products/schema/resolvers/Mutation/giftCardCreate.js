@@ -41,8 +41,8 @@ function getGraphQLOutput(field, message, code, tags, giftCard) {
 }
 
 function giftCardCreate(authUser, args) {
-    return new Promise(resolve => {
-        let { values, entry, holder } = getGiftCardCreateInput(authUser, args.input);
+    return new Promise(async resolve => {
+        let { values, entry, holder } = await getGiftCardCreateInput(authUser, args.input);
         console.log(values);
         console.log(entry);
         console.log(holder);
@@ -79,110 +79,112 @@ function giftCardCreate(authUser, args) {
     });
 }
 
-async function getGiftCardCreateInput(authUser, input) {
-    let expiryDate = input.expiryDate;
-    let startDate = input.startDate || new Date().toUTCString();
-    let endDate = input.endDate;
-    let currency = input.balance.currency;
-    let amount = input.balance.amount;
-    let userEmail = input.userEmail;
-    let isActive = input.isActive;
-    let code = input.code;
+function getGiftCardCreateInput(authUser, input) {
+    return new Promise(async resolve => {
+        let expiryDate = input.expiryDate;
+        let startDate = input.startDate || new Date().toUTCString();
+        let endDate = input.endDate;
+        let currency = input.balance.currency;
+        let amount = input.balance.amount;
+        let userEmail = input.userEmail;
+        let isActive = input.isActive;
+        let code = input.code;
 
-    expiryDate = expiryDate ? expiryDate : endDate;
-    userEmail = userEmail ? userEmail : authUser.email;
+        expiryDate = expiryDate ? expiryDate : endDate;
+        userEmail = userEmail ? userEmail : authUser.email;
 
-    let values = [];
-    let entry = "";
-    let holder = "";
-    let cursor = 0;
+        let values = [];
+        let entry = "";
+        let holder = "";
+        let cursor = 0;
 
-    if (expiryDate != null) {
-        values.push(expiryDate);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "expiry_date";
-        holder += `$${++cursor}`;
-    }
-    if (startDate != null) {
-        values.push(startDate);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "created";
-        holder += `$${++cursor}`;
-    }
-    if (amount != null) {
-        values.push(amount);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "initial_balance_amount";
-        holder += `$${++cursor}`;
-    }
-    if (amount != null) {
-        values.push(amount);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "current_balance_amount";
-        holder += `$${++cursor}`;
-    }
-    if (currency != null) {
-        values.push(currency);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "currency";
-        holder += `$${++cursor}`;
-    }
-    if (userEmail != null) {
-        values.push(userEmail);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "created_by_email";
-        holder += `$${++cursor}`;
-    }
-    if (isActive != null) {
-        values.push(isActive);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "is_active";
-        holder += `$${++cursor}`;
-    }
-    if (code == null) {
-        do {
-            try {
-                code = await getGiftCardCode();
-                break;
-            } catch (err) {
-                continue;
-            }
-        } while (true);
-    }
-    if (code != null) {
-        values.push(code);
-        entry += entry ? ", " : "";
-        holder += holder ? ", " : "";
-        entry += "code";
-        holder += `$${++cursor}`;
-    }
+        if (expiryDate != null) {
+            values.push(expiryDate);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "expiry_date";
+            holder += `$${++cursor}`;
+        }
+        if (startDate != null) {
+            values.push(startDate);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "created";
+            holder += `$${++cursor}`;
+        }
+        if (amount != null) {
+            values.push(amount);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "initial_balance_amount";
+            holder += `$${++cursor}`;
+        }
+        if (amount != null) {
+            values.push(amount);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "current_balance_amount";
+            holder += `$${++cursor}`;
+        }
+        if (currency != null) {
+            values.push(currency);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "currency";
+            holder += `$${++cursor}`;
+        }
+        if (userEmail != null) {
+            values.push(userEmail);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "created_by_email";
+            holder += `$${++cursor}`;
+        }
+        if (isActive != null) {
+            values.push(isActive);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "is_active";
+            holder += `$${++cursor}`;
+        }
+        if (code == null) {
+            do {
+                try {
+                    code = await getGiftCardCode();
+                    break;
+                } catch (err) {
+                    continue;
+                }
+            } while (true);
+        }
+        if (code != null) {
+            values.push(code);
+            entry += entry ? ", " : "";
+            holder += holder ? ", " : "";
+            entry += "code";
+            holder += `$${++cursor}`;
+        }
 
-    values.push(authUser.id);
-    entry += entry ? ", " : "";
-    holder += holder ? ", " : "";
-    entry += "created_by_id";
-    holder += `$${++cursor}`;
+        values.push(authUser.id);
+        entry += entry ? ", " : "";
+        holder += holder ? ", " : "";
+        entry += "created_by_id";
+        holder += `$${++cursor}`;
 
-    values.push(JSON.stringify({}));
-    entry += entry ? ", " : "";
-    holder += holder ? ", " : "";
-    entry += "metadata";
-    holder += `$${++cursor}`;
+        values.push(JSON.stringify({}));
+        entry += entry ? ", " : "";
+        holder += holder ? ", " : "";
+        entry += "metadata";
+        holder += `$${++cursor}`;
 
-    values.push(JSON.stringify({}));
-    entry += entry ? ", " : "";
-    holder += holder ? ", " : "";
-    entry += "private_metadata";
-    holder += `$${++cursor}`;
+        values.push(JSON.stringify({}));
+        entry += entry ? ", " : "";
+        holder += holder ? ", " : "";
+        entry += "private_metadata";
+        holder += `$${++cursor}`;
 
-    return { values, entry, holder };
+        return resolve({ values, entry, holder });
+    });
 }
 
 function getGiftCardCode() {
