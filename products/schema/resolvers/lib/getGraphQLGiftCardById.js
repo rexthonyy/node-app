@@ -109,7 +109,9 @@ function getGiftCardTags(id) {
             let giftCards = [];
 
             giftcardTags.forEach(async tag => {
-                giftCards.push(await getGiftCardTag(tag.giftcardtag_id));
+                try {
+                    giftCards.push(await getGiftCardTag(tag.giftcardtag_id));
+                } catch (err) { console.log(err) };
                 checkComplete();
             });
 
@@ -127,7 +129,7 @@ function getGiftCardTags(id) {
 
 function getGiftCardTag(id) {
     return new Promise((resolve, reject) => {
-        productQueries.getGiftCard([id], "id=$1", result => {
+        productQueries.getGiftCardTag([id], "id=$1", result => {
             if (result.err || result.res.length == 0) return reject("Gift card tag not found");
             let tag = result.res[0];
 
