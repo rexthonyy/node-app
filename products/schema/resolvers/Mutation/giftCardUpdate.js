@@ -2,8 +2,6 @@ const {
     checkAuthorization,
     userPermissionGroupHasAccess,
     userHasAccess,
-    getGraphQLProductById,
-    getGraphQLWarehouseById,
     getGraphQLGiftCardById
 } = require('../lib');
 const productQueries = require("../../../postgres/product-queries");
@@ -49,6 +47,7 @@ function giftCardUpdate(authUser, args) {
             if (result.err) return reject(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return reject(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND"));
             let giftCard_ = result.res[0];
+            console.log(giftCard_);
 
             let addTags = args.input.addTags;
             let expiryDate = args.input.expiryDate;
@@ -93,6 +92,7 @@ function giftCardUpdate(authUser, args) {
 
             try {
                 giftCard = await getGraphQLGiftCardById(giftCardId);
+                console.log(giftCard);
             } catch (err) {
                 errors.push(getGraphQLOutput("getGraphQLGiftCardById", err, "NOT_FOUND").errors[0]);
             }
