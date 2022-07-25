@@ -77,8 +77,8 @@ function giftCardCreate(authUser, args) {
     return new Promise(async resolve => {
         let { values, entry, holder } = await getGiftCardCreateInput(authUser, args.input);
         productQueries.createGiftCard(values, entry, holder, async result => {
-            if (result.err) return resolve(getGraphQLOutput("createGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("createGiftCard", "GiftCard not created", "GRAPHQL_ERROR"));
+            if (result.err) return resolve(getGraphQLOutput("createGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return resolve(getGraphQLOutput("createGiftCard", "GiftCard not created", "GRAPHQL_ERROR").errors);
             let giftCard_ = result.res[0];
             let tags = args.input.tags;
             let giftCard;

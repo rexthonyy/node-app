@@ -43,7 +43,8 @@ function giftCardBulkActivate(authUser, args) {
 
         ids.forEach(async id => {
             try {
-                await giftCardActivate(authUser, id);
+                let { e } = await giftCardActivate(authUser, id);
+                errors = errors.concat(e);
                 count++;
             } catch (err) {
                 errors = errors.concat(err);
@@ -68,15 +69,14 @@ function giftCardBulkActivate(authUser, args) {
 function giftCardActivate(authUser, giftCardId) {
     return new Promise(resolve => {
         productQueries.getGiftCard([giftCardId], "id=$1", result => {
-            if (result.err) return resolve(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-            if (result.res.length == 0) return resolve(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND"));
+            if (result.err) return resolve(getGraphQLOutput("getGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+            if (result.res.length == 0) return resolve(getGraphQLOutput("getGiftCard", "GiftCard not found", "NOT_FOUND").errors);
             let giftCard_ = result.res[0];
-            if (giftCard_.is_active) return resolve(getGraphQLOutput("giftCard", "GiftCard already activated", "ALREADY_EXISTS"));
+            if (giftCard_.is_active) return resolve(getGraphQLOutput("giftCard", "GiftCard already activated", "ALREADY_EXISTS").errors);
             productQueries.updateGiftCard([giftCardId, true], "is_active=$2", "id=$1", async result => {
-                if (result.err) return resolve(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
-                if (result.res.length == 0) return resolve(getGraphQLOutput("updateGiftCard", "GiftCard not updated", "GRAPHQL_ERROR"));
+                if (result.err) return resolve(getGraphQLOutput("updateGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
+                if (result.res.length == 0) return resolve(getGraphQLOutput("updateGiftCard", "GiftCard not updated", "GRAPHQL_ERROR").errors);
 
-                let giftCard;
                 let errors = [];
                 try {
                     await addEvent(authUser, giftCardId, giftCard_);
@@ -84,17 +84,8 @@ function giftCardActivate(authUser, giftCardId) {
                     errors = errors.concat(err);
                 }
 
-                try {
-                    giftCard = await getGraphQLGiftCardById(giftCardId);
-                } catch (err) {
-                    errors.push(getGraphQLOutput("getGraphQLGiftCardById", err, "NOT_FOUND", tags).errors[0]);
-                    giftCard = null;
-                }
-
                 resolve({
-                    errors,
-                    giftCardErrors: errors,
-                    giftCard
+                    e: errors
                 });
             });
         });
