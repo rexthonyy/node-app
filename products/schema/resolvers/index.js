@@ -111,6 +111,7 @@ const {
     userPrivateMetafields,
     userMetafield,
     userMetafields,
+    userGiftCards,
 } = require('./User');
 
 const {
@@ -467,6 +468,7 @@ module.exports = {
         privateMetafields: userPrivateMetafields,
         metafield: userMetafield,
         metafields: userMetafields,
+        giftCards: userGiftCards,
     },
     Sale: {
         privateMetafield: salePrivateMetafield,

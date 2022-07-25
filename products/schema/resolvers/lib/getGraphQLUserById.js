@@ -16,6 +16,7 @@ let getGraphQLUserById = (user_id) => {
             let defaultBillingAddress = getDefaultAddress(accountUser.default_billing_address_id, addresses);
             let userPermissions = await getUserPermissions(accountUser.id);
             let permissionGroups = await getUserPermissionGroups(accountUser.id);
+
             let userType = {
                 id: accountUser.id,
                 privateMetadata: formatMetadata(accountUser.private_metadata),
@@ -27,7 +28,6 @@ let getGraphQLUserById = (user_id) => {
                 isActive: accountUser.is_active,
                 addresses,
                 checkoutToken: null,
-                giftCards: null,
                 note: accountUser.note,
                 orders: null,
                 userPermissions,
