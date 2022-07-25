@@ -54,7 +54,7 @@ function giftCardActivate(authUser, args) {
                 let giftCard;
                 let errors = [];
                 try {
-                    await addEvent(authUser, giftCardId, args);
+                    await addEvent(authUser, giftCardId, giftCard_);
                 } catch (err) {
                     errors = errors.concat(err);
                 }
@@ -76,9 +76,9 @@ function giftCardActivate(authUser, args) {
     });
 }
 
-function addEvent(authUser, giftCardId, args) {
+function addEvent(authUser, giftCardId, card) {
     return new Promise(async(resolve, reject) => {
-        let { values, entry, holder } = getGiftCardCreateEventInput(authUser, giftCardId, args.input);
+        let { values, entry, holder } = getGiftCardCreateEventInput(authUser, giftCardId, card);
         productQueries.createGiftCardEvent(values, entry, holder, async result => {
             if (result.err) return reject(getGraphQLOutput("createGiftCardEvent", JSON.stringify(result.err), "GRAPHQL_ERROR").errors);
             if (result.res.length == 0) return reject(getGraphQLOutput("createGiftCardEvent", "GiftCard event not created", "GRAPHQL_ERROR").errors);
@@ -89,19 +89,13 @@ function addEvent(authUser, giftCardId, args) {
 
 
 function getGiftCardCreateEventInput(authUser, giftCardId, input) {
-
-    let expiryDate = input.expiryDate;
-    let endDate = input.endDate;
-
-    expiryDate = expiryDate ? expiryDate : endDate;
-
     let parameters = {
         balance: {
-            currency: input.balance.currency,
-            current_balance: input.balance.amount,
-            initial_balance: input.balance.amount
+            currency: input.currency,
+            current_balance: input.current_balance_amount,
+            initial_balance: input.initial_balance_amount
         },
-        expiry_date: expiryDate
+        expiry_date: input.expiry_date
     };
 
     let values = [
