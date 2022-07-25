@@ -43,7 +43,7 @@ function giftCardBulkCreate(authUser, args) {
             try {
                 let { err, giftCard_ } = await giftCardCreate(authUser, args);
                 errors = errors.concat(err);
-                giftCard.push(giftCard_);
+                giftCards.push(giftCard_);
             } catch (err) {
                 errors = errors.concat(err);
             }
