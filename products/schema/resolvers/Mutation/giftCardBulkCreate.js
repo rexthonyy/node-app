@@ -37,25 +37,16 @@ function getGraphQLOutput(field, message, code, tags, giftCards, count = 0) {
 
 function giftCardBulkCreate(authUser, args) {
     return new Promise(async resolve => {
+        let cards = [];
+        for (let i = 0; i < args.input.count; i++) {
+            cards.push(i);
+        }
+        const numCards = cards.length;
         let giftCards = [];
         let errors = [];
         let cursor = -1;
 
-        checkComplete();
-
-        function checkComplete() {
-            cursor++;
-            if (cursor == args.input.count) {
-                let res = {
-                    errors,
-                    giftCards,
-                    count: giftCards.length
-                };
-                resolve(res);
-            }
-        }
-
-        for (let i = 0; i < args.input.count; i++) {
+        cards.forEach(() => {
             try {
                 let { err, giftCard_ } = await giftCardCreate(authUser, args);
                 errors = errors.concat(err);
@@ -64,6 +55,21 @@ function giftCardBulkCreate(authUser, args) {
                 errors = errors.concat(err);
             }
             checkComplete();
+        });
+
+        checkComplete();
+
+        function checkComplete() {
+            cursor++;
+            if (cursor == numCards) {
+                let res = {
+                    errors,
+                    giftCards,
+                    count: giftCards.length
+                };
+                console.log(res);
+                resolve(res);
+            }
         }
     });
 }
