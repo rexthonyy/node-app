@@ -43,6 +43,9 @@ function getGraphQLOutput(field, message, code, tags, giftCard) {
 function giftCardCreate(authUser, args) {
     return new Promise(resolve => {
         let { values, entry, holder } = getGiftCardCreateInput(authUser, args.input);
+        console.log(values);
+        console.log(entry);
+        console.log(holder);
         productQueries.createGiftCard(values, entry, holder, async result => {
             if (result.err) return resolve(getGraphQLOutput("createGiftCard", JSON.stringify(result.err), "GRAPHQL_ERROR"));
             if (result.res.length == 0) return resolve(getGraphQLOutput("createGiftCard", "GiftCard not created", "GRAPHQL_ERROR"));
